@@ -1,0 +1,7 @@
+if <%= @rendered_childs[:condition] %>
+  <%= @rendered_childs[:then].join('\n') %>
+<%= if @rendered_childs[:else] %>
+else
+  <%= @rendered_childs[:else].join('\n') %>
+<%= end %>
+end
