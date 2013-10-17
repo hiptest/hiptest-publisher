@@ -1,1 +1,10 @@
-<%= @rendered_childs[:scenarios].join %>
+# encoding: UTF-8
+require_relative 'actionwords'
+
+describe '<%= parent.rendered_childs[:name] %>' do
+  before (:all) do
+    @<%= @rendered_childs[:call_prefix]%> = <%= parent.rendered_childs[:normalized_name] %>::ActionWords.new
+  end
+
+<%= indent_block(@rendered_childs[:scenarios]) %>
+end

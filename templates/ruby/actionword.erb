@@ -1,4 +1,5 @@
 def <%= @rendered_childs[:name] %>(<%= @rendered_childs[:parameters].join(', ') %>)
-  # tags: <%= @rendered_childs[:tags].join(' ') %>
-  <%= @rendered_childs[:body].join %>
+<% unless @rendered_childs[:tags].empty? %>  # Tags: <%= @rendered_childs[:tags].join(' ') %>
+<%= "\n" %><% end %>
+<%= indent_block(@rendered_childs[:body]) %>
 end

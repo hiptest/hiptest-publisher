@@ -1,1 +1,2 @@
-# TODO: Implement {<%= @rendered_childs[:key] %>}: "{<%= @rendered_childs[:value] %>}"
+# TODO: Implement <%= @rendered_childs[:key] %>: <% if @rendered_childs[:value].include? "\n" %><% lines = @rendered_childs[:value].split("\n") %><%= lines.first %><% lines[1..-1].each do |line| %>
+#<%= line %><% end %><% else %><%= @rendered_childs[:value] %><% end %>

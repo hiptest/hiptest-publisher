@@ -1,7 +1,4 @@
 if <%= @rendered_childs[:condition] %>
-  <%= @rendered_childs[:then].join('\n') %>
-<%= if @rendered_childs[:else] %>
-else
-  <%= @rendered_childs[:else].join('\n') %>
-<%= end %>
-end
+<%= indent_block(@rendered_childs[:then]) %>
+<% unless @rendered_childs[:else].empty? %>else
+<%= indent_block(@rendered_childs[:else]) %><% end %>end
