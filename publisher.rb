@@ -4,13 +4,13 @@ require_relative 'options_parser'
 require_relative 'xml_parser'
 
 
-def fetch_project_export token
-  open("https://zest.smartesting.com/publication/#{token}/project")
+def fetch_project_export site, token
+  open("#{site}/publication/#{token}/project")
 end
 
 options = OptionsParser.parse(ARGV)
 begin
-  xml = fetch_project_export(options.token)
+  xml = fetch_project_export(options.site, options.token)
 rescue
   puts "Unable to open the file, please check that the token is correct"
   exit
