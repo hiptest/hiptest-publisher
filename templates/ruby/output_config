@@ -1,0 +1,6 @@
+[tests]
+filename = 'project_spec.rb'
+call_prefix = 'actionwords'
+
+[actionwords]
+filename = 'actionwords.rb'

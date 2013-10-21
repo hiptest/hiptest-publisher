@@ -1,12 +1,9 @@
 require 'open-uri'
+require 'parseconfig'
 
+require_relative 'utils'
 require_relative 'options_parser'
 require_relative 'xml_parser'
-
-
-def fetch_project_export site, token
-  open("#{site}/publication/#{token}/project")
-end
 
 options = OptionsParser.parse(ARGV)
 
@@ -20,10 +17,22 @@ end
 parser = Zest::XMLParser.new(xml)
 parser.build_project
 
-puts '-----------------------------------------------------'
-puts parser.project.render('ruby', {call_prefix: 'actionwords'})
-puts '-----------------------------------------------------'
-puts parser.project.rendered_childs[:scenarios]
-puts '-----------------------------------------------------'
-puts parser.project.rendered_childs[:actionwords]
-puts '-----------------------------------------------------'
+language_config = LanguageConfigParser.new(options)
+
+unless options.actionwords_only
+  File.open(language_config.aw_output_dir, 'w') { |file|
+    file.write(parser.project.childs[:scenarios].render(
+      options.language,
+      language_config.tests_render_context)
+    )
+  }
+end
+
+unless options.tests_only
+  File.open(language_config.tests_output_dir, 'w') { |file|
+    file.write(parser.project.childs[:actionwords].render(
+      options.language,
+      language_config.actionword_render_context)
+    )
+  }
+end

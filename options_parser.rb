@@ -2,7 +2,7 @@ require 'optparse'
 require 'parseconfig'
 require 'ostruct'
 
-class ConfigParser
+class BaseConfigParser
   def self.update_options(options)
     config = ParseConfig.new('config')
 
@@ -17,7 +17,6 @@ class ConfigParser
 end
 
 class OptionsParser
-
   def self.parse(args)
     options = OpenStruct.new
     options.language = 'ruby'
@@ -70,6 +69,39 @@ class OptionsParser
     end
 
     opt_parser.parse!(args)
-    ConfigParser.update_options options
+    BaseConfigParser.update_options options
   end
+end
+
+class LanguageConfigParser
+  def initialize(options)
+    @options = options
+    @config = ParseConfig.new("./templates/#{options.language}/output_config")
+  end
+
+  def aw_output_dir
+    "#{@options.output_directory}/#{@config['tests']['filename']}"
+  end
+
+  def tests_output_dir
+    "#{@options.output_directory}/#{@config['actionwords']['filename']}"
+  end
+
+  def tests_render_context
+    make_context('tests')
+  end
+
+  def actionword_render_context
+    make_context('actionwords')
+  end
+
+  private
+  def make_context group
+    context = {}
+    @config[group].each {|param, value|
+      context[param.to_sym] = value
+    }
+    context
+  end
+
 end
