@@ -1,4 +1,4 @@
-if <%= @rendered_childs[:condition] %>
+if (<%= @rendered_childs[:condition] %>)
 <%= indent_block(@rendered_childs[:then]) %>
 <% unless @rendered_childs[:else].empty? %>else
 <%= indent_block(@rendered_childs[:else]) %><% end %>end

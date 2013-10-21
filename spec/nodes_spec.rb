@@ -216,7 +216,7 @@ describe Zest::Nodes do
     it 'IfThen' do
       if_then = Zest::Nodes::IfThen.new(@true, [@assign_fighters_to_foo])
       if_then.render.should eq([
-          "if true",
+          "if (true)",
           "  foo = 'fighters'",
           "end\n"
         ].join("\n"))
@@ -224,7 +224,7 @@ describe Zest::Nodes do
       if_then_else = Zest::Nodes::IfThen.new(
         @true, [@assign_fighters_to_foo], [@assign_foo_to_fighters])
       if_then_else.render.should eq([
-          "if true",
+          "if (true)",
           "  foo = 'fighters'",
           "else",
           "  fighters = 'foo'",
@@ -248,7 +248,7 @@ describe Zest::Nodes do
           @call_foo_with_fighters
         ])
       n.render.should eq([
-          "while foo",
+          "while (foo)",
           "  fighters = 'foo'",
           "  foo('fighters')",
           "end\n"
@@ -301,13 +301,10 @@ describe Zest::Nodes do
           [
             Zest::Nodes::Assign.new(@foo_variable, @pi),
             Zest::Nodes::IfThen.new(
-              Zest::Nodes::Parenthesis.new(
-                Zest::Nodes::BinaryExpression.new(
-                  @foo_variable,
-                  '>',
-                  @x_variable
-                )
-              ),
+              Zest::Nodes::BinaryExpression.new(
+                @foo_variable,
+                '>',
+                @x_variable),
               [
                 Zest::Nodes::Step.new([
                   Zest::Nodes::Property.new('result', "x is greater than Pi")
@@ -343,12 +340,10 @@ describe Zest::Nodes do
         [
           Zest::Nodes::Assign.new(@foo_variable, @pi),
           Zest::Nodes::IfThen.new(
-            Zest::Nodes::Parenthesis.new(
-              Zest::Nodes::BinaryExpression.new(
-                @foo_variable,
-                '>',
-                @x_variable
-              )
+            Zest::Nodes::BinaryExpression.new(
+              @foo_variable,
+              '>',
+              @x_variable
             ),
             [
               Zest::Nodes::Step.new([

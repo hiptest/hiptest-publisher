@@ -1,4 +1,5 @@
 require 'erb'
+require 'colorize'
 
 require_relative 'utils'
 
@@ -173,6 +174,13 @@ module Zest
       end
     end
 
+    class Argument < Node
+      def initialize(name, value)
+        super()
+        @childs = {:name => name, :value => value}
+      end
+    end
+
     class Call < Node
       def initialize(actionword, arguments = [])
         super()
@@ -279,8 +287,12 @@ module Zest
     end
 
     class Project < Node
-      def initialize(name, description = '', scenarios = [], actionwords = [])
+      def initialize(name, description = '', scenarios = nil, actionwords = nil)
         super()
+        unless scenarios.nil?
+          scenarios.parent = self
+        end
+
         @childs = {
           :name => name,
           :description => description,
