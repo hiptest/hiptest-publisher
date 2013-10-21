@@ -1,0 +1,4 @@
+token = '1234'
+site  = 'http://localhost:3000'
+language = 'ruby'
+output_directory = '.'

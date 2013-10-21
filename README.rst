@@ -24,5 +24,7 @@ This will create a Ruby tests suite. For the moment, only Ruby/rspec is supporte
 We plan to add new languages and frameworks during the coming months.
 
 
+Configuration
+-------------
 
-
+You have the possibility to store some configuration in a file named 'config'. Copy the file config.sample provided here and update the values with the values you use.

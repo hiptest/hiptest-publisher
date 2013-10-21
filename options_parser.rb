@@ -1,5 +1,20 @@
 require 'optparse'
+require 'parseconfig'
 require 'ostruct'
+
+class ConfigParser
+  def self.update_options(options)
+    config = ParseConfig.new('config')
+
+    config.get_params.each do |param|
+      options.send("#{param}=", config[param])
+    end
+    options
+
+  rescue
+    options
+  end
+end
 
 class OptionsParser
 
@@ -7,6 +22,7 @@ class OptionsParser
     options = OpenStruct.new
     options.language = 'ruby'
     options.site = 'https://zest.smartesting.com'
+    options.output_directory = '.'
     options.tests_only = false
     options.actionwords_only = false
 
@@ -15,14 +31,19 @@ class OptionsParser
       opts.separator ""
       opts.separator "Specific options:"
 
-      opts.on("-t", "--token TOKEN", String,
+      opts.on("-t", "--token=TOKEN", String,
               "Secret token (available in your project settings)") do |token|
         options.token = token
       end
 
-      opts.on("-l", "--language LANG", String,
+      opts.on("-l", "--language=LANG", String,
               "Target language (only Ruby available for the moment)") do |token|
-        options.token = token
+        options.language = language
+      end
+
+      opts.on("-o", "--output-directory=PATH", String,
+              "Directory to output the tests") do |output_directory|
+        options.output_directory = output_directory
       end
 
       opts.on("--test-only", "Export only the tests") do |tests_only|
@@ -33,7 +54,7 @@ class OptionsParser
         options.actionwords_only = actionwords_only
       end
 
-      opts.on("-s", "--site SITE", String,
+      opts.on("-s", "--site=SITE", String,
               "Site to fetch from (default: https://zest.smartesting.com)") do |site|
         options.site = site
       end
@@ -49,6 +70,6 @@ class OptionsParser
     end
 
     opt_parser.parse!(args)
-    options
+    ConfigParser.update_options options
   end
 end

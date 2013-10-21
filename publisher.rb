@@ -9,6 +9,7 @@ def fetch_project_export site, token
 end
 
 options = OptionsParser.parse(ARGV)
+
 begin
   xml = fetch_project_export(options.site, options.token)
 rescue
