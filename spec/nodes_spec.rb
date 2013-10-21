@@ -3,133 +3,124 @@ require_relative '../nodes'
 
 describe Zest::Nodes do
   context 'render' do
+    before (:all) do
+      @null = Zest::Nodes::NullLiteral.new
+      @what_is_your_quest = Zest::Nodes::StringLiteral.new("What is your quest ?")
+      @fighters = Zest::Nodes::StringLiteral.new('fighters')
+      @pi = Zest::Nodes::NumericLiteral.new(3.14)
+      @false = Zest::Nodes::BooleanLiteral.new(false)
+      @true = Zest::Nodes::BooleanLiteral.new(true)
+      @foo_variable = Zest::Nodes::Variable.new('foo')
+      @x_variable = Zest::Nodes::Variable.new('x')
+
+      @foo_fighters_prop = Zest::Nodes::Property.new(@foo_variable, @fighters)
+      @foo_dot_fighters = Zest::Nodes::Field.new(@foo_variable, 'fighters')
+      @foo_brackets_fighters = Zest::Nodes::Index.new(@foo_variable, @fighters)
+      @foo_minus_fighters = Zest::Nodes::BinaryExpression.new(@foo_variable, '-', @fighters)
+      @minus_foo = Zest::Nodes::UnaryExpression.new('-', @foo_variable)
+      @parenthesis_foo = Zest::Nodes::Parenthesis.new(@foo_variable)
+
+      @foo_list = Zest::Nodes::List.new([@foo_variable, @fighters])
+      @foo_dict =  Zest::Nodes::Dict.new([@foo_fighters_prop,
+        Zest::Nodes::Property.new('Alt', 'J')
+      ])
+      @foo_template = Zest::Nodes::Template.new([@foo_variable, @fighters])
+      @assign_fighters_to_foo = Zest::Nodes::Assign.new(@foo_variable, @fighters)
+      @assign_foo_to_fighters = Zest::Nodes::Assign.new(
+        Zest::Nodes::Variable.new('fighters'),
+        Zest::Nodes::StringLiteral.new('foo'))
+      @call_foo = Zest::Nodes::Call.new('foo')
+      @call_foo_with_fighters = Zest::Nodes::Call.new('foo', [@fighters])
+
+      @simple_tag = Zest::Nodes::Tag.new('myTag')
+      @valued_tag = Zest::Nodes::Tag.new('myTag', 'somevalue')
+
+      @plic_param = Zest::Nodes::Parameter.new('plic')
+      @x_param = Zest::Nodes::Parameter.new('x')
+      @plic_param_default_ploc = Zest::Nodes::Parameter.new(
+        'plic',
+        Zest::Nodes::StringLiteral.new('ploc'))
+      @flip_param_default_flap = Zest::Nodes::Parameter.new(
+        'flip',
+        Zest::Nodes::StringLiteral.new('flap'))
+    end
+
     it 'NullLiteral' do
-      n = Zest::Nodes::NullLiteral.new
-      n.render.should eq('nil')
+      @null.render.should eq('nil')
     end
 
     it 'StringLiteral' do
-      n = Zest::Nodes::StringLiteral.new("What is your quest ?")
-      n.render.should eq("'What is your quest ?'")
+      @what_is_your_quest.render.should eq("'What is your quest ?'")
     end
 
     it 'NumericLiteral' do
-      n = Zest::Nodes::NumericLiteral.new(3.14)
-      n.render.should eq('3.14')
+      @pi.render.should eq('3.14')
     end
 
     it 'BooleanLiteral' do
-      n = Zest::Nodes::BooleanLiteral.new(false)
-      n.render.should eq('false')
+      @false.render.should eq('false')
     end
 
     it 'Variable' do
-      n = Zest::Nodes::Variable.new('foo')
-      n.render.should eq('foo')
+      @foo_variable.render.should eq('foo')
     end
 
     it 'Property' do
-      n = Zest::Nodes::Property.new('foo', 'fighters')
-      n.render.should eq('foo: fighters')
+      @foo_fighters_prop.render.should eq("foo: 'fighters'")
     end
 
     it 'Field' do
-      n = Zest::Nodes::Field.new('foo', 'fighters')
-      n.render.should eq('foo.fighters')
+      @foo_dot_fighters.render.should eq('foo.fighters')
     end
 
     it 'Index' do
-      n = Zest::Nodes::Index.new('foo', 'fighters')
-      n.render.should eq('foo[fighters]')
+      @foo_brackets_fighters.render.should eq("foo['fighters']")
     end
 
     it 'BinaryExpression' do
-      n = Zest::Nodes::BinaryExpression.new('foo', '-', 'fighters')
-      n.render.should eq('foo - fighters')
+      @foo_minus_fighters.render.should eq("foo - 'fighters'")
     end
 
     it 'UnaryExpression' do
-      n = Zest::Nodes::UnaryExpression.new('-', 'foo')
-      n.render.should eq('-foo')
+      @minus_foo.render.should eq('-foo')
     end
 
     it 'Parenthesis' do
-      n = Zest::Nodes::Parenthesis.new('foo fighters')
-      n.render.should eq('(foo fighters)')
+      @parenthesis_foo.render.should eq('(foo)')
     end
 
     it 'List' do
-      n = Zest::Nodes::List.new([
-        Zest::Nodes::Variable.new('foo'),
-        Zest::Nodes::StringLiteral.new('fighters')
-      ])
-      n.render.should eq("[foo, 'fighters']")
+      @foo_list.render.should eq("[foo, 'fighters']")
     end
 
     it 'Dict' do
-      n = Zest::Nodes::Dict.new([
-        Zest::Nodes::Property.new('foo', 'fighters'),
-        Zest::Nodes::Property.new('Alt', 'J')
-      ])
-      n.render.should eq('{foo: fighters, Alt: J}')
+      @foo_dict.render.should eq("{foo: 'fighters', Alt: J}")
     end
 
     it 'Template' do
-      n = Zest::Nodes::Template.new([
-        Zest::Nodes::Variable.new('foo'),
-        Zest::Nodes::StringLiteral.new(' fighters')
-      ])
-      n.render.should eq('"#{foo} fighters"')
+      @foo_template.render.should eq('"#{foo}fighters"')
     end
 
     it 'Assign' do
-      n = Zest::Nodes::Assign.new(
-        Zest::Nodes::Variable.new('foo'),
-        Zest::Nodes::StringLiteral.new('fighters')
-      )
-      n.render.should eq("foo = 'fighters'\n")
+      @assign_fighters_to_foo.render.should eq("foo = 'fighters'\n")
     end
 
     it 'Call' do
-      n = Zest::Nodes::Call.new('foo')
-      n.render.should eq("foo()\n")
-
-      n = Zest::Nodes::Call.new('foo', [
-        Zest::Nodes::StringLiteral.new('fighters')
-      ])
-      n.render.should eq("foo('fighters')\n")
+      @call_foo.render.should eq("foo()\n")
+      @call_foo_with_fighters.render.should eq("foo('fighters')\n")
     end
 
     it 'IfThen' do
-      n = Zest::Nodes::IfThen.new(
-        Zest::Nodes::BooleanLiteral.new(true),
-        [
-          Zest::Nodes::Assign.new(
-            Zest::Nodes::Variable.new('foo'),
-            Zest::Nodes::StringLiteral.new('fighters')
-          )
-        ])
-      n.render.should eq([
+      if_then = Zest::Nodes::IfThen.new(@true, [@assign_fighters_to_foo])
+      if_then.render.should eq([
           "if true",
           "  foo = 'fighters'",
           "end\n"
         ].join("\n"))
 
-      n = Zest::Nodes::IfThen.new(
-        Zest::Nodes::BooleanLiteral.new(true),
-        [
-          Zest::Nodes::Assign.new(
-            Zest::Nodes::Variable.new('foo'),
-            Zest::Nodes::StringLiteral.new('fighters')
-          )
-        ],
-        [
-          Zest::Nodes::Assign.new(
-            Zest::Nodes::Variable.new('fighters'),
-            Zest::Nodes::StringLiteral.new('foo')
-          )
-        ])
-      n.render.should eq([
+      if_then_else = Zest::Nodes::IfThen.new(
+        @true, [@assign_fighters_to_foo], [@assign_foo_to_fighters])
+      if_then_else.render.should eq([
           "if true",
           "  foo = 'fighters'",
           "else",
@@ -139,102 +130,79 @@ describe Zest::Nodes do
     end
 
     it "Step" do
-      n = Zest::Nodes::Step.new([
-        Zest::Nodes::Property.new('action', Zest::Nodes::Template.new([
-          Zest::Nodes::Variable.new('foo'),
-          Zest::Nodes::StringLiteral.new(' fighters')
-        ]))
+      action_foo_fighters = Zest::Nodes::Step.new([
+        Zest::Nodes::Property.new('action', @foo_template)
       ])
 
-      n.render.should eq('# TODO: Implement action: "#{foo} fighters"')
+      action_foo_fighters.render.should eq('# TODO: Implement action: "#{foo}fighters"')
     end
 
     it 'While' do
       n = Zest::Nodes::While.new(
-        Zest::Nodes::Variable.new('foo'),
+        @foo_variable,
         [
-          Zest::Nodes::Assign.new(
-            Zest::Nodes::Variable.new('foo'),
-            Zest::Nodes::NumericLiteral.new(0)
-          ),
-          Zest::Nodes::Call.new('foo', [
-            Zest::Nodes::StringLiteral.new('fighters')
-          ])
+          @assign_foo_to_fighters,
+          @call_foo_with_fighters
         ])
       n.render.should eq([
           "while foo",
-          "  foo = 0",
+          "  fighters = 'foo'",
           "  foo('fighters')",
           "end\n"
         ].join("\n"))
     end
 
     it 'Tag' do
-      n = Zest::Nodes::Tag.new('myTag')
-      n.render.should eq('myTag')
-
-      n = Zest::Nodes::Tag.new('myTag', 'somevalue')
-      n.render.should eq('myTag:somevalue')
+      @simple_tag.render.should eq('myTag')
+      @valued_tag.render.should eq('myTag:somevalue')
     end
 
     it 'Parameter' do
-      n = Zest::Nodes::Parameter.new('plic')
-      n.render.should eq('plic')
-
-      n = Zest::Nodes::Parameter.new(
-        'plic',
-        Zest::Nodes::StringLiteral.new('ploc'))
-      n.render.should eq("plic = 'ploc'")
+      @plic_param.render.should eq('plic')
+      @plic_param_default_ploc.render.should eq("plic = 'ploc'")
     end
 
     context 'Actionword' do
       it 'empty' do
-        n = Zest::Nodes::Actionword.new('my action word')
-        n.render.should eq("def my_action_word()\nend")
+        empty_action_word = Zest::Nodes::Actionword.new('my action word')
+        empty_action_word.render.should eq("def my_action_word()\nend")
       end
 
       it 'with tags' do
-        n = Zest::Nodes::Actionword.new(
+        tagged_action_word = Zest::Nodes::Actionword.new(
           'my action word',
-          [
-            Zest::Nodes::Tag.new('myTag'),
-            Zest::Nodes::Tag.new('myTag', 'somevalue')
-          ])
-        n.render.should eq([
+          [@simple_tag, @valued_tag])
+
+        tagged_action_word.render.should eq([
           "def my_action_word()",
           "  # Tags: myTag myTag:somevalue",
           "end"].join("\n"))
       end
 
       it 'with parameters' do
-        n = Zest::Nodes::Actionword.new(
+        parameterized_action_word = Zest::Nodes::Actionword.new(
           'my action word',
           [],
-          [
-            Zest::Nodes::Parameter.new('plic'),
-            Zest::Nodes::Parameter.new('flip', 'flap')
-          ])
-        n.render.should eq([
-          "def my_action_word(plic, flip = flap)",
+          [@plic_param, @flip_param_default_flap])
+
+        parameterized_action_word.render.should eq([
+          "def my_action_word(plic, flip = 'flap')",
           "end"].join("\n"))
       end
 
       it 'with body' do
         n = Zest::Nodes::Actionword.new(
           'compare to pi',
-          [Zest::Nodes::Tag.new('my', 'Tag')],
-          [Zest::Nodes::Parameter.new('x')],
+          [@simple_tag],
+          [@x_param],
           [
-            Zest::Nodes::Assign.new(
-              Zest::Nodes::Variable.new('y'),
-              Zest::Nodes::NumericLiteral.new(3.14)
-            ),
+            Zest::Nodes::Assign.new(@foo_variable, @pi),
             Zest::Nodes::IfThen.new(
               Zest::Nodes::Parenthesis.new(
                 Zest::Nodes::BinaryExpression.new(
-                  Zest::Nodes::Variable.new('y'),
+                  @foo_variable,
                   '>',
-                  Zest::Nodes::Variable.new('x')
+                  @x_variable
                 )
               ),
               [
@@ -248,11 +216,12 @@ describe Zest::Nodes do
                 ])
               ])
             ])
+
           n.render.should eq([
             "def compare_to_pi(x)",
-            "  # Tags: my:Tag",
-            "  y = 3.14",
-            "  if (y > x)",
+            "  # Tags: myTag",
+            "  foo = 3.14",
+            "  if (foo > x)",
             "    # TODO: Implement result: x is greater than Pi",
             "  else",
             "    # TODO: Implement result: x is lower than Pi",
@@ -265,20 +234,17 @@ describe Zest::Nodes do
     it 'Scenario' do
       n = Zest::Nodes::Scenario.new(
         'compare to pi',
-        "This is a scenario which description \nis on two lines",
-        [Zest::Nodes::Tag.new('my', 'Tag')],
-        [Zest::Nodes::Parameter.new('x')],
+         "This is a scenario which description \nis on two lines",
+        [@simple_tag],
+        [@x_param],
         [
-          Zest::Nodes::Assign.new(
-            Zest::Nodes::Variable.new('y'),
-            Zest::Nodes::NumericLiteral.new(3.14)
-          ),
+          Zest::Nodes::Assign.new(@foo_variable, @pi),
           Zest::Nodes::IfThen.new(
             Zest::Nodes::Parenthesis.new(
               Zest::Nodes::BinaryExpression.new(
-                Zest::Nodes::Variable.new('y'),
+                @foo_variable,
                 '>',
-                Zest::Nodes::Variable.new('x')
+                @x_variable
               )
             ),
             [
@@ -292,13 +258,14 @@ describe Zest::Nodes do
               ])
             ])
           ])
+
         n.render.should eq([
           "it 'compare to pi' do",
           "  # This is a scenario which description ",
           "  # is on two lines",
-          "  # Tags: my:Tag",
-          "  y = 3.14",
-          "  if (y > x)",
+          "  # Tags: myTag",
+          "  foo = 3.14",
+          "  if (foo > x)",
           "    # TODO: Implement result: x is greater than Pi",
           "  else",
           "    # TODO: Implement result: x is lower than Pi",
