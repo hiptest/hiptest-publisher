@@ -24,3 +24,4 @@ DEPENDENCIES
   iconv
   nokogiri
   rspec
+  rspec-mocks

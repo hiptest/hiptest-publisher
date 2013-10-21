@@ -8,17 +8,24 @@ module Zest
       attr_reader :childs, :rendered_childs, :parent
       attr_writer :parent
 
-      def initialize
+      def initialize()
         @rendered_childs = {}
       end
 
-      def read_template(language)
+      def get_template_path(language)
         normalized_name = self.class.name.split('::').last.downcase
-        path = "templates/#{language}/#{normalized_name}.erb"
-        File.new(path).read
+        "templates/#{language}/#{normalized_name}.erb"
+      end
+
+      def read_template(language)
+        File.new(get_template_path(language)).read
       end
 
       def render_childs(language, context = {})
+        if @rendered_childs.size > 0
+          return
+        end
+
         @childs.each do |key, child|
           if child.is_a? Array
             @rendered_childs[key] = child.map {|c| c.render(language, context) }
