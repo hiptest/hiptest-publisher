@@ -1,5 +1,4 @@
 require 'erb'
-require 'colorize'
 
 require_relative 'utils'
 
@@ -203,9 +202,9 @@ module Zest
       end
 
       def post_render_childs(context = {})
-        firstProperty = @childs[:properties].first
-        @rendered_childs[:key] = firstProperty.rendered_childs[:key]
-        @rendered_childs[:value] = firstProperty.rendered_childs[:value]
+        first_property = @childs[:properties].first
+        @rendered_childs[:key] = first_property.rendered_childs[:key]
+        @rendered_childs[:value] = first_property.rendered_childs[:value]
       end
     end
 

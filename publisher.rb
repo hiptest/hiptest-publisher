@@ -15,7 +15,7 @@ rescue
   exit
 end
 
-parser = Zest::XMLParser.new(xml)
+parser = Zest::XMLParser.new(xml, options)
 parser.build_project
 
 language_config = LanguageConfigParser.new(options)

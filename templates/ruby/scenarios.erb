@@ -1,8 +1,8 @@
 # encoding: UTF-8
 require_relative 'actionwords'
 
-describe '<%= parent.rendered_childs[:name] %>' do
-  before (:all) do
+describe '<%= parent.childs[:name].camelize %>' do
+  before(:each) do
     @<%= @rendered_childs[:call_prefix]%> = Actionwords.new
   end
 
