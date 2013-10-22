@@ -87,11 +87,6 @@ module Zest
         super()
         @childs = {:name => name}
       end
-
-      def post_render_childs(context = {})
-        super()
-        @rendered_childs[:name] = normalize_string(@rendered_childs[:name])
-      end
     end
 
     class Property < Node
@@ -159,7 +154,7 @@ module Zest
       def post_render_childs(context = {})
         @rendered_childs[:chunks] = @childs[:chunks].map do |chunk|
           if chunk.is_a? Zest::Nodes::Variable
-            "\#{#{normalize_string(chunk.childs[:name])}}"
+            "\#{#{chunk.childs[:name]}}"
           else
             "#{chunk.childs[:value]}"
           end
@@ -191,8 +186,6 @@ module Zest
         if context.has_key?(:call_prefix)
           @rendered_childs[:call_prefix] = context[:call_prefix]
         end
-
-        @rendered_childs[:actionword] = normalize_string(@rendered_childs[:actionword])
       end
     end
 
@@ -235,10 +228,6 @@ module Zest
         super()
         @childs = {:name => name, :default => default}
       end
-
-      def post_render_childs(context = {})
-        @rendered_childs[:name] = normalize_string(@rendered_childs[:name])
-      end
     end
 
     class Item < Node
@@ -254,9 +243,6 @@ module Zest
     end
 
     class Actionword < Item
-      def post_render_childs(context = {})
-        @rendered_childs[:name] = normalize_string(@rendered_childs[:name])
-      end
     end
 
     class Scenario < Item
@@ -299,10 +285,6 @@ module Zest
           :scenarios => scenarios,
           :actionwords => actionwords
         }
-      end
-
-      def post_render_childs(context = {})
-        @rendered_childs[:normalized_name] = normalize_string(@rendered_childs[:name])
       end
     end
   end

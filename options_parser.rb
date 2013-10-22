@@ -49,7 +49,7 @@ class OptionsParser
         options.tests_only = tests_only
       end
 
-      opts.on("--action-words-only", "Export only the action words") do |actionwords_only|
+      opts.on("--actionwords-only", "Export only the actionwords") do |actionwords_only|
         options.actionwords_only = actionwords_only
       end
 

@@ -358,7 +358,7 @@ describe Zest::Nodes do
           ])
 
         n.render.should eq([
-          "it 'compare to pi' do",
+          "it 'compare_to_pi' do",
           "  # This is a scenario which description ",
           "  # is on two lines",
           "  # Tags: myTag",
@@ -409,12 +409,12 @@ describe Zest::Nodes do
         "",
         "describe 'My_project' do",
         "  before (:all) do",
-        "    @actionwords = My_project::ActionWords.new",
+        "    @actionwords = Actionwords.new",
         "  end",
         "",
-        "  it 'first scenario' do",
+        "  it 'first_scenario' do",
         "  end",
-        "  it 'second scenario' do",
+        "  it 'second_scenario' do",
         "    @actionwords.my_action_word()",
         "  end",
         "end"].join("\n"))

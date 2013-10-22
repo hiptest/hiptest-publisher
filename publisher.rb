@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'parseconfig'
 
+require_relative 'string'
 require_relative 'utils'
 require_relative 'options_parser'
 require_relative 'xml_parser'
