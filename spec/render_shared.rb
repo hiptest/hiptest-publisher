@@ -119,3 +119,123 @@ shared_context "shared render" do
     @scenarios.parent = Zest::Nodes::Project.new('My_project')
   end
 end
+
+shared_examples "a renderer" do
+  it 'NullLiteral' do
+    @null.render(language).should eq(@null_rendered)
+  end
+
+  it 'StringLiteral' do
+    @what_is_your_quest.render(language).should eq(@what_is_your_quest_rendered)
+  end
+
+  it 'NumericLiteral' do
+    @pi.render('ruby').should eq(@pi_rendered)
+  end
+
+  it 'BooleanLiteral' do
+    @false.render('ruby').should eq(@false_rendered)
+  end
+
+  it 'Variable' do
+    @foo_variable.render('ruby').should eq(@foo_variable_rendered)
+  end
+
+  it 'Property' do
+    @foo_fighters_prop.render('ruby').should eq(@foo_fighters_prop_rendered)
+  end
+
+  it 'Field' do
+    @foo_dot_fighters.render('ruby').should eq(@foo_dot_fighters_rendered)
+  end
+
+  it 'Index' do
+    @foo_brackets_fighters.render('ruby').should eq(@foo_brackets_fighters_rendered)
+  end
+
+  it 'BinaryExpression' do
+    @foo_minus_fighters.render('ruby').should eq(@foo_minus_fighters_rendered)
+  end
+
+  it 'UnaryExpression' do
+    @minus_foo.render('ruby').should eq(@minus_foo_rendered)
+  end
+
+  it 'Parenthesis' do
+    @parenthesis_foo.render('ruby').should eq(@parenthesis_foo_rendered)
+  end
+
+  it 'List' do
+    @foo_list.render('ruby').should eq(@foo_list_rendered)
+  end
+
+  it 'Dict' do
+    @foo_dict.render('ruby').should eq(@foo_dict_rendered)
+  end
+
+  it 'Template' do
+    @foo_template.render('ruby').should eq(@foo_template_rendered)
+  end
+
+  it 'Assign' do
+    @assign_fighters_to_foo.render('ruby').should eq(@assign_fighters_to_foo_rendered)
+  end
+
+  it 'Call' do
+    @call_foo.render('ruby').should eq(@call_foo_rendered)
+    @call_foo_with_fighters.render('ruby').should eq(@call_foo_with_fighters_rendered)
+  end
+
+  it 'IfThen' do
+    @if_then.render('ruby').should eq(@if_then_rendered)
+    @if_then_else.render('ruby').should eq(@if_then_else_rendered)
+  end
+
+  it "Step" do
+    @action_foo_fighters.render('ruby').should eq(@action_foo_fighters_rendered)
+  end
+
+  it 'While' do
+    @while_loop.render('ruby').should eq(@while_loop_rendered)
+  end
+
+  it 'Tag' do
+    @simple_tag.render('ruby').should eq(@simple_tag_rendered)
+    @valued_tag.render('ruby').should eq(@valued_tag_rendered)
+  end
+
+  it 'Parameter' do
+    @plic_param.render('ruby').should eq(@plic_param_rendered)
+    @plic_param_default_ploc.render('ruby').should eq(@plic_param_default_ploc_rendered)
+  end
+
+  context 'Actionword' do
+    it 'empty' do
+      @empty_action_word.render('ruby').should eq(@empty_action_word_rendered)
+    end
+
+    it 'with tags' do
+      @tagged_action_word.render('ruby').should eq(@tagged_action_word_rendered)
+    end
+
+    it 'with parameters' do
+      @parameterized_action_word.render('ruby').should eq(@parameterized_action_word_rendered)
+    end
+
+    it 'with body' do
+      @full_actionword.render('ruby').should eq(@full_actionword_rendered)
+    end
+  end
+
+  it 'Scenario' do
+    @full_scenario.render('ruby').should eq(@full_scenario_rendered)
+  end
+
+  it 'Actionwords' do
+    @actionwords.render('ruby').should eq(@actionwords_rendered)
+  end
+
+  it 'Scenarios' do
+    @scenarios.render('ruby', {call_prefix: 'actionwords'}).should eq(@scenarios_rendered)
+  end
+end
