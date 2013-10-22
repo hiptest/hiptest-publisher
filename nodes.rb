@@ -1,5 +1,6 @@
 require 'erb'
 
+require_relative 'string'
 require_relative 'utils'
 
 module Zest
