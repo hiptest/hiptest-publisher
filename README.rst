@@ -1,6 +1,8 @@
 Zest Publisher
 ==============
 
+.. image:: https://api.travis-ci.org/Smartesting/zest-publisher.png
+
 Installing
 ----------
 
