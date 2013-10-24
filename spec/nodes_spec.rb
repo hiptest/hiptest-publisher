@@ -8,9 +8,21 @@ describe Zest::Nodes do
       myNode.rendered_childs.should eq({})
     end
 
-    it 'get_template_path' do
-      myNode = Zest::Nodes::Node.new
-      myNode.get_template_path('python').should eq('templates/python/node.erb')
+    context 'get_template_path' do
+      it 'checks if the file exists in the common templates' do
+        myNode = Zest::Nodes::StringLiteral.new('coucou')
+        myNode.get_template_path('python').should eq('templates/common/stringliteral.erb')
+      end
+
+      it 'checks in the language template folder' do
+        myNode = Zest::Nodes::Assign.new('x', 1)
+        myNode.get_template_path('ruby').should eq('templates/ruby/assign.erb')
+      end
+
+      it 'checks in the framework specific folder if existing' do
+        myNode = Zest::Nodes::Scenarios.new([])
+        myNode.get_template_path('ruby', {framework: 'minitest'}).should eq('templates/ruby/minitest/scenarios.erb')
+      end
     end
 
     context 'render_childs' do
@@ -80,13 +92,14 @@ describe Zest::Nodes do
           @childs = {plic: 'Ploc'}
         end
 
-        def read_template(language)
+        def read_template(language, context = {})
           return 'This is a sample ERB: <%= @rendered_childs %>'
         end
       end
 
       sut = Zest::Nodes::MockNode.new
       sut.render.should eq('This is a sample ERB: {:plic=>"Ploc"}')
+      sut.rendered.should eq('This is a sample ERB: {:plic=>"Ploc"}')
     end
 
     it 'indent_block' do

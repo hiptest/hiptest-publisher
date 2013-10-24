@@ -2,9 +2,9 @@ require 'optparse'
 require 'parseconfig'
 require 'ostruct'
 
-class BaseConfigParser
+class FileConfigParser
   def self.update_options(options)
-    config = ParseConfig.new('config')
+    config = ParseConfig.new(options.config)
 
     config.get_params.each do |param|
       options.send("#{param}=", config[param])
@@ -21,6 +21,7 @@ class OptionsParser
     options = OpenStruct.new
     options.language = 'ruby'
     options.framework = ''
+    options.config = 'config'
     options.site = 'https://zest.smartesting.com'
     options.output_directory = '.'
     options.tests_only = false
@@ -44,13 +45,18 @@ class OptionsParser
       end
 
       opts.on("-f", "--framework=FRAMEWORK", String,
-              "Test framework to use") do |token|
+              "Test framework to use") do |framework|
         options.framework = framework
       end
 
       opts.on("-o", "--output-directory=PATH", String,
               "Directory to output the tests") do |output_directory|
         options.output_directory = output_directory
+      end
+
+      opts.on("-c", "--config-file=PATH", String,
+              "Configuration file (default: config)") do |config|
+        options.config = config
       end
 
       opts.on("--tests-only", "Export only the tests") do |tests_only|
@@ -77,7 +83,7 @@ class OptionsParser
     end
 
     opt_parser.parse!(args)
-    BaseConfigParser.update_options options
+    FileConfigParser.update_options options
   end
 end
 
@@ -106,6 +112,11 @@ class LanguageConfigParser
   private
   def make_context group
     context = {}
+
+    unless @options.framework.nil?
+      context[:framework] = @options.framework
+    end
+
     @config[group].each {|param, value|
       context[param.to_sym] = value
     }

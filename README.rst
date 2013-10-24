@@ -30,3 +30,16 @@ Configuration
 -------------
 
 You have the possibility to store some configuration in a file named 'config'. Copy the file config.sample provided here and update the values with the values you use.
+
+If you have multiple projects, you can have multiple config files and select one using the --config-file option:
+
+    # Use the default config file
+    ruby publisher.rb
+    # Use the one to export as minitest
+    ruby publisher.rb --config-file=config_minitest
+
+
+Adding support for a new language
+---------------------------------
+
+This tool was built to be configurable and have the possibility to export tests in any language.

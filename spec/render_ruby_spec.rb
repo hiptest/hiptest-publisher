@@ -2,12 +2,7 @@ require_relative "render_shared"
 
 describe 'Render as Ruby' do
   include_context "shared render"
-
-  it_behaves_like "a renderer" do
-    let(:language) { 'ruby' }
-  end
-
-  before(:all) do
+  before(:each) do
     # Literals
     @null_rendered = 'nil'
     @what_is_your_quest_rendered = "'What is your quest ?'"
@@ -138,5 +133,53 @@ describe 'Render as Ruby' do
       "    @actionwords.my_action_word()",
       "  end",
       "end"].join("\n")
+  end
+
+  context 'Rspec' do
+    it_behaves_like "a renderer" do
+      let(:language) {'ruby'}
+      let(:framework) {'rspec'}
+    end
+  end
+
+  context 'Minitest' do
+    before(:each) do
+      @full_scenario_rendered = [
+        "def test_compare_to_pi",
+        "  # This is a scenario which description ",
+        "  # is on two lines",
+        "  # Tags: myTag",
+        "  foo = 3.14",
+        "  if (foo > x)",
+        "    # TODO: Implement result: x is greater than Pi",
+        "  else",
+        "    # TODO: Implement result: x is lower than Pi",
+        "    # on two lines",
+        "  end",
+        "end"].join("\n")
+
+      @scenarios_rendered = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative 'actionwords'",
+        "",
+        "class TestMyProject < MiniTest::Unit::TestCase",
+        "  def setup",
+        "    @actionwords = Actionwords.new",
+        "  end",
+        "",
+        "  def test_first_scenario",
+        "  end",
+        "  def test_second_scenario",
+        "    @actionwords.my_action_word()",
+        "  end",
+        "end"].join("\n")
+    end
+
+    it_behaves_like "a renderer" do
+      let(:language) {'ruby'}
+      let(:framework) {'minitest'}
+    end
   end
 end

@@ -16,11 +16,23 @@ module Zest
 
       def get_template_path(language, context = {})
         normalized_name = self.class.name.split('::').last.downcase
-        "templates/#{language}/#{normalized_name}.erb"
+
+        searched_folders = []
+        if context.has_key?(:framework)
+          searched_folders << "#{language}/#{context[:framework]}"
+        end
+        searched_folders << [language, 'common']
+
+        searched_folders.flatten.map do |path|
+          template_path = "templates/#{path}/#{normalized_name}.erb"
+          if File.file?(template_path)
+            template_path
+          end
+        end.compact.first
       end
 
       def read_template(language, context = {})
-        File.read(get_template_path(language))
+        File.read(get_template_path(language, context))
       end
 
       def render_childs(language, context = {})
@@ -48,7 +60,7 @@ module Zest
 
       def render(language = 'ruby', context = {})
         render_childs(language, context)
-        @rendered = ERB.new(read_template(language), nil, "%<>").result(binding)
+        @rendered = ERB.new(read_template(language, context), nil, "%<>").result(binding)
         @rendered
       end
 
