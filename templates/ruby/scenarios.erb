@@ -3,7 +3,7 @@ require_relative 'actionwords'
 
 describe '<%= parent.childs[:name].camelize %>' do
   before(:each) do
-    @<%= @rendered_childs[:call_prefix]%> = Actionwords.new
+    @<%= context[:call_prefix]%> = Actionwords.new
   end
 
 <%= indent_block(@rendered_childs[:scenarios]) %>

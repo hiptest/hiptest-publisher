@@ -1,7 +1,7 @@
 require 'colorize'
 
 def fetch_project_export site, token
-  open("#{site}/publication/#{token}/project")
+  open("#{site}/publication/#{token}/project?future=1")
 end
 
 def trace_exception exception

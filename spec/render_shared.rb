@@ -47,9 +47,7 @@ shared_context "shared render" do
       'flip',
       Zest::Nodes::StringLiteral.new('flap'))
 
-    @action_foo_fighters = Zest::Nodes::Step.new([
-      Zest::Nodes::Property.new('action', @foo_template)
-    ])
+    @action_foo_fighters = Zest::Nodes::Step.new('action', @foo_template)
 
     @if_then = Zest::Nodes::IfThen.new(@true, [@assign_fighters_to_foo])
     @if_then_else = Zest::Nodes::IfThen.new(
@@ -78,14 +76,10 @@ shared_context "shared render" do
           '>',
           @x_variable),
         [
-          Zest::Nodes::Step.new([
-            Zest::Nodes::Property.new('result', "x is greater than Pi")
-            ])
+          Zest::Nodes::Step.new('result', "x is greater than Pi")
         ],
         [
-          Zest::Nodes::Step.new([
-            Zest::Nodes::Property.new('result', "x is lower than Pi\n on two lines")
-          ])
+          Zest::Nodes::Step.new('result', "x is lower than Pi\n on two lines")
         ])
       ]
 

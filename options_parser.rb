@@ -20,6 +20,7 @@ class OptionsParser
   def self.parse(args)
     options = OpenStruct.new
     options.language = 'ruby'
+    options.framework = ''
     options.site = 'https://zest.smartesting.com'
     options.output_directory = '.'
     options.tests_only = false
@@ -27,6 +28,8 @@ class OptionsParser
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: ruby publisher.rb [options]"
+      opts.separator ""
+      opts.separator "Exports tests from Zest for automation."
       opts.separator ""
       opts.separator "Specific options:"
 
@@ -40,12 +43,17 @@ class OptionsParser
         options.language = language
       end
 
+      opts.on("-f", "--framework=FRAMEWORK", String,
+              "Test framework to use") do |token|
+        options.framework = framework
+      end
+
       opts.on("-o", "--output-directory=PATH", String,
               "Directory to output the tests") do |output_directory|
         options.output_directory = output_directory
       end
 
-      opts.on("--test-only", "Export only the tests") do |tests_only|
+      opts.on("--tests-only", "Export only the tests") do |tests_only|
         options.tests_only = tests_only
       end
 

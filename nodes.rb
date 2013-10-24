@@ -13,13 +13,13 @@ module Zest
         @rendered_childs = {}
       end
 
-      def get_template_path(language)
+      def get_template_path(language, context = {})
         normalized_name = self.class.name.split('::').last.downcase
         "templates/#{language}/#{normalized_name}.erb"
       end
 
-      def read_template(language)
-        File.new(get_template_path(language)).read
+      def read_template(language, context = {})
+        File.read(get_template_path(language))
       end
 
       def render_childs(language, context = {})
@@ -150,16 +150,6 @@ module Zest
         super()
         @childs = {:chunks => chunks}
       end
-
-      def post_render_childs(context = {})
-        @rendered_childs[:chunks] = @childs[:chunks].map do |chunk|
-          if chunk.is_a? Zest::Nodes::Variable
-            "\#{#{chunk.childs[:name]}}"
-          else
-            "#{chunk.childs[:value]}"
-          end
-        end
-      end
     end
 
     class Assign < Node
@@ -181,12 +171,6 @@ module Zest
         super()
         @childs = {:actionword => actionword, :arguments => arguments}
       end
-
-      def post_render_childs(context = {})
-        if context.has_key?(:call_prefix)
-          @rendered_childs[:call_prefix] = context[:call_prefix]
-        end
-      end
     end
 
     class IfThen < Node
@@ -197,15 +181,9 @@ module Zest
     end
 
     class Step < Node
-      def initialize(properties)
+      def initialize(key, value)
         super()
-        @childs = {:properties => properties}
-      end
-
-      def post_render_childs(context = {})
-        first_property = @childs[:properties].first
-        @rendered_childs[:key] = first_property.rendered_childs[:key]
-        @rendered_childs[:value] = first_property.rendered_childs[:value]
+        @childs = {:key => key, :value => value}
       end
     end
 
@@ -263,12 +241,6 @@ module Zest
       def initialize(scenarios)
         super()
         @childs = {:scenarios => scenarios}
-      end
-
-      def post_render_childs(context = {})
-        if context.has_key?(:call_prefix)
-          @rendered_childs[:call_prefix] = context[:call_prefix]
-        end
       end
     end
 

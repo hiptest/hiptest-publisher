@@ -1,1 +1,7 @@
-"<%= @rendered_childs[:chunks].join %>"
+"<%= @childs[:chunks].map do |chunk|
+    if chunk.is_a? Zest::Nodes::Variable
+      "\#{#{chunk.childs[:name]}}"
+    else
+      "#{chunk.childs[:value]}"
+    end
+  end.join %>"
