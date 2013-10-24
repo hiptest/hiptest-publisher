@@ -117,7 +117,7 @@ Add the following lines before the last ``end`` tag::
     before(:each) do
       @full_scenario_rendered = [
         "class CompareToPiSpec extends Specification",
-        "<some more Scala code>"
+        "<some more Scala code>",
         ""].join("\n")
     end
 
@@ -131,10 +131,10 @@ Run the tests::
 
     bin/rspec spec/render_scala_spec.rb -f d
 
-Normally, you should see one test failing (the scenario generation). To get it working, you will have to override the scenarios template file::
+Normally, you should see one test failing (the scenario generation). To get it working, you will have to override the scenario template file::
 
     mkdir templates/scala/specs
-    cp templates/scala/scenarios.rb templates/scala/specs/scenarios.rb
+    cp templates/scala/scenario.rb templates/scala/specs/scenario.rb
 
 Edit the file so it generates proper Scala/Specs code. You should now be able to generate your tests using the following line::
 
