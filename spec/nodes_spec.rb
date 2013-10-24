@@ -130,4 +130,36 @@ describe Zest::Nodes do
       end
     end
   end
+
+  context 'Item' do
+    context 'post_render_childs' do
+      it 'finds all variable declared in the steps' do
+        item = Zest::Nodes::Item.new('my item', [], [], [
+          Zest::Nodes::Step.new(
+            'result',
+            Zest::Nodes::Template.new([
+              Zest::Nodes::Variable.new('x'),
+              Zest::Nodes::StringLiteral.new('should equals 0')
+            ])),
+          Zest::Nodes::Assign.new(
+            Zest::Nodes::Variable.new('y'),
+            Zest::Nodes::Variable.new('x')
+          )
+        ])
+        item.post_render_childs
+
+        item.variables.map {|v| v.childs[:name]}.should eq(['x', 'y'])
+      end
+
+      it 'saves two lists of parameters: with and without default value' do
+        simple = Zest::Nodes::Parameter.new('simple')
+        valued = Zest::Nodes::Parameter.new('non_valued', '0')
+        item = Zest::Nodes::Item.new('my item', [], [simple, valued])
+        item.post_render_childs
+
+        item.non_valued_parameters.should eq([simple])
+        item.valued_parameters.should eq([valued])
+      end
+    end
+  end
 end

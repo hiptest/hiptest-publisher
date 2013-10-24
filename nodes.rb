@@ -6,10 +6,11 @@ require_relative 'utils'
 module Zest
   module Nodes
     class Node
-      attr_reader :childs, :rendered_childs, :parent
+      attr_reader :childs, :rendered, :rendered_childs, :parent
       attr_writer :parent
 
       def initialize()
+        @rendered = ''
         @rendered_childs = {}
       end
 
@@ -47,7 +48,8 @@ module Zest
 
       def render(language = 'ruby', context = {})
         render_childs(language, context)
-        ERB.new(read_template(language), nil, "%<>").result(binding)
+        @rendered = ERB.new(read_template(language), nil, "%<>").result(binding)
+        @rendered
       end
 
       def indent_block(nodes, indentation = '  ')
@@ -75,9 +77,9 @@ module Zest
       private
 
       def build_sub_node (node, type)
-        if node.is_a? Node
+        if node.is_a?(Node)
           node.find_sub_nodes(type, flatten = false)
-        elsif node.is_a? Array
+        elsif node.is_a?(Array)
           node.map {|item| build_sub_node(item, type)}.compact
         end
       end
@@ -233,6 +235,8 @@ module Zest
     end
 
     class Item < Node
+      attr_reader :variables, :non_valued_parameters, :valued_parameters
+
       def initialize(name, tags = [], parameters = [], body = [])
         super()
         @childs = {
@@ -241,6 +245,39 @@ module Zest
           :parameters => parameters,
           :body => body
         }
+      end
+
+      def post_render_childs(context = {})
+        save_parameters_by_type
+        find_variables
+      end
+
+      private
+
+      def find_variables
+        names = []
+
+        @variables = find_sub_nodes(Zest::Nodes::Variable).map do |var_node|
+          unless names.include?(var_node.childs[:name])
+            names << var_node.childs[:name]
+            var_node
+          end
+        end.compact
+      end
+
+      def save_parameters_by_type
+        parameters = []
+        valued_parameters = []
+        childs[:parameters].each do |param|
+          if param.childs[:default].nil?
+            parameters << param
+          else
+            valued_parameters << param
+          end
+        end
+
+        @non_valued_parameters = parameters
+        @valued_parameters = valued_parameters
       end
     end
 
