@@ -8,7 +8,7 @@ module Zest
   class XMLParser
     attr_reader :project
 
-    def initialize(source, options = {})
+    def initialize(source, options = nil)
       @source = source
       @xml = Nokogiri::XML(source)
       @options = options
@@ -58,19 +58,23 @@ module Zest
         build_node(index.css('> expression > *').first))
     end
 
-    def build_operation(expr)
-      Zest::Nodes::BinaryExpression.new(
-        build_node(expr.css('> left > *').first),
-        expr.css('> operator').first.content,
-        build_node(expr.css('> right > *').first))
-    end
-
-    def build_unaryexpression(expr)
-      Zest::Nodes::UnaryExpression.new(operator, expression)
+    def build_operation(operation)
+      unless operation.css('> left').first.nil?
+        Zest::Nodes::BinaryExpression.new(
+          build_node(operation.css('> left > *').first),
+          operation.css('> operator').first.content,
+          build_node(operation.css('> right > *').first))
+      else
+        Zest::Nodes::UnaryExpression.new(
+          operation.css('> operator').first.content,
+          build_node(operation.css('> expression > *').first)
+        )
+      end
     end
 
     def build_parenthesis(parenthesis)
-      Zest::Nodes::Parenthesis.new(content)
+      Zest::Nodes::Parenthesis.new(
+        build_node(parenthesis.element_children.first))
     end
 
     def build_list(list)
@@ -119,13 +123,11 @@ module Zest
     end
 
     def build_step(step)
-      properties = step.element_children.map{ |item|
-        Zest::Nodes::Property.new(
-          item.name,
-          build_node(item.element_children.first)
-        )
-      }
-      Zest::Nodes::Step.new(properties)
+      first_prop = step.element_children.first
+      Zest::Nodes::Step.new(
+        first_prop.name,
+        build_node(first_prop.element_children.first)
+      )
     end
 
     def build_while(while_loop)
@@ -136,25 +138,31 @@ module Zest
     end
 
     def build_tag(tag)
-      if tag.css('key').size == 0
-        # Current API
-        Zest::Nodes::Tag.new(tag.content)
-      else
-        # Incoming API
-        Zest::Nodes::Tag.new(tag.css('key').first.content, tag.css('value').first.content)
-      end
+      value = tag.css('> value').first
+      Zest::Nodes::Tag.new(
+        tag.css('> key').first.content,
+        value ? value.content : nil
+      )
     end
 
     def build_parameter(parameter)
-      default_value = parameter.css('typed_default_value').first
+      default_value = parameter.css('> default_value').first
 
       Zest::Nodes::Parameter.new(
         parameter.css('name').first.content,
         default_value ? build_node(default_value) : nil)
     end
 
-    def build_typed_default_value(node)
+    def build_default_value(node)
       build_node(node.element_children.first)
+    end
+
+    def build_tags(item)
+      build_node_list(item.css('> tags tag'))
+    end
+
+    def build_parameters(item)
+      build_node_list(item.css('> parameters > parameter'))
     end
 
     def build_steps(item)
@@ -169,8 +177,8 @@ module Zest
     def build_actionword(actionword)
       Zest::Nodes::Actionword.new(
         actionword.css('name').first.content,
-        build_node_list(actionword.css('tags tag')),
-        build_node_list(actionword.css('parameters parameter')),
+        build_tags(actionword),
+        build_parameters(actionword),
         build_steps(actionword)
       )
     end
@@ -179,8 +187,8 @@ module Zest
       Zest::Nodes::Scenario.new(
         scenario.css('name').first.content,
         scenario.css('description').first.content,
-        build_node_list(scenario.css('tags > tag')),
-        build_node_list(scenario.css('parameters > parameter')),
+        build_tags(scenario),
+        build_parameters(scenario),
         build_steps(scenario)
       )
     end
@@ -207,7 +215,7 @@ module Zest
     def build_node(node)
       self.send("build_#{node.name}", node)
     rescue Exception => exception
-      if @options.verbose
+      if @options && @options.verbose
         puts "Unable to build: \n#{node}".blue
         trace_exception(exception)
       end
