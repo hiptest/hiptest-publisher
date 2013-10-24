@@ -482,8 +482,8 @@ describe Zest::XMLParser do
         </project>").build_project
 
       node.should be_a(Zest::Nodes::Project)
-      node.childs[:name] = 'My project'
-      node.childs[:description] = 'A description'
+      node.childs[:name].should eq('My project')
+      node.childs[:description].should eq('A description')
       node.childs[:scenarios].should be_nil
       node.childs[:actionwords].should be_nil
     end
@@ -503,6 +503,14 @@ describe Zest::XMLParser do
       node.childs[:scenarios].should be_a(Zest::Nodes::Scenarios)
       node.childs[:actionwords].should be_a(Zest::Nodes::Actionwords)
     end
+  end
 
+  it 'parses a full example' do
+    parser = Zest::XMLParser.new(File.read('samples/xml_input/Zest publisher.xml'))
+    project = parser.build_project
+
+    project.childs[:name].should eq('Zest publisher')
+    project.find_sub_nodes.length.should eq(63)
+    project.find_sub_nodes(Zest::Nodes::Step).length.should eq(3)
   end
 end

@@ -57,6 +57,30 @@ module Zest
           end.join
         end.join
       end
+
+      def find_sub_nodes(type = nil, flatten = true)
+        sub_nodes = @childs.map do |key, child|
+          build_sub_node(child, type)
+        end.compact
+
+        if type.nil? || self.is_a?(type)
+          result = [self, sub_nodes]
+        else
+          result = sub_nodes
+        end
+
+        flatten ? result.flatten : result
+      end
+
+      private
+
+      def build_sub_node (node, type)
+        if node.is_a? Node
+          node.find_sub_nodes(type, flatten = false)
+        elsif node.is_a? Array
+          node.map {|item| build_sub_node(item, type)}.compact
+        end
+      end
     end
 
     class Literal < Node

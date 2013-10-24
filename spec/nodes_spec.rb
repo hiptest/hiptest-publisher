@@ -41,7 +41,7 @@ describe Zest::Nodes do
         sut.childs[:value].rendered.should be_true
       end
 
-      it 'renderes each child inside a list' do
+      it 'renders each child inside a list' do
         sut = Zest::Nodes::StringLiteral.new([FakeNode.new, FakeNode.new])
         sut.render()
         sut.rendered_childs.should eq({value: ['Node is rendered', 'Node is rendered']})
@@ -101,7 +101,33 @@ describe Zest::Nodes do
         "      lines",
         ""
         ].join("\n"))
+    end
 
+    context 'find_sub_nodes' do
+      before(:all) do
+        @literal = Zest::Nodes::Literal.new(1)
+        @var = Zest::Nodes::Variable.new('x')
+        @assign = Zest::Nodes::Assign.new(@var, @literal)
+      end
+
+      it 'finds all sub-nodes (including self)' do
+        @literal.find_sub_nodes.should eq([@literal])
+        @assign.find_sub_nodes.should eq([@assign, @var, @literal])
+      end
+
+      it 'can be filter by type' do
+        @assign.find_sub_nodes(Zest::Nodes::Variable).should eq([@var])
+      end
+
+      it 'can be unflattened (but it has no interest ...)' do
+        @assign.find_sub_nodes(nil, false).should eq([
+          @assign,
+          [
+            [@var, []],
+            [@literal, []]
+          ]
+        ])
+      end
     end
   end
 end

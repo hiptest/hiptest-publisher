@@ -223,6 +223,7 @@ module Zest
 
     def build_node_list(l, container_class=nil)
       items = l.map {|item| build_node(item)}
+
       unless container_class.nil?
         container_class.new(items)
       else
