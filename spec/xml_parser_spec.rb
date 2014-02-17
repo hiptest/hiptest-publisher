@@ -258,8 +258,14 @@ describe Zest::XMLParser do
         <call>
           <actionword>another action word</actionword>
           <arguments>
-            <x>#{@my_var}</x>
-            <y>#{@zero}</y>
+            <argument>
+              <name>x</name>
+              <value>#{@my_var}</value>
+            </argument>
+            <argument>
+              <name>y</name>
+              <value>#{@zero}</value>
+            </argument>
           </arguments>
         </call>")
 

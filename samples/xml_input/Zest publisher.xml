@@ -10,13 +10,16 @@
         <call>
           <actionword>start publisher</actionword>
           <arguments>
-            <options>
-              <dict>
-                <help>
-                  <booleanliteral>true</booleanliteral>
-                </help>
-              </dict>
-            </options>
+            <argument>
+              <name>options</name>
+              <value>
+                <dict>
+                  <help>
+                    <booleanliteral>true</booleanliteral>
+                  </help>
+                </dict>
+              </value>
+            </argument>
           </arguments>
         </call>
         <step>
@@ -198,17 +201,20 @@
             <call>
               <actionword>Control blocks</actionword>
               <arguments>
-                <x>
-                  <operation>
-                    <left>
-                      <var>x</var>
-                    </left>
-                    <operator>-</operator>
-                    <right>
-                      <numericliteral>1</numericliteral>
-                    </right>
+                <argument>
+                  <name>x</name>
+                  <value>
+                    <operation>
+                      <left>
+                        <var>x</var>
+                      </left>
+                      <operator>-</operator>
+                      <right>
+                        <numericliteral>1</numericliteral>
+                      </right>
                   </operation>
-                </x>
+                  </value>
+                </argument>
               </arguments>
             </call>
           </else>

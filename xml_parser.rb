@@ -105,14 +105,20 @@ module Zest
     end
 
     def build_call(call)
-      arguments = call.css('arguments > *').map{ |arg|
-        Zest::Nodes::Argument.new(
-          arg.name,
-          build_node(arg.element_children.first))
-      }
       Zest::Nodes::Call.new(
         call.css('> actionword').first.content,
-        arguments)
+        build_arguments(call))
+    end
+
+    def build_arguments(action)
+      build_node_list(action.css('> arguments > argument'))
+    end
+
+    def build_argument(argument)
+      value = argument.css('> value').first
+      Zest::Nodes::Argument.new(
+        argument.css('name').first.content,
+        value ? build_node(value) : nil)
     end
 
     def build_if(if_then)
@@ -154,6 +160,10 @@ module Zest
     end
 
     def build_default_value(node)
+      build_node(node.element_children.first)
+    end
+
+    def build_value(node)
       build_node(node.element_children.first)
     end
 
