@@ -194,9 +194,11 @@ module Zest
     end
 
     def build_scenario(scenario)
+      description_node = scenario.css('description').first
+
       Zest::Nodes::Scenario.new(
         scenario.css('name').first.content,
-        scenario.css('description').first.content,
+        description_node.nil? ? '' : description_node.content,
         build_tags(scenario),
         build_parameters(scenario),
         build_steps(scenario)
