@@ -2,6 +2,6 @@
     if chunk.is_a? Zest::Nodes::Variable
       "\#{#{chunk.childs[:name]}}"
     else
-      "#{chunk.childs[:value]}"
+      "#{chunk.childs[:value]}".gsub(/"/) {|_| '\\"' }
     end
   end.join %>"

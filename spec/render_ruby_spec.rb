@@ -9,6 +9,7 @@ describe 'Render as Ruby' do
     @pi_rendered = '3.14'
     @false_rendered = 'false'
     @foo_template_rendered = '"#{foo}fighters"'
+    @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
 
     # variable
     @foo_variable_rendered = 'foo'
@@ -100,42 +101,41 @@ describe 'Render as Ruby' do
       "    first_action_word()",
       "  end",
       "end"].join("\n")
-
-
-    # Scenarios
-
-    @full_scenario_rendered = [
-      "it 'compare_to_pi' do",
-      "  # This is a scenario which description ",
-      "  # is on two lines",
-      "  # Tags: myTag",
-      "  foo = 3.14",
-      "  if (foo > x)",
-      "    # TODO: Implement result: x is greater than Pi",
-      "  else",
-      "    # TODO: Implement result: x is lower than Pi",
-      "    # on two lines",
-      "  end",
-      "end"].join("\n")
-
-    @scenarios_rendered = [
-      "# encoding: UTF-8",
-      "require_relative 'actionwords'",
-      "",
-      "describe 'MyProject' do",
-      "  before(:each) do",
-      "    @actionwords = Actionwords.new",
-      "  end",
-      "",
-      "  it 'first_scenario' do",
-      "  end",
-      "  it 'second_scenario' do",
-      "    @actionwords.my_action_word()",
-      "  end",
-      "end"].join("\n")
   end
 
   context 'Rspec' do
+    before(:each) do
+      @full_scenario_rendered = [
+        "it 'compare_to_pi' do",
+        "  # This is a scenario which description ",
+        "  # is on two lines",
+        "  # Tags: myTag",
+        "  foo = 3.14",
+        "  if (foo > x)",
+        "    # TODO: Implement result: x is greater than Pi",
+        "  else",
+        "    # TODO: Implement result: x is lower than Pi",
+        "    # on two lines",
+        "  end",
+        "end"].join("\n")
+
+      @scenarios_rendered = [
+        "# encoding: UTF-8",
+        "require_relative 'actionwords'",
+        "",
+        "describe 'MyProject' do",
+        "  before(:each) do",
+        "    @actionwords = Actionwords.new",
+        "  end",
+        "",
+        "  it 'first_scenario' do",
+        "  end",
+        "  it 'second_scenario' do",
+        "    @actionwords.my_action_word()",
+        "  end",
+        "end"].join("\n")
+    end
+
     it_behaves_like "a renderer" do
       let(:language) {'ruby'}
       let(:framework) {'rspec'}

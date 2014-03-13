@@ -19,6 +19,9 @@ describe 'Render as <My language>' do
     # In Zest: "${foo}fighters"
     @foo_template_rendered = '"#{foo}fighters"'
 
+    # In Zest: "Fighters said \"Foo !\""
+    @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
+
     # In Zest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
 

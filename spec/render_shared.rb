@@ -28,6 +28,10 @@ shared_context "shared render" do
     ])
 
     @foo_template = Zest::Nodes::Template.new([@foo_variable, @fighters])
+    @double_quotes_template = Zest::Nodes::Template.new([
+      Zest::Nodes::StringLiteral.new('Fighters said "Foo !"')
+    ])
+
     @assign_fighters_to_foo = Zest::Nodes::Assign.new(@foo_variable, @fighters)
     @assign_foo_to_fighters = Zest::Nodes::Assign.new(
       Zest::Nodes::Variable.new('fighters'),
@@ -169,6 +173,7 @@ shared_examples "a renderer" do
 
   it 'Template' do
     @foo_template.render(language, {framework: framework}).should eq(@foo_template_rendered)
+    @double_quotes_template.render(language, {framework: framework}).should eq(@double_quotes_template_rendered)
   end
 
   it 'Assign' do
