@@ -93,6 +93,12 @@ shared_context "shared render" do
       [@x_param],
       full_body)
 
+    @step_action_word = Zest::Nodes::Actionword.new(
+      'my action word',
+      [],
+      [],
+      [Zest::Nodes::Step.new('action', "basic action")])
+
     @full_scenario = Zest::Nodes::Scenario.new(
       'compare to pi',
        "This is a scenario which description \nis on two lines",
@@ -223,6 +229,10 @@ shared_examples "a renderer" do
 
     it 'with body' do
       @full_actionword.render(language, {framework: framework}).should eq(@full_actionword_rendered)
+    end
+
+    it 'with body that contains only step' do
+      @step_action_word.render(language, {framework: framework}).should eq(@step_action_word_rendered)
     end
   end
 

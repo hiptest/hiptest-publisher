@@ -91,6 +91,12 @@ describe 'Render as Ruby' do
       "  end",
       "end"].join("\n")
 
+    @step_action_word_rendered = [
+      "def my_action_word()",
+      "  # TODO: Implement action: basic action",
+      "  raise NotImplementedError",
+      "end"].join("\n")
+
     @actionwords_rendered = [
       "# encoding: UTF-8",
       "",

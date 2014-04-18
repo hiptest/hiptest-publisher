@@ -2,4 +2,7 @@ def <%= @rendered_childs[:name].underscore %>(<%= @rendered_childs[:parameters].
 <% unless @rendered_childs[:tags].empty? %>  # Tags: <%= @rendered_childs[:tags].join(' ') %>
 <%= "\n" %><% end %>
 <%= indent_block(@rendered_childs[:body]) %>
+<% if has_step %>
+<%= indent_block(["raise NotImplementedError"]) %>
+<% end %>
 end

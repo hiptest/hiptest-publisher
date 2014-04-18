@@ -294,6 +294,14 @@ module Zest
     end
 
     class Actionword < Item
+      def has_step
+        @childs[:body].each do |element|
+          if element.instance_of?(Zest::Nodes::Step)
+            return true
+          end
+        end
+        false
+      end
     end
 
     class Scenario < Item

@@ -42,7 +42,7 @@ If you have multiple projects, you can have multiple config files and select one
 Contributing
 ------------
 
-Do not hesistate to contribute to the project by adding support for your favorite language or test framework as explained below. This tool was built to be configurable and have the possibility to export tests in any language.
+Do not hesitate to contribute to the project by adding support for your favorite language or test framework as explained below. This tool was built to be configurable and have the possibility to export tests in any language.
 
 We did our best to make it as simple as possible, but some knowledge of Ruby and `Zest test description language <https://zest.smartesting.com/tdl_documentation.html>`_ is needed to add support for new languages/frameworks.
 
