@@ -1,10 +1,9 @@
 # encoding: UTF-8
+require 'spec_helper'
 require_relative 'actionwords'
 
 describe '<%= parent.childs[:name].camelize %>' do
-  before(:each) do
-    @<%= context[:call_prefix]%> = Actionwords.new
-  end
+  include Actionwords
 
 <%= indent_block(@rendered_childs[:scenarios]) %>
 end

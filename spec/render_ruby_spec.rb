@@ -100,7 +100,7 @@ describe 'Render as Ruby' do
     @actionwords_rendered = [
       "# encoding: UTF-8",
       "",
-      "class Actionwords",
+      "module Actionwords",
       "  def first_action_word()",
       "  end",
       "  def second_action_word()",
@@ -127,17 +127,16 @@ describe 'Render as Ruby' do
 
       @scenarios_rendered = [
         "# encoding: UTF-8",
+        "require 'spec_helper'",
         "require_relative 'actionwords'",
         "",
         "describe 'MyProject' do",
-        "  before(:each) do",
-        "    @actionwords = Actionwords.new",
-        "  end",
+        "  include Actionwords",
         "",
         "  it 'first_scenario' do",
         "  end",
         "  it 'second_scenario' do",
-        "    @actionwords.my_action_word()",
+        "    my_action_word()",
         "  end",
         "end"].join("\n")
     end
@@ -171,14 +170,12 @@ describe 'Render as Ruby' do
         "require_relative 'actionwords'",
         "",
         "class TestMyProject < MiniTest::Unit::TestCase",
-        "  def setup",
-        "    @actionwords = Actionwords.new",
-        "  end",
+        "  include Actionwords",
         "",
         "  def test_first_scenario",
         "  end",
         "  def test_second_scenario",
-        "    @actionwords.my_action_word()",
+        "    my_action_word()",
         "  end",
         "end"].join("\n")
     end

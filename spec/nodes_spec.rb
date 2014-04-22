@@ -177,15 +177,16 @@ describe Zest::Nodes do
   end
 
   context 'Actionword' do
-    it 'has_step return true if body has at least one step' do
-      step = Zest::Nodes::Step.new('action', 'value')
-      myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [step])
-      myNode.has_step.should eq(true)
+    context 'has_step?' do
+      it 'returns true if body has at least one step' do
+        step = Zest::Nodes::Step.new('action', 'value')
+        myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [step])
+        myNode.has_step?.should be_true
+      end
+      it 'returns false if there is no step in body' do
+        myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [])
+        myNode.has_step?.should be_false
+      end
     end
-    it 'has_step return false if no step in body' do
-      myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [])
-      myNode.has_step.should eq(false)
-    end
-
   end
 end

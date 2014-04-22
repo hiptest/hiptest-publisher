@@ -245,6 +245,6 @@ shared_examples "a renderer" do
   end
 
   it 'Scenarios' do
-    @scenarios.render(language, {framework: framework, call_prefix: 'actionwords'}).should eq(@scenarios_rendered)
+    @scenarios.render(language, {framework: framework}).should eq(@scenarios_rendered)
   end
 end
