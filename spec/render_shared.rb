@@ -37,7 +37,8 @@ shared_context "shared render" do
       Zest::Nodes::Variable.new('fighters'),
       Zest::Nodes::StringLiteral.new('foo'))
     @call_foo = Zest::Nodes::Call.new('foo')
-    @call_foo_with_fighters = Zest::Nodes::Call.new('foo', [@fighters])
+    @argument = Zest::Nodes::Argument.new(@x_variable, @fighters)
+    @call_foo_with_fighters = Zest::Nodes::Call.new('foo', [@argument])
 
     @simple_tag = Zest::Nodes::Tag.new('myTag')
     @valued_tag = Zest::Nodes::Tag.new('myTag', 'somevalue')
