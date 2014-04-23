@@ -209,6 +209,10 @@ module Zest
         super()
         @childs = {:actionword => actionword, :arguments => arguments}
       end
+
+      def have_arguments?
+        !@childs[:arguments].empty?
+      end
     end
 
     class IfThen < Node

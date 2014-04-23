@@ -32,8 +32,8 @@ describe 'Render as Ruby' do
 
     # Statements
     @assign_fighters_to_foo_rendered = "foo = 'fighters'\n"
-    @call_foo_rendered = "foo()\n"
-    @call_foo_with_fighters_rendered = "foo('fighters')\n"
+    @call_foo_rendered = "foo"
+    @call_foo_with_fighters_rendered = "foo('fighters')"
     @action_foo_fighters_rendered = '# TODO: Implement action: "#{foo}fighters"'
 
 
@@ -104,7 +104,7 @@ describe 'Render as Ruby' do
       "  def first_action_word()",
       "  end",
       "  def second_action_word()",
-      "    first_action_word()",
+      "    first_action_word",
       "  end",
       "end"].join("\n")
   end
@@ -136,7 +136,7 @@ describe 'Render as Ruby' do
         "  it 'first_scenario' do",
         "  end",
         "  it 'second_scenario' do",
-        "    my_action_word()",
+        "    my_action_word",
         "  end",
         "end"].join("\n")
     end
@@ -175,7 +175,7 @@ describe 'Render as Ruby' do
         "  def test_first_scenario",
         "  end",
         "  def test_second_scenario",
-        "    my_action_word()",
+        "    my_action_word",
         "  end",
         "end"].join("\n")
     end

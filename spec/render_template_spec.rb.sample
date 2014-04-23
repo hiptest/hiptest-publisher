@@ -53,7 +53,7 @@ describe 'Render as <My language>' do
     @assign_fighters_to_foo_rendered = "foo = 'fighters'\n"
 
     # In Zest: call 'foo'
-    @call_foo_rendered = "foo()\n"
+    @call_foo_rendered = "foo"
 
     # In Zest: call 'foo'('fighters')
     @call_foo_with_fighters_rendered = "foo('fighters')\n"
@@ -176,7 +176,7 @@ describe 'Render as <My language>' do
       "  def first_action_word()",
       "  end",
       "  def second_action_word()",
-      "    first_action_word()",
+      "    first_action_word",
       "  end",
       "end"].join("\n")
 
@@ -223,7 +223,7 @@ describe 'Render as <My language>' do
       "  it 'first_scenario' do",
       "  end",
       "  it 'second_scenario' do",
-      "    my_action_word()",
+      "    my_action_word",
       "  end",
       "end"].join("\n")
   end

@@ -1,1 +1,1 @@
-<%= @rendered_childs[:actionword].underscore %>(<%= @rendered_childs[:arguments].join(', ') %>)
+<%= @rendered_childs[:actionword].underscore %><% if have_arguments? %>(<%= @rendered_childs[:arguments].join(', ') %>)<% end %>

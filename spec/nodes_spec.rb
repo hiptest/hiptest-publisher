@@ -189,4 +189,18 @@ describe Zest::Nodes do
       end
     end
   end
+
+  context 'Call' do
+    context 'have_arguments?' do
+      it 'returns false if has no argument' do
+        call = Zest::Nodes::Call.new('', [])
+        call.have_arguments?.should be_false
+      end
+
+      it 'returns true if has at least one argument' do
+        call = Zest::Nodes::Call.new('', [Zest::Nodes::Argument.new('name', 'value')])
+        call.have_arguments?.should be_true
+      end
+    end
+  end
 end
