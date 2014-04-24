@@ -69,9 +69,9 @@ describe 'Render as Ruby' do
 
 
     # Actionwords
-    @empty_action_word_rendered = "def my_action_word()\nend"
+    @empty_action_word_rendered = "def my_action_word\nend"
     @tagged_action_word_rendered = [
-      "def my_action_word()",
+      "def my_action_word",
       "  # Tags: myTag myTag:somevalue",
       "end"].join("\n")
 
@@ -92,7 +92,7 @@ describe 'Render as Ruby' do
       "end"].join("\n")
 
     @step_action_word_rendered = [
-      "def my_action_word()",
+      "def my_action_word",
       "  # TODO: Implement action: basic action",
       "  raise NotImplementedError",
       "end"].join("\n")
@@ -101,9 +101,9 @@ describe 'Render as Ruby' do
       "# encoding: UTF-8",
       "",
       "module Actionwords",
-      "  def first_action_word()",
+      "  def first_action_word",
       "  end",
-      "  def second_action_word()",
+      "  def second_action_word",
       "    first_action_word",
       "  end",
       "end"].join("\n")

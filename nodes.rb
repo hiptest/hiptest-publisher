@@ -210,7 +210,7 @@ module Zest
         @childs = {:actionword => actionword, :arguments => arguments}
       end
 
-      def have_arguments?
+      def has_arguments?
         !@childs[:arguments].empty?
       end
     end
@@ -266,6 +266,10 @@ module Zest
       def post_render_childs(context = {})
         save_parameters_by_type
         find_variables
+      end
+
+      def has_parameters?
+        !@childs[:parameters].empty?
       end
 
       private

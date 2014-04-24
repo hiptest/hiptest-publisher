@@ -174,6 +174,16 @@ describe Zest::Nodes do
         item.valued_parameters.should eq([valued])
       end
     end
+    context 'has_parameters?' do
+      it 'returns false if has not parameter' do
+        item = Zest::Nodes::Item.new('my item', [], [])
+        item.has_parameters?.should be_false
+      end
+      it 'returns true if has at least one parameter' do
+        item = Zest::Nodes::Item.new('my item', [], [Zest::Nodes::Parameter.new('piou')])
+        item.has_parameters?.should be_true
+      end
+    end
   end
 
   context 'Actionword' do
@@ -191,15 +201,15 @@ describe Zest::Nodes do
   end
 
   context 'Call' do
-    context 'have_arguments?' do
+    context 'has_arguments?' do
       it 'returns false if has no argument' do
         call = Zest::Nodes::Call.new('', [])
-        call.have_arguments?.should be_false
+        call.has_arguments?.should be_false
       end
 
       it 'returns true if has at least one argument' do
         call = Zest::Nodes::Call.new('', [Zest::Nodes::Argument.new('name', 'value')])
-        call.have_arguments?.should be_true
+        call.has_arguments?.should be_true
       end
     end
   end

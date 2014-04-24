@@ -173,9 +173,9 @@ describe 'Render as <My language>' do
       "# encoding: UTF-8",
       "",
       "module Actionwords",
-      "  def first_action_word()",
+      "  def first_action_word",
       "  end",
-      "  def second_action_word()",
+      "  def second_action_word",
       "    first_action_word",
       "  end",
       "end"].join("\n")
