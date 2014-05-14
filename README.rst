@@ -1,7 +1,8 @@
 Zest Publisher
 ==============
 
-.. image:: https://api.travis-ci.org/Smartesting/zest-publisher.png
+.. image:: https://travis-ci.org/Smartesting/zest-publisher.svg?branch=master
+  :target: https://travis-ci.org/Smartesting/zest-publisher
 
 Installing
 ----------
