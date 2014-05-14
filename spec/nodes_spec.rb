@@ -1,4 +1,5 @@
 require 'colorize'
+
 require_relative '../nodes'
 
 describe Zest::Nodes do
@@ -9,12 +10,6 @@ describe Zest::Nodes do
     end
 
     context 'get_template_path' do
-      before(:each) do
-        class Zest::Nodes::Scenarios
-          attr_writer :context
-        end
-      end
-
       it 'checks if the file exists in the common templates' do
         myNode = Zest::Nodes::StringLiteral.new('coucou')
         myNode.get_template_path('python').should eq('templates/common/stringliteral.erb')
@@ -27,84 +22,66 @@ describe Zest::Nodes do
 
       it 'checks in the framework specific folder if existing' do
         myNode = Zest::Nodes::Scenarios.new([])
-        myNode.context = {framework: 'minitest'}
+        myNode.instance_variable_set(:@context, {framework: 'minitest'})
         myNode.get_template_path('ruby').should eq('templates/ruby/minitest/scenarios.erb')
       end
     end
 
     context 'render_childs' do
-      class FakeNode < Zest::Nodes::Node
-        attr_reader :rendered
-
-        def initialize
-          @rendered = false
-        end
-
-        def render(lang, context = {})
-          @rendered = true
-          'Node is rendered'
-        end
-      end
-
       it 'copies the child to @rendered_childs if it does not have a render method' do
         sut = Zest::Nodes::StringLiteral.new("What is your quest ?")
         sut.rendered_childs.should eq({})
-        sut.render()
+        sut.render_childs('ruby')
         sut.rendered_childs.should eq({value: "What is your quest ?"})
       end
 
       it 'copies the rendered value if the child is a node instance' do
-        sut = Zest::Nodes::StringLiteral.new(FakeNode.new)
-        sut.render()
-        sut.rendered_childs.should eq({value: 'Node is rendered'})
-        sut.childs[:value].rendered.should be_true
+        child = Zest::Nodes::StringLiteral.new('What is your quest ?')
+        child.stub(:render).and_return('What is your quest ?')
+        sut = Zest::Nodes::Parenthesis.new(child)
+
+        sut.render_childs('ruby')
+        sut.rendered_childs.should eq({content: 'What is your quest ?'})
+        expect(child).to have_received(:render).once
       end
 
       it 'renders each child inside a list' do
-        sut = Zest::Nodes::StringLiteral.new([FakeNode.new, FakeNode.new])
-        sut.render()
-        sut.rendered_childs.should eq({value: ['Node is rendered', 'Node is rendered']})
+        sut = Zest::Nodes::List.new([
+          Zest::Nodes::StringLiteral.new('What is your quest ?'),
+          Zest::Nodes::StringLiteral.new('To seek the Holy grail'),
+        ])
+        sut.render_childs('ruby')
+        sut.rendered_childs.should eq({:items => [
+          "'What is your quest ?'",
+          "'To seek the Holy grail'"
+        ]})
       end
 
       it 'renders child only once' do
-        sut = Zest::Nodes::StringLiteral.new(FakeNode.new)
-        sut.render()
-        sut.rendered_childs.should eq({value: 'Node is rendered'})
+        child = Zest::Nodes::StringLiteral.new('What is your quest ?')
+        child.stub(:render).and_return('What is your quest ?')
+        sut = Zest::Nodes::Parenthesis.new(child)
 
-        sut.childs[:value] = 'Something'
-        sut.render()
-        sut.rendered_childs.should eq({value: 'Node is rendered'})
+        sut.render_childs('ruby')
+        expect(child).to have_received(:render).once
+
+        sut.render_childs('ruby')
+        expect(child).to have_received(:render).once
       end
 
       it 'calls post_render_childs after rendering' do
-        class Zest::Nodes::MockStringLiteral < Zest::Nodes::StringLiteral
-          attr_reader :post_render_called
-
-          def post_render_childs
-            @post_render_called = true
-          end
-        end
-
-        sut = Zest::Nodes::MockStringLiteral.new(FakeNode.new)
+        sut = Zest::Nodes::StringLiteral.new('What is the air-speed velocity of an unladen swallow?')
+        sut.stub(:post_render_childs)
         sut.render_childs('ruby')
-
-        sut.post_render_called.should be_true
+        expect(sut).to have_received(:post_render_childs).once
       end
     end
 
     it 'render' do
-      class Zest::Nodes::MockNode < Zest::Nodes::Node
-        def initialize
-          super()
-          @childs = {plic: 'Ploc'}
-        end
+      sut = Zest::Nodes::Node.new()
+      sut.stub(:read_template).and_return('This is a sample ERB: <%= @rendered_childs %>')
+      sut.instance_variable_set(:@childs, {plic: 'Ploc'})
 
-        def read_template(language, context = {})
-          return 'This is a sample ERB: <%= @rendered_childs %>'
-        end
-      end
-
-      sut = Zest::Nodes::MockNode.new
       sut.render.should eq('This is a sample ERB: {:plic=>"Ploc"}')
       sut.rendered.should eq('This is a sample ERB: {:plic=>"Ploc"}')
     end
