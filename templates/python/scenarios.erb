@@ -1,0 +1,9 @@
+# encoding: UTF-8
+import unittest
+import actionwords
+
+class Test<%= parent.childs[:name].camelize %>(unittest.TestCase):
+    def setUp(self):
+        self.actionwords = Actionwords()
+
+<%= indent_block(@rendered_childs[:scenarios]) %>

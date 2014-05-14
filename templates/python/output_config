@@ -1,0 +1,8 @@
+[tests]
+filename = 'test_project.py'
+call_prefix = 'actionwords'
+indentation = "    "
+
+[actionwords]
+filename = 'actionwords.py'
+indentation = "    "

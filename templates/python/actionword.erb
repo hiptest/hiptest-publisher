@@ -1,0 +1,5 @@
+def <%= @rendered_childs[:name].underscore %>(<%= (['self'] << @rendered_childs[:parameters]).flatten.join(', ') %>):
+<% unless @rendered_childs[:tags].empty? %>    # Tags: <%= @rendered_childs[:tags].join(' ') %>
+<%= "\n" %><% end %>
+<%= indent_block(@rendered_childs[:body]) %>
+<% if @childs[:tags].empty? && @childs[:body].empty? %>    pass<% end %>
