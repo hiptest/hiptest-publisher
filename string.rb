@@ -24,6 +24,6 @@ class String
 
   def camelize
     normalized = self.normalize
-    normalized.split('_').map {|w| "#{w[0].upcase}#{w[1..-1]}"}.join
+    normalized.split('_').map {|w| w.empty? ? "" : "#{w[0].upcase}#{w[1..-1]}"}.join
   end
 end

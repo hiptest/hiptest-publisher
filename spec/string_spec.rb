@@ -60,5 +60,9 @@ describe String do
     it 'normalize the string before' do
       'Skøl ofenstrü'.camelize.should eq('SkolOfenstru')
     end
+
+    it "does not fail with multiple spaces" do
+      'Tra la  la'.camelize.should eq('TraLaLa')
+    end
   end
 end
