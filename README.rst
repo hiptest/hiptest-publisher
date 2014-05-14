@@ -23,6 +23,7 @@ Go to your Zest project and copy the secret token from the settings tab. Then si
   ruby publisher.rb --token=<YOUR TOKEN>
 
 This will create a Ruby tests suite. For the moment, we support the following languages and frameworks:
+
  - Ruby (rspec / minitest)
  - Python (unittest)
 
