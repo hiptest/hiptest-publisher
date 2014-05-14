@@ -9,6 +9,12 @@ describe Zest::Nodes do
     end
 
     context 'get_template_path' do
+      before(:each) do
+        class Zest::Nodes::Scenarios
+          attr_writer :context
+        end
+      end
+
       it 'checks if the file exists in the common templates' do
         myNode = Zest::Nodes::StringLiteral.new('coucou')
         myNode.get_template_path('python').should eq('templates/common/stringliteral.erb')
@@ -21,7 +27,8 @@ describe Zest::Nodes do
 
       it 'checks in the framework specific folder if existing' do
         myNode = Zest::Nodes::Scenarios.new([])
-        myNode.get_template_path('ruby', {framework: 'minitest'}).should eq('templates/ruby/minitest/scenarios.erb')
+        myNode.context = {framework: 'minitest'}
+        myNode.get_template_path('ruby').should eq('templates/ruby/minitest/scenarios.erb')
       end
     end
 
@@ -33,7 +40,7 @@ describe Zest::Nodes do
           @rendered = false
         end
 
-        def render(lang, context)
+        def render(lang, context = {})
           @rendered = true
           'Node is rendered'
         end
@@ -71,17 +78,17 @@ describe Zest::Nodes do
 
       it 'calls post_render_childs after rendering' do
         class Zest::Nodes::MockStringLiteral < Zest::Nodes::StringLiteral
-          attr_reader :post_render_args
+          attr_reader :post_render_called
 
-          def post_render_childs (context)
-            @post_render_args = context
+          def post_render_childs
+            @post_render_called = true
           end
         end
 
         sut = Zest::Nodes::MockStringLiteral.new(FakeNode.new)
-        sut.render_childs('ruby', {some: 'Context'})
+        sut.render_childs('ruby')
 
-        sut.post_render_args.should eq({some: 'Context'})
+        sut.post_render_called.should be_true
       end
     end
 

@@ -10,16 +10,17 @@ module Zest
       attr_writer :parent
 
       def initialize()
+        @context = {}
         @rendered = ''
         @rendered_childs = {}
       end
 
-      def get_template_path(language, context = {})
+      def get_template_path(language)
         normalized_name = self.class.name.split('::').last.downcase
 
         searched_folders = []
-        if context.has_key?(:framework)
-          searched_folders << "#{language}/#{context[:framework]}"
+        if @context.has_key?(:framework)
+          searched_folders << "#{language}/#{@context[:framework]}"
         end
         searched_folders << [language, 'common']
 
@@ -31,40 +32,44 @@ module Zest
         end.compact.first
       end
 
-      def read_template(language, context = {})
-        File.read(get_template_path(language, context))
+      def read_template(language)
+        File.read(get_template_path(language))
       end
 
-      def render_childs(language, context = {})
+      def render_childs(language)
         if @rendered_childs.size > 0
           return
         end
 
         @childs.each do |key, child|
           if child.is_a? Array
-            @rendered_childs[key] = child.map {|c| c.render(language, context) }
+            @rendered_childs[key] = child.map {|c| c.render(language, @context) }
             next
           end
 
           if child.methods.include? :render
-            @rendered_childs[key] = child.render(language, context)
+            @rendered_childs[key] = child.render(language, @context)
           else
             @rendered_childs[key] = child
           end
         end
-        post_render_childs(context)
+        post_render_childs()
       end
 
-      def post_render_childs(context = {})
+      def post_render_childs()
       end
 
       def render(language = 'ruby', context = {})
-        render_childs(language, context)
-        @rendered = ERB.new(read_template(language, context), nil, "%<>").result(binding)
+        @context = context
+
+        render_childs(language)
+        @rendered = ERB.new(read_template(language), nil, "%<>").result(binding)
         @rendered
       end
 
-      def indent_block(nodes, indentation = '  ')
+      def indent_block(nodes, indentation = nil)
+        indentation = indentation || @context[:indentation] || '  '
+
         nodes.map do |node|
           node.split("\n").map do |line|
             "#{indentation}#{line}\n"
@@ -263,7 +268,7 @@ module Zest
         }
       end
 
-      def post_render_childs(context = {})
+      def post_render_childs()
         save_parameters_by_type
         find_variables
       end
