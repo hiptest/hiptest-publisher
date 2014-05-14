@@ -174,6 +174,7 @@ describe 'Render as Python' do
       "class Actionwords:",
       "    def first_action_word(self):",
       "        pass",
+      "",
       "    def second_action_word(self):",
       "        self.first_action_word()",
       ""].join("\n")
@@ -221,6 +222,7 @@ describe 'Render as Python' do
       "",
       "    def test_first_scenario(self):",
       "        pass",
+      "",
       "    def test_second_scenario(self):",
       "        self.actionwords.my_action_word()",
       ""].join("\n")
