@@ -67,14 +67,14 @@ module Zest
         @rendered
       end
 
-      def indent_block(nodes, indentation = nil)
+      def indent_block(nodes, indentation = nil, separator = '')
         indentation = indentation || @context[:indentation] || '  '
 
         nodes.map do |node|
           node.split("\n").map do |line|
             "#{indentation}#{line}\n"
           end.join
-        end.join
+        end.join(separator)
       end
 
       def find_sub_nodes(type = nil, flatten = true)

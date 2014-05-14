@@ -86,18 +86,42 @@ describe Zest::Nodes do
       sut.rendered.should eq('This is a sample ERB: {:plic=>"Ploc"}')
     end
 
-    it 'indent_block' do
-      sut = Zest::Nodes::Node.new
-      block = ["A single line", "Two\nLines", "Three\n  indented\n    lines"]
-      sut.indent_block(block).should eq([
-        "  A single line",
-        "  Two",
-        "  Lines",
-        "  Three",
-        "    indented",
-        "      lines",
-        ""
-        ].join("\n"))
+    context 'indent_block' do
+      it 'indent a block' do
+        sut = Zest::Nodes::Node.new
+        block = ["A single line", "Two\nLines", "Three\n  indented\n    lines"]
+        sut.indent_block(block).should eq([
+          "  A single line",
+          "  Two",
+          "  Lines",
+          "  Three",
+          "    indented",
+          "      lines",
+          ""
+          ].join("\n"))
+      end
+
+      it 'can have a specified indentation' do
+        sut = Zest::Nodes::Node.new
+        sut.indent_block(["La"], "---").should eq("---La\n")
+      end
+
+      it 'if no indentation is specified, it uses the one from the context' do
+        sut = Zest::Nodes::Node.new
+        sut.instance_variable_set(:@context, {:indentation => '~'})
+
+        sut.indent_block(["La"]).should eq("~La\n")
+      end
+
+      it 'default indentation is wo spaces' do
+        sut = Zest::Nodes::Node.new
+        sut.indent_block(["La"]).should eq("  La\n")
+      end
+
+      it 'also accepts a separator to join the result (aded to te line return)' do
+        sut = Zest::Nodes::Node.new
+        sut.indent_block(["A", "B\nC", "D\nE"], '  ', '#').should eq("  A\n#  B\n  C\n#  D\n  E\n")
+      end
     end
 
     context 'find_sub_nodes' do
