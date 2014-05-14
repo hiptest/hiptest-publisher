@@ -6,5 +6,5 @@ require_relative 'actionwords'
 class Test<%= parent.childs[:name].camelize %> < MiniTest::Unit::TestCase
   include Actionwords
 
-<%= indent_block(@rendered_childs[:scenarios]) %>
+<%= indent_block(@rendered_childs[:scenarios], nil, "\n") %>
 end

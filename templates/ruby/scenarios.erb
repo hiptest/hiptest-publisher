@@ -5,5 +5,5 @@ require_relative 'actionwords'
 describe '<%= parent.childs[:name].camelize %>' do
   include Actionwords
 
-<%= indent_block(@rendered_childs[:scenarios]) %>
+<%= indent_block(@rendered_childs[:scenarios], nil, "\n") %>
 end
