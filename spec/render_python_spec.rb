@@ -213,7 +213,7 @@ describe 'Render as Python' do
     @scenarios_rendered = [
       "# encoding: UTF-8",
       "import unittest",
-      "import actionwords",
+      "from actionwords import Actionwords",
       "",
       "class TestMyProject(unittest.TestCase):",
       "    def setUp(self):",
