@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'rubygems'
+  gem 'zest-publisher'
+rescue LoadError
+end
+
+require 'zest-publisher'
+
+Zest::Publisher.new(ARGV)

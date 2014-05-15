@@ -1,6 +1,6 @@
 # encoding: UTF-8
-
-require_relative '../string'
+require_relative 'spec_helper'
+require_relative '../lib/zest-publisher/string'
 
 describe String do
   context 'literate' do

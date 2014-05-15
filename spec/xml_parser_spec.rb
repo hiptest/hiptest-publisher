@@ -1,5 +1,6 @@
-require_relative '../nodes'
-require_relative '../xml_parser'
+require_relative 'spec_helper'
+require_relative '../lib/zest-publisher/nodes'
+require_relative '../lib/zest-publisher/xml_parser'
 
 class TestParser < Zest::XMLParser
   def build_main_node

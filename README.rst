@@ -4,16 +4,25 @@ Zest Publisher
 .. image:: https://travis-ci.org/Smartesting/zest-publisher.svg?branch=master
   :target: https://travis-ci.org/Smartesting/zest-publisher
 
+.. image:: https://badge.fury.io/rb/zest-publisher.svg
+  :target: http://badge.fury.io/rb/zest-publisher
+
+.. image:: https://codeclimate.com/github/Smartesting/zest-publisher.png
+  :target: https://codeclimate.com/github/Smartesting/zest-publisher
+
+.. image:: https://codeclimate.com/github/Smartesting/zest-publisher/coverage.png
+  :target: https://codeclimate.com/github/Smartesting/zest-publisher
+
+.. image:: https://gemnasium.com/Smartesting/zest-publisher.svg
+  :target: https://gemnasium.com/Smartesting/zest-publisher
+
+
 Installing
 ----------
 
-Clone the repository::
+You need to have Ruby installed on your machine. You can then install it using gem::
 
-  git clone https://github.com/Smartesting/zest-publisher.git
-
-Install the dependencies using Bundle (you might need to have RVM (http://rvm.io/) installed)::
-
-  bundle install
+  gem install zest-publisher
 
 
 Exporting a project
@@ -21,7 +30,7 @@ Exporting a project
 
 Go to your Zest project and copy the secret token from the settings tab. Then simply run this command line::
 
-  ruby publisher.rb --token=<YOUR TOKEN>
+  zest-publisher --token=<YOUR TOKEN>
 
 This will create a Ruby tests suite. For the moment, we support the following languages and frameworks:
 
@@ -37,9 +46,9 @@ You have the possibility to store some configuration in a file named 'config'. C
 If you have multiple projects, you can have multiple config files and select one using the --config-file option::
 
     # Use the default config file
-    ruby publisher.rb
+    zest-publisher
     # Use the one to export as minitest
-    ruby publisher.rb --config-file=config_minitest
+    zest-publisher --config-file=config_minitest
 
 
 Contributing
@@ -93,7 +102,7 @@ Now in every node rendered in the scenarios, you can access ``context[action_wor
 
 Once this is all done, you should be able to generate the Scala tests by running::
 
-    ruby publisher.rb --language=scala
+    zest-publisher --language=scala
 
 
 Note: we also added some helpers while rendering scenarios and actionwords:
@@ -141,4 +150,4 @@ Normally, you should see one test failing (the scenario generation). To get it w
 
 Edit the file so it generates proper Scala/Specs code. You should now be able to generate your tests using the following line::
 
-    ruby publisher.rb --language=scala --framework=specs
+    zest-publisher --language=scala --framework=specs

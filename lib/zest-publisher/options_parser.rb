@@ -2,6 +2,8 @@ require 'optparse'
 require 'parseconfig'
 require 'ostruct'
 
+require 'zest-publisher/utils'
+
 class FileConfigParser
   def self.update_options(options)
     config = ParseConfig.new(options.config)
@@ -90,14 +92,14 @@ end
 class LanguageConfigParser
   def initialize(options)
     @options = options
-    @config = ParseConfig.new("./templates/#{options.language}/output_config")
-  end
-
-  def aw_output_dir
-    "#{@options.output_directory}/#{@config['tests']['filename']}"
+    @config = ParseConfig.new("#{zest_publisher_path}/lib/templates/#{options.language}/output_config")
   end
 
   def tests_output_dir
+    "#{@options.output_directory}/#{@config['tests']['filename']}"
+  end
+
+  def aw_output_dir
     "#{@options.output_directory}/#{@config['actionwords']['filename']}"
   end
 

@@ -1,6 +1,7 @@
 require 'colorize'
 
-require_relative '../nodes'
+require_relative 'spec_helper'
+require_relative '../lib/zest-publisher/nodes'
 
 describe Zest::Nodes do
   context 'Node' do
@@ -12,18 +13,18 @@ describe Zest::Nodes do
     context 'get_template_path' do
       it 'checks if the file exists in the common templates' do
         myNode = Zest::Nodes::StringLiteral.new('coucou')
-        myNode.get_template_path('python').should eq('templates/common/stringliteral.erb')
+        myNode.get_template_path('python').should eq('./lib/templates/common/stringliteral.erb')
       end
 
       it 'checks in the language template folder' do
         myNode = Zest::Nodes::Assign.new('x', 1)
-        myNode.get_template_path('ruby').should eq('templates/ruby/assign.erb')
+        myNode.get_template_path('ruby').should eq('./lib/templates/ruby/assign.erb')
       end
 
       it 'checks in the framework specific folder if existing' do
         myNode = Zest::Nodes::Scenarios.new([])
         myNode.instance_variable_set(:@context, {framework: 'minitest'})
-        myNode.get_template_path('ruby').should eq('templates/ruby/minitest/scenarios.erb')
+        myNode.get_template_path('ruby').should eq('./lib/templates/ruby/minitest/scenarios.erb')
       end
     end
 

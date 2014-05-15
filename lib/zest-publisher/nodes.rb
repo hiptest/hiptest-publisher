@@ -1,7 +1,7 @@
 require 'erb'
 
-require_relative 'string'
-require_relative 'utils'
+require 'zest-publisher/string'
+require 'zest-publisher/utils'
 
 module Zest
   module Nodes
@@ -25,7 +25,7 @@ module Zest
         searched_folders << [language, 'common']
 
         searched_folders.flatten.map do |path|
-          template_path = "templates/#{path}/#{normalized_name}.erb"
+          template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{normalized_name}.erb"
           if File.file?(template_path)
             template_path
           end

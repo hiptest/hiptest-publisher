@@ -9,7 +9,6 @@ config
 
 # Ignore bundler config & binstubs
 /.bundle
-/bin
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

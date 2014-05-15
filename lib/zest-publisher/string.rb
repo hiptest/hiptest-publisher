@@ -4,6 +4,7 @@ require_relative 'utils'
 
 class String
   def literate
+    I18n.enforce_available_locales = false
     I18n.transliterate(self)
   end
 
