@@ -25,10 +25,6 @@ Jeweler::Tasks.new do |gem|
   gem.executables = ['zest-publisher']
   gem.files = `git ls-files -- lib/*`.split("\n")
   gem.require_path = "lib"
-  gem.add_dependency 'parseconfig', '>= 1.0.4'
-  gem.add_dependency 'colorize', '>= 0.7.3'
-  gem.add_dependency 'i18n', '>= 0.6.9'
-  gem.add_dependency 'nokogiri', '>= 1.6.2.1'
 end
 Jeweler::RubygemsDotOrgTasks.new
 

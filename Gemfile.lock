@@ -73,10 +73,10 @@ PLATFORMS
 
 DEPENDENCIES
   codeclimate-test-reporter
-  colorize
-  i18n
+  colorize (~> 0.7.3)
+  i18n (~> 0.6.9)
   jeweler
-  nokogiri
-  parseconfig
+  nokogiri (~> 1.6.2.1)
+  parseconfig (~> 1.0.4)
   rspec
   rspec-mocks
