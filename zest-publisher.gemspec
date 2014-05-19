@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage = 'https://www.zest-testing.com'
   s.license = 'GPL 2'
   s.add_runtime_dependency 'parseconfig', '~> 1.0', '>= 1.0.4'
-  s.add_runtime_dependency 'colorize', '~> 0.7', '>= 0.7.2'
+  s.add_runtime_dependency 'colorize', '~> 0.7', '>= 0.7.3'
   s.add_runtime_dependency 'i18n', '~> 0.6', '>= 0.6.9'
   s.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.2.1'
 end
