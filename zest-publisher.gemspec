@@ -98,10 +98,10 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rspec-mocks>, [">= 0"])
       s.add_runtime_dependency(%q<codeclimate-test-reporter>, [">= 0"])
       s.add_runtime_dependency(%q<jeweler>, [">= 0"])
-      s.add_runtime_dependency(%q<parseconfig>, [">= 1.0.4", "~> 1.0"])
-      s.add_runtime_dependency(%q<colorize>, [">= 0.7.3", "~> 0.7"])
-      s.add_runtime_dependency(%q<i18n>, [">= 0.6.9", "~> 0.6"])
-      s.add_runtime_dependency(%q<nokogiri>, [">= 1.6.2.1", "~> 1.6"])
+      s.add_runtime_dependency(%q<parseconfig>, [">= 1.0.4"])
+      s.add_runtime_dependency(%q<colorize>, [">= 0.7.3"])
+      s.add_runtime_dependency(%q<i18n>, [">= 0.6.9"])
+      s.add_runtime_dependency(%q<nokogiri>, [">= 1.6.2.1"])
     else
       s.add_dependency(%q<colorize>, [">= 0"])
       s.add_dependency(%q<parseconfig>, [">= 0"])
@@ -111,10 +111,10 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec-mocks>, [">= 0"])
       s.add_dependency(%q<codeclimate-test-reporter>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
-      s.add_dependency(%q<parseconfig>, [">= 1.0.4", "~> 1.0"])
-      s.add_dependency(%q<colorize>, [">= 0.7.3", "~> 0.7"])
-      s.add_dependency(%q<i18n>, [">= 0.6.9", "~> 0.6"])
-      s.add_dependency(%q<nokogiri>, [">= 1.6.2.1", "~> 1.6"])
+      s.add_dependency(%q<parseconfig>, [">= 1.0.4"])
+      s.add_dependency(%q<colorize>, [">= 0.7.3"])
+      s.add_dependency(%q<i18n>, [">= 0.6.9"])
+      s.add_dependency(%q<nokogiri>, [">= 1.6.2.1"])
     end
   else
     s.add_dependency(%q<colorize>, [">= 0"])
@@ -125,10 +125,10 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec-mocks>, [">= 0"])
     s.add_dependency(%q<codeclimate-test-reporter>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
-    s.add_dependency(%q<parseconfig>, [">= 1.0.4", "~> 1.0"])
-    s.add_dependency(%q<colorize>, [">= 0.7.3", "~> 0.7"])
-    s.add_dependency(%q<i18n>, [">= 0.6.9", "~> 0.6"])
-    s.add_dependency(%q<nokogiri>, [">= 1.6.2.1", "~> 1.6"])
+    s.add_dependency(%q<parseconfig>, [">= 1.0.4"])
+    s.add_dependency(%q<colorize>, [">= 0.7.3"])
+    s.add_dependency(%q<i18n>, [">= 0.6.9"])
+    s.add_dependency(%q<nokogiri>, [">= 1.6.2.1"])
   end
 end
 
