@@ -39,11 +39,11 @@ This will create a Ruby tests suite. For the moment, we support the following la
  - Ruby (rspec / minitest)
  - Python (unittest)
 
-You can specify the output language and framework in the command line, for example:
+You can specify the output language and framework in the command line, for example::
 
   zest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 
-For more informations on the available options, use the following command:
+For more informations on the available options, use the following command::
 
   zest-publisher --help
 
