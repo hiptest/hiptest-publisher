@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'zest-publisher'
-  s.version = '0.0.2'
-  s.date = '2014-05-15'
+  s.version = '0.0.3'
+  s.date = '2014-05-19'
   s.summary = "Export your tests from Zest into executable tests."
   s.description = ""
   s.executables << 'zest-publisher'
