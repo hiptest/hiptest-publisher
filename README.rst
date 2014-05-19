@@ -28,7 +28,9 @@ You need to have `Ruby installed on your machine <https://www.ruby-lang.org/en/i
 Exporting a project
 -------------------
 
-Go to your Zest project and copy the secret token from the settings tab. Then simply run this command line::
+Go to one of your `Zest projects <https://www.zest-testing.com/#/projects>`_ and select the Settings tab.
+This tag is available only for projects you own.
+From there, copy the secret token and run this command line::
 
   zest-publisher --token=<YOUR TOKEN>
 
