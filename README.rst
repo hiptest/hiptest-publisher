@@ -20,7 +20,7 @@ Zest Publisher
 Installing
 ----------
 
-You need to have Ruby installed on your machine. You can then install it using gem::
+You need to have `Ruby installed on your machine <https://www.ruby-lang.org/en/installation/>`_. You can then install it using gem::
 
   gem install zest-publisher
 
