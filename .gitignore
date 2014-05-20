@@ -15,6 +15,7 @@ config
 /tmp
 /chromedriver.log
 /coverage
+/pkg
 
 # Ignore IDE files
 /*.sublime-project
