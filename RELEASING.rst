@@ -1,7 +1,7 @@
 RELEASING
 =========
 
-This gem is bundle using jeweler. To make a new release::
+This gem is built using jeweler. To make a new release::
 
   rake version:bump:minor # Replace minor by major or path, dependending on the type of release
   rake release
