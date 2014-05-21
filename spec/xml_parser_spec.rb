@@ -491,8 +491,8 @@ describe Zest::XMLParser do
       node.should be_a(Zest::Nodes::Project)
       node.childs[:name].should eq('My project')
       node.childs[:description].should eq('A description')
-      node.childs[:scenarios].should be_nil
-      node.childs[:actionwords].should be_nil
+      node.childs[:scenarios].should be_a(Zest::Nodes::Scenarios)
+      node.childs[:actionwords].should be_a(Zest::Nodes::Actionwords)
     end
 
     it 'with scenarios and actionwords' do

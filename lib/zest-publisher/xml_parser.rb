@@ -217,14 +217,17 @@ module Zest
       @project = Zest::Nodes::Project.new(
         @xml.css('project name').first.content,
         @xml.css('project description').first.content,
-        build_node(@xml.css('project > scenarios').first),
-        build_node(@xml.css('project > actionwords').first)
+        build_node(@xml.css('project > scenarios').first, Zest::Nodes::Scenarios),
+        build_node(@xml.css('project > actionwords').first, Zest::Nodes::Actionwords)
       )
     end
 
     private
 
-    def build_node(node)
+    def build_node(node, default_node=nil)
+      if node.nil? && default_node
+        return default_node.new
+      end
       self.send("build_#{node.name}", node)
     rescue Exception => exception
       if @options && @options.verbose

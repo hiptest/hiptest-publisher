@@ -325,14 +325,14 @@ module Zest
     end
 
     class Actionwords < Node
-      def initialize(actionwords)
+      def initialize(actionwords = [])
         super()
         @childs = {:actionwords => actionwords}
       end
     end
 
     class Scenarios < Node
-      def initialize(scenarios)
+      def initialize(scenarios = [])
         super()
         @childs = {:scenarios => scenarios}
       end
