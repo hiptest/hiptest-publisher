@@ -114,7 +114,7 @@ describe 'Render as Ruby' do
   context 'Rspec' do
     before(:each) do
       @full_scenario_rendered = [
-        "it 'compare_to_pi' do",
+        "it \"compare to pi\" do",
         "  # This is a scenario which description ",
         "  # is on two lines",
         "  # Tags: myTag",
@@ -135,10 +135,10 @@ describe 'Render as Ruby' do
         "describe 'MyProject' do",
         "  include Actionwords",
         "",
-        "  it 'first_scenario' do",
+        "  it \"first scenario\" do",
         "  end",
         "",
-        "  it 'second_scenario' do",
+        "  it \"second scenario\" do",
         "    my_action_word",
         "  end",
         "end"].join("\n")

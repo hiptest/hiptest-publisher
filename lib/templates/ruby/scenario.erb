@@ -1,4 +1,4 @@
-it '<%= @rendered_childs[:name].normalize %>' do
+it "<%= @rendered_childs[:name].gsub('"', '') %>" do
 <%= indent_block([@rendered_childs[:description]], '  # ') %>
 <% unless @rendered_childs[:tags].empty? %>  # Tags: <%= @rendered_childs[:tags].join(' ') %><%= "\n" %><% end %>
 <%= indent_block(@rendered_childs[:body]) %>
