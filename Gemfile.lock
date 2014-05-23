@@ -72,11 +72,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  codeclimate-test-reporter
-  colorize (~> 0.7.3)
-  i18n (~> 0.6.9)
-  jeweler
-  nokogiri (~> 1.6.2.1)
-  parseconfig (~> 1.0.4)
-  rspec
-  rspec-mocks
+  codeclimate-test-reporter (~> 0.3, >= 0.3.0)
+  colorize (~> 0.7, >= 0.7.3)
+  i18n (~> 0.6, >= 0.6.9)
+  jeweler (~> 2.0, >= 2.0.1)
+  nokogiri (~> 1.6.2, >= 1.6.2.1)
+  parseconfig (~> 1.0, >= 1.0.4)
+  rspec (~> 2.14, >= 2.14.1)
+  rspec-mocks (~> 2.14, >= 2.14.6)
