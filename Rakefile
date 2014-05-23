@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "https://www.zest-testing.com"
   gem.license = "GPL 2"
   gem.summary = "Export your tests from Zest into executable tests."
-  gem.description = ""
+  gem.description = "Provides a command-line tool that generates Python or Ruby code to run the tests."
   gem.email = "zest@smartesting.com"
   gem.authors = ["Smartesting R&D"]
 
