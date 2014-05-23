@@ -7,5 +7,5 @@ This gem is built using jeweler. To make a new release::
   rake release
 
 This will handle tagging, building the gem and pushing it to RubyGems.
-Take a look at `Jeweler's README <https://github.com/technicalpickles/jeweler#jeweler-craft-the-perfect-rubygem>`_ for more information.
+Take a look at [Jeweler's README](https://github.com/technicalpickles/jeweler#jeweler-craft-the-perfect-rubygem) for more information.
 
