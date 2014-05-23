@@ -113,7 +113,10 @@ describe 'Render as Python' do
     # In Zest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "def my_action_word(self):\n    pass"
+    @empty_action_word_rendered = [
+      "def my_action_word(self):",
+      "    pass",
+      ""].join("\n")
 
     # In Zest:
     # @myTag @myTag:somevalue
@@ -122,6 +125,7 @@ describe 'Render as Python' do
     @tagged_action_word_rendered = [
       "def my_action_word(self):",
       "    # Tags: myTag myTag:somevalue",
+      "    pass",
       ""].join("\n")
 
     # In Zest:
@@ -129,8 +133,8 @@ describe 'Render as Python' do
     # end
     @parameterized_action_word_rendered = [
       "def my_action_word(self, plic, flip = 'flap'):",
-      "    pass"
-    ].join("\n")
+      "    pass",
+      ""].join("\n")
 
     # In Zest:
     # @myTag
@@ -161,6 +165,7 @@ describe 'Render as Python' do
     @step_action_word_rendered = [
       "def my_action_word(self):",
       "    # TODO: Implement action: basic action",
+      "    raise NotImplementedError",
       ""].join("\n")
 
     # In Zest, correspond to two action words:
