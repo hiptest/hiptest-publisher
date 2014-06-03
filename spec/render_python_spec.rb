@@ -50,7 +50,7 @@ describe 'Render as Python' do
     # In Zest: {foo: 'fighters', Alt: J}
     @foo_dict_rendered = "{foo: 'fighters', Alt: J}"
 
-    # In Zest: foo = 'fighters'
+    # In Zest: foo := 'fighters'
     @assign_fighters_to_foo_rendered = "foo = 'fighters'\n"
 
     # In Zest: call 'foo'
