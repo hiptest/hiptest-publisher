@@ -27,4 +27,9 @@ class String
     normalized = self.normalize
     normalized.split('_').map {|w| w.empty? ? "" : "#{w[0].upcase}#{w[1..-1]}"}.join
   end
+
+  def camelize_lower
+    normalized = self.normalize
+    normalized.split('_').enum_for(:each_with_index).map {|w, i| w.empty? ? "" : (i == 0 ? "#{w}" : "#{w[0].upcase}#{w[1..-1]}")}.join
+  end
 end

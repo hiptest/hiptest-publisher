@@ -1,0 +1,9 @@
+@Override
+public void <%= @rendered_childs[:name].camelize_lower %>(<% if has_parameters? %><%= @rendered_childs[:parameters].join(', ') %><% end %>) {
+<% unless @rendered_childs[:tags].empty? %>  // Tags: <%= @rendered_childs[:tags].join(' ') %>
+<%= "\n" %><% end %>
+<%= indent_block(@rendered_childs[:body]) %>
+<% if has_step? %>
+<%= indent_block(["throw new NotImplementedException();"]) %>
+<% end %>
+}
