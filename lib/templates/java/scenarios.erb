@@ -1,10 +1,10 @@
-package com.;
+package <%= context[:package] %>;
 
 import junit.framework.TestCase;
 
 public class <%= parent.childs[:name].camelize %>Test extends TestCase {
 
-  public ActionWordHelper aw = new ActionWordHelperImpl();
+  public Actionwords <%= context[:call_prefix] %> = new Actionwords();
 
 <%= indent_block(@rendered_childs[:scenarios], nil, "\n") %>
 }

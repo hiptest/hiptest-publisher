@@ -245,10 +245,12 @@ shared_examples "a renderer" do
   end
 
   it 'Actionwords' do
+    @context[:package] = 'com.example'
     @actionwords.render(language, @context).should eq(@actionwords_rendered)
   end
 
   it 'Scenarios' do
+    @context[:package] = 'com.example'
     @context[:call_prefix] = 'actionwords'
     @scenarios.render(language, @context).should eq(@scenarios_rendered)
   end

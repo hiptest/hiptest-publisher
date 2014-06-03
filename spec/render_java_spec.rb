@@ -123,14 +123,13 @@ describe 'Render as Java' do
     # In Zest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "@Override\npublic void myActionWord() {\n}"
+    @empty_action_word_rendered = "public void myActionWord() {\n}"
 
     # In Zest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
     @tagged_action_word_rendered = [
-      "@Override",
       "public void myActionWord() {",
       "  // Tags: myTag myTag:somevalue",
       "}"].join("\n")
@@ -139,7 +138,6 @@ describe 'Render as Java' do
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
-      "@Override",
       "public void myActionWord(String plic, String flip) {",
       "}"].join("\n")
 
@@ -156,7 +154,6 @@ describe 'Render as Java' do
     # end
     # TODO: how to chose the type of x (ex: int whereas String) ?
     @full_actionword_rendered = [
-      "@Override",
       "public void compareToPi(String x) {",
       "  // Tags: myTag",
       "  foo = 3.14;",
@@ -173,7 +170,6 @@ describe 'Render as Java' do
     #   step {action: "basic action"}
     # end
     @step_action_word_rendered = [
-      "@Override",
       "public void myActionWord() {",
       "  // TODO: Implement action: basic action",
       "  throw new NotImplementedException();",
@@ -186,15 +182,13 @@ describe 'Render as Java' do
     #   call 'first action word'
     # end
     @actionwords_rendered = [
-      "package com.",
+      "package com.example",
       "",
-      "public class ActionwordsImpl implements Actionwords {",
+      "public class Actionwords {",
       "",
-      "  @Override",
       "  public void firstActionWord() {",
       "  }",
       "",
-      "  @Override",
       "  public void secondActionWord() {",
       "    firstActionWord();",
       "  }",
@@ -236,19 +230,19 @@ describe 'Render as Java' do
     # TODO: add the right package
     # TODO: add the rignt call according interface
     @scenarios_rendered = [
-      "package com.;",
+      "package com.example;",
       "",
       "import junit.framework.TestCase;",
       "",
       "public class MyProjectTest extends TestCase {",
       "",
-      "  public ActionWordHelper aw = new ActionWordHelperImpl();",
+      "  public Actionwords actionwords = new Actionwords();",
       "",
       "  public void testFirstScenario() {",
       "  }",
       "",
       "  public void testSecondScenario() {",
-      "    myActionWord();",
+      "    actionwords.myActionWord();",
       "  }",
       "}"].join("\n")
   end

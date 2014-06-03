@@ -1,0 +1,9 @@
+[tests]
+filename = 'ProjectTest.java'
+indentation = "    "
+package = 'com.example'
+
+[actionwords]
+filename = 'Actionwords.java'
+indentation = "    "
+package = 'com.example'
