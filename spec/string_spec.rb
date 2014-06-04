@@ -84,4 +84,10 @@ describe String do
       'Tra la  la'.camelize_lower.should eq('traLaLa')
     end
   end
+
+  context 'clear_extension' do
+    it 'removes the extension' do
+      'MyProject.java'.clear_extension.should eq('MyProject')
+    end
+  end
 end

@@ -2,7 +2,7 @@ package <%= context[:package] %>;
 
 import junit.framework.TestCase;
 
-public class <%= parent.childs[:name].camelize %>Test extends TestCase {
+public class <%= context[:filename].clear_extension %> extends TestCase {
 
   public Actionwords <%= context[:call_prefix] %> = new Actionwords();
 

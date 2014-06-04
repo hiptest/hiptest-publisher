@@ -227,14 +227,13 @@ describe 'Render as Java' do
     # scenario 'second scenario' do
     #   call 'my action word'
     # end
-    # TODO: add the right package
-    # TODO: add the rignt call according interface
+    # TODO: get package from config file
     @scenarios_rendered = [
       "package com.example;",
       "",
       "import junit.framework.TestCase;",
       "",
-      "public class MyProjectTest extends TestCase {",
+      "public class ProjectTest extends TestCase {",
       "",
       "  public Actionwords actionwords = new Actionwords();",
       "",

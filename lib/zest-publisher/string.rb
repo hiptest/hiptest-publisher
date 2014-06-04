@@ -40,4 +40,8 @@ class String
       end
     end.join
   end
+
+  def clear_extension
+    self.split('.')[0]
+  end
 end

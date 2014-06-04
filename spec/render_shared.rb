@@ -250,6 +250,7 @@ shared_examples "a renderer" do
   end
 
   it 'Scenarios' do
+    @context[:filename] = 'ProjectTest.java'
     @context[:package] = 'com.example'
     @context[:call_prefix] = 'actionwords'
     @scenarios.render(language, @context).should eq(@scenarios_rendered)
