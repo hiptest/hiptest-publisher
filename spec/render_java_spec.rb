@@ -182,7 +182,7 @@ describe 'Render as Java' do
     #   call 'first action word'
     # end
     @actionwords_rendered = [
-      "package com.example",
+      "package com.example;",
       "",
       "public class Actionwords {",
       "",
