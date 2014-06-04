@@ -189,6 +189,44 @@ describe 'Render as Python' do
       "        self.first_action_word()",
       ""].join("\n")
 
+    # In Zest, correspond to these action words with parameters:
+    # actionword 'aw with int param'(x) do end
+    # actionword 'aw with float param'(x) do end
+    # actionword 'aw with boolean param'(x) do end
+    # actionword 'aw with null param'(x) do end
+    # actionword 'aw with string param'(x) do end
+    #
+    # but called by this scenario
+    # scenario 'many calls scenarios' do
+    #   call 'aw with int param'(x = 3)
+    #   call 'aw with float param'(x = 4.2)
+    #   call 'aw with boolean param'(x = true)
+    #   call 'aw with null param'(x = null)
+    #   call 'aw with string param'(x = 'toto')
+    @actionwords_with_params_rendered = [
+      "# encoding: UTF-8",
+      "",
+      "class Actionwords:",
+      "    def __init__(self, test):",
+      "        self.test = test",
+      "",
+      "    def aw_with_int_param(self, x):",
+      "        pass",
+      "",
+=begin
+      "    def aw_with_float_param(self, x):",
+      "        pass",
+      "",
+      "    def aw_with_boolean_param(self, x):",
+      "        pass",
+      "",
+      "    def aw_with_null_param(self, x):",
+      "        pass",
+      "",
+=end
+      "    def aw_with_string_param(self, x):",
+      "        pass",
+      ""].join("\n")
 
     # In Zest:
     # @myTag

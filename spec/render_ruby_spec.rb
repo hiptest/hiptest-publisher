@@ -110,6 +110,43 @@ describe 'Render as Ruby' do
       "    first_action_word",
       "  end",
       "end"].join("\n")
+
+    # In Zest, correspond to these action words with parameters:
+    # actionword 'aw with int param'(x) do end
+    # actionword 'aw with float param'(x) do end
+    # actionword 'aw with boolean param'(x) do end
+    # actionword 'aw with null param'(x) do end
+    # actionword 'aw with string param'(x) do end
+    #
+    # but called by this scenario
+    # scenario 'many calls scenarios' do
+    #   call 'aw with int param'(x = 3)
+    #   call 'aw with float param'(x = 4.2)
+    #   call 'aw with boolean param'(x = true)
+    #   call 'aw with null param'(x = null)
+    #   call 'aw with string param'(x = 'toto')
+    @actionwords_with_params_rendered = [
+      "# encoding: UTF-8",
+      "",
+      "module Actionwords",
+      "  def aw_with_int_param(x)",
+      "  end",
+      "",
+=begin
+      "  def aw_with_float_param(x)",
+      "  end",
+      "",
+      "  def aw_with_boolean_param(x)",
+      "  end",
+      "",
+      "  def aw_with_null_param(x)",
+      "  end",
+      "",
+=end
+      "  def aw_with_string_param(x)",
+      "  end",
+      "end"
+    ].join("\n")
   end
 
   context 'Rspec' do

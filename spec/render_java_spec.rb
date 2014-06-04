@@ -195,6 +195,44 @@ describe 'Render as Java' do
       "  }",
       "}"].join("\n")
 
+    # In Zest, correspond to these action words with parameters:
+    # actionword 'aw with int param'(x) do end
+    # actionword 'aw with float param'(x) do end
+    # actionword 'aw with boolean param'(x) do end
+    # actionword 'aw with null param'(x) do end
+    # actionword 'aw with string param'(x) do end
+    #
+    # but called by this scenario
+    # scenario 'many calls scenarios' do
+    #   call 'aw with int param'(x = 3)
+    #   call 'aw with float param'(x = 4.2)
+    #   call 'aw with boolean param'(x = true)
+    #   call 'aw with null param'(x = null)
+    #   call 'aw with string param'(x = 'toto')
+    @actionwords_with_params_rendered = [
+      "package com.example;",
+      "",
+      "public class Actionwords {",
+      "",
+      "  public void awWithIntParam(int x) {",
+      "  }",
+      "",
+=begin
+      "  public void awWithFloatParam(float x) {",
+      "  }",
+      "",
+      "  public void awWithBooleanParam(boolean x) {",
+      "  }",
+      "",
+      "  public void awWithNullParam(String x) {",
+      "  }",
+      "",
+=end
+      "  public void awWithStringParam(String x) {",
+      "  }",
+      "}"
+    ].join("\n")
+
 
     # In Zest:
     # @myTag

@@ -339,11 +339,9 @@ module Zest
     end
 
     class Project < Node
-      def initialize(name, description = '', scenarios = nil, actionwords = nil)
+      def initialize(name, description = '', scenarios = Scenarios.new, actionwords = Actionwords.new)
         super()
-        unless scenarios.nil?
-          scenarios.parent = self
-        end
+        scenarios.parent = self
 
         @childs = {
           :name => name,
@@ -351,6 +349,35 @@ module Zest
           :scenarios => scenarios,
           :actionwords => actionwords
         }
+
+        actionwords.childs[:actionwords].each do |actionword|
+          unless actionword.childs[:parameters].empty?
+            call = self.find_call(actionword.childs[:name])
+
+            unless call.nil?
+              call.childs[:arguments].each do |argument|
+                if argument.childs[:value].instance_of?(Zest::Nodes::NumericLiteral)
+                  actionword.childs[:parameters].each do |parameter|
+                    if parameter.childs[:name] == argument.childs[:name]
+                      parameter.childs[:type] = 'int'
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+
+      def find_call(name)
+        @childs[:scenarios].childs[:scenarios].each do |scenario|
+          scenario.childs[:body].each do |body_element|
+            if body_element.instance_of?(Zest::Nodes::Call) && (body_element.childs[:actionword] == name)
+              return body_element
+            end
+          end
+          return nil
+        end
       end
     end
   end

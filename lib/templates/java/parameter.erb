@@ -1,1 +1,1 @@
-String <%= @rendered_childs[:name].camelize_lower %>
+<% if @childs[:type].nil? %>String <% else %>int <% end %><%= @rendered_childs[:name].camelize_lower %>

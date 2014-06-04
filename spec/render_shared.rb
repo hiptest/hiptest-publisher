@@ -39,7 +39,7 @@ shared_context "shared render" do
       Zest::Nodes::Variable.new('fighters'),
       Zest::Nodes::StringLiteral.new('foo'))
     @call_foo = Zest::Nodes::Call.new('foo')
-    @argument = Zest::Nodes::Argument.new(@x_variable, @fighters)
+    @argument = Zest::Nodes::Argument.new('x', @fighters)
     @call_foo_with_fighters = Zest::Nodes::Call.new('foo', [@argument])
 
     @simple_tag = Zest::Nodes::Tag.new('myTag')
@@ -124,6 +124,38 @@ shared_context "shared render" do
         ])
     ])
     @scenarios.parent = Zest::Nodes::Project.new('My_project')
+
+    @actionwords_with_paramters = Zest::Nodes::Actionwords.new([
+      Zest::Nodes::Actionword.new('aw with int param', [], [Zest::Nodes::Parameter.new('x')], []),
+=begin
+      Zest::Nodes::Actionword.new('aw with float param', [], [Zest::Nodes::Parameter.new('x')], []),
+      Zest::Nodes::Actionword.new('aw with boolean param', [], [Zest::Nodes::Parameter.new('x')], []),
+      Zest::Nodes::Actionword.new('aw with null param', [], [Zest::Nodes::Parameter.new('x')], []),
+=end
+      Zest::Nodes::Actionword.new('aw with string param', [], [Zest::Nodes::Parameter.new('x')], [])
+    ])
+    @scenarios_with_many_calls = Zest::Nodes::Scenarios.new([
+      Zest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
+        Zest::Nodes::Call.new('aw with int param', [
+          Zest::Nodes::Argument.new('x', Zest::Nodes::NumericLiteral.new(3))]),
+=begin
+        Zest::Nodes::Call.new('aw with float param', [
+          Zest::Nodes::Argument.new('x',
+            Zest::Nodes::NumericLiteral.new(4.2)
+          )]),
+        Zest::Nodes::Call.new('aw with boolean param', [
+          Zest::Nodes::Argument.new('x',
+            Zest::Nodes::BooleanLiteral.new(true)
+          )]),
+        Zest::Nodes::Call.new('aw_with_null_param', [
+          Zest::Nodes::Argument.new('x',
+            Zest::Nodes::NullLiteral.new
+          )]),
+=end
+        Zest::Nodes::Call.new('aw with string param', [
+          Zest::Nodes::Argument.new('x', Zest::Nodes::StringLiteral.new('toto'))])
+      ])])
+    @project = Zest::Nodes::Project.new('My project', "", @scenarios_with_many_calls, @actionwords_with_paramters)
 
     @context = {framework: framework}
   end
@@ -253,6 +285,11 @@ shared_examples "a renderer" do
   it 'Actionwords' do
     @context[:package] = 'com.example'
     @actionwords.render(language, @context).should eq(@actionwords_rendered)
+  end
+
+  it 'Actionwords with parameters of different types' do
+    @context[:package] = 'com.example'
+    @project.childs[:actionwords].render(language, @context).should eq(@actionwords_with_params_rendered)
   end
 
   it 'Scenarios' do
