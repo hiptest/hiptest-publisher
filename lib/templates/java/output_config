@@ -1,9 +1,8 @@
 [tests]
 filename = 'ProjectTest.java'
 indentation = "    "
-package = 'com.example'
+call_prefix = 'actionwords'
 
 [actionwords]
 filename = 'Actionwords.java'
 indentation = "    "
-package = 'com.example'

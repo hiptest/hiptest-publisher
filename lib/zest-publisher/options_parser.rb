@@ -115,6 +115,9 @@ class LanguageConfigParser
   def make_context group
     context = {}
 
+    unless @options.package.nil?
+      context[:package] = @options.package
+    end
     unless @options.framework.nil?
       context[:framework] = @options.framework
     end
