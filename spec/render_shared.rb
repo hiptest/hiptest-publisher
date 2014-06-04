@@ -10,6 +10,7 @@ shared_context "shared render" do
     @false = Zest::Nodes::BooleanLiteral.new(false)
     @true = Zest::Nodes::BooleanLiteral.new(true)
     @foo_variable = Zest::Nodes::Variable.new('foo')
+    @foo_bar_variable = Zest::Nodes::Variable.new('foo bar')
     @x_variable = Zest::Nodes::Variable.new('x')
 
     @foo_fighters_prop = Zest::Nodes::Property.new(@foo_variable, @fighters)
@@ -147,6 +148,11 @@ shared_examples "a renderer" do
 
   it 'Variable' do
     @foo_variable.render(language, @context).should eq(@foo_variable_rendered)
+  end
+
+  it 'Variable' do
+    @foo_variable.render(language, @context).should eq(@foo_variable_rendered)
+    @foo_bar_variable.render(language, @context).should eq(@foo_bar_variable_rendered)
   end
 
   it 'Property' do

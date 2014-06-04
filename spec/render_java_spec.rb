@@ -25,6 +25,7 @@ describe 'Render as Java' do
 
     # In Zest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
+    @foo_bar_variable_rendered = 'fooBar'
 
     # In Zest: foo.fighters
     # TODO: Shouldn't have a better manner ?

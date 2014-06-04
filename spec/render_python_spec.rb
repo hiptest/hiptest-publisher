@@ -25,6 +25,7 @@ describe 'Render as Python' do
 
     # In Zest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
+    @foo_bar_variable_rendered = 'foo_bar'
 
     # In Zest: foo.fighters
     @foo_dot_fighters_rendered = 'foo.fighters'

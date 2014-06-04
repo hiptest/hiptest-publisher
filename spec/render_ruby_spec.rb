@@ -14,6 +14,7 @@ describe 'Render as Ruby' do
 
     # variable
     @foo_variable_rendered = 'foo'
+    @foo_bar_variable_rendered = 'foo_bar'
 
     # Accessors
     @foo_dot_fighters_rendered = 'foo.fighters'
