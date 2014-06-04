@@ -172,7 +172,7 @@ describe 'Render as Java' do
     @step_action_word_rendered = [
       "public void myActionWord() {",
       "  // TODO: Implement action: basic action",
-      "  throw new NotImplementedException();",
+      "  throw new UnsupportedOperationException();",
       "}"].join("\n")
 
     # In Zest, correspond to two action words:
