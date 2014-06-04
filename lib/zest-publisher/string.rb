@@ -30,6 +30,14 @@ class String
 
   def camelize_lower
     normalized = self.normalize
-    normalized.split('_').enum_for(:each_with_index).map {|w, i| w.empty? ? "" : (i == 0 ? "#{w}" : "#{w[0].upcase}#{w[1..-1]}")}.join
+    normalized.split('_').enum_for(:each_with_index).map do |w, i|
+      if w.empty?
+        ""
+      elsif i == 0
+        "#{w[0].downcase}#{w[1..-1]}"
+      else
+        "#{w[0].upcase}#{w[1..-1]}"
+      end
+    end.join
   end
 end

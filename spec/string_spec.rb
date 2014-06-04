@@ -65,4 +65,23 @@ describe String do
       'Tra la  la'.camelize.should eq('TraLaLa')
     end
   end
+
+  context 'camelize_lower' do
+    it 'returns the string in lower camelCase' do
+      'camel_case'.camelize_lower.should eq('camelCase')
+      'almostCamelCaseString'.camelize_lower.should eq('almostCamelCaseString')
+    end
+
+    it 'leaves intact a string already camelized' do
+      'aCamelCaseString'.camelize_lower.should eq('aCamelCaseString')
+    end
+
+    it 'normalize the string before' do
+      'Skøl ofenstrü'.camelize_lower.should eq('skolOfenstru')
+    end
+
+    it "does not fail with multiple spaces" do
+      'Tra la  la'.camelize_lower.should eq('traLaLa')
+    end
+  end
 end
