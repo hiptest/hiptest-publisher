@@ -4,6 +4,7 @@ require 'zest-publisher/string'
 require 'zest-publisher/utils'
 require 'zest-publisher/options_parser'
 require 'zest-publisher/xml_parser'
+require 'zest-publisher/parameter_type_adder'
 
 module Zest
   class Publisher
@@ -26,6 +27,8 @@ module Zest
       parser.build_project
 
       language_config = LanguageConfigParser.new(options)
+
+      Zest::Nodes::ParameterTypeAdder.add(parser.project) if options.language == 'java'
 
       unless options.actionwords_only
         show_status_message "Exporting scenarios to: #{language_config.tests_output_dir}"

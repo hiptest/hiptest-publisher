@@ -203,6 +203,7 @@ describe 'Render as Python' do
     #   call 'aw with boolean param'(x = true)
     #   call 'aw with null param'(x = null)
     #   call 'aw with string param'(x = 'toto')
+    #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
       "# encoding: UTF-8",
       "",
@@ -213,7 +214,6 @@ describe 'Render as Python' do
       "    def aw_with_int_param(self, x):",
       "        pass",
       "",
-=begin
       "    def aw_with_float_param(self, x):",
       "        pass",
       "",
@@ -223,8 +223,10 @@ describe 'Render as Python' do
       "    def aw_with_null_param(self, x):",
       "        pass",
       "",
-=end
       "    def aw_with_string_param(self, x):",
+      "        pass",
+      "",
+      "    def aw_with_template_param(self, x):",
       "        pass",
       ""].join("\n")
 

@@ -209,6 +209,7 @@ describe 'Render as Java' do
     #   call 'aw with boolean param'(x = true)
     #   call 'aw with null param'(x = null)
     #   call 'aw with string param'(x = 'toto')
+    #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
       "package com.example;",
       "",
@@ -217,18 +218,19 @@ describe 'Render as Java' do
       "  public void awWithIntParam(int x) {",
       "  }",
       "",
-=begin
       "  public void awWithFloatParam(float x) {",
       "  }",
       "",
-      "  public void awWithBooleanParam(boolean x) {",
+      "  public void awWithBooleanParam(bool x) {",
       "  }",
       "",
       "  public void awWithNullParam(String x) {",
       "  }",
       "",
-=end
       "  public void awWithStringParam(String x) {",
+      "  }",
+      "",
+      "  public void awWithTemplateParam(String x) {",
       "  }",
       "}"
     ].join("\n")

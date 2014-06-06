@@ -132,7 +132,6 @@ describe 'Render as Ruby' do
       "  def aw_with_int_param(x)",
       "  end",
       "",
-=begin
       "  def aw_with_float_param(x)",
       "  end",
       "",
@@ -142,8 +141,10 @@ describe 'Render as Ruby' do
       "  def aw_with_null_param(x)",
       "  end",
       "",
-=end
       "  def aw_with_string_param(x)",
+      "  end",
+      "",
+      "  def aw_with_template_param(x)",
       "  end",
       "end"
     ].join("\n")

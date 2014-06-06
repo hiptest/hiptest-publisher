@@ -195,6 +195,7 @@ describe 'Render as <My language>' do
     #   call 'aw with boolean param'(x = true)
     #   call 'aw with null param'(x = null)
     #   call 'aw with string param'(x = 'toto')
+    #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
       "# encoding: UTF-8",
       "",
@@ -212,6 +213,9 @@ describe 'Render as <My language>' do
       "  end",
       "",
       "  def aw_with_string_param(x)",
+      "  end",
+      "",
+      "  def aw_with_template_param(x)",
       "  end",
       "end"
     ].join("\n")
