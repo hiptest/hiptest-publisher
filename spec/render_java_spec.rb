@@ -60,10 +60,13 @@ describe 'Render as Java' do
 
     # In Zest: call 'foo'
     @call_foo_rendered = "foo();"
+    # In Zest: call 'foo bar'
+    @call_foo_bar_rendered = "fooBar();"
 
     # In Zest: call 'foo'('fighters')
-    # TODO: add a test about call with 'foo_bar()' give 'fooBar()'
     @call_foo_with_fighters_rendered = 'foo("fighters");'
+    # In Zest: call 'foo bar'('fighters')
+    @call_foo_bar_with_fighters_rendered = 'fooBar("fighters");'
 
     # In Zest: step {action: "${foo}fighters"}
     # TODO: it is a little big strange to use a string format

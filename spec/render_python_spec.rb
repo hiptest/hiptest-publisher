@@ -56,9 +56,14 @@ describe 'Render as Python' do
 
     # In Zest: call 'foo'
     @call_foo_rendered = "self.foo()\n"
+    # In Zest: call 'foo bar'
+    @call_foo_bar_rendered = "self.foo_bar()\n"
 
     # In Zest: call 'foo'('fighters')
     @call_foo_with_fighters_rendered = "self.foo(x = 'fighters')\n"
+    # In Zest: call 'foo bar'('fighters')
+    @call_foo_bar_with_fighters_rendered = "self.foo_bar(x = 'fighters')\n"
+
 
     # In Zest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '# TODO: Implement action: "%sfighters" % (foo)'
