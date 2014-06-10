@@ -8,8 +8,8 @@ gem 'i18n', '~> 0.6', '>= 0.6.9'
 gem 'nokogiri', '~> 1.6.2', '>= 1.6.2.1'
 
 group :development do
-  gem 'rspec', '~> 2.14', '>= 2.14.1'
-  gem 'rspec-mocks', '~> 2.14', '>= 2.14.6'
+  gem 'rspec', '~> 3.0', '>= 3.0.0'
+  gem 'rspec-mocks', '~> 3.0', '>= 3.0.1'
   gem 'codeclimate-test-reporter', '~> 0.3', '>= 0.3.0'
   gem 'jeweler', '~> 2.0', '>= 2.0.1'
 end
