@@ -162,140 +162,140 @@ end
 
 shared_examples "a renderer" do
   it 'NullLiteral' do
-    @null.render(language, @context).should eq(@null_rendered)
+    expect(@null.render(language, @context)).to eq(@null_rendered)
   end
 
   it 'StringLiteral' do
-    @what_is_your_quest.render(language, @context).should eq(@what_is_your_quest_rendered)
+    expect(@what_is_your_quest.render(language, @context)).to eq(@what_is_your_quest_rendered)
   end
 
   it 'NumericLiteral' do
-    @pi.render(language, @context).should eq(@pi_rendered)
+    expect(@pi.render(language, @context)).to eq(@pi_rendered)
   end
 
   it 'BooleanLiteral' do
-    @false.render(language, @context).should eq(@false_rendered)
+    expect(@false.render(language, @context)).to eq(@false_rendered)
   end
 
   it 'Variable' do
-    @foo_variable.render(language, @context).should eq(@foo_variable_rendered)
+    expect(@foo_variable.render(language, @context)).to eq(@foo_variable_rendered)
   end
 
   it 'Variable' do
-    @foo_variable.render(language, @context).should eq(@foo_variable_rendered)
-    @foo_bar_variable.render(language, @context).should eq(@foo_bar_variable_rendered)
+    expect(@foo_variable.render(language, @context)).to eq(@foo_variable_rendered)
+    expect(@foo_bar_variable.render(language, @context)).to eq(@foo_bar_variable_rendered)
   end
 
   it 'Property' do
-    @foo_fighters_prop.render(language, @context).should eq(@foo_fighters_prop_rendered)
+    expect(@foo_fighters_prop.render(language, @context)).to eq(@foo_fighters_prop_rendered)
   end
 
   it 'Field' do
-    @foo_dot_fighters.render(language, @context).should eq(@foo_dot_fighters_rendered)
+    expect(@foo_dot_fighters.render(language, @context)).to eq(@foo_dot_fighters_rendered)
   end
 
   it 'Index' do
-    @foo_brackets_fighters.render(language, @context).should eq(@foo_brackets_fighters_rendered)
+    expect(@foo_brackets_fighters.render(language, @context)).to eq(@foo_brackets_fighters_rendered)
   end
 
   it 'BinaryExpression' do
-    @foo_minus_fighters.render(language, @context).should eq(@foo_minus_fighters_rendered)
+    expect(@foo_minus_fighters.render(language, @context)).to eq(@foo_minus_fighters_rendered)
   end
 
   it 'UnaryExpression' do
-    @minus_foo.render(language, @context).should eq(@minus_foo_rendered)
+    expect(@minus_foo.render(language, @context)).to eq(@minus_foo_rendered)
   end
 
   it 'Parenthesis' do
-    @parenthesis_foo.render(language, @context).should eq(@parenthesis_foo_rendered)
+    expect(@parenthesis_foo.render(language, @context)).to eq(@parenthesis_foo_rendered)
   end
 
   it 'List' do
-    @foo_list.render(language, @context).should eq(@foo_list_rendered)
+    expect(@foo_list.render(language, @context)).to eq(@foo_list_rendered)
   end
 
   it 'Dict' do
-    @foo_dict.render(language, @context).should eq(@foo_dict_rendered)
+    expect(@foo_dict.render(language, @context)).to eq(@foo_dict_rendered)
   end
 
   it 'Template' do
-    @foo_template.render(language, @context).should eq(@foo_template_rendered)
-    @double_quotes_template.render(language, @context).should eq(@double_quotes_template_rendered)
+    expect(@foo_template.render(language, @context)).to eq(@foo_template_rendered)
+    expect(@double_quotes_template.render(language, @context)).to eq(@double_quotes_template_rendered)
   end
 
   it 'Assign' do
-    @assign_fighters_to_foo.render(language, @context).should eq(@assign_fighters_to_foo_rendered)
+    expect(@assign_fighters_to_foo.render(language, @context)).to eq(@assign_fighters_to_foo_rendered)
   end
 
   it 'Call' do
-    @call_foo.render(language, @context).should eq(@call_foo_rendered)
-    @call_foo_with_fighters.render(language, @context).should eq(@call_foo_with_fighters_rendered)
+    expect(@call_foo.render(language, @context)).to eq(@call_foo_rendered)
+    expect(@call_foo_with_fighters.render(language, @context)).to eq(@call_foo_with_fighters_rendered)
   end
 
   it 'IfThen' do
-    @if_then.render(language, @context).should eq(@if_then_rendered)
-    @if_then_else.render(language, @context).should eq(@if_then_else_rendered)
+    expect(@if_then.render(language, @context)).to eq(@if_then_rendered)
+    expect(@if_then_else.render(language, @context)).to eq(@if_then_else_rendered)
   end
 
   it "Step" do
-    @action_foo_fighters.render(language, @context).should eq(@action_foo_fighters_rendered)
+    expect(@action_foo_fighters.render(language, @context)).to eq(@action_foo_fighters_rendered)
   end
 
   it 'While' do
-    @while_loop.render(language, @context).should eq(@while_loop_rendered)
+    expect(@while_loop.render(language, @context)).to eq(@while_loop_rendered)
   end
 
   it 'Tag' do
-    @simple_tag.render(language, @context).should eq(@simple_tag_rendered)
-    @valued_tag.render(language, @context).should eq(@valued_tag_rendered)
+    expect(@simple_tag.render(language, @context)).to eq(@simple_tag_rendered)
+    expect(@valued_tag.render(language, @context)).to eq(@valued_tag_rendered)
   end
 
   it 'Parameter' do
-    @plic_param.render(language, @context).should eq(@plic_param_rendered)
-    @plic_param_default_ploc.render(language, @context).should eq(@plic_param_default_ploc_rendered)
+    expect(@plic_param.render(language, @context)).to eq(@plic_param_rendered)
+    expect(@plic_param_default_ploc.render(language, @context)).to eq(@plic_param_default_ploc_rendered)
   end
 
   context 'Actionword' do
     it 'empty' do
-      @empty_action_word.render(language, @context).should eq(@empty_action_word_rendered)
+      expect(@empty_action_word.render(language, @context)).to eq(@empty_action_word_rendered)
     end
 
     it 'with tags' do
-      @tagged_action_word.render(language, @context).should eq(@tagged_action_word_rendered)
+      expect(@tagged_action_word.render(language, @context)).to eq(@tagged_action_word_rendered)
     end
 
     it 'with parameters' do
-      @parameterized_action_word.render(language, @context).should eq(@parameterized_action_word_rendered)
+      expect(@parameterized_action_word.render(language, @context)).to eq(@parameterized_action_word_rendered)
     end
 
     it 'with body' do
-      @full_actionword.render(language, @context).should eq(@full_actionword_rendered)
+      expect(@full_actionword.render(language, @context)).to eq(@full_actionword_rendered)
     end
 
     it 'with body that contains only step' do
-      @step_action_word.render(language, @context).should eq(@step_action_word_rendered)
+      expect(@step_action_word.render(language, @context)).to eq(@step_action_word_rendered)
     end
   end
 
   it 'Scenario' do
-    @full_scenario.render(language, @context).should eq(@full_scenario_rendered)
+    expect(@full_scenario.render(language, @context)).to eq(@full_scenario_rendered)
   end
 
   it 'Actionwords' do
     @context[:package] = 'com.example'
-    @actionwords.render(language, @context).should eq(@actionwords_rendered)
+    expect(@actionwords.render(language, @context)).to eq(@actionwords_rendered)
   end
 
   it 'Actionwords with parameters of different types' do
     @context[:package] = 'com.example'
     Zest::Nodes::ParameterTypeAdder.add(@project)
-    @project.childs[:actionwords].render(language, @context).should eq(@actionwords_with_params_rendered)
+    expect(@project.childs[:actionwords].render(language, @context)).to eq(@actionwords_with_params_rendered)
   end
 
   it 'Scenarios' do
     @context[:filename] = 'ProjectTest.java'
     @context[:package] = 'com.example'
     @context[:call_prefix] = 'actionwords'
-    @scenarios.render(language, @context).should eq(@scenarios_rendered)
+    expect(@scenarios.render(language, @context)).to eq(@scenarios_rendered)
   end
 end

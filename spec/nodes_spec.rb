@@ -7,42 +7,42 @@ describe Zest::Nodes do
   context 'Node' do
     it 'initialize sets @rendered_childs to an empty dict' do
       myNode = Zest::Nodes::Node.new
-      myNode.rendered_childs.should eq({})
+      expect(myNode.rendered_childs).to eq({})
     end
 
     context 'get_template_path' do
       it 'checks if the file exists in the common templates' do
         myNode = Zest::Nodes::StringLiteral.new('coucou')
-        myNode.get_template_path('python').should eq('./lib/templates/common/stringliteral.erb')
+        expect(myNode.get_template_path('python')).to eq('./lib/templates/common/stringliteral.erb')
       end
 
       it 'checks in the language template folder' do
         myNode = Zest::Nodes::Assign.new('x', 1)
-        myNode.get_template_path('ruby').should eq('./lib/templates/ruby/assign.erb')
+        expect(myNode.get_template_path('ruby')).to eq('./lib/templates/ruby/assign.erb')
       end
 
       it 'checks in the framework specific folder if existing' do
         myNode = Zest::Nodes::Scenarios.new([])
         myNode.instance_variable_set(:@context, {framework: 'minitest'})
-        myNode.get_template_path('ruby').should eq('./lib/templates/ruby/minitest/scenarios.erb')
+        expect(myNode.get_template_path('ruby')).to eq('./lib/templates/ruby/minitest/scenarios.erb')
       end
     end
 
     context 'render_childs' do
       it 'copies the child to @rendered_childs if it does not have a render method' do
         sut = Zest::Nodes::StringLiteral.new("What is your quest ?")
-        sut.rendered_childs.should eq({})
+        expect(sut.rendered_childs).to eq({})
         sut.render_childs('ruby')
-        sut.rendered_childs.should eq({value: "What is your quest ?"})
+        expect(sut.rendered_childs).to eq({value: "What is your quest ?"})
       end
 
       it 'copies the rendered value if the child is a node instance' do
         child = Zest::Nodes::StringLiteral.new('What is your quest ?')
-        child.stub(:render).and_return('What is your quest ?')
+        allow(child).to receive(:render).and_return('What is your quest ?')
         sut = Zest::Nodes::Parenthesis.new(child)
 
         sut.render_childs('ruby')
-        sut.rendered_childs.should eq({content: 'What is your quest ?'})
+        expect(sut.rendered_childs).to eq({content: 'What is your quest ?'})
         expect(child).to have_received(:render).once
       end
 
@@ -52,7 +52,7 @@ describe Zest::Nodes do
           Zest::Nodes::StringLiteral.new('To seek the Holy grail'),
         ])
         sut.render_childs('ruby')
-        sut.rendered_childs.should eq({:items => [
+        expect(sut.rendered_childs).to eq({:items => [
           "'What is your quest ?'",
           "'To seek the Holy grail'"
         ]})
@@ -60,7 +60,7 @@ describe Zest::Nodes do
 
       it 'renders child only once' do
         child = Zest::Nodes::StringLiteral.new('What is your quest ?')
-        child.stub(:render).and_return('What is your quest ?')
+        allow(child).to receive(:render).and_return('What is your quest ?')
         sut = Zest::Nodes::Parenthesis.new(child)
 
         sut.render_childs('ruby')
@@ -72,7 +72,7 @@ describe Zest::Nodes do
 
       it 'calls post_render_childs after rendering' do
         sut = Zest::Nodes::StringLiteral.new('What is the air-speed velocity of an unladen swallow?')
-        sut.stub(:post_render_childs)
+        allow(sut).to receive(:post_render_childs)
         sut.render_childs('ruby')
         expect(sut).to have_received(:post_render_childs).once
       end
@@ -80,18 +80,18 @@ describe Zest::Nodes do
 
     it 'render' do
       sut = Zest::Nodes::Node.new()
-      sut.stub(:read_template).and_return('This is a sample ERB: <%= @rendered_childs %>')
+      allow(sut).to receive(:read_template).and_return('This is a sample ERB: <%= @rendered_childs %>')
       sut.instance_variable_set(:@childs, {plic: 'Ploc'})
 
-      sut.render.should eq('This is a sample ERB: {:plic=>"Ploc"}')
-      sut.rendered.should eq('This is a sample ERB: {:plic=>"Ploc"}')
+      expect(sut.render).to eq('This is a sample ERB: {:plic=>"Ploc"}')
+      expect(sut.rendered).to eq('This is a sample ERB: {:plic=>"Ploc"}')
     end
 
     context 'indent_block' do
       it 'indent a block' do
         sut = Zest::Nodes::Node.new
         block = ["A single line", "Two\nLines", "Three\n  indented\n    lines"]
-        sut.indent_block(block).should eq([
+        expect(sut.indent_block(block)).to eq([
           "  A single line",
           "  Two",
           "  Lines",
@@ -104,24 +104,24 @@ describe Zest::Nodes do
 
       it 'can have a specified indentation' do
         sut = Zest::Nodes::Node.new
-        sut.indent_block(["La"], "---").should eq("---La\n")
+        expect(sut.indent_block(["La"], "---")).to eq("---La\n")
       end
 
       it 'if no indentation is specified, it uses the one from the context' do
         sut = Zest::Nodes::Node.new
         sut.instance_variable_set(:@context, {:indentation => '~'})
 
-        sut.indent_block(["La"]).should eq("~La\n")
+        expect(sut.indent_block(["La"])).to eq("~La\n")
       end
 
       it 'default indentation is wo spaces' do
         sut = Zest::Nodes::Node.new
-        sut.indent_block(["La"]).should eq("  La\n")
+        expect(sut.indent_block(["La"])).to eq("  La\n")
       end
 
       it 'also accepts a separator to join the result (aded to te line return)' do
         sut = Zest::Nodes::Node.new
-        sut.indent_block(["A", "B\nC", "D\nE"], '  ', '#').should eq("  A\n#  B\n  C\n#  D\n  E\n")
+        expect(sut.indent_block(["A", "B\nC", "D\nE"], '  ', '#')).to eq("  A\n#  B\n  C\n#  D\n  E\n")
       end
     end
 
@@ -133,16 +133,16 @@ describe Zest::Nodes do
       end
 
       it 'finds all sub-nodes (including self)' do
-        @literal.find_sub_nodes.should eq([@literal])
-        @assign.find_sub_nodes.should eq([@assign, @var, @literal])
+        expect(@literal.find_sub_nodes).to eq([@literal])
+        expect(@assign.find_sub_nodes).to eq([@assign, @var, @literal])
       end
 
       it 'can be filter by type' do
-        @assign.find_sub_nodes(Zest::Nodes::Variable).should eq([@var])
+        expect(@assign.find_sub_nodes(Zest::Nodes::Variable)).to eq([@var])
       end
 
       it 'can be unflattened (but it has no interest ...)' do
-        @assign.find_sub_nodes(nil, false).should eq([
+        expect(@assign.find_sub_nodes(nil, false)).to eq([
           @assign,
           [
             [@var, []],
@@ -170,7 +170,7 @@ describe Zest::Nodes do
         ])
         item.post_render_childs
 
-        item.variables.map {|v| v.childs[:name]}.should eq(['x', 'y'])
+        expect(item.variables.map {|v| v.childs[:name]}).to eq(['x', 'y'])
       end
 
       it 'saves two lists of parameters: with and without default value' do
@@ -179,18 +179,18 @@ describe Zest::Nodes do
         item = Zest::Nodes::Item.new('my item', [], [simple, valued])
         item.post_render_childs
 
-        item.non_valued_parameters.should eq([simple])
-        item.valued_parameters.should eq([valued])
+        expect(item.non_valued_parameters).to eq([simple])
+        expect(item.valued_parameters).to eq([valued])
       end
     end
     context 'has_parameters?' do
       it 'returns false if has not parameter' do
         item = Zest::Nodes::Item.new('my item', [], [])
-        item.has_parameters?.should be_falsey
+        expect(item.has_parameters?).to be_falsey
       end
       it 'returns true if has at least one parameter' do
         item = Zest::Nodes::Item.new('my item', [], [Zest::Nodes::Parameter.new('piou')])
-        item.has_parameters?.should be_truthy
+        expect(item.has_parameters?).to be_truthy
       end
     end
   end
@@ -200,11 +200,11 @@ describe Zest::Nodes do
       it 'returns true if body has at least one step' do
         step = Zest::Nodes::Step.new('action', 'value')
         myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [step])
-        myNode.has_step?.should be_truthy
+        expect(myNode.has_step?).to be_truthy
       end
       it 'returns false if there is no step in body' do
         myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [])
-        myNode.has_step?.should be_falsey
+        expect(myNode.has_step?).to be_falsey
       end
     end
   end
@@ -213,12 +213,12 @@ describe Zest::Nodes do
     context 'has_arguments?' do
       it 'returns false if has no argument' do
         call = Zest::Nodes::Call.new('', [])
-        call.has_arguments?.should be_falsey
+        expect(call.has_arguments?).to be_falsey
       end
 
       it 'returns true if has at least one argument' do
         call = Zest::Nodes::Call.new('', [Zest::Nodes::Argument.new('name', 'value')])
-        call.has_arguments?.should be_truthy
+        expect(call.has_arguments?).to be_truthy
       end
     end
   end

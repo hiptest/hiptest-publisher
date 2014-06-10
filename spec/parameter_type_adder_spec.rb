@@ -9,27 +9,27 @@ describe Zest::Nodes do
 
     it 'gives string type if calls nothing' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'))
-      parameter.childs[:type].should eq(:String)
+      expect(parameter.childs[:type]).to eq(:String)
     end
 
     it 'gives integer type if calls with an integer value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::NumericLiteral.new('3'))
-      parameter.childs[:type].should eq(:int)
+      expect(parameter.childs[:type]).to eq(:int)
     end
 
     it 'gives float type if calls with a float value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::NumericLiteral.new('3.14'))
-      parameter.childs[:type].should eq(:float)
+      expect(parameter.childs[:type]).to eq(:float)
     end
 
     it 'gives boolean type if calls with boolean value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::BooleanLiteral.new(true))
-      parameter.childs[:type].should eq(:bool)
+      expect(parameter.childs[:type]).to eq(:bool)
     end
 
     it 'gives string type if calls with null value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::NullLiteral.new)
-      parameter.childs[:type].should eq(:null)
+      expect(parameter.childs[:type]).to eq(:null)
     end
 
     it 'gives string type if calls with a template value' do
@@ -37,12 +37,12 @@ describe Zest::Nodes do
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::Template.new([Zest::Nodes::StringLiteral.new('My value')])
       )
-      parameter.childs[:type].should eq(:String)
+      expect(parameter.childs[:type]).to eq(:String)
     end
 
     it 'gives string type if calls with a string value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::StringLiteral.new('my string'))
-      parameter.childs[:type].should eq(:String)
+      expect(parameter.childs[:type]).to eq(:String)
     end
 
     it 'gives float type if calls with integer and float values' do
@@ -50,7 +50,7 @@ describe Zest::Nodes do
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::NumericLiteral.new('3'),
         Zest::Nodes::NumericLiteral.new('4.12'))
-      parameter.childs[:type].should eq(:float)
+      expect(parameter.childs[:type]).to eq(:float)
     end
 
     it 'gives int type if calls with integer value and null values' do
@@ -58,7 +58,7 @@ describe Zest::Nodes do
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::NullLiteral.new,
         Zest::Nodes::NumericLiteral.new('4'))
-      parameter.childs[:type].should eq(:int)
+      expect(parameter.childs[:type]).to eq(:int)
     end
 
     it 'gives float type if calls with integer value, float value and null values' do
@@ -67,7 +67,7 @@ describe Zest::Nodes do
         Zest::Nodes::NumericLiteral.new('3.14'),
         Zest::Nodes::NullLiteral.new,
         Zest::Nodes::NumericLiteral.new('4'))
-      parameter.childs[:type].should eq(:float)
+      expect(parameter.childs[:type]).to eq(:float)
     end
 
     it 'gives boolean type if calls with boolean values and null value' do
@@ -76,7 +76,7 @@ describe Zest::Nodes do
         Zest::Nodes::BooleanLiteral.new(true),
         Zest::Nodes::NullLiteral.new,
         Zest::Nodes::BooleanLiteral.new(false))
-      parameter.childs[:type].should eq(:bool)
+      expect(parameter.childs[:type]).to eq(:bool)
     end
 
     it 'gives string type if impossible to deduce type' do
@@ -84,7 +84,7 @@ describe Zest::Nodes do
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::BooleanLiteral.new(true),
         Zest::Nodes::NumericLiteral.new('3'))
-      parameter.childs[:type].should eq(:String)
+      expect(parameter.childs[:type]).to eq(:String)
     end
   end
 end
