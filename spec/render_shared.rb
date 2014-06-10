@@ -39,8 +39,10 @@ shared_context "shared render" do
       Zest::Nodes::Variable.new('fighters'),
       Zest::Nodes::StringLiteral.new('foo'))
     @call_foo = Zest::Nodes::Call.new('foo')
+    @call_foo_bar = Zest::Nodes::Call.new('foo bar')
     @argument = Zest::Nodes::Argument.new('x', @fighters)
     @call_foo_with_fighters = Zest::Nodes::Call.new('foo', [@argument])
+    @call_foo_bar_with_fighters = Zest::Nodes::Call.new('foo bar', [@argument])
 
     @simple_tag = Zest::Nodes::Tag.new('myTag')
     @valued_tag = Zest::Nodes::Tag.new('myTag', 'somevalue')
@@ -229,7 +231,9 @@ shared_examples "a renderer" do
 
   it 'Call' do
     expect(@call_foo.render(language, @context)).to eq(@call_foo_rendered)
+    expect(@call_foo_bar.render(language, @context)).to eq(@call_foo_bar_rendered)
     expect(@call_foo_with_fighters.render(language, @context)).to eq(@call_foo_with_fighters_rendered)
+    expect(@call_foo_bar_with_fighters.render(language, @context)).to eq(@call_foo_bar_with_fighters_rendered)
   end
 
   it 'IfThen' do
