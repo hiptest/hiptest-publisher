@@ -282,19 +282,15 @@ shared_examples "a renderer" do
   end
 
   it 'Actionwords' do
-    @context[:package] = 'com.example'
     expect(@actionwords.render(language, @context)).to eq(@actionwords_rendered)
   end
 
   it 'Actionwords with parameters of different types' do
-    @context[:package] = 'com.example'
     Zest::Nodes::ParameterTypeAdder.add(@project)
     expect(@project.childs[:actionwords].render(language, @context)).to eq(@actionwords_with_params_rendered)
   end
 
   it 'Scenarios' do
-    @context[:filename] = 'ProjectTest.java'
-    @context[:package] = 'com.example'
     @context[:call_prefix] = 'actionwords'
     expect(@scenarios.render(language, @context)).to eq(@scenarios_rendered)
   end

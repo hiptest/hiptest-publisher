@@ -283,6 +283,9 @@ describe 'Render as Java' do
       "    actionwords.myActionWord();",
       "  }",
       "}"].join("\n")
+
+    @context[:filename] = 'ProjectTest.java'
+    @context[:package] = 'com.example'
   end
 
   context 'JUnit' do
