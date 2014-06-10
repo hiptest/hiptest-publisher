@@ -104,10 +104,10 @@ describe 'Render as <My language>' do
     # In Zest: @myTag:somevalue
     @valued_tag_rendered = 'myTag:somevalue'
 
-    # In Zest: plic (as in: call 'foo'(plic))
+    # In Zest: plic (as in: definition 'foo'(plic))
     @plic_param_rendered = 'plic'
 
-    # In Zest: plic = 'ploc' (as in: call 'foo'(plic = 'ploc'))
+    # In Zest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
     @plic_param_default_ploc_rendered = "plic = 'ploc'"
 
     # In Zest:

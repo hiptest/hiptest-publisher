@@ -112,11 +112,11 @@ describe 'Render as Java' do
     # In Zest: @myTag:somevalue
     @valued_tag_rendered = 'myTag:somevalue'
 
-    # In Zest: plic (as in: call 'foo'(plic))
+    # In Zest: plic (as in: definition 'foo'(plic))
     # TODO: choose the right type
     @plic_param_rendered = 'String plic'
 
-    # In Zest: plic = 'ploc' (as in: call 'foo'(plic = 'ploc'))
+    # In Zest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
     # TODO: how render default value ?
     # TODO: test with parameter name: plic_et
     @plic_param_default_ploc_rendered = "String plic"
@@ -153,7 +153,6 @@ describe 'Render as Java' do
     #       on two lines"}
     #   end
     # end
-    # TODO: how to chose the type of x (ex: int whereas String) ?
     @full_actionword_rendered = [
       "public void compareToPi(String x) {",
       "  // Tags: myTag",
@@ -268,7 +267,6 @@ describe 'Render as Java' do
     # scenario 'second scenario' do
     #   call 'my action word'
     # end
-    # TODO: get package from config file
     @scenarios_rendered = [
       "package com.example;",
       "",

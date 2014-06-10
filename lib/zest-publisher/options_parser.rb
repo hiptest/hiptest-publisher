@@ -42,7 +42,7 @@ class OptionsParser
       end
 
       opts.on("-l", "--language=LANG", String,
-              "Target language (only Ruby available for the moment)") do |language|
+              "Target language (ruby, java, and python available for the moment)") do |language|
         options.language = language
       end
 

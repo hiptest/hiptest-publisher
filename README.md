@@ -33,6 +33,7 @@ This will create a Ruby tests suite. For the moment, we support the following la
 
  - Ruby (rspec / minitest)
  - Python (unittest)
+ - Java (JUnit)
 
 You can specify the output language and framework in the command line, for example:
 
