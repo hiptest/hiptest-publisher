@@ -40,20 +40,6 @@ You can specify the output language and framework in the command line, for examp
 zest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 ```
 
-You can use a configuration file, for example:
-
-```shell
-zest-publisher --config=config_file
-```
-
-with config file contains:
-
-```
-token = '<YOUR TOKEN>'
-language = 'java'
-output_directory = '<YOUR OUTPUT DIRECTORY>'
-package = 'com.youcompagny'
-```
 
 For more information on the available options, use the following command:
 
@@ -75,6 +61,14 @@ zest-publisher
 zest-publisher --config-file=config_minitest
 ```
 
+For example, for java you can use this config file content:
+
+```
+token = '<YOUR TOKEN>'
+language = 'java'
+output_directory = '<YOUR OUTPUT DIRECTORY>'
+package = 'com.youcompagny'
+```
 
 Adding support for other languages and framework
 ------------------------------------------------
