@@ -28,7 +28,6 @@ From there, copy the secret token and run this command line:
 zest-publisher --token=<YOUR TOKEN>
 ```
 
-
 This will create a Ruby tests suite. For the moment, we support the following languages and frameworks:
 
  - Ruby (rspec / minitest)
@@ -41,8 +40,22 @@ You can specify the output language and framework in the command line, for examp
 zest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 ```
 
+You can use a configuration file, for example:
 
-For more informations on the available options, use the following command:
+```shell
+zest-publisher --config=config_file
+```
+
+with config file contains:
+
+```
+token = '<YOUR TOKEN>'
+language = 'java'
+output_directory = '<YOUR OUTPUT DIRECTORY>'
+package = 'com.youcompagny'
+```
+
+For more information on the available options, use the following command:
 
 ```shell
 zest-publisher --help
