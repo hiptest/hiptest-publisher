@@ -3,9 +3,46 @@
   <uid>9e130e4b-8049-43c0-aae0-09b01f8ebc98</uid>
   <name>Zest publisher</name>
   <description/>
+  <testPlan>
+    <folder>
+      <name>Scenarios</name>
+      <uid>898c2e62-2934-40bb-a53c-430ee5f34bbf</uid>
+    </folder>
+    <folder>
+      <name>First subfolder</name>
+      <uid>ece98da3-e871-4b21-9438-eba808d87e1e</uid>
+      <parentUid>898c2e62-2934-40bb-a53c-430ee5f34bbf</parentUid>
+    </folder>
+    <folder>
+      <name>Second subfolder</name>
+      <uid>d899341d-ce45-4dc7-a1e4-5d1680d1cb87</uid>
+      <parentUid>898c2e62-2934-40bb-a53c-430ee5f34bbf</parentUid>
+    </folder>
+    <folder>
+      <name>A sub subfolder</name>
+      <uid>35646196-f3c6-4555-bd97-f97fd549462b</uid>
+      <parentUid>d899341d-ce45-4dc7-a1e4-5d1680d1cb87</parentUid>
+    </folder>
+  </testPlan>
   <scenarios>
     <scenario>
+      <name>A scenario in a subfolder</name>
+      <uid>034cfcfe-9fe7-46d0-a91e-50d7b3109170</uid>
+      <folderUid>35646196-f3c6-4555-bd97-f97fd549462b</folderUid>
+      <steps>
+        <step>
+          <action>
+            <template>
+              <stringliteral>Some actions to do</stringliteral>
+            </template>
+          </action>
+        </step>
+      </steps>
+    </scenario>
+    <scenario>
       <name>show help</name>
+      <uid>3ba5e98b-db51-4687-a6c5-21fa741c458b</uid>
+      <folderUid>898c2e62-2934-40bb-a53c-430ee5f34bbf</folderUid>
       <steps>
         <call>
           <actionword>start publisher</actionword>
@@ -24,37 +61,28 @@
         </call>
         <step>
           <result>
-            <stringliteral>help is displayed</stringliteral>
+            <template>
+              <stringliteral>help is displayed</stringliteral>
+            </template>
           </result>
         </step>
       </steps>
-      <description/>
     </scenario>
   </scenarios>
   <actionwords>
     <actionword>
-      <name>start publisher</name>
-      <parameters>
-        <parameter>
-          <name>options</name>
-          <default_value/>
-        </parameter>
-      </parameters>
-      <steps>
-        <step>
-          <action>
-            <stringliteral>start publisher with options </stringliteral>
-            <var>options</var>
-          </action>
-        </step>
-      </steps>
-    </actionword>
-    <actionword>
       <name>Parameters and assignements</name>
       <tags>
-        <tag>parameters</tag>
-        <tag>parameters:defaulted</tag>
-        <tag>assignements</tag>
+        <tag>
+          <key>parameters</key>
+        </tag>
+        <tag>
+          <key>parameters</key>
+          <value>defaulted</value>
+        </tag>
+        <tag>
+          <key>assignements</key>
+        </tag>
       </tags>
       <parameters>
         <parameter>
@@ -62,15 +90,21 @@
         </parameter>
         <parameter>
           <name>default_integer</name>
-          <default_value>1</default_value>
+          <default_value>
+            <numericliteral>1</numericliteral>
+          </default_value>
         </parameter>
         <parameter>
           <name>default_string</name>
-          <default_value>My string</default_value>
+          <default_value>
+            <stringliteral>My string</stringliteral>
+          </default_value>
         </parameter>
         <parameter>
           <name>default_list</name>
-          <default_value/>
+          <default_value>
+            <list/>
+          </default_value>
         </parameter>
       </parameters>
       <steps>
@@ -87,15 +121,17 @@
             <var>float_var</var>
           </to>
           <value>
-            <operation>
-              <left>
-                <numericliteral>3.14</numericliteral>
-              </left>
-              <operator>-</operator>
-              <right>
-                <var>default_integer</var>
-              </right>
-            </operation>
+            <parenthesis>
+              <operation>
+                <left>
+                  <numericliteral>3.14</numericliteral>
+                </left>
+                <operator>-</operator>
+                <right>
+                  <var>default_integer</var>
+                </right>
+              </operation>
+            </parenthesis>
           </value>
         </assign>
         <assign>
@@ -137,8 +173,12 @@
     <actionword>
       <name>Control blocks</name>
       <tags>
-        <tag>parameters</tag>
-        <tag>dsltests</tag>
+        <tag>
+          <key>parameters</key>
+        </tag>
+        <tag>
+          <key>dsltests</key>
+        </tag>
       </tags>
       <parameters>
         <parameter>
@@ -148,15 +188,17 @@
       <steps>
         <while>
           <condition>
-            <operation>
-              <left>
-                <var>x</var>
-              </left>
-              <operator>&lt;</operator>
-              <right>
-                <numericliteral>0</numericliteral>
-              </right>
-            </operation>
+            <parenthesis>
+              <operation>
+                <left>
+                  <var>x</var>
+                </left>
+                <operator>&lt;</operator>
+                <right>
+                  <numericliteral>0</numericliteral>
+                </right>
+              </operation>
+            </parenthesis>
           </condition>
           <body>
             <assign>
@@ -179,21 +221,25 @@
         </while>
         <if>
           <condition>
-            <operation>
-              <left>
-                <var>x</var>
-              </left>
-              <operator>==</operator>
-              <right>
-                <numericliteral>0</numericliteral>
-              </right>
-            </operation>
+            <parenthesis>
+              <operation>
+                <left>
+                  <var>x</var>
+                </left>
+                <operator>==</operator>
+                <right>
+                  <numericliteral>0</numericliteral>
+                </right>
+              </operation>
+            </parenthesis>
           </condition>
           <then>
             <step>
               <result>
-                <var>x</var>
-                <stringliteral> is now equal to zero</stringliteral>
+                <template>
+                  <var>x</var>
+                  <stringliteral> is now equal to zero</stringliteral>
+                </template>
               </result>
             </step>
           </then>
@@ -212,7 +258,7 @@
                       <right>
                         <numericliteral>1</numericliteral>
                       </right>
-                  </operation>
+                    </operation>
                   </value>
                 </argument>
               </arguments>
@@ -220,6 +266,38 @@
           </else>
         </if>
       </steps>
+    </actionword>
+    <actionword>
+      <name>start publisher</name>
+      <parameters>
+        <parameter>
+          <name>options</name>
+          <default_value>
+            <dict/>
+          </default_value>
+        </parameter>
+      </parameters>
+      <steps>
+        <step>
+          <action>
+            <template>
+              <stringliteral>start publisher with options </stringliteral>
+              <var>options</var>
+            </template>
+          </action>
+        </step>
+      </steps>
+    </actionword>
+    <actionword>
+      <name>null param</name>
+      <parameters>
+        <parameter>
+          <name>ploc</name>
+          <default_value>
+            <nullliteral/>
+          </default_value>
+        </parameter>
+      </parameters>
     </actionword>
   </actionwords>
 </project>

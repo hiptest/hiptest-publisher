@@ -41,7 +41,6 @@ describe Zest::XMLParser do
   end
 
   before(:each) do
-
     @zero = '<numericliteral>0</numericliteral>'
     @my_var = '<var>my_var</var>'
     @assign_zero_to_my_var = "
@@ -480,6 +479,59 @@ describe Zest::XMLParser do
     expect(node.childs[:scenarios][0]).to be_a(Zest::Nodes::Scenario)
   end
 
+  it 'folder' do
+    node = build_node("<folder><name>My folder</name><uid>1234</uid><parentUid>7894</parentUid></folder>")
+
+    expect(node).to be_a(Zest::Nodes::Folder)
+    expect(node.childs).to eq({
+      name: "My folder",
+      subfolders: [],
+      scenarios: []
+    })
+  end
+
+  context 'testPlan' do
+    before(:each) do
+      @test_plan = build_node([
+        '<testPlan>',
+        '  <folder>',
+        '    <name>my project</name>',
+        '    <uid>123</uid>',
+        '  </folder>',
+        '  <folder>',
+        '    <name>Second subfolder</name>',
+        '    <uid>456</uid>',
+        '    <parentUid>123</parentUid>',
+        '  </folder>',
+        '  <folder>',
+        '    <name>First subfolder</name>',
+        '    <uid>789</uid>',
+        '    <parentUid>456</parentUid>',
+        '  </folder>',
+        '</testPlan>'
+      ].join("\n"))
+    end
+
+    it 'stores all folders' do
+      expect(@test_plan).to be_a(Zest::Nodes::TestPlan)
+      expect(@test_plan.childs[:folders].length).to eq(3)
+      expect(@test_plan.childs[:folders].map(&:class).uniq).to eq([Zest::Nodes::Folder])
+    end
+
+    it 'updates references' do
+      folders = @test_plan.childs[:folders]
+
+      expect(folders[0].parent).to be_nil
+      expect(folders[0].childs[:subfolders]).to eq([folders[1]])
+
+      expect(folders[1].parent).to eq(folders[0])
+      expect(folders[1].childs[:subfolders]).to eq([folders[2]])
+
+      expect(folders[2].parent).to eq(folders[1])
+      expect(folders[2].childs[:subfolders]).to eq([])
+    end
+  end
+
   context 'project' do
     it 'empty project' do
       node = TestParser.new("<?xml version=\"1.0\"?>
@@ -510,6 +562,35 @@ describe Zest::XMLParser do
       expect(node.childs[:scenarios]).to be_a(Zest::Nodes::Scenarios)
       expect(node.childs[:actionwords]).to be_a(Zest::Nodes::Actionwords)
     end
+
+    it 'assign scenario to folders when needed' do
+      node = TestParser.new("<?xml version=\"1.0\"?>
+        <project>
+          <name>My project</name>
+          <description>A description</description>
+          <testPlan>
+            <folder>
+              <name>My folder</name>
+              <uid>12345</uid>
+            </folder>
+          </testPlan>
+          <scenarios>
+            <scenario>
+              <name>In a folder</name>
+              <folderUid>12345</name>
+            </scenario>
+            <scenario>
+              <name>Not in a folder</name>
+            </scenario>
+          </scenarios>
+        </project>").build_project
+
+      scenarios = node.find_sub_nodes(Zest::Nodes::Scenario)
+      scenarios.length.should eq(2)
+
+      folder = node.find_sub_nodes(Zest::Nodes::Folder).first
+      folder.childs[:scenarios].should eq([scenarios.first])
+    end
   end
 
   it 'parses a full example' do
@@ -517,7 +598,10 @@ describe Zest::XMLParser do
     project = parser.build_project
 
     expect(project.childs[:name]).to eq('Zest publisher')
-    expect(project.find_sub_nodes.length).to eq(63)
-    expect(project.find_sub_nodes(Zest::Nodes::Step).length).to eq(3)
+    expect(project.find_sub_nodes.length).to eq(92)
+    expect(project.find_sub_nodes(Zest::Nodes::Folder).length).to eq(4)
+    expect(project.find_sub_nodes(Zest::Nodes::Scenario).length).to eq(2)
+    expect(project.find_sub_nodes(Zest::Nodes::Actionword).length).to eq(4)
+    expect(project.find_sub_nodes(Zest::Nodes::Step).length).to eq(4)
   end
 end

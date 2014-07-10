@@ -140,16 +140,6 @@ describe Zest::Nodes do
       it 'can be filter by type' do
         expect(@assign.find_sub_nodes(Zest::Nodes::Variable)).to eq([@var])
       end
-
-      it 'can be unflattened (but it has no interest ...)' do
-        expect(@assign.find_sub_nodes(nil, false)).to eq([
-          @assign,
-          [
-            [@var, []],
-            [@literal, []]
-          ]
-        ])
-      end
     end
   end
 

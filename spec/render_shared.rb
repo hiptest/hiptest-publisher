@@ -156,7 +156,7 @@ shared_context "shared render" do
         Zest::Nodes::Call.new('aw with string param', [
           Zest::Nodes::Argument.new('x', Zest::Nodes::Template.new(Zest::Nodes::StringLiteral.new('toto')))])
       ])])
-    @project = Zest::Nodes::Project.new('My project', "", @scenarios_with_many_calls, @actionwords_with_paramters)
+    @project = Zest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_paramters)
 
     @context = {framework: framework}
   end

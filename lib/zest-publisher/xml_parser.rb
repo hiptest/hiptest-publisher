@@ -194,6 +194,7 @@ module Zest
     end
 
     def build_scenario(scenario)
+      folder_uid_node = scenario.css('folderUid').first
       description_node = scenario.css('description').first
 
       Zest::Nodes::Scenario.new(
@@ -201,7 +202,8 @@ module Zest
         description_node.nil? ? '' : description_node.content,
         build_tags(scenario),
         build_parameters(scenario),
-        build_steps(scenario)
+        build_steps(scenario),
+        folder_uid_node.nil? ? nil : folder_uid_node.content
       )
     end
 
@@ -213,13 +215,35 @@ module Zest
       build_node_list(scenarios.css('> scenario'), Zest::Nodes::Scenarios)
     end
 
+    def build_folder(folder)
+      parent_uid_node = folder.css('parentUid').first
+      Zest::Nodes::Folder.new(
+        folder.css('uid').first.content,
+        parent_uid_node ? parent_uid_node.content : nil,
+        folder.css('name').first.content
+      )
+    end
+
+    def build_testPlan(test_plan)
+      tp = Zest::Nodes::TestPlan.new(
+        build_node_list(test_plan.css('> folder'))
+      )
+
+      tp.organize_folders
+      return tp
+    end
+
     def build_project
       @project = Zest::Nodes::Project.new(
         @xml.css('project name').first.content,
         @xml.css('project description').first.content,
+        build_node(@xml.css('project > testPlan').first, Zest::Nodes::TestPlan),
         build_node(@xml.css('project > scenarios').first, Zest::Nodes::Scenarios),
         build_node(@xml.css('project > actionwords').first, Zest::Nodes::Actionwords)
       )
+
+      @project.assign_scenarios_to_folders
+      return @project
     end
 
     private

@@ -77,28 +77,35 @@ module Zest
         end.join(separator)
       end
 
-      def find_sub_nodes(type = nil, flatten = true)
-        sub_nodes = @childs.map do |key, child|
-          build_sub_node(child, type)
-        end.compact
+      def find_sub_nodes(type = nil)
+        sub_nodes = all_sub_nodes
 
-        if type.nil? || self.is_a?(type)
-          result = [self, sub_nodes]
+        if type.nil?
+          sub_nodes
         else
-          result = sub_nodes
+          sub_nodes.keep_if {|node| node.is_a? type}
         end
-
-        flatten ? result.flatten : result
       end
 
       private
 
-      def build_sub_node (node, type)
-        if node.is_a?(Node)
-          node.find_sub_nodes(type, flatten = false)
-        elsif node.is_a?(Array)
-          node.map {|item| build_sub_node(item, type)}.compact
+      def all_sub_nodes
+        path = [self]
+        childs = []
+
+        until path.empty?
+          current_node = path.pop
+
+          if current_node.is_a?(Node)
+            next if childs.include? current_node
+
+            childs << current_node
+            current_node.childs.values.reverse.each {|item| path << item}
+          elsif current_node.is_a?(Array)
+            current_node.reverse.each {|item| path << item}
+          end
         end
+        childs
       end
     end
 
@@ -335,9 +342,12 @@ module Zest
     end
 
     class Scenario < Item
-      def initialize(name, description = '', tags = [], parameters = [], body = [])
+      attr_reader :folder_uid
+
+      def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil)
         super(name, tags, parameters, body)
         @childs[:description] = description
+        @folder_uid = folder_uid
       end
     end
 
@@ -355,17 +365,74 @@ module Zest
       end
     end
 
+    class Folder < Node
+      attr_reader :uid, :parent, :parent_uid
+      attr_writer :parent
+
+      def initialize(uid, parent_uid, name)
+        super()
+
+        @uid = uid
+        @parent_uid = parent_uid
+
+        @childs = {
+          :name => name,
+          :subfolders => [],
+          :scenarios => []
+        }
+      end
+    end
+
+    class TestPlan < Node
+      def initialize(folders = [])
+        super()
+        @uids_mapping = {}
+        @childs = {
+          :root_folder => nil,
+          :folders => folders
+        }
+      end
+
+      def organize_folders
+        @childs[:folders].each do |folder|
+          @uids_mapping[folder.uid] = folder
+          parent = find_folder_by_uid folder.parent_uid
+          if parent.nil?
+            @childs[:root_folder] = folder
+            next
+          end
+
+          folder.parent = parent
+          parent.childs[:subfolders] << folder
+        end
+      end
+
+      def find_folder_by_uid(uid)
+        return @uids_mapping[uid]
+      end
+    end
+
     class Project < Node
-      def initialize(name, description = '', scenarios = Scenarios.new, actionwords = Actionwords.new)
+      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new)
         super()
         scenarios.parent = self
 
         @childs = {
           :name => name,
           :description => description,
+          :test_plan => test_plan,
           :scenarios => scenarios,
           :actionwords => actionwords
         }
+      end
+
+      def assign_scenarios_to_folders
+        @childs[:scenarios].childs[:scenarios].each do |scenario|
+          folder = @childs[:test_plan].find_folder_by_uid(scenario.folder_uid)
+          next if folder.nil?
+
+          folder.childs[:scenarios] << scenario
+        end
       end
     end
   end

@@ -97,7 +97,7 @@ def type_adding(parameter, *called_values)
   sc = Zest::Nodes::Scenario.new('many calls scenarios', '', [], [], calls)
   actionwords= Zest::Nodes::Actionwords.new([aw])
   scenarios= Zest::Nodes::Scenarios.new([sc])
-  project = Zest::Nodes::Project.new('My project', '', scenarios, actionwords)
+  project = Zest::Nodes::Project.new('My project', '', nil, scenarios, actionwords)
 
   Zest::Nodes::ParameterTypeAdder.add(project)
   parameter
