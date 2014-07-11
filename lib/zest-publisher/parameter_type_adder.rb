@@ -80,7 +80,7 @@ module Zest
       def walk_parameter parameter
         actionword_name = @acc.last
         piou = @call_types.type_of(actionword_name, parameter.name)
-        parameter.childs[:type] = piou
+        parameter.children[:type] = piou
       end
     end
 

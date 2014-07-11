@@ -33,7 +33,7 @@ module Zest
       unless options.actionwords_only
         show_status_message "Exporting scenarios to: #{language_config.tests_output_dir}"
         File.open(language_config.tests_output_dir, 'w') { |file|
-          file.write(parser.project.childs[:scenarios].render(
+          file.write(parser.project.children[:scenarios].render(
             options.language,
             language_config.tests_render_context)
           )
@@ -44,7 +44,7 @@ module Zest
       unless options.tests_only
         show_status_message "Exporting actionwords to: #{language_config.aw_output_dir}"
         File.open(language_config.aw_output_dir, 'w') { |file|
-          file.write(parser.project.childs[:actionwords].render(
+          file.write(parser.project.children[:actionwords].render(
             options.language,
             language_config.actionword_render_context)
           )

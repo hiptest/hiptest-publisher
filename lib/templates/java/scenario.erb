@@ -1,5 +1,5 @@
-<%= indent_block([@rendered_childs[:description]], '// ') %>
-<% unless @rendered_childs[:tags].empty? %>// Tags: <%= @rendered_childs[:tags].join(' ') %><%= "\n" %><% end %>
-public void test<%= @rendered_childs[:name].camelize %>() {
-<%= indent_block(@rendered_childs[:body]) %>
+<%= indent_block([@rendered_children[:description]], '// ') %>
+<% unless @rendered_children[:tags].empty? %>// Tags: <%= @rendered_children[:tags].join(' ') %><%= "\n" %><% end %>
+public void test<%= @rendered_children[:name].camelize %>() {
+<%= indent_block(@rendered_children[:body]) %>
 }

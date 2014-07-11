@@ -1,7 +1,7 @@
-"<%= @childs[:chunks].map do |chunk|
+"<%= @children[:chunks].map do |chunk|
     if chunk.is_a? Zest::Nodes::Variable
-      "\#{#{chunk.childs[:name]}}"
+      "\#{#{chunk.children[:name]}}"
     else
-      "#{chunk.childs[:value]}".gsub(/"/) {|_| '\\"' }
+      "#{chunk.children[:value]}".gsub(/"/) {|_| '\\"' }
     end
   end.join %>"

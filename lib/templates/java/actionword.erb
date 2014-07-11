@@ -1,7 +1,7 @@
-public void <%= @rendered_childs[:name].camelize_lower %>(<% if has_parameters? %><%= @rendered_childs[:parameters].join(', ') %><% end %>) {
-<% unless @rendered_childs[:tags].empty? %>  // Tags: <%= @rendered_childs[:tags].join(' ') %>
+public void <%= @rendered_children[:name].camelize_lower %>(<% if has_parameters? %><%= @rendered_children[:parameters].join(', ') %><% end %>) {
+<% unless @rendered_children[:tags].empty? %>  // Tags: <%= @rendered_children[:tags].join(' ') %>
 <%= "\n" %><% end %>
-<%= indent_block(@rendered_childs[:body]) %>
+<%= indent_block(@rendered_children[:body]) %>
 <% if has_step? %>
 <%= indent_block(["throw new UnsupportedOperationException();"]) %>
 <% end %>

@@ -291,7 +291,7 @@ shared_examples "a renderer" do
 
   it 'Actionwords with parameters of different types' do
     Zest::Nodes::ParameterTypeAdder.add(@project)
-    expect(@project.childs[:actionwords].render(language, @context)).to eq(@actionwords_with_params_rendered)
+    expect(@project.children[:actionwords].render(language, @context)).to eq(@actionwords_with_params_rendered)
   end
 
   it 'Scenarios' do

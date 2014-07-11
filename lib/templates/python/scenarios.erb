@@ -2,8 +2,8 @@
 import unittest
 from actionwords import Actionwords
 
-class Test<%= parent.childs[:name].camelize %>(unittest.TestCase):
+class Test<%= parent.children[:name].camelize %>(unittest.TestCase):
     def setUp(self):
         self.actionwords = Actionwords(self)
 
-<%= indent_block(@rendered_childs[:scenarios], nil, "\n") %>
+<%= indent_block(@rendered_children[:scenarios], nil, "\n") %>

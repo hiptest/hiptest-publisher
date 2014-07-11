@@ -6,5 +6,5 @@ public class <%= context[:filename].clear_extension %> extends TestCase {
 
   public Actionwords <%= context[:call_prefix] %> = new Actionwords();
 
-<%= indent_block(@rendered_childs[:scenarios], nil, "\n") %>
+<%= indent_block(@rendered_children[:scenarios], nil, "\n") %>
 }

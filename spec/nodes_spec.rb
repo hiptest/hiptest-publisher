@@ -5,9 +5,9 @@ require_relative '../lib/zest-publisher/nodes'
 
 describe Zest::Nodes do
   context 'Node' do
-    it 'initialize sets @rendered_childs to an empty dict' do
+    it 'initialize sets @rendered_children to an empty dict' do
       myNode = Zest::Nodes::Node.new
-      expect(myNode.rendered_childs).to eq({})
+      expect(myNode.rendered_children).to eq({})
     end
 
     context 'get_template_path' do
@@ -28,12 +28,12 @@ describe Zest::Nodes do
       end
     end
 
-    context 'render_childs' do
-      it 'copies the child to @rendered_childs if it does not have a render method' do
+    context 'render_children' do
+      it 'copies the child to @rendered_children if it does not have a render method' do
         sut = Zest::Nodes::StringLiteral.new("What is your quest ?")
-        expect(sut.rendered_childs).to eq({})
-        sut.render_childs('ruby')
-        expect(sut.rendered_childs).to eq({value: "What is your quest ?"})
+        expect(sut.rendered_children).to eq({})
+        sut.render_children('ruby')
+        expect(sut.rendered_children).to eq({value: "What is your quest ?"})
       end
 
       it 'copies the rendered value if the child is a node instance' do
@@ -41,8 +41,8 @@ describe Zest::Nodes do
         allow(child).to receive(:render).and_return('What is your quest ?')
         sut = Zest::Nodes::Parenthesis.new(child)
 
-        sut.render_childs('ruby')
-        expect(sut.rendered_childs).to eq({content: 'What is your quest ?'})
+        sut.render_children('ruby')
+        expect(sut.rendered_children).to eq({content: 'What is your quest ?'})
         expect(child).to have_received(:render).once
       end
 
@@ -51,8 +51,8 @@ describe Zest::Nodes do
           Zest::Nodes::StringLiteral.new('What is your quest ?'),
           Zest::Nodes::StringLiteral.new('To seek the Holy grail'),
         ])
-        sut.render_childs('ruby')
-        expect(sut.rendered_childs).to eq({:items => [
+        sut.render_children('ruby')
+        expect(sut.rendered_children).to eq({:items => [
           "'What is your quest ?'",
           "'To seek the Holy grail'"
         ]})
@@ -63,25 +63,25 @@ describe Zest::Nodes do
         allow(child).to receive(:render).and_return('What is your quest ?')
         sut = Zest::Nodes::Parenthesis.new(child)
 
-        sut.render_childs('ruby')
+        sut.render_children('ruby')
         expect(child).to have_received(:render).once
 
-        sut.render_childs('ruby')
+        sut.render_children('ruby')
         expect(child).to have_received(:render).once
       end
 
-      it 'calls post_render_childs after rendering' do
+      it 'calls post_render_children after rendering' do
         sut = Zest::Nodes::StringLiteral.new('What is the air-speed velocity of an unladen swallow?')
-        allow(sut).to receive(:post_render_childs)
-        sut.render_childs('ruby')
-        expect(sut).to have_received(:post_render_childs).once
+        allow(sut).to receive(:post_render_children)
+        sut.render_children('ruby')
+        expect(sut).to have_received(:post_render_children).once
       end
     end
 
     it 'render' do
       sut = Zest::Nodes::Node.new()
-      allow(sut).to receive(:read_template).and_return('This is a sample ERB: <%= @rendered_childs %>')
-      sut.instance_variable_set(:@childs, {plic: 'Ploc'})
+      allow(sut).to receive(:read_template).and_return('This is a sample ERB: <%= @rendered_children %>')
+      sut.instance_variable_set(:@children, {plic: 'Ploc'})
 
       expect(sut.render).to eq('This is a sample ERB: {:plic=>"Ploc"}')
       expect(sut.rendered).to eq('This is a sample ERB: {:plic=>"Ploc"}')
@@ -144,7 +144,7 @@ describe Zest::Nodes do
   end
 
   context 'Item' do
-    context 'post_render_childs' do
+    context 'post_render_children' do
       it 'finds all variable declared in the steps' do
         item = Zest::Nodes::Item.new('my item', [], [], [
           Zest::Nodes::Step.new(
@@ -158,16 +158,16 @@ describe Zest::Nodes do
             Zest::Nodes::Variable.new('x')
           )
         ])
-        item.post_render_childs
+        item.post_render_children
 
-        expect(item.variables.map {|v| v.childs[:name]}).to eq(['x', 'y'])
+        expect(item.variables.map {|v| v.children[:name]}).to eq(['x', 'y'])
       end
 
       it 'saves two lists of parameters: with and without default value' do
         simple = Zest::Nodes::Parameter.new('simple')
         valued = Zest::Nodes::Parameter.new('non_valued', '0')
         item = Zest::Nodes::Item.new('my item', [], [simple, valued])
-        item.post_render_childs
+        item.post_render_children
 
         expect(item.non_valued_parameters).to eq([simple])
         expect(item.valued_parameters).to eq([valued])

@@ -89,21 +89,21 @@ describe Zest::XMLParser do
       node = build_node('<stringliteral>Ho hi</stringliteral')
 
       expect(node).to be_a(Zest::Nodes::StringLiteral)
-      expect(node.childs[:value]).to eq('Ho hi')
+      expect(node.children[:value]).to eq('Ho hi')
     end
 
     it 'numeric' do
       node = build_node('<numericliteral>3.14</numericliteral')
 
       expect(node).to be_a(Zest::Nodes::NumericLiteral)
-      expect(node.childs[:value]).to eq('3.14')
+      expect(node.children[:value]).to eq('3.14')
     end
 
     it 'boolean' do
       node = build_node('<booleanliteral>false</booleanliteral>')
 
       expect(node).to be_a(Zest::Nodes::BooleanLiteral)
-      expect(node.childs[:value]).to eq('false')
+      expect(node.children[:value]).to eq('false')
     end
   end
 
@@ -111,7 +111,7 @@ describe Zest::XMLParser do
     node = build_node(@my_var)
 
     expect(node).to be_a(Zest::Nodes::Variable)
-    expect(node.childs[:name]).to eq('my_var')
+    expect(node.children[:name]).to eq('my_var')
   end
 
   it 'field' do
@@ -124,8 +124,8 @@ describe Zest::XMLParser do
       </field>")
 
     expect(node).to be_a(Zest::Nodes::Field)
-    expect(node.childs[:base]).to be_a(Zest::Nodes::Variable)
-    expect(node.childs[:name]).to eq('accessor')
+    expect(node.children[:base]).to be_a(Zest::Nodes::Variable)
+    expect(node.children[:name]).to eq('accessor')
   end
 
   it 'index' do
@@ -136,8 +136,8 @@ describe Zest::XMLParser do
       </index>")
 
     expect(node).to be_a(Zest::Nodes::Index)
-    expect(node.childs[:base]).to be_a(Zest::Nodes::Variable)
-    expect(node.childs[:expression]).to be_a(Zest::Nodes::NumericLiteral)
+    expect(node.children[:base]).to be_a(Zest::Nodes::Variable)
+    expect(node.children[:expression]).to be_a(Zest::Nodes::NumericLiteral)
   end
 
   context 'operation' do
@@ -150,9 +150,9 @@ describe Zest::XMLParser do
         </operation>")
 
       expect(node).to be_a(Zest::Nodes::BinaryExpression)
-      node.childs[:left].is_a?(Zest::Nodes::Variable)
-      expect(node.childs[:operator]).to eq('+')
-      node.childs[:right].is_a?(Zest::Nodes::NumericLiteral)
+      node.children[:left].is_a?(Zest::Nodes::Variable)
+      expect(node.children[:operator]).to eq('+')
+      node.children[:right].is_a?(Zest::Nodes::NumericLiteral)
     end
 
     it 'unary' do
@@ -163,8 +163,8 @@ describe Zest::XMLParser do
         </operation>")
 
       expect(node).to be_a(Zest::Nodes::UnaryExpression)
-      expect(node.childs[:operator]).to eq('!')
-      node.childs[:expression].is_a?(Zest::Nodes::Variable)
+      expect(node.children[:operator]).to eq('!')
+      node.children[:expression].is_a?(Zest::Nodes::Variable)
     end
   end
 
@@ -172,7 +172,7 @@ describe Zest::XMLParser do
       node = build_node("<parenthesis>#{@my_var}</parenthesis>")
 
       expect(node).to be_a(Zest::Nodes::Parenthesis)
-      node.childs[:content].is_a?(Zest::Nodes::Variable)
+      node.children[:content].is_a?(Zest::Nodes::Variable)
   end
 
   context 'list' do
@@ -180,7 +180,7 @@ describe Zest::XMLParser do
       node = build_node("<list />")
 
       expect(node).to be_a(Zest::Nodes::List)
-      expect(node.childs[:items]).to eq([])
+      expect(node.children[:items]).to eq([])
     end
 
     it 'with content' do
@@ -191,9 +191,9 @@ describe Zest::XMLParser do
         </list>")
 
       expect(node).to be_a(Zest::Nodes::List)
-      expect(node.childs[:items].length).to eq(2)
-      expect(node.childs[:items][0]).to be_a(Zest::Nodes::Variable)
-      expect(node.childs[:items][1]).to be_a(Zest::Nodes::NumericLiteral)
+      expect(node.children[:items].length).to eq(2)
+      expect(node.children[:items][0]).to be_a(Zest::Nodes::Variable)
+      expect(node.children[:items][1]).to be_a(Zest::Nodes::NumericLiteral)
     end
   end
 
@@ -202,7 +202,7 @@ describe Zest::XMLParser do
       node = build_node("<dict />")
 
       expect(node).to be_a(Zest::Nodes::Dict)
-      expect(node.childs[:items]).to eq([])
+      expect(node.children[:items]).to eq([])
     end
 
     it 'empty' do
@@ -213,13 +213,13 @@ describe Zest::XMLParser do
         </dict>")
 
       expect(node).to be_a(Zest::Nodes::Dict)
-      expect(node.childs[:items].length).to eq(2)
-      expect(node.childs[:items][0]).to be_a(Zest::Nodes::Property)
-      expect(node.childs[:items][0].childs[:key]).to eq('key')
-      expect(node.childs[:items][0].childs[:value]).to be_a(Zest::Nodes::Variable)
-      expect(node.childs[:items][1]).to be_a(Zest::Nodes::Property)
-      expect(node.childs[:items][1].childs[:key]).to eq('another_key')
-      expect(node.childs[:items][1].childs[:value]).to be_a(Zest::Nodes::NumericLiteral)
+      expect(node.children[:items].length).to eq(2)
+      expect(node.children[:items][0]).to be_a(Zest::Nodes::Property)
+      expect(node.children[:items][0].children[:key]).to eq('key')
+      expect(node.children[:items][0].children[:value]).to be_a(Zest::Nodes::Variable)
+      expect(node.children[:items][1]).to be_a(Zest::Nodes::Property)
+      expect(node.children[:items][1].children[:key]).to eq('another_key')
+      expect(node.children[:items][1].children[:value]).to be_a(Zest::Nodes::NumericLiteral)
     end
   end
 
@@ -231,17 +231,17 @@ describe Zest::XMLParser do
       </template>")
 
     node.is_a?(Zest::Nodes::Template)
-    expect(node.childs[:chunks].length).to eq(2)
-    expect(node.childs[:chunks][0]).to be_a(Zest::Nodes::StringLiteral)
-    expect(node.childs[:chunks][1]).to be_a(Zest::Nodes::Variable)
+    expect(node.children[:chunks].length).to eq(2)
+    expect(node.children[:chunks][0]).to be_a(Zest::Nodes::StringLiteral)
+    expect(node.children[:chunks][1]).to be_a(Zest::Nodes::Variable)
   end
 
   it 'assign' do
     node = build_node(@assign_zero_to_my_var)
 
     node.is_a?(Zest::Nodes::Assign)
-    expect(node.childs[:to]).to be_a(Zest::Nodes::Variable)
-    expect(node.childs[:value]).to be_a(Zest::Nodes::NumericLiteral)
+    expect(node.children[:to]).to be_a(Zest::Nodes::Variable)
+    expect(node.children[:value]).to be_a(Zest::Nodes::NumericLiteral)
   end
 
   context 'call' do
@@ -249,8 +249,8 @@ describe Zest::XMLParser do
       node = build_node('<call><actionword>my action word</actionword></call>')
 
       expect(node).to be_a(Zest::Nodes::Call)
-      expect(node.childs[:actionword]).to eq('my action word')
-      expect(node.childs[:arguments]).to eq([])
+      expect(node.children[:actionword]).to eq('my action word')
+      expect(node.children[:arguments]).to eq([])
     end
 
     it 'with arguments' do
@@ -270,14 +270,14 @@ describe Zest::XMLParser do
         </call>")
 
       expect(node).to be_a(Zest::Nodes::Call)
-      expect(node.childs[:actionword]).to eq('another action word')
-      expect(node.childs[:arguments].length).to eq(2)
-      expect(node.childs[:arguments][0]).to be_a(Zest::Nodes::Argument)
-      expect(node.childs[:arguments][0].childs[:name]).to eq('x')
-      expect(node.childs[:arguments][0].childs[:value]).to be_a(Zest::Nodes::Variable)
-      expect(node.childs[:arguments][1]).to be_a(Zest::Nodes::Argument)
-      expect(node.childs[:arguments][1].childs[:name]).to eq('y')
-      expect(node.childs[:arguments][1].childs[:value]).to be_a(Zest::Nodes::NumericLiteral)
+      expect(node.children[:actionword]).to eq('another action word')
+      expect(node.children[:arguments].length).to eq(2)
+      expect(node.children[:arguments][0]).to be_a(Zest::Nodes::Argument)
+      expect(node.children[:arguments][0].children[:name]).to eq('x')
+      expect(node.children[:arguments][0].children[:value]).to be_a(Zest::Nodes::Variable)
+      expect(node.children[:arguments][1]).to be_a(Zest::Nodes::Argument)
+      expect(node.children[:arguments][1].children[:name]).to eq('y')
+      expect(node.children[:arguments][1].children[:value]).to be_a(Zest::Nodes::NumericLiteral)
     end
   end
 
@@ -285,8 +285,8 @@ describe Zest::XMLParser do
     node = build_node(@action_step)
 
     expect(node).to be_a(Zest::Nodes::Step)
-    expect(node.childs[:key]).to eq('action')
-    expect(node.childs[:value]).to be_a(Zest::Nodes::Template)
+    expect(node.children[:key]).to eq('action')
+    expect(node.children[:value]).to be_a(Zest::Nodes::Template)
   end
 
   context 'if' do
@@ -300,9 +300,9 @@ describe Zest::XMLParser do
         </if>")
 
       expect(node).to be_a(Zest::Nodes::IfThen)
-      expect(node.childs[:condition]).to be_a(Zest::Nodes::Variable)
-      expect(node.childs[:then].length).to eq(1)
-      expect(node.childs[:then][0]).to be_a(Zest::Nodes::Assign)
+      expect(node.children[:condition]).to be_a(Zest::Nodes::Variable)
+      expect(node.children[:then].length).to eq(1)
+      expect(node.children[:then][0]).to be_a(Zest::Nodes::Assign)
     end
 
     it 'with an else statement' do
@@ -318,11 +318,11 @@ describe Zest::XMLParser do
         </if>")
 
       expect(node).to be_a(Zest::Nodes::IfThen)
-      expect(node.childs[:condition]).to be_a(Zest::Nodes::Variable)
-      expect(node.childs[:then].length).to eq(1)
-      expect(node.childs[:then][0]).to be_a(Zest::Nodes::Assign)
-      expect(node.childs[:else].length).to eq(1)
-      expect(node.childs[:else][0]).to be_a(Zest::Nodes::Call)
+      expect(node.children[:condition]).to be_a(Zest::Nodes::Variable)
+      expect(node.children[:then].length).to eq(1)
+      expect(node.children[:then][0]).to be_a(Zest::Nodes::Assign)
+      expect(node.children[:else].length).to eq(1)
+      expect(node.children[:else][0]).to be_a(Zest::Nodes::Call)
     end
   end
 
@@ -336,9 +336,9 @@ describe Zest::XMLParser do
       </while>")
 
     expect(node).to be_a(Zest::Nodes::While)
-    expect(node.childs[:condition]).to be_a(Zest::Nodes::Variable)
-    expect(node.childs[:body].length).to eq(1)
-    node.childs[:body][0].is_a?(Zest::Nodes::Assign)
+    expect(node.children[:condition]).to be_a(Zest::Nodes::Variable)
+    expect(node.children[:body].length).to eq(1)
+    node.children[:body][0].is_a?(Zest::Nodes::Assign)
   end
 
   context 'tag' do
@@ -346,15 +346,15 @@ describe Zest::XMLParser do
       node = build_node(@simple_tag)
 
       expect(node).to be_a(Zest::Nodes::Tag)
-      expect(node.childs[:key]).to eq('simple')
+      expect(node.children[:key]).to eq('simple')
     end
 
     it 'with a default value' do
       node = build_node(@key_value_tag)
 
       expect(node).to be_a(Zest::Nodes::Tag)
-      expect(node.childs[:key]).to eq('path')
-      expect(node.childs[:value]).to eq("'path/to/somewhere'")
+      expect(node.children[:key]).to eq('path')
+      expect(node.children[:value]).to eq("'path/to/somewhere'")
     end
   end
 
@@ -362,15 +362,15 @@ describe Zest::XMLParser do
     it 'simple' do
       node = build_node(@simple_parameter)
 
-      expect(node.childs[:name]).to eq('x')
-      expect(node.childs[:default]).to be_nil
+      expect(node.children[:name]).to eq('x')
+      expect(node.children[:default]).to be_nil
     end
 
     it 'with a default value' do
       node = build_node(@valued_parameter)
 
-      expect(node.childs[:name]).to eq('y')
-      expect(node.childs[:default]).to be_a(Zest::Nodes::List)
+      expect(node.children[:name]).to eq('y')
+      expect(node.children[:default]).to be_a(Zest::Nodes::List)
     end
   end
 
@@ -379,19 +379,19 @@ describe Zest::XMLParser do
       node = build_node(create_actionword('a simple actionword'))
 
       expect(node).to be_a(Zest::Nodes::Actionword)
-      expect(node.childs[:name]).to eq('a simple actionword')
-      expect(node.childs[:tags]).to eq([])
-      expect(node.childs[:parameters]).to eq([])
-      expect(node.childs[:body]).to eq([])
+      expect(node.children[:name]).to eq('a simple actionword')
+      expect(node.children[:tags]).to eq([])
+      expect(node.children[:parameters]).to eq([])
+      expect(node.children[:body]).to eq([])
     end
 
     it 'with tags' do
       node = build_node(create_actionword('tagged', [@simple_tag, @key_value_tag]))
 
       expect(node).to be_a(Zest::Nodes::Actionword)
-      expect(node.childs[:tags].length).to eq(2)
-      expect(node.childs[:tags][0]).to be_a(Zest::Nodes::Tag)
-      expect(node.childs[:tags][1]).to be_a(Zest::Nodes::Tag)
+      expect(node.children[:tags].length).to eq(2)
+      expect(node.children[:tags][0]).to be_a(Zest::Nodes::Tag)
+      expect(node.children[:tags][1]).to be_a(Zest::Nodes::Tag)
     end
 
     it 'with parameters' do
@@ -402,9 +402,9 @@ describe Zest::XMLParser do
       )
 
       expect(node).to be_a(Zest::Nodes::Actionword)
-      expect(node.childs[:parameters].length).to eq(2)
-      expect(node.childs[:parameters][0]).to be_a(Zest::Nodes::Parameter)
-      expect(node.childs[:parameters][1]).to be_a(Zest::Nodes::Parameter)
+      expect(node.children[:parameters].length).to eq(2)
+      expect(node.children[:parameters][0]).to be_a(Zest::Nodes::Parameter)
+      expect(node.children[:parameters][1]).to be_a(Zest::Nodes::Parameter)
     end
 
     it 'with steps' do
@@ -412,9 +412,9 @@ describe Zest::XMLParser do
         create_actionword('with steps', [], [], [@action_step, @result_step]))
 
       expect(node).to be_a(Zest::Nodes::Actionword)
-      expect(node.childs[:body].length).to eq(2)
-      expect(node.childs[:body][0]).to be_a(Zest::Nodes::Step)
-      expect(node.childs[:body][1]).to be_a(Zest::Nodes::Step)
+      expect(node.children[:body].length).to eq(2)
+      expect(node.children[:body][0]).to be_a(Zest::Nodes::Step)
+      expect(node.children[:body][1]).to be_a(Zest::Nodes::Step)
     end
   end
 
@@ -423,20 +423,20 @@ describe Zest::XMLParser do
       node = build_node(create_scenario('a simple scenario', 'Some description'))
 
       expect(node).to be_a(Zest::Nodes::Scenario)
-      expect(node.childs[:name]).to eq('a simple scenario')
-      expect(node.childs[:description]).to eq('Some description')
-      expect(node.childs[:tags]).to eq([])
-      expect(node.childs[:parameters]).to eq([])
-      expect(node.childs[:body]).to eq([])
+      expect(node.children[:name]).to eq('a simple scenario')
+      expect(node.children[:description]).to eq('Some description')
+      expect(node.children[:tags]).to eq([])
+      expect(node.children[:parameters]).to eq([])
+      expect(node.children[:body]).to eq([])
     end
 
     it 'with tags' do
       node = build_node(create_scenario('tagged', '', [@simple_tag, @key_value_tag]))
 
       expect(node).to be_a(Zest::Nodes::Scenario)
-      expect(node.childs[:tags].length).to eq(2)
-      expect(node.childs[:tags][0]).to be_a(Zest::Nodes::Tag)
-      expect(node.childs[:tags][1]).to be_a(Zest::Nodes::Tag)
+      expect(node.children[:tags].length).to eq(2)
+      expect(node.children[:tags][0]).to be_a(Zest::Nodes::Tag)
+      expect(node.children[:tags][1]).to be_a(Zest::Nodes::Tag)
     end
 
     it 'with parameters' do
@@ -447,9 +447,9 @@ describe Zest::XMLParser do
       )
 
       expect(node).to be_a(Zest::Nodes::Scenario)
-      expect(node.childs[:parameters].length).to eq(2)
-      expect(node.childs[:parameters][0]).to be_a(Zest::Nodes::Parameter)
-      expect(node.childs[:parameters][1]).to be_a(Zest::Nodes::Parameter)
+      expect(node.children[:parameters].length).to eq(2)
+      expect(node.children[:parameters][0]).to be_a(Zest::Nodes::Parameter)
+      expect(node.children[:parameters][1]).to be_a(Zest::Nodes::Parameter)
     end
 
     it 'with steps' do
@@ -457,9 +457,9 @@ describe Zest::XMLParser do
         create_scenario('with steps', '', [], [], [@action_step, @result_step]))
 
       expect(node).to be_a(Zest::Nodes::Scenario)
-      expect(node.childs[:body].length).to eq(2)
-      expect(node.childs[:body][0]).to be_a(Zest::Nodes::Step)
-      expect(node.childs[:body][1]).to be_a(Zest::Nodes::Step)
+      expect(node.children[:body].length).to eq(2)
+      expect(node.children[:body][0]).to be_a(Zest::Nodes::Step)
+      expect(node.children[:body][1]).to be_a(Zest::Nodes::Step)
     end
   end
 
@@ -467,23 +467,23 @@ describe Zest::XMLParser do
     node = build_node("<actionwords>#{create_actionword('My actionword')}</actionwords>")
 
     expect(node).to be_a(Zest::Nodes::Actionwords)
-    expect(node.childs[:actionwords].length).to eq(1)
-    expect(node.childs[:actionwords][0]).to be_a(Zest::Nodes::Actionword)
+    expect(node.children[:actionwords].length).to eq(1)
+    expect(node.children[:actionwords][0]).to be_a(Zest::Nodes::Actionword)
   end
 
   it 'scenarios' do
     node = build_node("<scenarios>#{create_scenario('My scenario')}</scenarios>")
 
     expect(node).to be_a(Zest::Nodes::Scenarios)
-    expect(node.childs[:scenarios].length).to eq(1)
-    expect(node.childs[:scenarios][0]).to be_a(Zest::Nodes::Scenario)
+    expect(node.children[:scenarios].length).to eq(1)
+    expect(node.children[:scenarios][0]).to be_a(Zest::Nodes::Scenario)
   end
 
   it 'folder' do
     node = build_node("<folder><name>My folder</name><uid>1234</uid><parentUid>7894</parentUid></folder>")
 
     expect(node).to be_a(Zest::Nodes::Folder)
-    expect(node.childs).to eq({
+    expect(node.children).to eq({
       name: "My folder",
       subfolders: [],
       scenarios: []
@@ -514,21 +514,21 @@ describe Zest::XMLParser do
 
     it 'stores all folders' do
       expect(@test_plan).to be_a(Zest::Nodes::TestPlan)
-      expect(@test_plan.childs[:folders].length).to eq(3)
-      expect(@test_plan.childs[:folders].map(&:class).uniq).to eq([Zest::Nodes::Folder])
+      expect(@test_plan.children[:folders].length).to eq(3)
+      expect(@test_plan.children[:folders].map(&:class).uniq).to eq([Zest::Nodes::Folder])
     end
 
     it 'updates references' do
-      folders = @test_plan.childs[:folders]
+      folders = @test_plan.children[:folders]
 
       expect(folders[0].parent).to be_nil
-      expect(folders[0].childs[:subfolders]).to eq([folders[1]])
+      expect(folders[0].children[:subfolders]).to eq([folders[1]])
 
       expect(folders[1].parent).to eq(folders[0])
-      expect(folders[1].childs[:subfolders]).to eq([folders[2]])
+      expect(folders[1].children[:subfolders]).to eq([folders[2]])
 
       expect(folders[2].parent).to eq(folders[1])
-      expect(folders[2].childs[:subfolders]).to eq([])
+      expect(folders[2].children[:subfolders]).to eq([])
     end
   end
 
@@ -541,10 +541,10 @@ describe Zest::XMLParser do
         </project>").build_project
 
       expect(node).to be_a(Zest::Nodes::Project)
-      expect(node.childs[:name]).to eq('My project')
-      expect(node.childs[:description]).to eq('A description')
-      expect(node.childs[:scenarios]).to be_a(Zest::Nodes::Scenarios)
-      expect(node.childs[:actionwords]).to be_a(Zest::Nodes::Actionwords)
+      expect(node.children[:name]).to eq('My project')
+      expect(node.children[:description]).to eq('A description')
+      expect(node.children[:scenarios]).to be_a(Zest::Nodes::Scenarios)
+      expect(node.children[:actionwords]).to be_a(Zest::Nodes::Actionwords)
     end
 
     it 'with scenarios and actionwords' do
@@ -557,10 +557,10 @@ describe Zest::XMLParser do
         </project>").build_project
 
       expect(node).to be_a(Zest::Nodes::Project)
-      node.childs[:name] = 'My project'
-      node.childs[:description] = 'A description'
-      expect(node.childs[:scenarios]).to be_a(Zest::Nodes::Scenarios)
-      expect(node.childs[:actionwords]).to be_a(Zest::Nodes::Actionwords)
+      node.children[:name] = 'My project'
+      node.children[:description] = 'A description'
+      expect(node.children[:scenarios]).to be_a(Zest::Nodes::Scenarios)
+      expect(node.children[:actionwords]).to be_a(Zest::Nodes::Actionwords)
     end
 
     it 'assign scenario to folders when needed' do
@@ -586,10 +586,10 @@ describe Zest::XMLParser do
         </project>").build_project
 
       scenarios = node.find_sub_nodes(Zest::Nodes::Scenario)
-      scenarios.length.should eq(2)
+      expect(scenarios.length).to eq(2)
 
       folder = node.find_sub_nodes(Zest::Nodes::Folder).first
-      folder.childs[:scenarios].should eq([scenarios.first])
+      expect(folder.children[:scenarios]).to eq([scenarios.first])
     end
   end
 
@@ -597,7 +597,7 @@ describe Zest::XMLParser do
     parser = Zest::XMLParser.new(File.read('samples/xml_input/Zest publisher.xml'))
     project = parser.build_project
 
-    expect(project.childs[:name]).to eq('Zest publisher')
+    expect(project.children[:name]).to eq('Zest publisher')
     expect(project.find_sub_nodes.length).to eq(92)
     expect(project.find_sub_nodes(Zest::Nodes::Folder).length).to eq(4)
     expect(project.find_sub_nodes(Zest::Nodes::Scenario).length).to eq(2)

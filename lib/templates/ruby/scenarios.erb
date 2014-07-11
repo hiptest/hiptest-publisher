@@ -2,8 +2,8 @@
 require 'spec_helper'
 require_relative 'actionwords'
 
-describe '<%= parent.childs[:name].camelize %>' do
+describe '<%= parent.children[:name].camelize %>' do
   include Actionwords
 
-<%= indent_block(@rendered_childs[:scenarios], nil, "\n") %>
+<%= indent_block(@rendered_children[:scenarios], nil, "\n") %>
 end

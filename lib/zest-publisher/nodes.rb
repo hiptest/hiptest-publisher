@@ -6,13 +6,13 @@ require 'zest-publisher/utils'
 module Zest
   module Nodes
     class Node
-      attr_reader :childs, :rendered, :rendered_childs, :parent
+      attr_reader :children, :rendered, :rendered_children, :parent
       attr_writer :parent
 
       def initialize
         @context = {}
         @rendered = ''
-        @rendered_childs = {}
+        @rendered_children = {}
       end
 
       def get_template_path(language)
@@ -36,33 +36,33 @@ module Zest
         File.read(get_template_path(language))
       end
 
-      def render_childs(language)
-        if @rendered_childs.size > 0
+      def render_children(language)
+        if @rendered_children.size > 0
           return
         end
 
-        @childs.each do |key, child|
+        @children.each do |key, child|
           if child.is_a? Array
-            @rendered_childs[key] = child.map {|c| c.render(language, @context) }
+            @rendered_children[key] = child.map {|c| c.render(language, @context) }
             next
           end
 
           if child.methods.include? :render
-            @rendered_childs[key] = child.render(language, @context)
+            @rendered_children[key] = child.render(language, @context)
           else
-            @rendered_childs[key] = child
+            @rendered_children[key] = child
           end
         end
-        post_render_childs()
+        post_render_children()
       end
 
-      def post_render_childs()
+      def post_render_children()
       end
 
       def render(language = 'ruby', context = {})
         @context = context
 
-        render_childs(language)
+        render_children(language)
         @rendered = ERB.new(read_template(language), nil, "%<>").result(binding)
         @rendered
       end
@@ -91,35 +91,35 @@ module Zest
 
       def all_sub_nodes
         path = [self]
-        childs = []
+        children = []
 
         until path.empty?
           current_node = path.pop
 
           if current_node.is_a?(Node)
-            next if childs.include? current_node
+            next if children.include? current_node
 
-            childs << current_node
-            current_node.childs.values.reverse.each {|item| path << item}
+            children << current_node
+            current_node.children.values.reverse.each {|item| path << item}
           elsif current_node.is_a?(Array)
             current_node.reverse.each {|item| path << item}
           end
         end
-        childs
+        children
       end
     end
 
     class Literal < Node
       def initialize(value)
         super()
-        @childs = {:value => value}
+        @children = {:value => value}
       end
     end
 
     class NullLiteral < Node
       def initialize
         super()
-        @childs = {}
+        @children = {}
       end
     end
 
@@ -135,141 +135,141 @@ module Zest
     class Variable < Node
       def initialize(name)
         super()
-        @childs = {:name => name}
+        @children = {:name => name}
       end
     end
 
     class Property < Node
       def initialize(key, value)
         super()
-        @childs = {:key => key, :value => value}
+        @children = {:key => key, :value => value}
       end
     end
 
     class Field < Node
       def initialize(base, name)
         super()
-        @childs = {:base => base, :name => name}
+        @children = {:base => base, :name => name}
       end
     end
 
     class Index < Node
       def initialize(base, expression)
         super()
-        @childs = {:base => base, :expression => expression}
+        @children = {:base => base, :expression => expression}
       end
     end
 
     class BinaryExpression < Node
       def initialize(left, operator, right)
         super()
-        @childs = {:operator => operator, :left => left, :right => right}
+        @children = {:operator => operator, :left => left, :right => right}
       end
     end
 
     class UnaryExpression < Node
       def initialize(operator, expression)
         super()
-        @childs = {:operator => operator, :expression => expression}
+        @children = {:operator => operator, :expression => expression}
       end
     end
 
     class Parenthesis < Node
       def initialize(content)
         super()
-        @childs = {:content => content}
+        @children = {:content => content}
       end
     end
 
     class List < Node
       def initialize(items)
         super()
-        @childs = {:items => items}
+        @children = {:items => items}
       end
     end
 
     class Dict < Node
       def initialize(items)
         super()
-        @childs = {:items => items}
+        @children = {:items => items}
       end
     end
 
     class Template < Node
       def initialize(chunks)
         super()
-        @childs = {:chunks => chunks}
+        @children = {:chunks => chunks}
       end
     end
 
     class Assign < Node
       def initialize(to, value)
         super()
-        @childs = {:to => to, :value => value}
+        @children = {:to => to, :value => value}
       end
     end
 
     class Argument < Node
       def initialize(name, value)
         super()
-        @childs = {:name => name, :value => value}
+        @children = {:name => name, :value => value}
       end
     end
 
     class Call < Node
       def initialize(actionword, arguments = [])
         super()
-        @childs = {:actionword => actionword, :arguments => arguments}
+        @children = {:actionword => actionword, :arguments => arguments}
       end
 
       def has_arguments?
-        !@childs[:arguments].empty?
+        !@children[:arguments].empty?
       end
     end
 
     class IfThen < Node
       def initialize(condition, then_, else_ = [])
         super()
-        @childs = {:condition => condition, :then => then_, :else => else_}
+        @children = {:condition => condition, :then => then_, :else => else_}
       end
     end
 
     class Step < Node
       def initialize(key, value)
         super()
-        @childs = {:key => key, :value => value}
+        @children = {:key => key, :value => value}
       end
     end
 
     class While < Node
       def initialize(condition, body)
         super()
-        @childs = {:condition => condition, :body => body}
+        @children = {:condition => condition, :body => body}
       end
     end
 
     class Tag < Node
       def initialize(key, value = nil)
         super()
-        @childs = {:key => key, :value => value}
+        @children = {:key => key, :value => value}
       end
     end
 
     class Parameter < Node
       def initialize(name, default = nil)
         super()
-        @childs = {:name => name, :default => default}
+        @children = {:name => name, :default => default}
       end
 
       def name
-        @childs[:name]
+        @children[:name]
       end
 
       def type
-        if @childs[:type].nil?
+        if @children[:type].nil?
           'String'
         else
-          @childs[:type].to_s
+          @children[:type].to_s
         end
 
       end
@@ -280,7 +280,7 @@ module Zest
 
       def initialize(name, tags = [], parameters = [], body = [])
         super()
-        @childs = {
+        @children = {
           :name => name,
           :tags => tags,
           :parameters => parameters,
@@ -289,16 +289,16 @@ module Zest
       end
 
       def name
-        @childs[:name]
+        @children[:name]
       end
 
-      def post_render_childs()
+      def post_render_children()
         save_parameters_by_type
         find_variables
       end
 
       def has_parameters?
-        !@childs[:parameters].empty?
+        !@children[:parameters].empty?
       end
 
       private
@@ -307,8 +307,8 @@ module Zest
         names = []
 
         @variables = find_sub_nodes(Zest::Nodes::Variable).map do |var_node|
-          unless names.include?(var_node.childs[:name])
-            names << var_node.childs[:name]
+          unless names.include?(var_node.children[:name])
+            names << var_node.children[:name]
             var_node
           end
         end.compact
@@ -317,8 +317,8 @@ module Zest
       def save_parameters_by_type
         parameters = []
         valued_parameters = []
-        childs[:parameters].each do |param|
-          if param.childs[:default].nil?
+        children[:parameters].each do |param|
+          if param.children[:default].nil?
             parameters << param
           else
             valued_parameters << param
@@ -332,7 +332,7 @@ module Zest
 
     class Actionword < Item
       def has_step?
-        @childs[:body].each do |element|
+        @children[:body].each do |element|
           if element.instance_of?(Zest::Nodes::Step)
             return true
           end
@@ -346,7 +346,7 @@ module Zest
 
       def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil)
         super(name, tags, parameters, body)
-        @childs[:description] = description
+        @children[:description] = description
         @folder_uid = folder_uid
       end
     end
@@ -354,14 +354,14 @@ module Zest
     class Actionwords < Node
       def initialize(actionwords = [])
         super()
-        @childs = {:actionwords => actionwords}
+        @children = {:actionwords => actionwords}
       end
     end
 
     class Scenarios < Node
       def initialize(scenarios = [])
         super()
-        @childs = {:scenarios => scenarios}
+        @children = {:scenarios => scenarios}
       end
     end
 
@@ -375,7 +375,7 @@ module Zest
         @uid = uid
         @parent_uid = parent_uid
 
-        @childs = {
+        @children = {
           :name => name,
           :subfolders => [],
           :scenarios => []
@@ -387,23 +387,23 @@ module Zest
       def initialize(folders = [])
         super()
         @uids_mapping = {}
-        @childs = {
+        @children = {
           :root_folder => nil,
           :folders => folders
         }
       end
 
       def organize_folders
-        @childs[:folders].each do |folder|
+        @children[:folders].each do |folder|
           @uids_mapping[folder.uid] = folder
           parent = find_folder_by_uid folder.parent_uid
           if parent.nil?
-            @childs[:root_folder] = folder
+            @children[:root_folder] = folder
             next
           end
 
           folder.parent = parent
-          parent.childs[:subfolders] << folder
+          parent.children[:subfolders] << folder
         end
       end
 
@@ -417,7 +417,7 @@ module Zest
         super()
         scenarios.parent = self
 
-        @childs = {
+        @children = {
           :name => name,
           :description => description,
           :test_plan => test_plan,
@@ -427,11 +427,11 @@ module Zest
       end
 
       def assign_scenarios_to_folders
-        @childs[:scenarios].childs[:scenarios].each do |scenario|
-          folder = @childs[:test_plan].find_folder_by_uid(scenario.folder_uid)
+        @children[:scenarios].children[:scenarios].each do |scenario|
+          folder = @children[:test_plan].find_folder_by_uid(scenario.folder_uid)
           next if folder.nil?
 
-          folder.childs[:scenarios] << scenario
+          folder.children[:scenarios] << scenario
         end
       end
     end

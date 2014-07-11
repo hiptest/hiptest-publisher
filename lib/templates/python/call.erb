@@ -1,1 +1,1 @@
-self.<% if context[:call_prefix] %><%= context[:call_prefix] %>.<% end %><%= @rendered_childs[:actionword].underscore %>(<%= @rendered_childs[:arguments].join(', ') %>)
+self.<% if context[:call_prefix] %><%= context[:call_prefix] %>.<% end %><%= @rendered_children[:actionword].underscore %>(<%= @rendered_children[:arguments].join(', ') %>)

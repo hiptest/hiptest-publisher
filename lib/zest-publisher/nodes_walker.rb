@@ -3,35 +3,35 @@ module Zest
     class Walker
 
       def walk_project(project)
-        walk_scenarios project.childs[:scenarios]
-        walk_actionwords project.childs[:actionwords]
+        walk_scenarios project.children[:scenarios]
+        walk_actionwords project.children[:actionwords]
       end
 
       def walk_actionwords(actionwords)
-        actionwords.childs[:actionwords].each do |actionword|
+        actionwords.children[:actionwords].each do |actionword|
           walk_actionword actionword
         end
       end
 
       def walk_actionword(actionword)
-        walk_name(actionword.childs[:name])
-        walk_tags(actionword.childs[:tags])
-        walk_parameters(actionword.childs[:parameters])
-        walk_body(actionword.childs[:body])
+        walk_name(actionword.children[:name])
+        walk_tags(actionword.children[:tags])
+        walk_parameters(actionword.children[:parameters])
+        walk_body(actionword.children[:body])
       end
 
       def walk_scenarios(scenarios)
-        scenarios.childs[:scenarios].each do |scenario|
+        scenarios.children[:scenarios].each do |scenario|
           walk_scenario scenario
         end
       end
 
       def walk_scenario(scenario)
-        walk_name(scenario.childs[:name])
-        walk_description(scenario.childs[:description])
-        walk_tags(scenario.childs[:tags])
-        walk_parameters(scenario.childs[:parameters])
-        walk_body(scenario.childs[:body])
+        walk_name(scenario.children[:name])
+        walk_description(scenario.children[:description])
+        walk_tags(scenario.children[:tags])
+        walk_parameters(scenario.children[:parameters])
+        walk_body(scenario.children[:body])
       end
 
       def walk_body(statements)
@@ -46,8 +46,8 @@ module Zest
       end
 
       def walk_call(call)
-        walk_name(call.childs[:actionword])
-        walk_arguments(call.childs[:arguments])
+        walk_name(call.children[:actionword])
+        walk_arguments(call.children[:arguments])
       end
 
       def walk_arguments(arguments)
@@ -57,26 +57,26 @@ module Zest
       end
 
       def walk_argument(argument)
-        walk_name argument.childs[:name]
-        walk_node argument.childs[:value]
+        walk_name argument.children[:name]
+        walk_node argument.children[:value]
       end
 
       def walk_nullliteral literal
       end
 
       def walk_stringliteral(string)
-        walk_value(string.childs[:value])
+        walk_value(string.children[:value])
       end
 
       def walk_booleanliteral(boolean)
-        walk_value(boolean.childs[:value])
+        walk_value(boolean.children[:value])
       end
 
       def walk_variable(variable)
       end
 
       def walk_numericliteral(numericliteral)
-        walk_value(numericliteral.childs[:value])
+        walk_value(numericliteral.children[:value])
       end
 
       def walk_value(value)
