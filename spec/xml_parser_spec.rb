@@ -418,6 +418,91 @@ describe Zest::XMLParser do
     end
   end
 
+  it 'datatable' do
+    node = build_node([
+      '<datatable>',
+      '  <dataset>',
+      '    <name>My first set</name>',
+      '    <arguments>',
+      '      <argument>',
+      '        <name>x</name>',
+      '        <value>',
+      '          <numericliteral>1</numericliteral>',
+      '        </value>',
+      '      </argument>',
+      '      <argument>',
+      '        <name>y</name>',
+      '        <value>',
+      '          <stringliteral>1</stringliteral>',
+      '        </value>',
+      '      </argument>',
+      '    </arguments>',
+      '  </dataset>',
+      '  <dataset>',
+      '    <name>My second set</name>',
+      '    <arguments>',
+      '      <argument>',
+      '        <name>x</name>',
+      '        <value>',
+      '          <numericliteral>15</numericliteral>',
+      '        </value>',
+      '      </argument>',
+      '      <argument>',
+      '        <name>y</name>',
+      '        <value>',
+      '          <stringliteral>Some value</stringliteral>',
+      '        </value>',
+      '      </argument>',
+      '    </arguments>',
+      '  </dataset>',
+      '</datatable>'
+    ].join("\n"))
+
+    expect(node).to be_a(Zest::Nodes::Datatable)
+
+    datasets = node.children[:datasets]
+    expect(datasets.length).to eq(2)
+    expect(datasets[0]).to be_a(Zest::Nodes::Dataset)
+    expect(datasets[1]).to be_a(Zest::Nodes::Dataset)
+  end
+
+  it 'dataset' do
+    node = build_node([
+      '<dataset>',
+      '  <name>My second set</name>',
+      '  <arguments>',
+      '    <argument>',
+      '      <name>x</name>',
+      '      <value>',
+      '        <numericliteral>15</numericliteral>',
+      '      </value>',
+      '    </argument>',
+      '    <argument>',
+      '      <name>y</name>',
+      '      <value>',
+      '        <stringliteral>Some value</stringliteral>',
+      '      </value>',
+      '    </argument>',
+      '  </arguments>',
+      '</dataset>'
+    ].join("\n"))
+
+    expect(node).to be_a(Zest::Nodes::Dataset)
+    expect(node.children[:name]).to eq('My second set')
+    args = node.children[:arguments]
+
+    expect(args.length).to eq(2)
+    expect(args[0]).to be_a(Zest::Nodes::Argument)
+    expect(args[0].children[:name]).to eq('x')
+    expect(args[0].children[:value]).to be_a(Zest::Nodes::NumericLiteral)
+    expect(args[0].children[:value].children[:value]).to eq('15')
+
+    expect(args[1]).to be_a(Zest::Nodes::Argument)
+    expect(args[1].children[:name]).to eq('y')
+    expect(args[1].children[:value]).to be_a(Zest::Nodes::StringLiteral)
+    expect(args[1].children[:value].children[:value]).to eq('Some value')
+  end
+
   context 'scenario' do
     it 'simple' do
       node = build_node(create_scenario('a simple scenario', 'Some description'))
@@ -460,6 +545,53 @@ describe Zest::XMLParser do
       expect(node.children[:body].length).to eq(2)
       expect(node.children[:body][0]).to be_a(Zest::Nodes::Step)
       expect(node.children[:body][1]).to be_a(Zest::Nodes::Step)
+    end
+
+    it 'with a datatable' do
+      node = build_node([
+        '<scenario>',
+        '  <name>In a folder</name>',
+        '  <datatable>',
+        '    <dataset>',
+        '      <name>My first set</name>',
+        '      <arguments>',
+        '        <argument>',
+        '          <name>x</name>',
+        '          <value>',
+        '            <numericliteral>1</numericliteral>',
+        '          </value>',
+        '        </argument>',
+        '        <argument>',
+        '          <name>y</name>',
+        '          <value>',
+        '            <stringliteral>1</stringliteral>',
+        '          </value>',
+        '        </argument>',
+        '      </arguments>',
+        '    </dataset>',
+        '    <dataset>',
+        '      <name>My second set</name>',
+        '      <arguments>',
+        '        <argument>',
+        '          <name>x</name>',
+        '          <value>',
+        '            <numericliteral>15</numericliteral>',
+        '          </value>',
+        '        </argument>',
+        '        <argument>',
+        '          <name>y</name>',
+        '          <value>',
+        '            <stringliteral>Some value</stringliteral>',
+        '          </value>',
+        '        </argument>',
+        '      </arguments>',
+        '    </dataset>',
+        '  </datatable>',
+        '</scenario>'
+      ].join("\n"))
+
+      expect(node.children[:datatable]).to be_a(Zest::Nodes::Datatable)
+      expect(node.find_sub_nodes(Zest::Nodes::Dataset).length).to eq(2)
     end
   end
 

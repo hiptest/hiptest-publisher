@@ -344,10 +344,33 @@ module Zest
     class Scenario < Item
       attr_reader :folder_uid
 
-      def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil)
+      def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil, datatable = Datatable.new)
         super(name, tags, parameters, body)
         @children[:description] = description
+        @children[:datatable] = datatable
+
         @folder_uid = folder_uid
+      end
+    end
+
+    class Datatable < Node
+      def initialize(datasets = [])
+        super()
+
+        @children = {
+          :datasets => datasets
+        }
+      end
+    end
+
+    class Dataset < Node
+      def initialize(name, arguments = [])
+        super()
+
+        @children = {
+          :name => name,
+          :arguments => arguments
+        }
       end
     end
 

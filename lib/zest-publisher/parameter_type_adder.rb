@@ -123,8 +123,6 @@ module Zest
       def to_s
         @types
       end
-
-
     end
   end
 end

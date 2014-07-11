@@ -203,7 +203,19 @@ module Zest
         build_tags(scenario),
         build_parameters(scenario),
         build_steps(scenario),
-        folder_uid_node.nil? ? nil : folder_uid_node.content
+        folder_uid_node.nil? ? nil : folder_uid_node.content,
+        build_node(scenario.css('datatable').first)
+      )
+    end
+
+    def build_datatable(datatable)
+      Zest::Nodes::Datatable.new(build_node_list(datatable.css('> dataset')))
+    end
+
+    def build_dataset(dataset)
+      Zest::Nodes::Dataset.new(
+        dataset.css('> name').first.content,
+        build_node_list(dataset.css('> arguments argument'))
       )
     end
 
