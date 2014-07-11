@@ -48,49 +48,52 @@ module Zest
 
     def build_field(field)
       Zest::Nodes::Field.new(
-        build_node(field.css('> base > *').first),
-        field.css('> name').first.content)
+        build_node(css_first(field, '> base > *')),
+        css_first_content(field, '> name'))
     end
 
     def build_index(index)
       Zest::Nodes::Index.new(
-        build_node(index.css('> base > *').first),
-        build_node(index.css('> expression > *').first))
+        build_node(css_first(index, '> base > *')),
+        build_node(css_first(index, '> expression > *')))
+    end
+
+    def build_binary_expression(operation)
+      Zest::Nodes::BinaryExpression.new(
+        build_node(css_first(operation, '> left > *')),
+        css_first_content(operation, '> operator'),
+        build_node(css_first(operation, '> right > *')))
+    end
+
+    def build_unary_expression(operation)
+      Zest::Nodes::UnaryExpression.new(
+        css_first_content(operation, '> operator'),
+        build_node(css_first(operation, '> expression > *')))
     end
 
     def build_operation(operation)
-      unless operation.css('> left').first.nil?
-        Zest::Nodes::BinaryExpression.new(
-          build_node(operation.css('> left > *').first),
-          operation.css('> operator').first.content,
-          build_node(operation.css('> right > *').first))
+      if css_first(operation, '> left').nil?
+        build_unary_expression(operation)
       else
-        Zest::Nodes::UnaryExpression.new(
-          operation.css('> operator').first.content,
-          build_node(operation.css('> expression > *').first)
-        )
+        build_binary_expression(operation)
       end
     end
 
     def build_parenthesis(parenthesis)
       Zest::Nodes::Parenthesis.new(
-        build_node(parenthesis.element_children.first))
+        build_node(css_first(parenthesis)))
     end
 
     def build_list(list)
-      items = list.css('> item').map{ |item|
-        build_node(item.element_children.first)
-      }
-
-      Zest::Nodes::List.new(items)
+      Zest::Nodes::List.new(build_node_list(list.css('> item > *')))
     end
 
     def build_dict(dict)
-      items = dict.element_children.map{ |item|
+      items = dict.element_children.map do |item|
         Zest::Nodes::Property.new(
           item.name,
-          build_node(item.element_children.first))
-      }
+          build_node(css_first(item)))
+      end
       Zest::Nodes::Dict.new(items)
     end
 
@@ -100,71 +103,67 @@ module Zest
 
     def build_assign(assign)
       Zest::Nodes::Assign.new(
-        build_node(assign.css('to').first.element_children.first),
-        build_node(assign.css('value').first.element_children.first))
+        build_node(css_first(assign, 'to > *')),
+        build_node(css_first(assign, 'value > *')))
     end
 
     def build_call(call)
       Zest::Nodes::Call.new(
-        call.css('> actionword').first.content,
+        css_first_content(call, '> actionword'),
         build_arguments(call))
     end
 
-    def build_arguments(action)
-      build_node_list(action.css('> arguments > argument'))
+    def build_arguments(arguments)
+      build_node_list(arguments.css('> arguments > argument'))
     end
 
     def build_argument(argument)
-      value = argument.css('> value').first
+      value = css_first(argument, '> value')
       Zest::Nodes::Argument.new(
-        argument.css('name').first.content,
+        css_first_content(argument, 'name'),
         value ? build_node(value) : nil)
     end
 
     def build_if(if_then)
       Zest::Nodes::IfThen.new(
-        build_node(if_then.css('> condition > *').first),
+        build_node(css_first(if_then, '> condition > *')),
         build_node_list(if_then.css('> then > *')),
         build_node_list(if_then.css('> else > *')))
     end
 
     def build_step(step)
-      first_prop = step.element_children.first
+      first_prop = css_first(step)
       Zest::Nodes::Step.new(
         first_prop.name,
-        build_node(first_prop.element_children.first)
-      )
+        build_node(css_first(first_prop)))
     end
 
     def build_while(while_loop)
       Zest::Nodes::While.new(
-        build_node(while_loop.css('> condition > *').first),
-        build_node_list(while_loop.css('> body > *'))
-      )
+        build_node(css_first(while_loop, '> condition > *')),
+        build_node_list(while_loop.css('> body > *')))
     end
 
     def build_tag(tag)
-      value = tag.css('> value').first
       Zest::Nodes::Tag.new(
-        tag.css('> key').first.content,
-        value ? value.content : nil
-      )
+        css_first_content(tag, '> key'),
+        css_first_content(tag, '> value'))
     end
 
     def build_parameter(parameter)
-      default_value = parameter.css('> default_value').first
+      default_value = css_first(parameter, '> default_value')
 
       Zest::Nodes::Parameter.new(
-        parameter.css('name').first.content,
+        css_first_content(parameter, 'name'),
         default_value ? build_node(default_value) : nil)
     end
 
     def build_default_value(node)
-      build_node(node.element_children.first)
+      build_node(css_first(node))
     end
 
     def build_value(node)
-      build_node(node.element_children.first)
+      build_node(css_first(node))
     end
 
     def build_tags(item)
@@ -176,36 +175,26 @@ module Zest
     end
 
     def build_steps(item)
-      steps = item.css('> steps').first
-      if steps.nil?
-        []
-      else
-        build_node_list(steps.element_children)
-      end
+      build_node_list(item.css('> steps > *'))
     end
 
     def build_actionword(actionword)
       Zest::Nodes::Actionword.new(
-        actionword.css('name').first.content,
+        css_first_content(actionword, 'name'),
         build_tags(actionword),
         build_parameters(actionword),
-        build_steps(actionword)
-      )
+        build_steps(actionword))
     end
 
     def build_scenario(scenario)
-      folder_uid_node = scenario.css('folderUid').first
-      description_node = scenario.css('description').first
-
       Zest::Nodes::Scenario.new(
-        scenario.css('name').first.content,
-        description_node.nil? ? '' : description_node.content,
+        css_first_content(scenario, 'name'),
+        css_first_content(scenario, 'description'),
         build_tags(scenario),
         build_parameters(scenario),
         build_steps(scenario),
-        folder_uid_node.nil? ? nil : folder_uid_node.content,
-        build_node(scenario.css('datatable').first)
-      )
+        css_first_content(scenario, 'folderUid'),
+        build_node(css_first(scenario, 'datatable')))
     end
 
     def build_datatable(datatable)
@@ -214,9 +203,8 @@ module Zest
 
     def build_dataset(dataset)
       Zest::Nodes::Dataset.new(
-        dataset.css('> name').first.content,
-        build_node_list(dataset.css('> arguments argument'))
-      )
+        css_first_content(dataset, '> name'),
+        build_node_list(dataset.css('> arguments argument')))
     end
 
     def build_actionwords(actionwords)
@@ -228,31 +216,29 @@ module Zest
     end
 
     def build_folder(folder)
-      parent_uid_node = folder.css('parentUid').first
       Zest::Nodes::Folder.new(
-        folder.css('uid').first.content,
-        parent_uid_node ? parent_uid_node.content : nil,
-        folder.css('name').first.content
-      )
+        css_first_content(folder, 'uid'),
+        css_first_content(folder, 'parentUid'),
+        css_first_content(folder, 'name'))
     end
 
     def build_testPlan(test_plan)
       tp = Zest::Nodes::TestPlan.new(
-        build_node_list(test_plan.css('> folder'))
-      )
+        build_node_list(test_plan.css('> folder')))
 
       tp.organize_folders
       return tp
     end
 
     def build_project
+      project = css_first(@xml, 'project')
+
       @project = Zest::Nodes::Project.new(
-        @xml.css('project name').first.content,
-        @xml.css('project description').first.content,
-        build_node(@xml.css('project > testPlan').first, Zest::Nodes::TestPlan),
-        build_node(@xml.css('project > scenarios').first, Zest::Nodes::Scenarios),
-        build_node(@xml.css('project > actionwords').first, Zest::Nodes::Actionwords)
-      )
+        css_first_content(project, '> name'),
+        css_first_content(project, '> description'),
+        build_node(css_first(project, '> testPlan'), Zest::Nodes::TestPlan),
+        build_node(css_first(project, '> scenarios'), Zest::Nodes::Scenarios),
+        build_node(css_first(project, '> actionwords'), Zest::Nodes::Actionwords))
 
       @project.assign_scenarios_to_folders
       return @project
@@ -280,6 +266,15 @@ module Zest
       else
         items
       end
+    end
+
+    def css_first(node, selector = '> *')
+      node.css(selector).first
+    end
+
+    def css_first_content(node, selector = '> *')
+      sub_node = css_first(node, selector)
+      sub_node.nil? ? nil : sub_node.content
     end
   end
 end
