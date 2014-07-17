@@ -7,32 +7,32 @@ require_relative '../lib/zest-publisher/parameter_type_adder'
 describe Zest::Nodes do
   context 'ParameterTypeAdder' do
 
-    it 'gives string type if calls nothing' do
+    it 'gives string type if called nothing' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'))
       expect(parameter.children[:type]).to eq(:String)
     end
 
-    it 'gives integer type if calls with an integer value' do
+    it 'gives integer type if called with an integer value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::NumericLiteral.new('3'))
       expect(parameter.children[:type]).to eq(:int)
     end
 
-    it 'gives float type if calls with a float value' do
+    it 'gives float type if called with a float value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::NumericLiteral.new('3.14'))
       expect(parameter.children[:type]).to eq(:float)
     end
 
-    it 'gives boolean type if calls with boolean value' do
+    it 'gives boolean type if called with boolean value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::BooleanLiteral.new(true))
       expect(parameter.children[:type]).to eq(:bool)
     end
 
-    it 'gives string type if calls with null value' do
+    it 'gives string type if called with null value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::NullLiteral.new)
       expect(parameter.children[:type]).to eq(:null)
     end
 
-    it 'gives string type if calls with a template value' do
+    it 'gives string type if called with a template value' do
       parameter = type_adding(
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::Template.new([Zest::Nodes::StringLiteral.new('My value')])
@@ -40,12 +40,12 @@ describe Zest::Nodes do
       expect(parameter.children[:type]).to eq(:String)
     end
 
-    it 'gives string type if calls with a string value' do
+    it 'gives string type if called with a string value' do
       parameter = type_adding(Zest::Nodes::Parameter.new('x'), Zest::Nodes::StringLiteral.new('my string'))
       expect(parameter.children[:type]).to eq(:String)
     end
 
-    it 'gives float type if calls with integer and float values' do
+    it 'gives float type if called with integer and float values' do
       parameter = type_adding(
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::NumericLiteral.new('3'),
@@ -53,7 +53,7 @@ describe Zest::Nodes do
       expect(parameter.children[:type]).to eq(:float)
     end
 
-    it 'gives int type if calls with integer value and null values' do
+    it 'gives int type if called with integer value and null values' do
       parameter = type_adding(
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::NullLiteral.new,
@@ -61,7 +61,7 @@ describe Zest::Nodes do
       expect(parameter.children[:type]).to eq(:int)
     end
 
-    it 'gives float type if calls with integer value, float value and null values' do
+    it 'gives float type if called with integer value, float value and null values' do
       parameter = type_adding(
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::NumericLiteral.new('3.14'),
@@ -70,7 +70,7 @@ describe Zest::Nodes do
       expect(parameter.children[:type]).to eq(:float)
     end
 
-    it 'gives boolean type if calls with boolean values and null value' do
+    it 'gives boolean type if called with boolean values and null value' do
       parameter = type_adding(
         Zest::Nodes::Parameter.new('x'),
         Zest::Nodes::BooleanLiteral.new(true),
@@ -90,13 +90,17 @@ describe Zest::Nodes do
 end
 
 def type_adding(parameter, *called_values)
-  aw = Zest::Nodes::Actionword.new('aw', [], [parameter], [])
   calls = called_values.map{|called_value|
     Zest::Nodes::Call.new('aw', [Zest::Nodes::Argument.new('x', called_value)])
   }
-  sc = Zest::Nodes::Scenario.new('many calls scenarios', '', [], [], calls)
-  actionwords= Zest::Nodes::Actionwords.new([aw])
-  scenarios= Zest::Nodes::Scenarios.new([sc])
+
+  actionwords= Zest::Nodes::Actionwords.new([
+    Zest::Nodes::Actionword.new('aw', [], [parameter], [])
+  ])
+
+  scenarios= Zest::Nodes::Scenarios.new([
+    Zest::Nodes::Scenario.new('many calls scenarios', '', [], [], calls)
+  ])
   project = Zest::Nodes::Project.new('My project', '', nil, scenarios, actionwords)
 
   Zest::Nodes::ParameterTypeAdder.add(project)

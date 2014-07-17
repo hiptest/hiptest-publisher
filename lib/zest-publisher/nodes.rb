@@ -77,13 +77,16 @@ module Zest
         end.join(separator)
       end
 
-      def find_sub_nodes(type = nil)
+      def find_sub_nodes(types = [])
         sub_nodes = all_sub_nodes
+        types = [types] unless types.is_a?(Array)
 
-        if type.nil?
+        if types.empty?
           sub_nodes
         else
-          sub_nodes.keep_if {|node| node.is_a? type}
+          sub_nodes.keep_if do |node|
+            types.map {|type| node.is_a?(type)}.include?(true)
+          end
         end
       end
 
