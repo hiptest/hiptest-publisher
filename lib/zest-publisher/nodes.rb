@@ -2,6 +2,7 @@ require 'erb'
 
 require 'zest-publisher/string'
 require 'zest-publisher/utils'
+require 'zest-publisher/renderer'
 
 module Zest
   module Nodes
@@ -60,6 +61,9 @@ module Zest
       end
 
       def render(language = 'ruby', context = {})
+        return Zest::Renderer.render(self, language, context)
+
+
         @context = context
 
         render_children(language)
