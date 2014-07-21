@@ -15,9 +15,10 @@ module Zest
         show_status_message "Fetching data from Zest"
         xml = fetch_project_export(options.site, options.token)
         show_status_message "Fetching data from Zest", :success
-      rescue
+      rescue Exception => err
         show_status_message "Fetching data from Zest", :failure
         puts "Unable to open the file, please check that the token is correct".red
+        trace_exception err
         return
       end
 
