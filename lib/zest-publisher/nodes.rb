@@ -61,7 +61,6 @@ module Zest
 
       def render(language = 'ruby', context = {})
         @context = context
-
         render_children(language)
         @rendered = ERB.new(read_template(language), nil, "%<>").result(binding)
         @rendered
@@ -71,6 +70,7 @@ module Zest
         indentation = indentation || @context[:indentation] || '  '
 
         nodes.map do |node|
+          node ||= ""
           node.split("\n").map do |line|
             "#{indentation}#{line}\n"
           end.join

@@ -24,7 +24,7 @@ class OptionsParser
     options.language = 'ruby'
     options.framework = ''
     options.config = 'config'
-    options.site = 'https://zest.smartesting.com'
+    options.site = 'https://www.zest-testing.com'
     options.output_directory = '.'
     options.tests_only = false
     options.actionwords_only = false
@@ -70,7 +70,7 @@ class OptionsParser
       end
 
       opts.on("-s", "--site=SITE", String,
-              "Site to fetch from (default: https://zest.smartesting.com)") do |site|
+              "Site to fetch from (default: https://www.zest-testing.com)") do |site|
         options.site = site
       end
 
