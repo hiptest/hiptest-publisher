@@ -9,7 +9,6 @@ rescue
 end
 
 def fetch_project_export site, token
-  puts "#{site}/publication/#{token}/project?future=1"
   open("#{site}/publication/#{token}/project?future=1", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
 end
 
