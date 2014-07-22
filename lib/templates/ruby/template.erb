@@ -1,4 +1,4 @@
-"<%= @children[:chunks].map do |chunk|
+"<%= node.children[:chunks].map do |chunk|
     if chunk.is_a? Zest::Nodes::Variable
       "\#{#{chunk.children[:name]}}"
     else

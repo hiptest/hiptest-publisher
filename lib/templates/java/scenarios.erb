@@ -1,10 +1,10 @@
-package <%= context[:package] %>;
+package <%= @context[:package] %>;
 
 import junit.framework.TestCase;
 
-public class <%= context[:filename].clear_extension %> extends TestCase {
+public class <%= @context[:filename].clear_extension %> extends TestCase {
 
-  public Actionwords <%= context[:call_prefix] %> = new Actionwords();
+  public Actionwords <%= @context[:call_prefix] %> = new Actionwords();
 
 <%= indent_block(@rendered_children[:scenarios], nil, "\n") %>
 }

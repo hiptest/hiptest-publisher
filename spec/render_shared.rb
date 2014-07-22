@@ -1,4 +1,5 @@
 require_relative 'spec_helper'
+require_relative '../lib/zest-publisher/parameter_type_adder'
 require_relative '../lib/zest-publisher/nodes'
 
 shared_context "shared render" do

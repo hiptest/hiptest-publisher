@@ -18,15 +18,16 @@ module Zest
     end
 
     def call_node_walker(node)
-      unless node.is_a? Zest::Nodes::Node
+      if node.is_a? Zest::Nodes::Node
+        @rendered_children = {}
+        node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
+
+        @rendered[node] = ERB.new(read_template(node), nil, "%<>").result(binding)
+      elsif node.is_a? Array
+        @rendered[node] = node.map {|item| @rendered[item]}
+      else
         @rendered[node] = node
-        return
       end
-
-      @rendered_children = {}
-      node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
-
-      @rendered[node] = ERB.new(read_template(node), nil, "%<>").result(binding)
     end
 
     def get_template_path(node)
@@ -54,6 +55,7 @@ module Zest
       indentation = indentation || @context[:indentation] || '  '
 
       nodes.map do |node|
+        node ||= ""
         node.split("\n").map do |line|
           "#{indentation}#{line}\n"
         end.join

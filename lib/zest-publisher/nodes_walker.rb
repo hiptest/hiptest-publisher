@@ -37,8 +37,8 @@ module Zest
       def children_first(node)
         walk_children(node)
 
-        call_node_walker(node)
         node.each {|item| walk_node(item)} if node.is_a? Array
+        call_node_walker(node)
       end
     end
   end

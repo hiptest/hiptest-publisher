@@ -2,8 +2,8 @@ def <%= @rendered_children[:name].underscore %>(<%= (['self'] << @rendered_child
 <% unless @rendered_children[:tags].empty? %>    # Tags: <%= @rendered_children[:tags].join(' ') %>
 <%= "\n" %><% end %>
 <%= indent_block(@rendered_children[:body]) %>
-<% if has_step? %>
+<% if node.has_step? %>
 <%= indent_block(["raise NotImplementedError"]) %>
 <% end %>
-<% if @children[:body].empty? %>    pass
+<% if node.children[:body].empty? %>    pass
 <% end %>

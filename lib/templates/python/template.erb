@@ -1,8 +1,8 @@
-<% variables = @children[:chunks].map {|chunk| chunk if chunk.is_a? Zest::Nodes::Variable}.compact %>
-"<%= @children[:chunks].map do |chunk|
+<% variables = node.children[:chunks].map {|chunk| chunk if chunk.is_a? Zest::Nodes::Variable}.compact %>
+"<%= node.children[:chunks].map do |chunk|
     if chunk.is_a? Zest::Nodes::Variable
       "%s"
     else
       "#{chunk.children[:value]}".gsub(/"/) {|_| '\\"' }
     end
-  end.join %>"<% unless variables.empty? %> % (<%= variables.map {|var| var.rendered }.join(', ') %>)<% end %>
+  end.join %>"<% unless variables.empty? %> % (<%= variables.map {|var| @rendered[var] }.join(', ') %>)<% end %>

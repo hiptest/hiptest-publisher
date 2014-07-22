@@ -2,7 +2,7 @@
 import unittest
 from actionwords import Actionwords
 
-class Test<%= parent.children[:name].camelize %>(unittest.TestCase):
+class Test<%= node.parent.children[:name].camelize %>(unittest.TestCase):
     def setUp(self):
         self.actionwords = Actionwords(self)
 
