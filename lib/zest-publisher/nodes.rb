@@ -7,78 +7,11 @@ require 'zest-publisher/renderer'
 module Zest
   module Nodes
     class Node
-      attr_reader :children, :rendered, :rendered_children, :parent
+      attr_reader :children, :parent
       attr_writer :parent
-
-      def initialize
-        @context = {}
-        @rendered = ''
-        @rendered_children = {}
-      end
-
-      def get_template_path(language)
-        normalized_name = self.class.name.split('::').last.downcase
-
-        searched_folders = []
-        if @context.has_key?(:framework)
-          searched_folders << "#{language}/#{@context[:framework]}"
-        end
-        searched_folders << [language, 'common']
-
-        searched_folders.flatten.map do |path|
-          template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{normalized_name}.erb"
-          if File.file?(template_path)
-            template_path
-          end
-        end.compact.first
-      end
-
-      def read_template(language)
-        File.read(get_template_path(language))
-      end
-
-      def render_children(language)
-        if @rendered_children.size > 0
-          return
-        end
-
-        @children.each do |key, child|
-          if child.is_a? Array
-            @rendered_children[key] = child.map {|c| c.render(language, @context) }
-            next
-          end
-
-          if child.methods.include? :render
-            @rendered_children[key] = child.render(language, @context)
-          else
-            @rendered_children[key] = child
-          end
-        end
-        post_render_children()
-      end
-
-      def post_render_children()
-      end
 
       def render(language = 'ruby', context = {})
         return Zest::Renderer.render(self, language, context)
-
-
-        @context = context
-        render_children(language)
-        @rendered = ERB.new(read_template(language), nil, "%<>").result(binding)
-        @rendered
-      end
-
-      def indent_block(nodes, indentation = nil, separator = '')
-        indentation = indentation || @context[:indentation] || '  '
-
-        nodes.map do |node|
-          node ||= ""
-          node.split("\n").map do |line|
-            "#{indentation}#{line}\n"
-          end.join
-        end.join(separator)
       end
 
       def find_sub_nodes(types = [])
