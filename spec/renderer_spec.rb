@@ -10,21 +10,21 @@ describe Zest::Renderer do
       node = Zest::Nodes::StringLiteral.new('coucou')
       renderer = Zest::Renderer.new({language: 'python'})
 
-      expect(renderer.get_template_path(node)).to eq('./lib/templates/common/stringliteral.erb')
+      expect(renderer.get_template_path(node, 'erb')).to eq('./lib/templates/common/stringliteral.erb')
     end
 
     it 'checks in the language template folder' do
       node = Zest::Nodes::Assign.new('x', 1)
       renderer = Zest::Renderer.new({language: 'ruby'})
 
-      expect(renderer.get_template_path(node)).to eq('./lib/templates/ruby/assign.erb')
+      expect(renderer.get_template_path(node, 'erb')).to eq('./lib/templates/ruby/assign.erb')
     end
 
     it 'checks in the framework specific folder if existing' do
       node = Zest::Nodes::Scenarios.new([])
       renderer = Zest::Renderer.new({language: 'ruby', framework: 'minitest'})
 
-      expect(renderer.get_template_path(node)).to eq('./lib/templates/ruby/minitest/scenarios.erb')
+      expect(renderer.get_template_path(node, 'erb')).to eq('./lib/templates/ruby/minitest/scenarios.erb')
     end
   end
 

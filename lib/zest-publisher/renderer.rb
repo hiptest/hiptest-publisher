@@ -1,3 +1,4 @@
+require 'handlebars'
 require 'zest-publisher/nodes_walker'
 
 module Zest
@@ -15,6 +16,27 @@ module Zest
       super(:children_first)
       @rendered = {}
       @context = context
+      @handlebars = Handlebars::Context.new
+      register_handlebars_helpers
+    end
+
+    def register_handlebars_helpers
+      string_helpers = [
+        :literate,
+        :normalize,
+        :underscore,
+        :camelize,
+        :camelize_lower]
+
+      string_helpers.each do |helper|
+        @handlebars.register_helper(helper) do |context, value|
+          "#{value.send(helper)}"
+        end
+      end
+
+      @handlebars.register_helper(:to_string) do |context, value|
+        "#{value.to_s}"
+      end
     end
 
     def call_node_walker(node)
@@ -22,7 +44,7 @@ module Zest
         @rendered_children = {}
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
 
-        @rendered[node] = ERB.new(read_template(node), nil, "%<>").result(binding)
+        @rendered[node] = render_node(node)
       elsif node.is_a? Array
         @rendered[node] = node.map {|item| @rendered[item]}
       else
@@ -30,7 +52,25 @@ module Zest
       end
     end
 
-    def get_template_path(node)
+    def render_node(node)
+      handlebars_template = get_template_path(node, 'hbs')
+
+      if handlebars_template.nil?
+        render_erb(node, get_template_path(node, 'erb'))
+      else
+        render_handlebars(node, handlebars_template)
+      end
+    end
+
+    def render_erb(node, template)
+      ERB.new(File.read(template), nil, "%<>").result(binding)
+    end
+
+    def render_handlebars(node, template)
+      @handlebars.compile(File.read(template)).call(node: node, rendered_children: @rendered_children)
+    end
+
+    def get_template_path(node, extension)
       normalized_name = node.class.name.split('::').last.downcase
 
       searched_folders = []
@@ -40,15 +80,11 @@ module Zest
       searched_folders << [@context[:language], 'common']
 
       searched_folders.flatten.map do |path|
-        template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{normalized_name}.erb"
+        template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{normalized_name}.#{extension}"
         if File.file?(template_path)
           template_path
         end
       end.compact.first
-    end
-
-    def read_template(node)
-      File.read(get_template_path(node))
     end
 
     def indent_block(nodes, indentation = nil, separator = '')
