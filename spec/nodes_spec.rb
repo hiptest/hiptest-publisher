@@ -22,47 +22,4 @@ describe Zest::Nodes do
       end
     end
   end
-
-  context 'Item' do
-    context 'has_parameters?' do
-      it 'returns false if has not parameter' do
-        item = Zest::Nodes::Item.new('my item', [], [])
-        expect(item.has_parameters?).to be false
-      end
-
-      it 'returns true if has at least one parameter' do
-        item = Zest::Nodes::Item.new('my item', [], [Zest::Nodes::Parameter.new('piou')])
-        expect(item.has_parameters?).to be_truthy
-      end
-    end
-  end
-
-  context 'Actionword' do
-    context 'has_step?' do
-      it 'returns true if body has at least one step' do
-        step = Zest::Nodes::Step.new('action', 'value')
-        myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [step])
-        expect(myNode.has_step?).to be_truthy
-      end
-
-      it 'returns false if there is no step in body' do
-        myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [])
-        expect(myNode.has_step?).to be false
-      end
-    end
-  end
-
-  context 'Call' do
-    context 'has_arguments?' do
-      it 'returns false if has no argument' do
-        call = Zest::Nodes::Call.new('', [])
-        expect(call.has_arguments?).to be false
-      end
-
-      it 'returns true if has at least one argument' do
-        call = Zest::Nodes::Call.new('', [Zest::Nodes::Argument.new('name', 'value')])
-        expect(call.has_arguments?).to be_truthy
-      end
-    end
-  end
 end

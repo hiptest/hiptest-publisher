@@ -161,10 +161,6 @@ module Zest
         super()
         @children = {:actionword => actionword, :arguments => arguments}
       end
-
-      def has_arguments?
-        !@children[:arguments].empty?
-      end
     end
 
     class IfThen < Node
@@ -230,21 +226,9 @@ module Zest
       def name
         @children[:name]
       end
-
-      def has_parameters?
-        !@children[:parameters].empty?
-      end
     end
 
     class Actionword < Item
-      def has_step?
-        @children[:body].each do |element|
-          if element.instance_of?(Zest::Nodes::Step)
-            return true
-          end
-        end
-        false
-      end
     end
 
     class Scenario < Item
