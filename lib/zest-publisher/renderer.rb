@@ -75,17 +75,6 @@ module Zest
       end.compact.first
     end
 
-    def indent_block(nodes, indentation = nil, separator = '')
-      indentation = indentation || @context[:indentation] || '  '
-
-      nodes.map do |node|
-        node ||= ""
-        node.split("\n").map do |line|
-          "#{indentation}#{line}\n"
-        end.join
-      end.join(separator)
-    end
-
     def walk_actionword(aw)
       {
         :has_parameters? => aw.has_parameters?,

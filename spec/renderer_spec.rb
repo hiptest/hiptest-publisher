@@ -27,41 +27,4 @@ describe Zest::Renderer do
       expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/ruby/minitest/scenarios.hbs')
     end
   end
-
-  context 'indent_block' do
-    it 'indent a block' do
-      renderer = Zest::Renderer.new({})
-      block = ["A single line", "Two\nLines", "Three\n  indented\n    lines"]
-      expect(renderer.indent_block(block)).to eq([
-        "  A single line",
-        "  Two",
-        "  Lines",
-        "  Three",
-        "    indented",
-        "      lines",
-        ""
-        ].join("\n"))
-    end
-
-    it 'can have a specified indentation' do
-      renderer = Zest::Renderer.new({})
-      expect(renderer.indent_block(["La"], "---")).to eq("---La\n")
-    end
-
-    it 'if no indentation is specified, it uses the one from the context' do
-      renderer = Zest::Renderer.new({:indentation => '~'})
-
-      expect(renderer.indent_block(["La"])).to eq("~La\n")
-    end
-
-    it 'default indentation is wo spaces' do
-      renderer = Zest::Renderer.new({})
-      expect(renderer.indent_block(["La"])).to eq("  La\n")
-    end
-
-    it 'also accepts a separator to join the result (aded to te line return)' do
-      renderer = Zest::Renderer.new({})
-      expect(renderer.indent_block(["A", "B\nC", "D\nE"], '  ', '#')).to eq("  A\n#  B\n  C\n#  D\n  E\n")
-    end
-  end
 end
