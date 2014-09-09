@@ -52,17 +52,17 @@ describe 'Render as Python' do
     @foo_dict_rendered = "{foo: 'fighters', Alt: J}"
 
     # In Zest: foo := 'fighters'
-    @assign_fighters_to_foo_rendered = "foo = 'fighters'\n"
+    @assign_fighters_to_foo_rendered = "foo = 'fighters'"
 
     # In Zest: call 'foo'
-    @call_foo_rendered = "self.foo()\n"
+    @call_foo_rendered = "self.foo()"
     # In Zest: call 'foo bar'
-    @call_foo_bar_rendered = "self.foo_bar()\n"
+    @call_foo_bar_rendered = "self.foo_bar()"
 
     # In Zest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = "self.foo(x = 'fighters')\n"
+    @call_foo_with_fighters_rendered = "self.foo(x = 'fighters')"
     # In Zest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = "self.foo_bar(x = 'fighters')\n"
+    @call_foo_bar_with_fighters_rendered = "self.foo_bar(x = 'fighters')"
 
 
     # In Zest: step {action: "${foo}fighters"}
@@ -74,8 +74,7 @@ describe 'Render as Python' do
     #end
     @if_then_rendered = [
         "if (true):",
-        "    foo = 'fighters'",
-        ""
+        "    foo = 'fighters'"
       ].join("\n")
 
     # In Zest:
@@ -88,8 +87,7 @@ describe 'Render as Python' do
         "if (true):",
         "    foo = 'fighters'",
         "else:",
-        "    fighters = 'foo'",
-        ""
+        "    fighters = 'foo'"
       ].join("\n")
 
     # In Zest:
@@ -100,8 +98,7 @@ describe 'Render as Python' do
     @while_loop_rendered = [
         "while (foo):",
         "    fighters = 'foo'",
-        "    self.foo(x = 'fighters')",
-        ""
+        "    self.foo(x = 'fighters')"
       ].join("\n")
 
     # In Zest: @myTag

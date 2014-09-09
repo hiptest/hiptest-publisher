@@ -2,7 +2,8 @@ def {{ underscore rendered_children.name }}{{#if has_parameters?}}({{{ join rend
 {{#clear_empty_lines}}
 {{#indent}}
 {{#if has_tags?}}# Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{#each rendered_children.body}}{{{this}}}{{/each}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
 {{#if has_step?}}raise NotImplementedError{{/if}}
 {{/indent}}
 {{/clear_empty_lines}}

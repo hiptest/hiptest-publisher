@@ -56,7 +56,7 @@ describe 'Render as Java' do
     @foo_dict_rendered = '{foo: "fighters", Alt: J}'
 
     # In Zest: foo := 'fighters'
-    @assign_fighters_to_foo_rendered = "foo = \"fighters\";\n"
+    @assign_fighters_to_foo_rendered = "foo = \"fighters\";"
 
     # In Zest: call 'foo'
     @call_foo_rendered = "foo();"
@@ -80,7 +80,7 @@ describe 'Render as Java' do
     @if_then_rendered = [
         "if (true) {",
         "  foo = \"fighters\";",
-        "}\n"
+        "}"
       ].join("\n")
 
     # In Zest:
@@ -94,7 +94,7 @@ describe 'Render as Java' do
         '  foo = "fighters";',
         "} else {",
         '  fighters = "foo";',
-        "}\n"
+        "}"
       ].join("\n")
 
     # In Zest:
@@ -106,7 +106,7 @@ describe 'Render as Java' do
         "while (foo) {",
         '  fighters = "foo";',
         '  foo("fighters");',
-        "}\n"
+        "}"
       ].join("\n")
 
     # In Zest: @myTag

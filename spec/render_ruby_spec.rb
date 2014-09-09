@@ -33,7 +33,7 @@ describe 'Render as Ruby' do
     @foo_dict_rendered = "{foo: 'fighters', Alt: J}"
 
     # Statements
-    @assign_fighters_to_foo_rendered = "foo = 'fighters'\n"
+    @assign_fighters_to_foo_rendered = "foo = 'fighters'"
     @call_foo_rendered = "foo"
     # In Zest: call 'foo bar'
     @call_foo_bar_rendered = "foo_bar"
@@ -49,7 +49,7 @@ describe 'Render as Ruby' do
     @if_then_rendered = [
         "if (true)",
         "  foo = 'fighters'",
-        "end\n"
+        "end"
       ].join("\n")
 
     @if_then_else_rendered = [
@@ -57,14 +57,14 @@ describe 'Render as Ruby' do
         "  foo = 'fighters'",
         "else",
         "  fighters = 'foo'",
-        "end\n"
+        "end"
       ].join("\n")
 
     @while_loop_rendered = [
         "while (foo)",
         "  fighters = 'foo'",
         "  foo('fighters')",
-        "end\n"
+        "end"
       ].join("\n")
 
     # Tags

@@ -2,7 +2,8 @@ public void {{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}
 {{#clear_empty_lines}}
 {{#indent}}
 {{#if has_tags?}}// Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{#each rendered_children.body}}{{{this}}}{{/each}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
 {{#if has_step?}}throw new UnsupportedOperationException();{{/if}}
 {{/indent}}
 {{/clear_empty_lines}}
