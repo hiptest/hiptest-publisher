@@ -2,7 +2,7 @@ module Zest
   module RenderContextMaker
     def walk_item(item)
       {
-        :has_parameters? => item.has_parameters?,
+        :has_parameters? => !item.children[:parameters].empty?,
         :has_tags? => !item.children[:tags].empty?,
         :has_step? => !item.find_sub_nodes(Zest::Nodes::Step).empty?,
         :is_empty? => item.children[:body].empty?
