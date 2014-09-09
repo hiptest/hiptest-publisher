@@ -27,9 +27,7 @@ module Zest
       if node.is_a? Zest::Nodes::Node
         @rendered_children = {}
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
-
-        render_context = super(node)
-        @rendered[node] = render_node(node, render_context)
+        @rendered[node] = render_node(node, super(node))
       elsif node.is_a? Array
         @rendered[node] = node.map {|item| @rendered[item]}
       else
@@ -37,30 +35,18 @@ module Zest
       end
     end
 
-    def render_node(node, render_context = {})
-      handlebars_template = get_template_path(node, 'hbs')
-
-      if handlebars_template.nil?
-        render_erb(node, get_template_path(node, 'erb'), render_context)
-      else
-        render_handlebars(node, handlebars_template, render_context)
-      end
-    end
-
-    def render_erb(node, template, render_context)
-      ERB.new(File.read(template), nil, "%<>").result(binding)
-    end
-
-    def render_handlebars(node, template, render_context)
+    def render_node(node, render_context)
       render_context = {} if render_context.nil?
       render_context[:node] = node
       render_context[:rendered_children] = @rendered_children
       render_context[:context] = @context
 
+      template = get_template_path(node)
+
       @handlebars.compile(File.read(template)).send(:call, render_context)
     end
 
-    def get_template_path(node, extension)
+    def get_template_path(node, extension = 'hbs')
       normalized_name = node.class.name.split('::').last.downcase
 
       searched_folders = []
