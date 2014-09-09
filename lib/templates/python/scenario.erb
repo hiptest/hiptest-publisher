@@ -1,6 +1,0 @@
-def test_<%= @rendered_children[:name].normalize %>(self):
-<%= indent_block([@rendered_children[:description]], '    # ') %>
-<% unless @rendered_children[:tags].empty? %>    # Tags: <%= @rendered_children[:tags].join(' ') %><%= "\n" %><% end %>
-<%= indent_block(@rendered_children[:body]) %>
-<% if node.children[:body].empty? %>    pass
-<% end %>

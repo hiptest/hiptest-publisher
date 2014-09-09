@@ -108,6 +108,7 @@ module Zest
       render_context = {} if render_context.nil?
       render_context[:node] = node
       render_context[:rendered_children] = @rendered_children
+      render_context[:context] = @context
 
       @handlebars.compile(File.read(template)).send(:call, render_context)
     end
@@ -144,14 +145,16 @@ module Zest
       {
         :has_parameters? => aw.has_parameters?,
         :has_tags? => !aw.children[:tags].empty?,
-        :has_step? => aw.has_step?
+        :has_step? => aw.has_step?,
+        :is_empty? => aw.children[:body].empty?
       }
     end
 
     def walk_scenario(sc)
       {
         :has_parameters? => sc.has_parameters?,
-        :has_tags? => !sc.children[:tags].empty?
+        :has_tags? => !sc.children[:tags].empty?,
+        :is_empty? => sc.children[:body].empty?
       }
     end
 
@@ -186,11 +189,11 @@ module Zest
           :raw => chunk
         }
       end
-      variables = treated.map {|item| item[:raw] if item[:is_variable?]}.compact
+      variable_names = treated.map {|item| item[:raw].children[:name] if item[:is_variable?]}.compact
 
       {
         :treated_chunks => treated,
-        :variables => variables
+        :variable_names => variable_names
       }
     end
   end

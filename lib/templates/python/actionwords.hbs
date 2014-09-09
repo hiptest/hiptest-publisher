@@ -3,5 +3,7 @@
 class Actionwords:
     def __init__(self, test):
         self.test = test
-
-<%= indent_block(@rendered_children[:actionwords], nil, "\n") %>
+{{#indent}}
+{{#each rendered_children.actionwords}}{{{this}}}
+{{/each}}
+{{/indent}}
