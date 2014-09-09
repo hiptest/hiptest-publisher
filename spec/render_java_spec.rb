@@ -171,6 +171,7 @@ describe 'Render as Java' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "  throw new UnsupportedOperationException();",
       "}"].join("\n")
 
     # In Zest:
@@ -273,6 +274,8 @@ describe 'Render as Java' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "",
+      "  throw new UnsupportedOperationException();",
       "}"].join("\n")
 
 

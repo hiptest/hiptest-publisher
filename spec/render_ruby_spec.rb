@@ -102,6 +102,7 @@ describe 'Render as Ruby' do
       "    # TODO: Implement result: x is lower than Pi",
       "    # on two lines",
       "  end",
+      "  raise NotImplementedError",
       "end"].join("\n")
 
     @step_action_word_rendered = [
@@ -182,6 +183,7 @@ describe 'Render as Ruby' do
         "    # TODO: Implement result: x is lower than Pi",
         "    # on two lines",
         "  end",
+        "  raise NotImplementedError",
         "end"].join("\n")
 
       @scenarios_rendered = [
@@ -222,6 +224,7 @@ describe 'Render as Ruby' do
         "    # TODO: Implement result: x is lower than Pi",
         "    # on two lines",
         "  end",
+        "  raise NotImplementedError",
         "end"].join("\n")
 
       @scenarios_rendered = [

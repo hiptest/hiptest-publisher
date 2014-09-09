@@ -162,6 +162,7 @@ describe 'Render as Python' do
       "    else:",
       "        # TODO: Implement result: x is lower than Pi",
       "        # on two lines",
+      "    raise NotImplementedError",
       ""].join("\n")
 
     # In Zest:
@@ -257,6 +258,7 @@ describe 'Render as Python' do
       "    else:",
       "        # TODO: Implement result: x is lower than Pi",
       "        # on two lines",
+      "    raise NotImplementedError",
       ""].join("\n")
 
 

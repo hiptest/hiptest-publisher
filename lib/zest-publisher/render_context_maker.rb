@@ -1,21 +1,16 @@
 module Zest
   module RenderContextMaker
-    def walk_actionword(aw)
+    def walk_item(item)
       {
-        :has_parameters? => aw.has_parameters?,
-        :has_tags? => !aw.children[:tags].empty?,
-        :has_step? => aw.has_step?,
-        :is_empty? => aw.children[:body].empty?
+        :has_parameters? => item.has_parameters?,
+        :has_tags? => !item.children[:tags].empty?,
+        :has_step? => !item.find_sub_nodes(Zest::Nodes::Step).empty?,
+        :is_empty? => item.children[:body].empty?
       }
     end
 
-    def walk_scenario(sc)
-      {
-        :has_parameters? => sc.has_parameters?,
-        :has_tags? => !sc.children[:tags].empty?,
-        :is_empty? => sc.children[:body].empty?
-      }
-    end
+    alias :walk_actionword :walk_item
+    alias :walk_scenario :walk_item
 
     def walk_call(c)
       {
