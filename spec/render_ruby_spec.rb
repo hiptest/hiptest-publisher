@@ -77,7 +77,11 @@ describe 'Render as Ruby' do
 
 
     # Actionwords
-    @empty_action_word_rendered = "def my_action_word\nend"
+    @empty_action_word_rendered = [
+      "def my_action_word",
+      "",
+      "end"].join("\n")
+
     @tagged_action_word_rendered = [
       "def my_action_word",
       "  # Tags: myTag myTag:somevalue",
@@ -85,6 +89,7 @@ describe 'Render as Ruby' do
 
     @parameterized_action_word_rendered = [
       "def my_action_word(plic, flip = 'flap')",
+      "",
       "end"].join("\n")
 
     @full_actionword_rendered = [
@@ -110,6 +115,7 @@ describe 'Render as Ruby' do
       "",
       "module Actionwords",
       "  def first_action_word",
+      "",
       "  end",
       "",
       "  def second_action_word",
@@ -136,21 +142,27 @@ describe 'Render as Ruby' do
       "",
       "module Actionwords",
       "  def aw_with_int_param(x)",
+      "",
       "  end",
       "",
       "  def aw_with_float_param(x)",
+      "",
       "  end",
       "",
       "  def aw_with_boolean_param(x)",
+      "",
       "  end",
       "",
       "  def aw_with_null_param(x)",
+      "",
       "  end",
       "",
       "  def aw_with_string_param(x)",
+      "",
       "  end",
       "",
       "  def aw_with_template_param(x)",
+      "",
       "  end",
       "end"
     ].join("\n")
@@ -181,6 +193,7 @@ describe 'Render as Ruby' do
         "  include Actionwords",
         "",
         "  it \"first scenario\" do",
+        "",
         "  end",
         "",
         "  it \"second scenario\" do",
@@ -221,6 +234,7 @@ describe 'Render as Ruby' do
         "  include Actionwords",
         "",
         "  def test_first_scenario",
+        "",
         "  end",
         "",
         "  def test_second_scenario",

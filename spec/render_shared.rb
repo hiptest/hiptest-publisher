@@ -89,7 +89,7 @@ shared_context "shared render" do
           Zest::Nodes::Step.new('result', "x is greater than Pi")
         ],
         [
-          Zest::Nodes::Step.new('result', "x is lower than Pi\n on two lines")
+          Zest::Nodes::Step.new('result', "x is lower than Pi\non two lines")
         ])
       ]
 
