@@ -1,5 +1,6 @@
 require 'handlebars'
 require 'zest-publisher/nodes_walker'
+require 'zest-publisher/handlebars_helper'
 
 module Zest
   class Renderer < Zest::Nodes::Walker
@@ -17,72 +18,7 @@ module Zest
       @rendered = {}
       @context = context
       @handlebars = Handlebars::Context.new
-      register_handlebars_helpers
-    end
-
-    def register_handlebars_helpers
-      string_helpers = [
-        :literate,
-        :normalize,
-        :underscore,
-        :camelize,
-        :camelize_lower,
-        :clear_extension]
-
-      string_helpers.each do |helper|
-        @handlebars.register_helper(helper) do |context, value|
-          "#{value.send(helper)}"
-        end
-      end
-
-      @handlebars.register_helper(:to_string) do |context, value|
-        "#{value.to_s}"
-      end
-
-      @handlebars.register_helper(:join) do |context, items, joiner|
-        "#{items.join(joiner)}"
-      end
-
-      @handlebars.register_helper(:indent) do |context, block|
-        indentation = @context[:indentation] || '  '
-        block.fn(context).split("\n").map do |line|
-          indented = "#{indentation}#{line}"
-          indented = "" if indented.strip.empty?
-          indented
-        end.join("\n")
-      end
-
-      @handlebars.register_helper(:clear_empty_lines) do |context, block|
-        block.fn(context).split("\n").map do |line|
-          line unless line.strip.empty?
-        end.compact.join("\n")
-      end
-
-      @handlebars.register_helper(:remove_quotes) do |context, s|
-        "#{s.gsub('"', '')}"
-      end
-
-      @handlebars.register_helper(:escape_quotes) do |context, s|
-        "#{s.gsub(/"/) {|_| '\\"' }}"
-      end
-
-      @handlebars.register_helper(:comment) do |context, commenter, block|
-        block.fn(context).split("\n").map do |line|
-          "#{commenter} #{line}"
-        end.join("\n")
-      end
-
-      @handlebars.register_helper(:curly) do |context, block|
-        "{#{block.fn(context)}}"
-      end
-
-      @handlebars.register_helper(:open_curly) do |context|
-        "{"
-      end
-
-      @handlebars.register_helper(:close_curly) do |context|
-        "}"
-      end
+      Zest::HandlebarsHelper.register_helpers(@handlebars, @context)
     end
 
     def call_node_walker(node)
