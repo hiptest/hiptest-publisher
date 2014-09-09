@@ -3,7 +3,7 @@ module Zest
     def self.register_helpers(handlebars, context)
       instance = Zest::HandlebarsHelper.new(handlebars, context)
       instance.register_string_helpers
-      instance.register_all_helpers
+      instance.register_custom_helpers
     end
 
     def initialize(handlebars, context)
@@ -28,8 +28,8 @@ module Zest
       end
     end
 
-    def register_all_helpers
-      HandlebarsHelper.instance_methods(false).each do |method_name|
+    def register_custom_helpers
+      self.class.instance_methods.each do |method_name|
         next unless method_name.to_s.start_with? 'hh_'
         @handlebars.register_helper(method_name.to_s.gsub(/hh_/, '')) do |*args|
           send(method_name, *args)
@@ -47,6 +47,7 @@ module Zest
 
     def hh_indent(context, block)
       indentation = @context[:indentation] || '  '
+
       block.fn(context).split("\n").map do |line|
         indented = "#{indentation}#{line}"
         indented = "" if indented.strip.empty?
