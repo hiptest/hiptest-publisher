@@ -1,0 +1,7 @@
+{{#comment '//'}}{{{ rendered_children.description }}}
+{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
+{{/comment}}
+public void test{{{ camelize rendered_children.name }}}() {{#curly}}{{#indent}}
+{{#each rendered_children.body}}{{{this}}}{{/each}}
+{{/indent}}
+{{/curly}}

@@ -26,7 +26,8 @@ module Zest
         :normalize,
         :underscore,
         :camelize,
-        :camelize_lower]
+        :camelize_lower,
+        :clear_extension]
 
       string_helpers.each do |helper|
         @handlebars.register_helper(helper) do |context, value|
@@ -73,6 +74,14 @@ module Zest
 
       @handlebars.register_helper(:curly) do |context, block|
         "{#{block.fn(context)}}"
+      end
+
+      @handlebars.register_helper(:open_curly) do |context|
+        "{"
+      end
+
+      @handlebars.register_helper(:close_curly) do |context|
+        "}"
       end
     end
 

@@ -1,1 +1,0 @@
-<% if @context[:call_prefix] %><%= @context[:call_prefix] %>.<% end %><%= @rendered_children[:actionword].camelize_lower %>(<%= @rendered_children[:arguments].join(', ') %>);

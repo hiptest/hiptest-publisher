@@ -1,5 +1,0 @@
-<%= indent_block([@rendered_children[:description]], '// ') %>
-<% unless @rendered_children[:tags].empty? %>// Tags: <%= @rendered_children[:tags].join(' ') %><%= "\n" %><% end %>
-public void test<%= @rendered_children[:name].camelize %>() {
-<%= indent_block(@rendered_children[:body]) %>
-}

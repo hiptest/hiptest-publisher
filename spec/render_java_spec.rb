@@ -56,7 +56,7 @@ describe 'Render as Java' do
     @foo_dict_rendered = '{foo: "fighters", Alt: J}'
 
     # In Zest: foo := 'fighters'
-    @assign_fighters_to_foo_rendered = 'foo = "fighters";'
+    @assign_fighters_to_foo_rendered = "foo = \"fighters\";\n"
 
     # In Zest: call 'foo'
     @call_foo_rendered = "foo();"
@@ -127,7 +127,11 @@ describe 'Render as Java' do
     # In Zest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "public void myActionWord() {\n}"
+    @empty_action_word_rendered = [
+      "public void myActionWord() {",
+      "",
+      "}"].join("\n")
+
 
     # In Zest:
     # @myTag @myTag:somevalue
@@ -143,6 +147,7 @@ describe 'Render as Java' do
     # end
     @parameterized_action_word_rendered = [
       "public void myActionWord(String plic, String flip) {",
+      "",
       "}"].join("\n")
 
     # In Zest:
@@ -190,6 +195,7 @@ describe 'Render as Java' do
       "public class Actionwords {",
       "",
       "  public void firstActionWord() {",
+      "",
       "  }",
       "",
       "  public void secondActionWord() {",
@@ -218,21 +224,27 @@ describe 'Render as Java' do
       "public class Actionwords {",
       "",
       "  public void awWithIntParam(int x) {",
+      "",
       "  }",
       "",
       "  public void awWithFloatParam(float x) {",
+      "",
       "  }",
       "",
       "  public void awWithBooleanParam(bool x) {",
+      "",
       "  }",
       "",
       "  public void awWithNullParam(String x) {",
+      "",
       "  }",
       "",
       "  public void awWithStringParam(String x) {",
+      "",
       "  }",
       "",
       "  public void awWithTemplateParam(String x) {",
+      "",
       "  }",
       "}"
     ].join("\n")
