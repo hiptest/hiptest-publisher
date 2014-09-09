@@ -197,10 +197,6 @@ module Zest
         @children = {:name => name, :default => default}
       end
 
-      def name
-        @children[:name]
-      end
-
       def type
         if @children[:type].nil?
           'String'
@@ -221,10 +217,6 @@ module Zest
           :parameters => parameters,
           :body => body
         }
-      end
-
-      def name
-        @children[:name]
       end
     end
 
