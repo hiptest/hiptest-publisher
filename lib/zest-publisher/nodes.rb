@@ -211,7 +211,6 @@ module Zest
         else
           @children[:type].to_s
         end
-
       end
     end
 
@@ -232,41 +231,8 @@ module Zest
         @children[:name]
       end
 
-      def post_render_children()
-        save_parameters_by_type
-        find_variables
-      end
-
       def has_parameters?
         !@children[:parameters].empty?
-      end
-
-      private
-
-      def find_variables
-        names = []
-
-        @variables = find_sub_nodes(Zest::Nodes::Variable).map do |var_node|
-          unless names.include?(var_node.children[:name])
-            names << var_node.children[:name]
-            var_node
-          end
-        end.compact
-      end
-
-      def save_parameters_by_type
-        parameters = []
-        valued_parameters = []
-        children[:parameters].each do |param|
-          if param.children[:default].nil?
-            parameters << param
-          else
-            valued_parameters << param
-          end
-        end
-
-        @non_valued_parameters = parameters
-        @valued_parameters = valued_parameters
       end
     end
 

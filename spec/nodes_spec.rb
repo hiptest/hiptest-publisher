@@ -24,40 +24,12 @@ describe Zest::Nodes do
   end
 
   context 'Item' do
-    context 'post_render_children' do
-      it 'finds all variable declared in the steps' do
-        item = Zest::Nodes::Item.new('my item', [], [], [
-          Zest::Nodes::Step.new(
-            'result',
-            Zest::Nodes::Template.new([
-              Zest::Nodes::Variable.new('x'),
-              Zest::Nodes::StringLiteral.new('should equals 0')
-            ])),
-          Zest::Nodes::Assign.new(
-            Zest::Nodes::Variable.new('y'),
-            Zest::Nodes::Variable.new('x')
-          )
-        ])
-        item.post_render_children
-
-        expect(item.variables.map {|v| v.children[:name]}).to eq(['x', 'y'])
-      end
-
-      it 'saves two lists of parameters: with and without default value' do
-        simple = Zest::Nodes::Parameter.new('simple')
-        valued = Zest::Nodes::Parameter.new('non_valued', '0')
-        item = Zest::Nodes::Item.new('my item', [], [simple, valued])
-        item.post_render_children
-
-        expect(item.non_valued_parameters).to eq([simple])
-        expect(item.valued_parameters).to eq([valued])
-      end
-    end
     context 'has_parameters?' do
       it 'returns false if has not parameter' do
         item = Zest::Nodes::Item.new('my item', [], [])
         expect(item.has_parameters?).to be_falsey
       end
+
       it 'returns true if has at least one parameter' do
         item = Zest::Nodes::Item.new('my item', [], [Zest::Nodes::Parameter.new('piou')])
         expect(item.has_parameters?).to be_truthy
@@ -72,6 +44,7 @@ describe Zest::Nodes do
         myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [step])
         expect(myNode.has_step?).to be_truthy
       end
+
       it 'returns false if there is no step in body' do
         myNode = Zest::Nodes::Actionword.new('name', tags = [], parameters = [], body = [])
         expect(myNode.has_step?).to be_falsey
