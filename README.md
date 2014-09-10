@@ -73,4 +73,4 @@ package = 'com.youcompagny'
 Adding support for other languages and framework
 ------------------------------------------------
 
-See the [CONTRIBUTING](https://github.com/Smartesting/zest-publisher/blob/master/CONTRIBUTING.md>) help page for more information.
+See the [CONTRIBUTING](https://github.com/Smartesting/zest-publisher/blob/master/docs/CONTRIBUTING.md>) help page for more information.
