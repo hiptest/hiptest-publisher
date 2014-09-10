@@ -1,12 +1,21 @@
 A quick guide for handlebars and Zest publisher
 ===============================================
 
-Zest publisher uses [handlebars](http://handlebarsjs.com/) as a templating language. This guide explains [some basics about handlebars](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-basics), [caveats to use with Zest](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-and-zest-publisher-caveats), [available data for each node]() and explains our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers).
-
+Zest publisher uses [handlebars](http://handlebarsjs.com/) as a templating language. This guide explains [some basics about handlebars](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-basics), [caveats to use with Zest](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-and-zest-publisher-caveats), [available data for each node](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#available-values-in-templates) and explains our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers).
 
 
 Handlebars basics
 -----------------
+
+We chose handlebars as the templating system as it is language agnostic and pretty simple to use. The main commands you will need to use will be:
+
+ - ``{{{ my_value }}}``: will output the value of the variable 'my_value'
+ - ``{{#if my_value}}Hello{{/if}}``: will output "Hello" if the variable 'my_value' is true (or not empty)
+ - ``{{#if my_value}}Hello{{else}}Goodbye{{/if}}``: same as before but will also display "Goodbye" if 'my_value' if false or empty
+ - ``{{#each my_list}}{{{this}}}{{/each}}``: will output every element of 'my_list'
+
+Helpers can be used with the notation ``{{{ helperName value }}}`. You will mainly use our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers), we provide an example for each one.
+
 
 Handlebars and Zest-publisher caveats
 -------------------------------------
@@ -83,7 +92,7 @@ Those data can be directly used inside handlebars condition. For example in ``sc
 
 ### call
 
-``has_arguments?`` is true when arguments are given when calling th action word.
+``has_arguments?`` is true when arguments are given when calling the action word.
 
 ### ifthen
 
