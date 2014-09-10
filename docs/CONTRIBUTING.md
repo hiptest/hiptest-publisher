@@ -3,7 +3,7 @@ Contributing
 
 Do not hesitate to contribute to the project by adding support for your favorite language or test framework as explained below. This tool was built to be configurable and have the possibility to export tests in any language.
 
-We did our best to make it as simple as possible, but some knowledge of Ruby and [Zest test description language](https://zest.smartesting.com/tdl_documentation.html) is needed to add support for new languages/frameworks.
+We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [Zest test description language](https://zest.smartesting.com/tdl_documentation.html) is needed to add support for new languages/frameworks.
 
 Adding support for a new language
 ---------------------------------
@@ -26,11 +26,11 @@ Once all the expectation are written, is it time to write the template. The simp
 
 ```shell
 mkdir templates/scala
-cp templates/ruby/*.erb templates/scala/
+cp templates/ruby/*.hbs templates/scala/
 ```
 
 
-Now edit each template file to generate proper Scala code (you will need some knowledge of Ruby and ERB, the default templating system of Ruby) until all tests are working.
+Now edit each template file to generate proper Scala code ([a quick guide for handlebars and Zest publisher](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md>)) until all tests are working.
 
 Note: templates to describe variables and literals are located in ``templates/common``. If you need to override them, simply copy them to ``templates/scala``.
 
@@ -54,20 +54,13 @@ action_word_library = 'ActionWord'
 ```
 
 
-Now in every node rendered in the scenarios, you can access ``context[action_word_library]`` in the template during rendering.
+Now in every node rendered in the scenarios, you can access ``context.action_word_library`` in the template during rendering.
 
 Once this is all done, you should be able to generate the Scala tests by running:
 
 ```shell
 zest-publisher --language=scala
 ```
-
-
-Note: we also added some helpers while rendering scenarios and actionwords:
-
-- *@variables :* The list of variables defind in the actionword or scenario.
-- *@non_valued_parameters :* The list of parameters which do not have a default value
-- *@valued_parameters :* The list of parameters which do have a default value
 
 
 Adding support for a new framework
