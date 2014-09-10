@@ -6,11 +6,57 @@ Zest publisher uses [handlebars](http://handlebarsjs.com/) as a templating langu
 Handlebars basics
 -----------------
 
-Handlebars and Zest caveats
----------------------------
+Handlebars and Zest-publisher caveats
+-------------------------------------
+
+### Whitespaces
+
+Handlebars is designed to generate HTML code, where white spaces and line returns do not really count. With Zest-publisher, we generate code that will be interpreted or compiled, so those characters might be important (for example in python, indentation defines block of code).
+
+This explains why templates might look a bit bulky. For the same reason, there is no indentation of the handlebars code. It would look way nicer, but the output code would have a really weird indentation.
+
+### No new lines at end of file
+
+You might have seen that almost all templates do not have a new line at the end of the file. This is done to avoid getting a weird output.
+
+Even statements (calling a function, assigning a variable etc) do not generate new line. This should be handled by the ``{{each}}`` block that iterates on statements.
+
+Example:
+```handlebars
+{{#each statements}}{{{this}}}
+{{/each}}
+```
+
+Will generate a output with each statement on a separate line. it is easier to handle it this way than adding a line return after each statement.
+
+### Special characters
+
+Handlebars automagically escapes some characters ('<' for example) which is great when generating HTML but not that much when generating code (``if (x &gt; 0)`` does not make sense in many languages).
+To avoid this problem, it is better to use the triple bracket notation that will consider the strings a safe.
+
+```handlebars
+{{{ my_value }}} is better than {{ my_value }} to get usable code :)
+```
+
+### {Curly braces}
+
+Handlebars relies heavily on curly braces but they are not the only ones. You might run into problems when trying to output curly braces that you do not wnat to be interpreted.
+For that, we added three helpers: curly, open_curly and close_curly
+
+```handlebars
+Considering my_value is "Hi !"
+{{ my_value }} will display "Hi !"
+{{{ my_value }}} will display "Hi !" (see above section on special characters)
+{{{{ my_value }}}} will fail at compilation
+{{#curly}}{{ my_value }}{{/curly}} will display "{Hi !}"
+{{ open_curly }}{{ my_value }}{{ close_curly }} will also display "{Hi !}"
+```
 
 Zest custom helpers
 -------------------
+
+We provide a few custom helpers that can be used in templates. For each one, we show an example on how to use it and below the output it will provide.
+
 
 ### literate
 ```handlebars
@@ -91,7 +137,7 @@ Transforms a value to a string (mainly needed for boolean values)
 
 ### remove_quotes
 ```handlebars
-{{remove_quotes 'This is "my" string' }}
+{{ remove_quotes 'This is "my" string' }}
 ```
 
 ```
@@ -102,7 +148,7 @@ Removes double quotes from a string.
 
 ### escape_quotes
 ```handlebars
-{{escape_quotes 'This is "my" string' }}
+{{ escape_quotes 'This is "my" string' }}
 ```
 
 ```
@@ -113,7 +159,7 @@ Escapes double quotes from a string.
 
 ### join
 ```handlebars
-{{join [1, 2, 3] '-'}}
+{{ join [1, 2, 3] '-' }}
 ```
 
 ```
