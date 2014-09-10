@@ -169,7 +169,7 @@ call 'my_actionword' (x = 2)
 
 This node has two children:
  - actionword: a string representing the name of the called action word (in our example 'my_actionword')
- -arguments: a list of Argument nodes
+ - arguments: a list of Argument nodes
 
 
 ### Argument
@@ -221,3 +221,20 @@ end
 This node has two children:
  - condition: a node representing the condition
  - body: a list of nodes representing the statements to be executed during the loop
+
+
+Datatable
+---------
+
+### Datatable
+
+This type of node has only one child, 'datasets', which is a list of Dataset nodes.
+
+
+### Dataset
+
+In Zest, a dataset correspond to a line of a datatable.
+
+This type of node has two children:
+ - name: a string giving the name of the dataset (the column "Dataset name" in Zest)
+ - arguments: a list of Argument nodes, corresponding to the user input.
