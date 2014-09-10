@@ -1,7 +1,9 @@
 A quick guide for handlebars and Zest publisher
 ===============================================
 
-Zest publisher uses [handlebars](http://handlebarsjs.com/) as a templating language. This guide explains some basics about handlebars, caveats to use with Zest and explains our custom helpers.
+Zest publisher uses [handlebars](http://handlebarsjs.com/) as a templating language. This guide explains [some basics about handlebars](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-basics), [caveats to use with Zest](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-and-zest-publisher-caveats), [available data for each node]() and explains our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers).
+
+
 
 Handlebars basics
 -----------------
@@ -41,7 +43,7 @@ To avoid this problem, it is better to use the triple bracket notation that will
 ### {Curly braces}
 
 Handlebars relies heavily on curly braces but they are not the only ones. You might run into problems when trying to output curly braces that you do not wnat to be interpreted.
-For that, we added three helpers: curly, open_curly and close_curly
+For that, we added three helpers: [curly](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#curly), [open_curly](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#open_curly) and [close_curly](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#close_curly).
 
 ```handlebars
 Considering my_value is "Hi !"
@@ -51,6 +53,61 @@ Considering my_value is "Hi !"
 {{#curly}}{{ my_value }}{{/curly}} will display "{Hi !}"
 {{ open_curly }}{{ my_value }}{{ close_curly }} will also display "{Hi !}"
 ```
+
+Available values in templates
+-----------------------------
+
+In any template, you will have access to the following elements:
+ - node: is the currently rendered node. In most cases, you will not need it. The main use case is accessing the project in the list of scenarios (``node.parent``) to get the project name.
+ - rendered_children: contains the node's children already rendered. If you write your templates based on existing ones, the content should be pretty straightfoward. For more explanations on the content, you can have a look at the [nodes documentation](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md).
+ - context: the rendering context. It contains some usefull information, mainly: ``context.package`` which is th package name and ``context.call_prefix`` which is the name of the actionwords class.
+
+
+For some nodes, we add some extra context shown below for each type of node. Following the Ruby naming convention, names ending with a question mark are booleans.
+
+Those data can be directly used inside handlebars condition. For example in ``scenario.hbs``:
+
+```handlebars
+{{#if has_parameters?}}show the parameters{{/if}}
+```
+
+### actionword and scenario
+
+``has_parameters?`` is true when the action word or scenario has parameters.
+
+``has_tags?`` is true when tags have been set on the scenario or action word.
+
+``has_step?`` is true if there is at least one step (action/result in Zest) in the definition.
+
+``is_empty?`` is true when the definition is empty.
+
+### call
+
+``has_arguments?`` is true when arguments are given when calling th action word.
+
+### ifthen
+
+``has_else?`` is true when the ``else`` part is specified.
+
+### parameter
+
+``has_default_value?`` is true when the parameter is defined with a default value.
+
+### tag
+
+``has_value?`` is true when the tag has a value (for example: "priority:1" in Zest, 1 is the value).
+
+### template
+
+A bit more explanation is needed here.
+
+In Zest, templates are double quoted string. It is possible to include some variables inside (for example: "Ensure value is: ${x}"). When exporting the data, the string is splitted into chunks. With the previous example, there will be two chunks: 'Ensure value is: ' which will be a ``Zest::Nodes::StringLiteral`` instance and x which will be a ``Zest::Nodes::Variable`` instance.
+
+``treated_chunks`` gives the list of chunks with an extra information (``is_variable?``) that tells if the chunks is a variable of not. It also provide the raw node.
+
+``variable_names`` list the name of all variables used in the template.
+
+The main use for that is to be able to generate code that will do the replacement in string. The easiest way to understand this is to have a look at the ``template.hbs`` file in the Java or Python directory.
 
 Zest custom helpers
 -------------------
