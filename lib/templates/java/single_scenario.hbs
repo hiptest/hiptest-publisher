@@ -9,11 +9,7 @@ public class {{{ clear_extension context.filename }}} extends TestCase {{#curly}
 {{#comment '//'}}{{{ rendered_children.description }}}
 {{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
 {{/comment}}
-public void test{{{ camelize rendered_children.name }}}() {{#curly}}{{#indent}}
-{{#each rendered_children.body}}{{{this}}}
-{{/each}}
-{{#if has_step?}}throw new UnsupportedOperationException();{{/if}}
-{{/indent}}
+public void test{{{ camelize rendered_children.name }}}() {{#curly}}{{> body}}
 {{/curly}}
 {{/indent}}
 {{/curly}}

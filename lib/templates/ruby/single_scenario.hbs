@@ -7,15 +7,7 @@ describe '{{{ camelize project_name }}}' do
 
 {{#indent}}
 it "{{{ remove_quotes rendered_children.name }}}" do
-{{#clear_empty_lines}}
-{{#indent}}
-{{#comment '#'}}{{{ rendered_children.description }}}{{/comment}}
-{{#if has_tags?}}# Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{#each rendered_children.body}}{{{this}}}
-{{/each}}
-{{#if has_step?}}raise NotImplementedError{{/if}}
-{{/indent}}
-{{/clear_empty_lines}}
+{{> body}}
 end
 {{/indent}}
 end

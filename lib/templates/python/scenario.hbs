@@ -1,11 +1,2 @@
 def test_{{{ normalize rendered_children.name }}}(self):
-{{#clear_empty_lines}}
-{{#indent}}
-{{#comment '#'}}{{{ rendered_children.description }}}{{/comment}}
-{{#if has_tags?}}# Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{#each rendered_children.body}}{{{this}}}
-{{/each}}
-{{#if has_step?}}raise NotImplementedError{{/if}}
-{{#if is_empty?}}pass{{/if}}
-{{/indent}}
-{{/clear_empty_lines}}
+{{> body}}

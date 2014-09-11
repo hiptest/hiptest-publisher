@@ -63,6 +63,12 @@ Considering my_value is "Hi !"
 {{ open_curly }}{{ my_value }}{{ close_curly }} will also display "{Hi !}"
 ```
 
+### Definition rendering
+
+In most cases, rendering a scenario or an action word definition use the same code. To keep DRY, there is support for a partial template.
+
+This template must be named '_body.hbs' and contain the code to render the steps. In a scenario/action word template, simply use ``{{> body}}`` to get the definition rendered.
+
 Available values in templates
 -----------------------------
 

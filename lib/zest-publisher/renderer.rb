@@ -42,8 +42,26 @@ module Zest
       render_context[:rendered_children] = @rendered_children
       render_context[:context] = @context
 
+      body_partial = get_template_by_name('_body', 'hbs')
+      unless body_partial.nil?
+        render_context[:body_partial] = @handlebars.register_partial('body', File.read(body_partial))
+      end
+
       template = get_template_path(node)
       @handlebars.compile(File.read(template)).send(:call, render_context)
+    end
+
+    def get_template_by_name(name, extension)
+      searched_folders = []
+      if @context.has_key?(:framework)
+        searched_folders << "#{@context[:language]}/#{@context[:framework]}"
+      end
+      searched_folders << [@context[:language], 'common']
+
+      searched_folders.flatten.map do |path|
+        template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{name}.#{extension}"
+        template_path if File.file?(template_path)
+      end.compact.first
     end
 
     def get_template_path(node, extension = 'hbs')
@@ -52,16 +70,7 @@ module Zest
         normalized_name = @context[:forced_templates][normalized_name]
       end
 
-      searched_folders = []
-      if @context.has_key?(:framework)
-        searched_folders << "#{@context[:language]}/#{@context[:framework]}"
-      end
-      searched_folders << [@context[:language], 'common']
-
-      searched_folders.flatten.map do |path|
-        template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{normalized_name}.#{extension}"
-        template_path if File.file?(template_path)
-      end.compact.first
+      get_template_by_name(normalized_name, extension)
     end
   end
 end
