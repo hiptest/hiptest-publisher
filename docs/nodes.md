@@ -238,3 +238,74 @@ In Zest, a dataset correspond to a line of a datatable.
 This type of node has two children:
  - name: a string giving the name of the dataset (the column "Dataset name" in Zest)
  - arguments: a list of Argument nodes, corresponding to the user input.
+
+
+Zest objects
+------------
+
+### Actionword
+
+This type of node has four children:
+ - name: a string representing the action word name
+ - tags: a list of Tag nodes
+ - parameters: a list of parameter node
+ - body: a list of nodes representing the action word definition
+
+
+### Scenario
+
+A scenario has the same children than an actionword, plus two extra ones:
+ - description: a string
+ - datatable: a Datatable node
+
+
+### Parameter
+
+This type of node describes a scenario or actionword parameter. It has two children:
+ - name: a string, the parameter's name
+ - default: a node representing the parameter's default value or nil if there is no default value specified
+
+It is also possible to access the 'type' attribute of a parameter node.
+
+### Tag
+```
+@mytag @a_valued_tag:42
+```
+
+This type of node has two children:
+ - key: a string reprenting the part before the colon. In the previous example: 'mytag' or 'a_valued_tag'
+ - value: a string representing the part after the color. In the previous example: '42'
+
+        @children = {:key => key, :value => value}
+
+### Actionwords
+
+The list of the project's action words. Contains a single child, 'actionwords' which is the list.
+
+### Scenarios
+
+Same as Actionwords but for scenarios. The list name is 'scenarios'.
+
+### Folder
+
+Represent a folder in the scenario's hierarchical view in Zest. It has three children:
+ - name: a string
+ - subfolders: a list of Folder nodes
+ - scenarios: a list of Scenario nodes
+
+It is possible to access a folder's parent via the 'parent' attribute.
+
+### TestPlan
+
+Stores all the folders of a project. It has two children:
+ - root_folder: a Folder node, the root folder of the project
+ - folders: a list of Folder node, all the project's folders
+
+### Project
+
+The root node. It has five children:
+ - name: a string
+ - description: a string
+ - test_plan: the TestPlan node for the project
+ - scenarios: the Scenarios node for the project
+ - actionwords: the Actionwords node for the project
