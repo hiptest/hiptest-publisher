@@ -250,6 +250,21 @@ describe 'Render as <My language>' do
       "  end",
       "end"].join("\n")
 
+    # Same than previous scenario, except that is is rendered
+    # so it can be used in a single file (using the --split-scenarios option)
+    @full_scenario_rendered_for_single_file = [
+      "it 'compare_to_pi' do",
+      "  # This is a scenario which description ",
+      "  # is on two lines",
+      "  # Tags: myTag",
+      "  foo = 3.14",
+      "  if (foo > x)",
+      "    # TODO: Implement result: x is greater than Pi",
+      "  else",
+      "    # TODO: Implement result: x is lower than Pi",
+      "    # on two lines",
+      "  end",
+      "end"].join("\n")
 
     # In Zest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do

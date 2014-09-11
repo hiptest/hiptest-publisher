@@ -186,6 +186,30 @@ describe 'Render as Ruby' do
         "  raise NotImplementedError",
         "end"].join("\n")
 
+      @full_scenario_rendered_for_single_file = [
+        "# encoding: UTF-8",
+        "require 'spec_helper'",
+        "require_relative 'actionwords'",
+        "",
+        "describe 'MyProject' do",
+        "  include Actionwords",
+        "",
+        "",
+        "  it \"compare to pi\" do",
+        "    # This is a scenario which description ",
+        "    # is on two lines",
+        "    # Tags: myTag",
+        "    foo = 3.14",
+        "    if (foo > x)",
+        "      # TODO: Implement result: x is greater than Pi",
+        "    else",
+        "      # TODO: Implement result: x is lower than Pi",
+        "      # on two lines",
+        "    end",
+        "    raise NotImplementedError",
+        "  end",
+        "end"].join("\n")
+
       @scenarios_rendered = [
         "# encoding: UTF-8",
         "require 'spec_helper'",
@@ -225,6 +249,30 @@ describe 'Render as Ruby' do
         "    # on two lines",
         "  end",
         "  raise NotImplementedError",
+        "end"].join("\n")
+
+      @full_scenario_rendered_for_single_file = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative 'actionwords'",
+        "",
+        "class TestMyProject < MiniTest::Unit::TestCase",
+        "  include Actionwords",
+        "",
+        "  def test_compare_to_pi",
+        "    # This is a scenario which description ",
+        "    # is on two lines",
+        "    # Tags: myTag",
+        "    foo = 3.14",
+        "    if (foo > x)",
+        "      # TODO: Implement result: x is greater than Pi",
+        "    else",
+        "      # TODO: Implement result: x is lower than Pi",
+        "      # on two lines",
+        "    end",
+        "    raise NotImplementedError",
+        "  end",
         "end"].join("\n")
 
       @scenarios_rendered = [

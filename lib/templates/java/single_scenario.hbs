@@ -1,0 +1,19 @@
+package {{{ context.package }}};
+
+import junit.framework.TestCase;
+
+public class {{{ clear_extension context.filename }}} extends TestCase {{#curly}}
+
+  public Actionwords {{{ context.call_prefix }}} = new Actionwords();
+{{#indent}}
+{{#comment '//'}}{{{ rendered_children.description }}}
+{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
+{{/comment}}
+public void test{{{ camelize rendered_children.name }}}() {{#curly}}{{#indent}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
+{{#if has_step?}}throw new UnsupportedOperationException();{{/if}}
+{{/indent}}
+{{/curly}}
+{{/indent}}
+{{/curly}}

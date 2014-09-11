@@ -258,6 +258,29 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
+    @full_scenario_rendered_for_single_file = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
+      "",
+      "class TestMyProject(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "",
+      "    def test_compare_to_pi(self):",
+      "        # This is a scenario which description ",
+      "        # is on two lines",
+      "        # Tags: myTag",
+      "        foo = 3.14",
+      "        if (foo > x):",
+      "            # TODO: Implement result: x is greater than Pi",
+      "        else:",
+      "            # TODO: Implement result: x is lower than Pi",
+      "            # on two lines",
+      "        raise NotImplementedError",
+      ""
+      ].join("\n")
+
 
     # In Zest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do

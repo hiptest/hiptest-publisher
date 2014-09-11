@@ -111,6 +111,8 @@ shared_context "shared render" do
       [@simple_tag],
       [@x_param],
       full_body)
+    @full_scenario.parent = Zest::Nodes::Scenarios.new([])
+    @full_scenario.parent.parent = Zest::Nodes::Project.new('My project')
 
     @actionwords = Zest::Nodes::Actionwords.new([
       Zest::Nodes::Actionword.new('first action word'),
@@ -119,6 +121,7 @@ shared_context "shared render" do
           Zest::Nodes::Call.new('first action word')
         ])
     ])
+
     @scenarios = Zest::Nodes::Scenarios.new([
       Zest::Nodes::Scenario.new('first scenario'),
       Zest::Nodes::Scenario.new(
@@ -282,8 +285,17 @@ shared_examples "a renderer" do
     end
   end
 
-  it 'Scenario' do
-    expect(@full_scenario.render(language, @context)).to eq(@full_scenario_rendered)
+  context 'Scenario' do
+    it 'can be rendered to be inserted in the scenarios list' do
+      expect(@full_scenario.render(language, @context)).to eq(@full_scenario_rendered)
+    end
+
+    it 'can also be rendered so it will be in a single file' do
+      @context[:forced_templates] = {'scenario' => 'single_scenario'}
+      @context[:call_prefix] = 'actionwords'
+
+      expect(@full_scenario.render(language, @context)).to eq(@full_scenario_rendered_for_single_file)
+    end
   end
 
   it 'Actionwords' do

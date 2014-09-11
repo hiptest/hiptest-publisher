@@ -278,6 +278,31 @@ describe 'Render as Java' do
       "  throw new UnsupportedOperationException();",
       "}"].join("\n")
 
+    @full_scenario_rendered_for_single_file = [
+      "package com.example;",
+      "",
+      "import junit.framework.TestCase;",
+      "",
+      "public class ProjectTest extends TestCase {",
+      "",
+      "  public Actionwords actionwords = new Actionwords();",
+      "",
+      "  // This is a scenario which description ",
+      "  // is on two lines",
+      "  // Tags: myTag",
+      "  public void testCompareToPi() {",
+      "    foo = 3.14;",
+      "    if (foo > x) {",
+      "      // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "      // TODO: Implement result: x is lower than Pi",
+      "      // on two lines",
+      "    }",
+      "",
+      "    throw new UnsupportedOperationException();",
+      "  }",
+      "}"].join("\n")
+
 
     # In Zest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do

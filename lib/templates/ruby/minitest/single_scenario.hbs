@@ -1,0 +1,21 @@
+# encoding: UTF-8
+
+require 'minitest/autorun'
+require_relative 'actionwords'
+
+class Test{{{ camelize node.parent.parent.children.name }}} < MiniTest::Unit::TestCase
+  include Actionwords
+{{#indent}}
+def test_{{{ normalize rendered_children.name }}}
+{{#clear_empty_lines}}
+{{#indent}}
+{{#comment '#'}}{{{ rendered_children.description }}}{{/comment}}
+{{#if has_tags?}}# Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
+{{#if has_step?}}raise NotImplementedError{{/if}}
+{{/indent}}
+{{/clear_empty_lines}}
+end
+{{/indent}}
+end
