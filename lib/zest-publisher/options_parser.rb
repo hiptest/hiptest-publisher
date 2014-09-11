@@ -18,17 +18,60 @@ class FileConfigParser
   end
 end
 
+class Option
+  attr_reader :short, :long, :default, :type, :help, :attribute
+
+  def initialize(short, long, default, type, help, attribute)
+    @short = short
+    @long = long
+    @default = default
+    @type = type
+    @help = help
+    @attribute = attribute
+  end
+
+  def help
+    return @help if default.nil?
+
+    if @default.is_a? String
+      @default.empty? ? @help : "#{@help} (default: #{@default})"
+    else
+      "#{@help} (default: #{@default})"
+    end
+  end
+
+  def register(opts, options)
+    options[attribute] = @default unless default.nil?
+    on_values = [
+      @short ? "-#{@short}" : nil,
+      "--#{@long}",
+      @type,
+      help
+    ].compact
+
+    opts.on(*on_values) do |value|
+      options[attribute] = value
+    end
+  end
+end
+
 class OptionsParser
+  def self.all_options
+    [
+      Option.new('t', 'token=TOKEN', nil, String, "Secret token (available in your project settings)", :token),
+      Option.new('l', 'language=LANG', 'ruby', String, "Target language", :language),
+      Option.new('f', 'framework=FRAMEWORK', '', String, "Test framework to use", :framework),
+      Option.new('o', 'output-directory=PATH', '.', String, "Output directory", :output_directory),
+      Option.new('c', 'config-file=PATH', 'config', String, "Configuration file", :config),
+      Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
+      Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
+      Option.new('s', 'site=SITE', 'https://www.zest-testing.com', String, "Site to fetch from", :site),
+      Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
+    ]
+  end
+
   def self.parse(args)
     options = OpenStruct.new
-    options.language = 'ruby'
-    options.framework = ''
-    options.config = 'config'
-    options.site = 'https://www.zest-testing.com'
-    options.output_directory = '.'
-    options.tests_only = false
-    options.actionwords_only = false
-
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: ruby publisher.rb [options]"
       opts.separator ""
@@ -36,48 +79,7 @@ class OptionsParser
       opts.separator ""
       opts.separator "Specific options:"
 
-      opts.on("-t", "--token=TOKEN", String,
-              "Secret token (available in your project settings)") do |token|
-        options.token = token
-      end
-
-      opts.on("-l", "--language=LANG", String,
-              "Target language (ruby, java, and python available for the moment)") do |language|
-        options.language = language
-      end
-
-      opts.on("-f", "--framework=FRAMEWORK", String,
-              "Test framework to use") do |framework|
-        options.framework = framework
-      end
-
-      opts.on("-o", "--output-directory=PATH", String,
-              "Directory to output the tests") do |output_directory|
-        options.output_directory = output_directory
-      end
-
-      opts.on("-c", "--config-file=PATH", String,
-              "Configuration file (default: config)") do |config|
-        options.config = config
-      end
-
-      opts.on("--tests-only", "Export only the tests") do |tests_only|
-        options.tests_only = tests_only
-      end
-
-      opts.on("--actionwords-only", "Export only the actionwords") do |actionwords_only|
-        options.actionwords_only = actionwords_only
-      end
-
-      opts.on("-s", "--site=SITE", String,
-              "Site to fetch from (default: https://www.zest-testing.com)") do |site|
-        options.site = site
-      end
-
-      opts.on("-v", "--verbose", "Run verbosely") do |v|
-        options.verbose = v
-      end
-
+      all_options.each {|o| o.register(opts, options)}
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts
         exit
@@ -86,6 +88,14 @@ class OptionsParser
 
     opt_parser.parse!(args)
     FileConfigParser.update_options options
+
+    show_options(options) if options.verbose
+    options
+  end
+
+  def self.show_options(options)
+    puts "Running Zest-publisher with:".yellow
+    options.marshal_dump.each { |k, v| puts " - #{k}: #{v}".white }
   end
 end
 
@@ -127,5 +137,4 @@ class LanguageConfigParser
     }
     context
   end
-
 end

@@ -13,7 +13,7 @@ module Zest
 
       begin
         show_status_message "Fetching data from Zest"
-        xml = fetch_project_export(options.site, options.token)
+        xml = fetch_project_export(options.site, options.token, options.verbose)
         show_status_message "Fetching data from Zest", :success
       rescue Exception => err
         show_status_message "Fetching data from Zest", :failure

@@ -8,8 +8,10 @@ rescue
   '.'
 end
 
-def fetch_project_export site, token
-  open("#{site}/publication/#{token}/project?future=1", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
+def fetch_project_export site, token, verbose=false
+  url = "#{site}/publication/#{token}/project?future=1"
+  puts "URL: #{url}".white if verbose
+  open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
 end
 
 def trace_exception exception
