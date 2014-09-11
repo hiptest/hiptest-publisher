@@ -65,6 +65,7 @@ class OptionsParser
       Option.new('c', 'config-file=PATH', 'config', String, "Configuration file", :config),
       Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
+      Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new('s', 'site=SITE', 'https://www.zest-testing.com', String, "Site to fetch from", :site),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
@@ -103,6 +104,10 @@ class LanguageConfigParser
   def initialize(options)
     @options = options
     @config = ParseConfig.new("#{zest_publisher_path}/lib/templates/#{options.language}/output_config")
+  end
+
+  def scenario_output_dir(scenario_name)
+    "#{@options.output_directory}/#{@config['tests']['scenario_filename']}".gsub('%s', scenario_name.normalize)
   end
 
   def tests_output_dir

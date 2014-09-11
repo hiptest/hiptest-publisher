@@ -8,13 +8,13 @@ rescue
   '.'
 end
 
-def fetch_project_export site, token, verbose=false
+def fetch_project_export(site, token, verbose=false)
   url = "#{site}/publication/#{token}/project?future=1"
   puts "URL: #{url}".white if verbose
   open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
 end
 
-def trace_exception exception
+def trace_exception(exception)
   line = "-" * 80
   puts line.yellow
   puts "#{exception.class.name}: #{exception.message}".red
