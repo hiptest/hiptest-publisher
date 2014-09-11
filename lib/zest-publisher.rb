@@ -37,16 +37,14 @@ module Zest
       return parser.build_project
     end
 
-    def write_node_to_file(path, node, message)
+    def write_node_to_file(path, node, context, message)
       status_message = "#{message}: #{path}"
       begin
         show_status_message status_message
         File.open(path, 'w') do |file|
-          file.write(node.render(
-            @options.language,
-            @language_config.tests_render_context)
-          )
+          file.write(Zest::Renderer.render(node, @options.language, context))
         end
+
         show_status_message status_message, :success
       rescue
         show_status_message status_message, :failure
@@ -59,12 +57,14 @@ module Zest
           write_node_to_file(
             @language_config.scenario_output_dir(scenario.children[:name]),
             scenario,
+            @language_config.tests_render_context,
             "Exporting scenario \"#{scenario.children[:name]}\"")
         end
       else
         write_node_to_file(
           @language_config.tests_output_dir,
           @project.children[:scenarios],
+          @language_config.tests_render_context,
           "Exporting scenarios")
       end
     end
@@ -73,6 +73,7 @@ module Zest
       write_node_to_file(
         @language_config.aw_output_dir,
         @project.children[:actionwords],
+        @language_config.actionword_render_context,
         "Exporting actionwords"
       )
     end
