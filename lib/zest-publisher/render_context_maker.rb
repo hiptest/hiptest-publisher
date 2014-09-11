@@ -10,7 +10,19 @@ module Zest
     end
 
     alias :walk_actionword :walk_item
-    alias :walk_scenario :walk_item
+
+    def walk_scenario(scenario)
+      base = walk_item(scenario)
+      base[:project_name] = scenario.parent.parent.children[:name]
+
+      return base
+    end
+
+    def walk_scenarios(scenarios)
+      {
+        :project_name => scenarios.parent.children[:name]
+      }
+    end
 
     def walk_call(c)
       {

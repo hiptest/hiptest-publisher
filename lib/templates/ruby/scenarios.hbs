@@ -2,7 +2,7 @@
 require 'spec_helper'
 require_relative 'actionwords'
 
-describe '{{{ camelize node.parent.children.name }}}' do
+describe '{{{ camelize project_name }}}' do
   include Actionwords
 {{#indent}}
 {{#each rendered_children.scenarios}}{{{this}}}

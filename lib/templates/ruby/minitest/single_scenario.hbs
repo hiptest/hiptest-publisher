@@ -3,7 +3,7 @@
 require 'minitest/autorun'
 require_relative 'actionwords'
 
-class Test{{{ camelize node.parent.parent.children.name }}} < MiniTest::Unit::TestCase
+class Test{{{ camelize project_name }}} < MiniTest::Unit::TestCase
   include Actionwords
 {{#indent}}
 def test_{{{ normalize rendered_children.name }}}

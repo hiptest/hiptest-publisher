@@ -80,7 +80,7 @@ Those data can be directly used inside handlebars condition. For example in ``sc
 {{#if has_parameters?}}show the parameters{{/if}}
 ```
 
-### actionword and scenario
+### actionword
 
 ``has_parameters?`` is true when the action word or scenario has parameters.
 
@@ -89,6 +89,14 @@ Those data can be directly used inside handlebars condition. For example in ``sc
 ``has_step?`` is true if there is at least one step (action/result in Zest) in the definition.
 
 ``is_empty?`` is true when the definition is empty.
+
+### scenario
+
+The same values are available than  for actionword, plus ``project_name`` that provides the project's name.
+
+### scenarios
+
+``project_name`` provides the project's name.
 
 ### call
 

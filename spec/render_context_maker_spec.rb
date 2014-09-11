@@ -56,6 +56,39 @@ describe Zest::RenderContextMaker do
     end
   end
 
+  context 'walk_scenario' do
+    let(:node) {
+      sc = Zest::Nodes::Scenario.new('My scenario')
+      sc.parent = Zest::Nodes::Scenarios.new([])
+      sc.parent.parent = Zest::Nodes::Project.new('A project')
+      sc
+    }
+
+    it 'adds the project name to walk_item result' do
+      expect(subject.walk_scenario(node).keys).to eq([
+        :has_parameters?,
+        :has_tags?,
+        :has_step?,
+        :is_empty?,
+        :project_name
+      ])
+
+      expect(subject.walk_scenario(node)[:project_name]).to eq('A project')
+    end
+  end
+
+  context 'walk_scenarios' do
+    let(:node) {
+      scs = Zest::Nodes::Scenarios.new([])
+      scs.parent = Zest::Nodes::Project.new('Another project')
+      scs
+    }
+
+    it 'gives the project name' do
+      expect(subject.walk_scenarios(node)).to eq({:project_name => 'Another project'})
+    end
+  end
+
   context 'walk_call' do
     it 'tells if there is arguments' do
       node = Zest::Nodes::Call.new('my_action_word')
