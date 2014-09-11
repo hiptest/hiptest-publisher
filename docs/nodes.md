@@ -9,7 +9,7 @@ Some knowledge of the [Zest test description language](https://zest.smartesting.
 Literals and types
 ------------------
 
-### NullLiteral
+### [NullLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#nullliteral)
 
 ```ruby
 nil
@@ -18,7 +18,7 @@ nil
 Well, not much to say, this node has no child.
 
 
-### StringLiteral
+### [StringLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#stringliteral)
 
 ```ruby
 'A string wrap in single quotes'
@@ -26,7 +26,7 @@ Well, not much to say, this node has no child.
 
 This node has a single child, 'value' which contains the value of the string.
 
-### NumericLiteral
+### [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral)
 
 ```ruby
 3
@@ -35,7 +35,7 @@ This node has a single child, 'value' which contains the value of the string.
 This node has a single child, 'value'. Note that this value is a string and no difference is done between integer and floats.
 
 
-### BooleanLiteral
+### [BooleanLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#booleanliteral)
 
 ```ruby
 false
@@ -43,7 +43,7 @@ false
 
 This node has a single child, 'value'. Node that the value is a string.
 
-### Variable
+### [Variable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#variable)
 
 ```ruby
 my_wonderful_variable
@@ -52,7 +52,7 @@ my_wonderful_variable
 This name has a single child, 'name'.
 
 
-### List
+### [List](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#list)
 
 ```ruby
 [1, 'list', "of", 'things']
@@ -61,20 +61,20 @@ This name has a single child, 'name'.
 This node has a single child, 'items', that is a list of nodes.
 
 
-### Dict
+### [Dict](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#dict)
 
 ```ruby
 {a: '1', b: 2}
 ```
 
-This node has a single child, 'items', that is a list of ``Property`` nodes.
+This node has a single child, 'items', that is a list of [Property](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#property) nodes.
 
-### Property
+### [Property](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#property)
 
 This node is never directly written in Zest. It has two children, 'key' and 'value'.
 
 
-### Template
+### [Template](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#template)
 
 ```ruby
 "A string with double quote and potentially replaced ${variables}"
@@ -83,49 +83,49 @@ This node is never directly written in Zest. It has two children, 'key' and 'val
 This type of node has a single child, 'chunks' which list the parts of the template based on the replacements done in the template.
 
 Some example might be easier to explain:
- - "My template" will have only one chunk that will be a StringLiteral with value 'My template'
- - "My template: ${x}" will have two chunks: the first one is a StringLiteral with value 'My template: ', the second one will be a Variable with name 'x'
- - "My template: ${x} is a variable" will have three chunks: the first one is a StringLiteral with value 'My template: ', the second one will be a Variable with name 'x' and the last one a StringLiteral with value ' is a variable'
+ - "My template" will have only one chunk that will be a [StringLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#stringliteral) with value 'My template'
+ - "My template: ${x}" will have two chunks: the first one is a [StringLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#stringliteral) with value 'My template: ', the second one will be a [Variable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#variable) with name 'x'
+ - "My template: ${x} is a variable" will have three chunks: the first one is a [StringLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#stringliteral) with value 'My template: ', the second one will be a [Variable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#variable) with name 'x' and the last one a [StringLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#stringliteral) with value ' is a variable'
 
 Data access
 -----------
 
-### Field
+### [Field](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#field)
 
 ```ruby
 x.size
 ```
 
 This node has two children:
- - base: a node corresponding to the part before the dot (in the previous example, a Variable named 'x')
+ - base: a node corresponding to the part before the dot (in the previous example, a [Variable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#variable) named 'x')
  - name: a string containing the accessed field (in the previous example, 'size')
 
-### Index
+### [Index](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#index)
 
 ```ruby
 my_list[2]
 ```
 
 This node has two children:
- - base: a node corresponding to th part before the dot (in the previous example, a Variable called 'my_list')
- - expression: a node corresponding to the accessed index (in the previous example, a NumericLiteral with value 2)
+ - base: a node corresponding to th part before the dot (in the previous example, a [Variable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#variable) called 'my_list')
+ - expression: a node corresponding to the accessed index (in the previous example, a [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral) with value 2)
 
 Expressions
 -----------
 
-### BinaryExpression
+### [BinaryExpression](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#binaryexpression)
 
 ```ruby
 3 + 4
 ```
 
 This node has three children:
- - left: a node representing the left part of the expression (in our example, a NumericLiteral with value 3)
+ - left: a node representing the left part of the expression (in our example, a [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral) with value 3)
  - operator: a string representing the operator (in our example: '+')
- - right: a node representing the right part of the expression (in our example, a NumericLiteral with value 4)
+ - right: a node representing the right part of the expression (in our example, a [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral) with value 4)
 
 
-### UnaryExpression
+### [UnaryExpression](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#unaryexpression)
 
 ```ruby
 -3
@@ -133,22 +133,22 @@ This node has three children:
 
 This node has two children:
  - operator: a string representin the operator (in our example, '-')
- - expression: a node representing the operated expression (in our example, a NumericLiteral with value 3)
+ - expression: a node representing the operated expression (in our example, a [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral) with value 3)
 
 
-### Parenthesis
+### [Parenthesis](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#parenthesis)
 
 ```ruby
 (3 + 2)
 ```
 
-This node has a single child, 'content', a node representing the content of the parenthesis (in our example, a BinaryExpression)
+This node has a single child, 'content', a node representing the content of the parenthesis (in our example, a [BinaryExpression](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#binaryexpression))
 
 
 Statements
 ----------
 
-### Step
+### [Step](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#step)
 
 ```ruby
 step {
@@ -158,10 +158,10 @@ step {
 
 This node a two chidren:
  - key: a string representing the type of step (action or result)
- - value: a node representing the step value (in the previous example, a Template)
+ - value: a node representing the step value (in the previous example, a [Template](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#template))
 
 
-### Call
+### [Call](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#call)
 
 ```ruby
 call 'my_actionword' (x = 2)
@@ -169,28 +169,28 @@ call 'my_actionword' (x = 2)
 
 This node has two children:
  - actionword: a string representing the name of the called action word (in our example 'my_actionword')
- - arguments: a list of Argument nodes
+ - arguments: a list of [Argument](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#argument) nodes
 
 
-### Argument
+### [Argument](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#argument)
 
 This node has two children:
  - name: a string representing the name of the actionword parameter (in the previous example, 'x')
- - value: a node representing the value of the argument (in the previous example, a NumericLireal with value 2)
+ - value: a node representing the value of the argument (in the previous example, a [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral) with value 2)
 
 
-### Assign
+### [Assign](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#assign)
 
 ```ruby
 a := 3
 ```
 
 This node has two children:
- - to: a node corresponding to the assigned value (in our example, a Variable called 'a')
- - value: a node corresponding to the assigned value (in our example, a NumericLiteral with value 3)
+ - to: a node corresponding to the assigned value (in our example, a [Variable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#variable) called 'a')
+ - value: a node corresponding to the assigned value (in our example, a [NumericLiteral](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#numericliteral) with value 3)
 
 
-### IfThen
+### [IfThen](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#ifthen)
 
 ```ruby
 if (x == 2)
@@ -210,7 +210,7 @@ This node has three children:
  - else: a list of nodes representing the statements if the condition is not satisfied
 
 
-### While
+### [While](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#while)
 
 ```ruby
 while (x == 2)
@@ -226,40 +226,40 @@ This node has two children:
 Datatable
 ---------
 
-### Datatable
+### [Datatable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#datatable)
 
-This type of node has only one child, 'datasets', which is a list of Dataset nodes.
+This type of node has only one child, 'datasets', which is a list of [Dataset](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#dataset) nodes.
 
 
-### Dataset
+### [Dataset](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#dataset)
 
 In Zest, a dataset correspond to a line of a datatable.
 
 This type of node has two children:
- - name: a string giving the name of the dataset (the column "Dataset name" in Zest)
- - arguments: a list of Argument nodes, corresponding to the user input.
+ - name: a string giving the name of the dataset (the column "[Dataset](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#dataset) name" in Zest)
+ - arguments: a list of [Argument](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#argument) nodes, corresponding to the user input.
 
 
 Zest objects
 ------------
 
-### Actionword
+### [Actionword](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#actionword)
 
 This type of node has four children:
  - name: a string representing the action word name
- - tags: a list of Tag nodes
- - parameters: a list of parameter node
+ - tags: a list of [Tag](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#tag) nodes
+ - parameters: a list of [Parameter](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#parameter) node
  - body: a list of nodes representing the action word definition
 
 
-### Scenario
+### [Scenario](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#scenario)
 
-A scenario has the same children than an actionword, plus two extra ones:
+A scenario has the same children than an [Actionword](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#actionword), plus two extra ones:
  - description: a string
- - datatable: a Datatable node
+ - datatable: a [Datatable](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#datatable) node
 
 
-### Parameter
+### [Parameter](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#parameter)
 
 This type of node describes a scenario or actionword parameter. It has two children:
  - name: a string, the parameter's name
@@ -267,7 +267,7 @@ This type of node describes a scenario or actionword parameter. It has two child
 
 It is also possible to access the 'type' attribute of a parameter node.
 
-### Tag
+### [Tag](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#tag)
 ```
 @mytag @a_valued_tag:42
 ```
@@ -276,36 +276,34 @@ This type of node has two children:
  - key: a string reprenting the part before the colon. In the previous example: 'mytag' or 'a_valued_tag'
  - value: a string representing the part after the color. In the previous example: '42'
 
-        @children = {:key => key, :value => value}
-
-### Actionwords
+### [Actionwords](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#actionwords)
 
 The list of the project's action words. Contains a single child, 'actionwords' which is the list.
 
-### Scenarios
+### [Scenarios](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#scenarios)
 
-Same as Actionwords but for scenarios. The list name is 'scenarios'.
+Same as [Actionword](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#actionword)s but for scenarios. The list name is 'scenarios'.
 
-### Folder
+### [Folder](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#folder)
 
 Represent a folder in the scenario's hierarchical view in Zest. It has three children:
  - name: a string
- - subfolders: a list of Folder nodes
- - scenarios: a list of Scenario nodes
+ - subfolders: a list of [Folder](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#folder) nodes
+ - scenarios: a list of [Scenario](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#scenario) nodes
 
 It is possible to access a folder's parent via the 'parent' attribute.
 
-### TestPlan
+### [TestPlan](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#testplan)
 
 Stores all the folders of a project. It has two children:
- - root_folder: a Folder node, the root folder of the project
- - folders: a list of Folder node, all the project's folders
+ - root_folder: a [Folder](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#folder) node, the root folder of the project
+ - folders: a list of [Folder](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#folder) node, all the project's folders
 
-### Project
+### [Project](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#project)
 
 The root node. It has five children:
  - name: a string
  - description: a string
- - test_plan: the TestPlan node for the project
- - scenarios: the Scenarios node for the project
- - actionwords: the Actionwords node for the project
+ - test_plan: the [TestPlan](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#testplan) node for the project
+ - scenarios: the [Scenarios](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#scenarios) node for the project
+ - actionwords: the [Actionwords](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md#actionwords) node for the project
