@@ -159,7 +159,7 @@ shared_context "shared render" do
       ])])
     @project = Zest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_paramters)
 
-    @context = {framework: framework}
+    @context = {framework: framework, forced_templates: {}}
   end
 end
 

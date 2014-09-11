@@ -128,14 +128,13 @@ class LanguageConfigParser
 
   private
   def make_context group
-    context = {}
+    context = {
+      :forced_templates => {}
+    }
 
-    unless @options.package.nil?
-      context[:package] = @options.package
-    end
-    unless @options.framework.nil?
-      context[:framework] = @options.framework
-    end
+    context[:forced_templates]['scenario'] = 'single_scenario' if @options.split_scenarios
+    context[:package] = @options.package unless @options.package.nil?
+    context[:framework] = @options.framework unless @options.framework.nil?
 
     @config[group].each {|param, value|
       context[param.to_sym] = value

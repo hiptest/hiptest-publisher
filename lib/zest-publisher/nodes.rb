@@ -267,6 +267,7 @@ module Zest
       def initialize(scenarios = [])
         super()
         @children = {:scenarios => scenarios}
+        scenarios.each {|sc| sc.parent = self}
       end
     end
 

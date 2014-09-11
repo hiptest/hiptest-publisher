@@ -46,8 +46,9 @@ module Zest
         end
 
         show_status_message status_message, :success
-      rescue
+      rescue Exception => err
         show_status_message status_message, :failure
+        trace_exception(err) if @options.verbose
       end
     end
 

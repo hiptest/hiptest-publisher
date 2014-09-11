@@ -23,7 +23,7 @@ module Zest
 
       string_helpers.each do |helper|
         @handlebars.register_helper(helper) do |context, value|
-          "#{value.send(helper)}"
+          "#{value.to_s.send(helper)}"
         end
       end
     end

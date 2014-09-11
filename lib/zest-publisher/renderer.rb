@@ -10,6 +10,7 @@ module Zest
 
     def self.render(node, language, context)
       context[:language] = language
+
       renderer = Zest::Renderer.new(context)
       renderer.walk_node(node)
       renderer.rendered[node]
@@ -42,12 +43,14 @@ module Zest
       render_context[:context] = @context
 
       template = get_template_path(node)
-
       @handlebars.compile(File.read(template)).send(:call, render_context)
     end
 
     def get_template_path(node, extension = 'hbs')
       normalized_name = node.class.name.split('::').last.downcase
+      unless @context[:forced_templates][normalized_name].nil?
+        normalized_name = @context[:forced_templates][normalized_name]
+      end
 
       searched_folders = []
       if @context.has_key?(:framework)
@@ -57,9 +60,7 @@ module Zest
 
       searched_folders.flatten.map do |path|
         template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{normalized_name}.#{extension}"
-        if File.file?(template_path)
-          template_path
-        end
+        template_path if File.file?(template_path)
       end.compact.first
     end
   end
