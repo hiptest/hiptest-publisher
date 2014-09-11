@@ -8,11 +8,33 @@ require 'zest-publisher/parameter_type_adder'
 
 module Zest
   class Publisher
+    def initialize(args)
+      @options = OptionsParser.parse(args)
+
+      xml = fetch_xml_file
+      return if xml.nil?
+
+      @project = get_project(xml)
+    end
+
+    def fetch_xml_file
+      show_status_message "Fetching data from Zest"
+      xml = fetch_project_export(@options.site, @options.token, @options.verbose)
+      show_status_message "Fetching data from Zest", :success
+
+      return xml
+    rescue Exception => err
+      show_status_message "Fetching data from Zest", :failure
+      puts "Unable to open the file, please check that the token is correct".red
+      trace_exception(err) if @options.verbose
+    end
+
     def get_project(xml)
       show_status_message "Extracting data"
       parser = Zest::XMLParser.new(xml, @options)
       show_status_message "Extracting data", :success
-      parser.build_project
+
+      return parser.build_project
     end
 
     def write_node_to_file(path, node, message)
@@ -55,23 +77,8 @@ module Zest
       )
     end
 
-    def initialize(args)
-      @options = OptionsParser.parse(ARGV)
-
-      begin
-        show_status_message "Fetching data from Zest"
-        xml = fetch_project_export(@options.site, @options.token, @options.verbose)
-        show_status_message "Fetching data from Zest", :success
-      rescue Exception => err
-        show_status_message "Fetching data from Zest", :failure
-        puts "Unable to open the file, please check that the token is correct".red
-        trace_exception err
-        return
-      end
-
-      @project = get_project(xml)
+    def export
       @language_config = LanguageConfigParser.new(@options)
-
       Zest::Nodes::ParameterTypeAdder.add(@project) if @options.language == 'java'
 
       export_scenarios unless @options.actionwords_only

@@ -8,4 +8,4 @@ end
 
 require 'zest-publisher'
 
-Zest::Publisher.new(ARGV)
+Zest::Publisher.new(ARGV).export
