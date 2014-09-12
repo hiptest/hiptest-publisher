@@ -78,10 +78,10 @@ describe 'Render as Java' do
     #end
     #TODO: have indentation of 4 characters ?
     @if_then_rendered = [
-        "if (true) {",
-        "  foo = \"fighters\";",
-        "}"
-      ].join("\n")
+      "if (true) {",
+      "  foo = \"fighters\";",
+      "}"
+    ].join("\n")
 
     # In Zest:
     # if (true)
@@ -90,12 +90,12 @@ describe 'Render as Java' do
     #   fighters := 'foo'
     #end
     @if_then_else_rendered = [
-        "if (true) {",
-        '  foo = "fighters";',
-        "} else {",
-        '  fighters = "foo";',
-        "}"
-      ].join("\n")
+      "if (true) {",
+      '  foo = "fighters";',
+      "} else {",
+      '  fighters = "foo";',
+      "}"
+    ].join("\n")
 
     # In Zest:
     # while (foo)
@@ -103,11 +103,11 @@ describe 'Render as Java' do
     #   foo('fighters')
     # end
     @while_loop_rendered = [
-        "while (foo) {",
-        '  fighters = "foo";',
-        '  foo("fighters");',
-        "}"
-      ].join("\n")
+      "while (foo) {",
+      '  fighters = "foo";',
+      '  foo("fighters");',
+      "}"
+    ].join("\n")
 
     # In Zest: @myTag
     @simple_tag_rendered = 'myTag'
@@ -249,92 +249,167 @@ describe 'Render as Java' do
       "  }",
       "}"
     ].join("\n")
-
-
-    # In Zest:
-    # @myTag
-    # scenario 'compare to pi' (x) do
-    #   foo := 3.14
-    #   if (foo > x)
-    #     step {result: "x is greater than Pi"}
-    #   else
-    #     step {result: "x is lower than Pi
-    #       on two lines"}
-    #   end
-    # end
-    @full_scenario_rendered = [
-      "// This is a scenario which description ",
-      "// is on two lines",
-      "// Tags: myTag",
-      "public void testCompareToPi() {",
-      "  foo = 3.14;",
-      "  if (foo > x) {",
-      "    // TODO: Implement result: x is greater than Pi",
-      "  } else {",
-      "    // TODO: Implement result: x is lower than Pi",
-      "    // on two lines",
-      "  }",
-      "",
-      "  throw new UnsupportedOperationException();",
-      "}"].join("\n")
-
-    @full_scenario_rendered_for_single_file = [
-      "package com.example;",
-      "",
-      "import junit.framework.TestCase;",
-      "",
-      "public class ProjectTest extends TestCase {",
-      "",
-      "  public Actionwords actionwords = new Actionwords();",
-      "",
-      "  // This is a scenario which description ",
-      "  // is on two lines",
-      "  // Tags: myTag",
-      "  public void testCompareToPi() {",
-      "    foo = 3.14;",
-      "    if (foo > x) {",
-      "      // TODO: Implement result: x is greater than Pi",
-      "    } else {",
-      "      // TODO: Implement result: x is lower than Pi",
-      "      // on two lines",
-      "    }",
-      "",
-      "    throw new UnsupportedOperationException();",
-      "  }",
-      "}"].join("\n")
-
-
-    # In Zest, correspond to two scenarios in a project called 'My project'
-    # scenario 'first scenario' do
-    # end
-    # scenario 'second scenario' do
-    #   call 'my action word'
-    # end
-    @scenarios_rendered = [
-      "package com.example;",
-      "",
-      "import junit.framework.TestCase;",
-      "",
-      "public class ProjectTest extends TestCase {",
-      "",
-      "  public Actionwords actionwords = new Actionwords();",
-      "",
-      "  public void testFirstScenario() {",
-      "  }",
-      "",
-      "  public void testSecondScenario() {",
-      "    actionwords.myActionWord();",
-      "  }",
-      "}"].join("\n")
-
-    @context[:filename] = 'ProjectTest.java'
-    @context[:package] = 'com.example'
   end
 
   context 'JUnit' do
+    before(:each) do
+      # In Zest:
+      # @myTag
+      # scenario 'compare to pi' (x) do
+      #   foo := 3.14
+      #   if (foo > x)
+      #     step {result: "x is greater than Pi"}
+      #   else
+      #     step {result: "x is lower than Pi
+      #       on two lines"}
+      #   end
+      # end
+      @full_scenario_rendered = [
+        "// This is a scenario which description ",
+        "// is on two lines",
+        "// Tags: myTag",
+        "public void testCompareToPi() {",
+        "  foo = 3.14;",
+        "  if (foo > x) {",
+        "    // TODO: Implement result: x is greater than Pi",
+        "  } else {",
+        "    // TODO: Implement result: x is lower than Pi",
+        "    // on two lines",
+        "  }",
+        "",
+        "  throw new UnsupportedOperationException();",
+        "}"].join("\n")
+
+      @full_scenario_rendered_for_single_file = [
+        "package com.example;",
+        "",
+        "import junit.framework.TestCase;",
+        "",
+        "public class ProjectTest extends TestCase {",
+        "",
+        "  public Actionwords actionwords = new Actionwords();",
+        "",
+        "  // This is a scenario which description ",
+        "  // is on two lines",
+        "  // Tags: myTag",
+        "  public void testCompareToPi() {",
+        "    foo = 3.14;",
+        "    if (foo > x) {",
+        "      // TODO: Implement result: x is greater than Pi",
+        "    } else {",
+        "      // TODO: Implement result: x is lower than Pi",
+        "      // on two lines",
+        "    }",
+        "",
+        "    throw new UnsupportedOperationException();",
+        "  }",
+        "}"].join("\n")
+
+
+      # In Zest, correspond to two scenarios in a project called 'My project'
+      # scenario 'first scenario' do
+      # end
+      # scenario 'second scenario' do
+      #   call 'my action word'
+      # end
+      @scenarios_rendered = [
+        "package com.example;",
+        "",
+        "import junit.framework.TestCase;",
+        "",
+        "public class ProjectTest extends TestCase {",
+        "",
+        "  public Actionwords actionwords = new Actionwords();",
+        "",
+        "  public void testFirstScenario() {",
+        "  }",
+        "",
+        "  public void testSecondScenario() {",
+        "    actionwords.myActionWord();",
+        "  }",
+        "}"].join("\n")
+
+      @context[:filename] = 'ProjectTest.java'
+      @context[:package] = 'com.example'
+    end
+
     it_behaves_like "a renderer" do
-      let(:language) {'java'}
-      let(:framework) {'JUnit'}
+      let(:language) { 'java' }
+      let(:framework) { 'JUnit' }
+    end
+  end
+
+  context 'testng' do
+    before(:each) do
+      @full_scenario_rendered = [
+        "// This is a scenario which description ",
+        "// is on two lines",
+        "// Tags: myTag",
+        "@Test",
+        "public void compareToPiTest() {",
+        "  foo = 3.14;",
+        "  if (foo > x) {",
+        "    // TODO: Implement result: x is greater than Pi",
+        "  } else {",
+        "    // TODO: Implement result: x is lower than Pi",
+        "    // on two lines",
+        "  }",
+        "",
+        "  throw new UnsupportedOperationException();",
+        "}"].join("\n")
+
+      @full_scenario_rendered_for_single_file = [
+        "package com.example;",
+        "",
+        "import org.testng.annotations.*;",
+        "",
+        "public class ProjectTest {",
+        "",
+        "  public Actionwords actionwords = new Actionwords();",
+        "",
+        "  // This is a scenario which description ",
+        "  // is on two lines",
+        "  // Tags: myTag",
+        "  @Test",
+        "  public void compareToPiTest() {",
+        "    foo = 3.14;",
+        "    if (foo > x) {",
+        "      // TODO: Implement result: x is greater than Pi",
+        "    } else {",
+        "      // TODO: Implement result: x is lower than Pi",
+        "      // on two lines",
+        "    }",
+        "",
+        "    throw new UnsupportedOperationException();",
+        "  }",
+        "}"].join("\n")
+
+      @scenarios_rendered = [
+        "package com.example;",
+        "",
+        "import org.testng.annotations.*;",
+        "",
+        "public class ProjectTest {",
+        "",
+        "  public Actionwords actionwords = new Actionwords();",
+        "",
+        "  @Test",
+        "  public void firstScenarioTest() {",
+        "  }",
+        "",
+        "  @Test",
+        "  public void secondScenarioTest() {",
+        "    actionwords.myActionWord();",
+        "  }",
+        "}"].join("\n")
+
+      @context[:filename] = 'ProjectTest.java'
+      @context[:package] = 'com.example'
+    end
+
+    it_behaves_like "a renderer" do
+      let(:language) { 'java' }
+      let(:framework) { 'testng' }
     end
   end
 end
