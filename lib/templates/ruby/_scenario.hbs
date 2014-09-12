@@ -1,0 +1,5 @@
+{{#if has_datasets?}}context "{{{ remove_quotes rendered_children.name }}}" do{{#indent}}
+{{> item_as_def}}
+{{{ rendered_children.datatable }}}{{/indent}}{{else}}it "{{{ remove_quotes rendered_children.name }}}" do
+{{> body}}{{/if}}
+end

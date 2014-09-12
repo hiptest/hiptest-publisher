@@ -1,8 +1,12 @@
 module Zest
   module Nodes
     class ParentAdder < Walker
+      def self.add(project)
+        Zest::Nodes::ParentAdder.new().walk_node(project)
+      end
+
       def walk_node(node)
-        node.chidren.each {|child| child.parent = node if node.is_a? Zest::Nodes::Node}
+        node.children.each {|child| child.parent = node if child.is_a? Zest::Nodes::Node}
       end
     end
   end

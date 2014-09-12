@@ -15,7 +15,16 @@ module Zest
       base = walk_item(scenario)
       base[:project_name] = scenario.parent.parent.children[:name]
 
+      datatable = scenario.children[:datatable]
+      base[:datasets] = datatable ? datatable.children[:datasets] : []
+      base[:has_datasets?] = !base[:datasets].empty?
       return base
+    end
+
+    def walk_dataset(dataset)
+      {
+        :scenario_name => dataset.parent.parent.children[:name]
+      }
     end
 
     def walk_scenarios(scenarios)

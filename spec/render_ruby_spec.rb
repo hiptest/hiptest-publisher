@@ -210,6 +210,64 @@ describe 'Render as Ruby' do
         "  end",
         "end"].join("\n")
 
+      @scenario_with_datatable_rendered = [
+        "context \"check login\" do",
+        "  def check_login(login, password, expected)",
+        "    \# Ensure the login process",
+        "    fill_login(login)",
+        "    fill_password(password)",
+        "    press_enter",
+        "    assert_error_is_displayed(expected)",
+        "  end",
+        "",
+        "  it \"Wrong login\" do",
+        "    check_login('invalid', 'invalid', 'Invalid username or password')",
+        "  end",
+        "",
+        "  it \"Wrong password\" do",
+        "    check_login('valid', 'invalid', 'Invalid username or password')",
+        "  end",
+        "",
+        "  it \"Valid login/password\" do",
+        "    check_login('valid', 'valid', nil)",
+        "  end",
+        "end"
+      ].join("\n")
+
+
+      @scenario_with_datatable_rendered_in_single_file = [
+        "# encoding: UTF-8",
+        "require 'spec_helper'",
+        "require_relative 'actionwords'",
+        "",
+        "describe 'AProjectWithDatatables' do",
+        "  include Actionwords",
+        "",
+        "",
+        "  context \"check login\" do",
+        "    def check_login(login, password, expected)",
+        "      \# Ensure the login process",
+        "      fill_login(login)",
+        "      fill_password(password)",
+        "      press_enter",
+        "      assert_error_is_displayed(expected)",
+        "    end",
+        "",
+        "    it \"Wrong login\" do",
+        "      check_login('invalid', 'invalid', 'Invalid username or password')",
+        "    end",
+        "",
+        "    it \"Wrong password\" do",
+        "      check_login('valid', 'invalid', 'Invalid username or password')",
+        "    end",
+        "",
+        "    it \"Valid login/password\" do",
+        "      check_login('valid', 'valid', nil)",
+        "    end",
+        "  end",
+        "end"
+      ].join("\n")
+
       @scenarios_rendered = [
         "# encoding: UTF-8",
         "require 'spec_helper'",

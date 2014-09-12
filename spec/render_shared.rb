@@ -114,6 +114,54 @@ shared_context "shared render" do
     @full_scenario.parent = Zest::Nodes::Scenarios.new([])
     @full_scenario.parent.parent = Zest::Nodes::Project.new('My project')
 
+
+    @dataset1 = Zest::Nodes::Dataset.new('Wrong login', [
+      Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('invalid')),
+      Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('invalid')),
+      Zest::Nodes::Argument.new('expected', Zest::Nodes::StringLiteral.new('Invalid username or password'))
+    ])
+
+    @dataset2 = Zest::Nodes::Dataset.new('Wrong password', [
+      Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('valid')),
+      Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('invalid')),
+      Zest::Nodes::Argument.new('expected', Zest::Nodes::StringLiteral.new('Invalid username or password'))
+    ])
+
+    @dataset3 = Zest::Nodes::Dataset.new('Valid login/password', [
+      Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('valid')),
+      Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('valid')),
+      Zest::Nodes::Argument.new('expected', Zest::Nodes::NullLiteral.new())
+    ])
+    @datatable = Zest::Nodes::Datatable.new([@dataset1, @dataset2, @dataset3])
+    [@dataset1, @dataset2, @dataset3].each {|dt| dt.parent = @datatable }
+
+    @scenario_with_datatable = Zest::Nodes::Scenario.new(
+      'check login',
+      "Ensure the login process",
+      [],
+      [
+        Zest::Nodes::Parameter.new('login'),
+        Zest::Nodes::Parameter.new('password'),
+        Zest::Nodes::Parameter.new('expected')
+      ],
+      [
+        Zest::Nodes::Call.new('fill login', [
+          Zest::Nodes::Argument.new('login', Zest::Nodes::Variable.new('login')),
+        ]),
+        Zest::Nodes::Call.new('fill password', [
+          Zest::Nodes::Argument.new('password', Zest::Nodes::Variable.new('password')),
+        ]),
+        Zest::Nodes::Call.new('press enter'),
+        Zest::Nodes::Call.new('assert "error" is displayed', [
+          Zest::Nodes::Argument.new('error', Zest::Nodes::Variable.new('expected')),
+        ])
+      ],
+      nil,
+      @datatable)
+    @datatable.parent = @scenario_with_datatable
+    @scenario_with_datatable.parent = Zest::Nodes::Scenarios.new([])
+    @scenario_with_datatable.parent.parent = Zest::Nodes::Project.new('A project with datatables')
+
     @actionwords = Zest::Nodes::Actionwords.new([
       Zest::Nodes::Actionword.new('first action word'),
       Zest::Nodes::Actionword.new(
@@ -139,6 +187,7 @@ shared_context "shared render" do
       Zest::Nodes::Actionword.new('aw with string param', [], [Zest::Nodes::Parameter.new('x')], []),
       Zest::Nodes::Actionword.new('aw with template param', [], [Zest::Nodes::Parameter.new('x')], [])
     ])
+
     @scenarios_with_many_calls = Zest::Nodes::Scenarios.new([
       Zest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
         Zest::Nodes::Call.new('aw with int param', [
@@ -295,6 +344,17 @@ shared_examples "a renderer" do
       @context[:call_prefix] = 'actionwords'
 
       expect(@full_scenario.render(language, @context)).to eq(@full_scenario_rendered_for_single_file)
+    end
+
+    it 'can be rendered with its datatable' do
+      expect(@scenario_with_datatable.render(language, @context)).to eq(@scenario_with_datatable_rendered)
+    end
+
+    it 'can be rendered with its datatable in a single file' do
+      @context[:forced_templates] = {'scenario' => 'single_scenario'}
+      @context[:call_prefix] = 'actionwords'
+
+      expect(@scenario_with_datatable.render(language, @context)).to eq(@scenario_with_datatable_rendered_in_single_file)
     end
   end
 

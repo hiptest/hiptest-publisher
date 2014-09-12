@@ -6,8 +6,6 @@ describe '{{{ camelize project_name }}}' do
   include Actionwords
 
 {{#indent}}
-it "{{{ remove_quotes rendered_children.name }}}" do
-{{> body}}
-end
+{{> scenario}}
 {{/indent}}
 end
