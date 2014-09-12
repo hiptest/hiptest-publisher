@@ -15,6 +15,7 @@ module Zest
       string_helpers = [
         :literate,
         :normalize,
+        :normalize_lower,
         :underscore,
         :camelize,
         :camelize_lower,

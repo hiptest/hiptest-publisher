@@ -13,6 +13,11 @@ class String
     literated.strip.gsub(/\s+/, '_').gsub(/\W/, '')
   end
 
+  def normalize_lower
+    literated = self.literate
+    literated.strip.gsub(/\s+/, '_').gsub(/\W/, '').downcase
+  end
+
   def underscore
     # based on:
     # http://stackoverflow.com/questions/1509915/converting-camel-case-to-underscore-case-in-ruby

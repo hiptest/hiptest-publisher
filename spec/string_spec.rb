@@ -32,6 +32,13 @@ describe String do
     end
   end
 
+  context 'normalize_lower' do
+    it 'does like normalize but returns the string lowercased' do
+      expect(%|  it's  the Støry of\n\n"Pouin Pouin le Marsouin"\n  |.normalize_lower).to eq(
+        'its_the_story_of_pouin_pouin_le_marsouin')
+    end
+  end
+
   context 'underscore' do
     it 'returns the string in snake_case' do
       expect('SnakeCase'.underscore).to eq('snake_case')

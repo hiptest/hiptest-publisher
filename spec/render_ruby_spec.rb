@@ -333,6 +333,61 @@ describe 'Render as Ruby' do
         "  end",
         "end"].join("\n")
 
+      @scenario_with_datatable_rendered = [
+        "def check_login(login, password, expected)",
+        "  \# Ensure the login process",
+        "  fill_login(login)",
+        "  fill_password(password)",
+        "  press_enter",
+        "  assert_error_is_displayed(expected)",
+        "end",
+        "",
+        "def test_check_login_wrong_login",
+        "  check_login('invalid', 'invalid', 'Invalid username or password')",
+        "end",
+        "",
+        "def test_check_login_wrong_password",
+        "  check_login('valid', 'invalid', 'Invalid username or password')",
+        "end",
+        "",
+        "def test_check_login_valid_loginpassword",
+        "  check_login('valid', 'valid', nil)",
+        "end",
+        ""
+      ].join("\n")
+
+
+      @scenario_with_datatable_rendered_in_single_file = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative 'actionwords'",
+        "",
+        "class TestAProjectWithDatatables < MiniTest::Unit::TestCase",
+        "  include Actionwords",
+        "",
+        "  def check_login(login, password, expected)",
+        "    \# Ensure the login process",
+        "    fill_login(login)",
+        "    fill_password(password)",
+        "    press_enter",
+        "    assert_error_is_displayed(expected)",
+        "  end",
+        "",
+        "  def test_check_login_wrong_login",
+        "    check_login('invalid', 'invalid', 'Invalid username or password')",
+        "  end",
+        "",
+        "  def test_check_login_wrong_password",
+        "    check_login('valid', 'invalid', 'Invalid username or password')",
+        "  end",
+        "",
+        "  def test_check_login_valid_loginpassword",
+        "    check_login('valid', 'valid', nil)",
+        "  end",
+        "end"
+      ].join("\n")
+
       @scenarios_rendered = [
         "# encoding: UTF-8",
         "",

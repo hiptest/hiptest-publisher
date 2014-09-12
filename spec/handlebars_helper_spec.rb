@@ -38,7 +38,7 @@ describe Zest::HandlebarsHelper do
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Zest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(16)
+      expect(handlebars.helpers.length).to eq(17)
     end
   end
 
@@ -48,6 +48,7 @@ describe Zest::HandlebarsHelper do
       expect(handlebars.helpers).to eq([
         :literate,
         :normalize,
+        :normalize_lower,
         :underscore,
         :camelize,
         :camelize_lower,

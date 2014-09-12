@@ -16,8 +16,7 @@ module Zest
       base[:project_name] = scenario.parent.parent.children[:name]
 
       datatable = scenario.children[:datatable]
-      base[:datasets] = datatable ? datatable.children[:datasets] : []
-      base[:has_datasets?] = !base[:datasets].empty?
+      base[:has_datasets?] = datatable ? !datatable.children[:datasets].empty? : false
       return base
     end
 

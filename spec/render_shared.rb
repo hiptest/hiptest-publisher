@@ -347,6 +347,8 @@ shared_examples "a renderer" do
     end
 
     it 'can be rendered with its datatable' do
+      @context[:call_prefix] = 'actionwords'
+
       expect(@scenario_with_datatable.render(language, @context)).to eq(@scenario_with_datatable_rendered)
     end
 

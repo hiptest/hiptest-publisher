@@ -64,16 +64,24 @@ describe Zest::RenderContextMaker do
       sc
     }
 
-    it 'adds the project name to walk_item result' do
+    it 'adds the project name and has_datasets? to walk_item result' do
       expect(subject.walk_scenario(node).keys).to eq([
         :has_parameters?,
         :has_tags?,
         :has_step?,
         :is_empty?,
-        :project_name
+        :project_name,
+        :has_datasets?
       ])
 
       expect(subject.walk_scenario(node)[:project_name]).to eq('A project')
+      expect(subject.walk_scenario(node)[:has_datasets?]).to be false
+
+      node.children[:datatable] = Zest::Nodes::Datatable.new()
+      expect(subject.walk_scenario(node)[:has_datasets?]).to be false
+
+      node.children[:datatable].children[:datasets] << 'Anything'
+      expect(subject.walk_scenario(node)[:has_datasets?]).to be true
     end
   end
 

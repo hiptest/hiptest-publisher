@@ -99,7 +99,14 @@ Those data can be directly used inside handlebars condition. For example in ``sc
 
 ### scenario
 
-The same values are available than  for actionword, plus ``project_name`` that provides the project's name.
+The same values are available than  for actionword, plus:
+ - ``project_name``: provides the project's name.
+ - ``has_datasests?``: true if there is at least one dataset defined
+
+### dataset
+
+``scenario_name``, the name of the scenario the dataset belongs to
+
 
 ### scenarios
 

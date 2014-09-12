@@ -6,6 +6,4 @@ class Test{{{ camelize project_name }}}(unittest.TestCase):
     def setUp(self):
         self.actionwords = Actionwords(self)
 {{#indent}}
-def test_{{{ normalize rendered_children.name }}}(self):
-{{> body}}
-{{/indent}}
+{{> scenario}}{{/indent}}

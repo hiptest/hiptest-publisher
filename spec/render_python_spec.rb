@@ -245,7 +245,7 @@ describe 'Render as Python' do
     #   end
     # end
     @full_scenario_rendered = [
-      "def test_compare_to_pi(self):",
+      "def test_compare_to_pi(self, x):",
       "    # This is a scenario which description ",
       "    # is on two lines",
       "    # Tags: myTag",
@@ -267,7 +267,7 @@ describe 'Render as Python' do
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
-      "    def test_compare_to_pi(self):",
+      "    def test_compare_to_pi(self, x):",
       "        # This is a scenario which description ",
       "        # is on two lines",
       "        # Tags: myTag",
@@ -279,6 +279,54 @@ describe 'Render as Python' do
       "            # on two lines",
       "        raise NotImplementedError",
       ""
+      ].join("\n")
+
+    @scenario_with_datatable_rendered = [
+      "def check_login(self, login, password, expected):",
+      "    # Ensure the login process",
+      "    self.actionwords.fill_login(login = login)",
+      "    self.actionwords.fill_password(password = password)",
+      "    self.actionwords.press_enter()",
+      "    self.actionwords.assert_error_is_displayed(error = expected)",
+      "",
+      "def test_check_login_wrong_login():",
+      "    self.check_login(login = 'invalid', password = 'invalid', expected = 'Invalid username or password')",
+      "",
+      "def test_check_login_wrong_password():",
+      "    self.check_login(login = 'valid', password = 'invalid', expected = 'Invalid username or password')",
+      "",
+      "def test_check_login_valid_loginpassword():",
+      "    self.check_login(login = 'valid', password = 'valid', expected = None)",
+      "",
+      "",
+      ""
+      ].join("\n")
+
+    @scenario_with_datatable_rendered_in_single_file = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
+      "",
+      "class TestAProjectWithDatatables(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "",
+      "    def check_login(self, login, password, expected):",
+      "        # Ensure the login process",
+      "        self.actionwords.fill_login(login = login)",
+      "        self.actionwords.fill_password(password = password)",
+      "        self.actionwords.press_enter()",
+      "        self.actionwords.assert_error_is_displayed(error = expected)",
+      "",
+      "    def test_check_login_wrong_login():",
+      "        self.check_login(login = 'invalid', password = 'invalid', expected = 'Invalid username or password')",
+      "",
+      "    def test_check_login_wrong_password():",
+      "        self.check_login(login = 'valid', password = 'invalid', expected = 'Invalid username or password')",
+      "",
+      "    def test_check_login_valid_loginpassword():",
+      "        self.check_login(login = 'valid', password = 'valid', expected = None)",
+      "",
       ].join("\n")
 
 
