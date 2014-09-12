@@ -49,6 +49,7 @@ module Zest
 
     def hh_indent(context, block)
       indentation = @context[:indentation] || '  '
+      indentation = "\t" if indentation == '\t'
 
       block.fn(context).split("\n").map do |line|
         indented = "#{indentation}#{line}"
