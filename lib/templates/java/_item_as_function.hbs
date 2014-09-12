@@ -1,0 +1,6 @@
+public void {{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{{join rendered_children.parameters ', '}}}{{/if}}) {
+{{#clear_empty_lines}}
+{{#indent}}{{#if has_tags?}}// Tags: {{{ join rendered_children.tags ' '}}}{{/if}}{{/indent}}
+{{> body}}
+{{/clear_empty_lines}}
+}

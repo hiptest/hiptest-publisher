@@ -6,11 +6,6 @@ public class {{{ clear_extension context.filename }}} {{#curly}}
 
   public Actionwords {{{ context.call_prefix }}} = new Actionwords();
 {{#indent}}
-{{#comment '//'}}{{{ rendered_children.description }}}
-{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{/comment}}
-@Test
-public void {{{ camelize_lower rendered_children.name }}}Test() {{#curly}}{{> body}}
-{{/curly}}
+{{> scenario}}
 {{/indent}}
 {{/curly}}

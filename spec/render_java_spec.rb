@@ -305,6 +305,72 @@ describe 'Render as Java' do
         "  }",
         "}"].join("\n")
 
+      # Scenario definition is:
+      # call 'fill login' (login = login)
+      # call 'fill password' (password = password)
+      # call 'press enter'
+      # call 'assert "error" is displayed' (error = expected)
+
+      # Scenario datatable is:
+      # Dataset name         | login   | password | expected
+      # -------------------------------------------------------------------------
+      # Wrong login          | invalid | invalid  | 'Invalid username or password
+      # Wrong password       | valid   | invalid  | 'Invalid username or password
+      # Valid login/password | valid   | valid    | nil
+
+      @scenario_with_datatable_rendered = [
+        "public void checkLogin(String login, String password, String expected) {",
+        "  actionwords.fillLogin(login);",
+        "  actionwords.fillPassword(password);",
+        "  actionwords.pressEnter();",
+        "  actionwords.assertErrorIsDisplayed(expected);",
+        "}",
+        "",
+        "public void testCheckLoginWrongLogin() {",
+        '  checkLogin("invalid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "public void testCheckLoginWrongPassword() {",
+        '  checkLogin("valid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "public void testCheckLoginValidLoginpassword() {",
+        '  checkLogin("valid", "valid", null);',
+        "}",
+        "",
+        ""
+      ].join("\n")
+
+      # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
+      @scenario_with_datatable_rendered_in_single_file = [
+        "package com.example;",
+        "",
+        "import junit.framework.TestCase;",
+        "",
+        "public class ProjectTest extends TestCase {",
+        "",
+        "  public Actionwords actionwords = new Actionwords();",
+        "",
+        "  public void checkLogin(String login, String password, String expected) {",
+        "    actionwords.fillLogin(login);",
+        "    actionwords.fillPassword(password);",
+        "    actionwords.pressEnter();",
+        "    actionwords.assertErrorIsDisplayed(expected);",
+        "  }",
+        "",
+        "  public void testCheckLoginWrongLogin() {",
+        '    checkLogin("invalid", "invalid", "Invalid username or password");',
+        "  }",
+        "",
+        "  public void testCheckLoginWrongPassword() {",
+        '    checkLogin("valid", "invalid", "Invalid username or password");',
+        "  }",
+        "",
+        "  public void testCheckLoginValidLoginpassword() {",
+        '    checkLogin("valid", "valid", null);',
+        "  }",
+        "}"
+      ].join("\n")
 
       # In Zest, correspond to two scenarios in a project called 'My project'
       # scenario 'first scenario' do
@@ -339,7 +405,7 @@ describe 'Render as Java' do
     end
   end
 
-  context 'testng' do
+  context 'TestNG' do
     before(:each) do
       @full_scenario_rendered = [
         "// This is a scenario which description ",
@@ -383,6 +449,79 @@ describe 'Render as Java' do
         "    throw new UnsupportedOperationException();",
         "  }",
         "}"].join("\n")
+
+      # Scenario definition is:
+      # call 'fill login' (login = login)
+      # call 'fill password' (password = password)
+      # call 'press enter'
+      # call 'assert "error" is displayed' (error = expected)
+
+      # Scenario datatable is:
+      # Dataset name         | login   | password | expected
+      # -------------------------------------------------------------------------
+      # Wrong login          | invalid | invalid  | 'Invalid username or password
+      # Wrong password       | valid   | invalid  | 'Invalid username or password
+      # Valid login/password | valid   | valid    | nil
+
+      @scenario_with_datatable_rendered = [
+        "public void checkLogin(String login, String password, String expected) {",
+        "  actionwords.fillLogin(login);",
+        "  actionwords.fillPassword(password);",
+        "  actionwords.pressEnter();",
+        "  actionwords.assertErrorIsDisplayed(expected);",
+        "}",
+        "",
+        "@Test",
+        "public void checkLoginWrongLoginTest() {",
+        '  checkLogin("invalid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "@Test",
+        "public void checkLoginWrongPasswordTest() {",
+        '  checkLogin("valid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "@Test",
+        "public void checkLoginValidLoginpasswordTest() {",
+        '  checkLogin("valid", "valid", null);',
+        "}",
+        "",
+        ""
+      ].join("\n")
+
+      # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
+      @scenario_with_datatable_rendered_in_single_file = [
+        "package com.example;",
+        "",
+        "import org.testng.annotations.*;",
+        "",
+        "public class ProjectTest {",
+        "",
+        "  public Actionwords actionwords = new Actionwords();",
+        "",
+        "  public void checkLogin(String login, String password, String expected) {",
+        "    actionwords.fillLogin(login);",
+        "    actionwords.fillPassword(password);",
+        "    actionwords.pressEnter();",
+        "    actionwords.assertErrorIsDisplayed(expected);",
+        "  }",
+        "",
+        "  @Test",
+        "  public void checkLoginWrongLoginTest() {",
+        '    checkLogin("invalid", "invalid", "Invalid username or password");',
+        "  }",
+        "",
+        "  @Test",
+        "  public void checkLoginWrongPasswordTest() {",
+        '    checkLogin("valid", "invalid", "Invalid username or password");',
+        "  }",
+        "",
+        "  @Test",
+        "  public void checkLoginValidLoginpasswordTest() {",
+        '    checkLogin("valid", "valid", null);',
+        "  }",
+        "}"
+      ].join("\n")
 
       @scenarios_rendered = [
         "package com.example;",

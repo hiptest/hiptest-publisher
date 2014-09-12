@@ -1,6 +1,8 @@
-{{#comment '//'}}{{{ rendered_children.description }}}
+{{#if has_datasets?}}{{> item_as_function}}
+{{{ rendered_children.datatable }}}
+{{else}}{{#comment '//'}}{{{ rendered_children.description }}}
 {{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
 {{/comment}}
 @Test
 public void {{{ camelize_lower rendered_children.name }}}Test() {{#curly}}{{> body}}
-{{/curly}}
+{{/curly}}{{/if}}

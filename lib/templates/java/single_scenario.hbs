@@ -6,10 +6,6 @@ public class {{{ clear_extension context.filename }}} extends TestCase {{#curly}
 
   public Actionwords {{{ context.call_prefix }}} = new Actionwords();
 {{#indent}}
-{{#comment '//'}}{{{ rendered_children.description }}}
-{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{/comment}}
-public void test{{{ camelize rendered_children.name }}}() {{#curly}}{{> body}}
-{{/curly}}
+{{> scenario}}
 {{/indent}}
 {{/curly}}
