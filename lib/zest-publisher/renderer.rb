@@ -21,6 +21,8 @@ module Zest
       @rendered = {}
       @context = context
       @handlebars = Handlebars::Context.new
+      register_partials()
+
       Zest::HandlebarsHelper.register_helpers(@handlebars, @context)
     end
 
@@ -36,30 +38,39 @@ module Zest
       end
     end
 
+    def searched_folders()
+      folders = []
+      if @context.has_key?(:framework)
+        folders << "#{@context[:language]}/#{@context[:framework]}"
+      end
+      folders << [@context[:language], 'common']
+      folders.flatten.map {|path| "#{zest_publisher_path}/lib/templates/#{path}"}
+    end
+
+    def register_partials()
+      searched_folders.reverse.each do |path|
+        next unless File.directory?(path)
+        Dir.entries(path).select do |file_name|
+          file_path = File.join(path, file_name)
+          next unless File.file?(file_path) && file_name.start_with?('_')
+          @handlebars.register_partial(file_name[1..-5], File.read(file_path))
+        end
+      end
+    end
+
     def render_node(node, render_context)
       render_context = {} if render_context.nil?
       render_context[:node] = node
       render_context[:rendered_children] = @rendered_children
       render_context[:context] = @context
 
-      body_partial = get_template_by_name('_body', 'hbs')
-      unless body_partial.nil?
-        render_context[:body_partial] = @handlebars.register_partial('body', File.read(body_partial))
-      end
-
       template = get_template_path(node)
       @handlebars.compile(File.read(template)).send(:call, render_context)
     end
 
     def get_template_by_name(name, extension)
-      searched_folders = []
-      if @context.has_key?(:framework)
-        searched_folders << "#{@context[:language]}/#{@context[:framework]}"
-      end
-      searched_folders << [@context[:language], 'common']
-
-      searched_folders.flatten.map do |path|
-        template_path = "#{zest_publisher_path}/lib/templates/#{path}/#{name}.#{extension}"
+      searched_folders.map do |path|
+        template_path = File.join(path, "#{name}.#{extension}")
         template_path if File.file?(template_path)
       end.compact.first
     end

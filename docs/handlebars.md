@@ -13,6 +13,7 @@ We chose handlebars as the templating system as it is language agnostic and pret
  - ``{{#if my_value}}Hello{{/if}}``: will output "Hello" if the variable 'my_value' is true (or not empty)
  - ``{{#if my_value}}Hello{{else}}Goodbye{{/if}}``: same as before but will also display "Goodbye" if 'my_value' if false or empty
  - ``{{#each my_list}}{{{this}}}{{/each}}``: will output every element of 'my_list'
+ - ``{{> my_partial}}``: will render the templates names '_my_partial.hbs' with the same context (so you don't have to repeat yourself)
 
 Helpers can be used with the notation ``{{{ helperName value }}}`. You will mainly use our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers), we provide an example for each one.
 
