@@ -4,5 +4,5 @@
 {{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
 {{/comment}}
 @Test
-public void {{{ camelize_lower rendered_children.name }}}Test() {{#curly}}{{> body}}
+public void {{{ camelize_lower rendered_children.name }}}() {{#curly}}{{> body}}
 {{/curly}}{{/if}}
