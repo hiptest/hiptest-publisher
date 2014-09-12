@@ -4,6 +4,7 @@ require 'zest-publisher/string'
 require 'zest-publisher/utils'
 require 'zest-publisher/options_parser'
 require 'zest-publisher/xml_parser'
+require 'zest-publisher/parent_adder'
 require 'zest-publisher/parameter_type_adder'
 
 module Zest
@@ -81,6 +82,7 @@ module Zest
 
     def export
       @language_config = LanguageConfigParser.new(@options)
+      Zest::Nodes::ParentAdder.walk_node(@project)
       Zest::Nodes::ParameterTypeAdder.add(@project) if @options.language == 'java'
 
       export_scenarios unless @options.actionwords_only
