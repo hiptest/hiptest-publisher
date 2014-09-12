@@ -1,5 +1,6 @@
 [tests]
 filename = 'test_project.py'
+scenario_filename = 'test_%s.py'
 call_prefix = 'actionwords'
 indentation = "    "
 

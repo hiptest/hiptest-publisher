@@ -1,0 +1,8 @@
+[tests]
+filename = 'project'
+scenario_filename = 'test_%s'
+indentation = "\t"
+
+[actionwords]
+filename = 'keywords'
+indentation = "\t"

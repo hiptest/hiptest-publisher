@@ -238,7 +238,6 @@ shared_examples "a renderer" do
 
   it 'Variable' do
     expect(@foo_variable.render(language, @context)).to eq(@foo_variable_rendered)
-    expect(@foo_bar_variable.render(language, @context)).to eq(@foo_bar_variable_rendered)
   end
 
   it 'Property' do

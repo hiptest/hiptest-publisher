@@ -337,3 +337,10 @@ Outputs an opening curly bracket.
 ```
 
 Outputs an closing curly bracket.
+
+### tab
+```handlebars
+{{ tab }}
+```
+
+Outputs a tabulation character.

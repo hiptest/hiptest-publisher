@@ -43,6 +43,7 @@ module Zest
     end
 
     def hh_join(context, items, joiner, block)
+      joiner = "\t" if joiner == '\t'
       "#{items.join(joiner)}"
     end
 
@@ -86,6 +87,10 @@ module Zest
 
     def hh_close_curly (context, block)
       "}"
+    end
+
+    def hh_tab (context, block)
+      "\t"
     end
   end
 end

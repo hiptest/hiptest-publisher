@@ -1,0 +1,9 @@
+{{#comment '#'}}{{#clear_empty_lines}}
+{{{ rendered_children.description}}}
+{{#if has_tags?}}
+Tags: {{{ join rendered_children.tags ' '}}}
+{{/if}}{{/clear_empty_lines}}{{/comment}}
+{{{ underscore rendered_children.name }}}{{#indent}}
+{{#if has_parameters?}}[Arguments]{{{ tab }}}{{{ join rendered_children.parameters "\t"}}}
+{{/if}}{{#each rendered_children.body}}{{{ this }}}
+{{/each}}{{/indent}}

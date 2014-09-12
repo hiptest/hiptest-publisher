@@ -38,7 +38,7 @@ describe Zest::HandlebarsHelper do
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Zest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(17)
+      expect(handlebars.helpers.length).to eq(18)
     end
   end
 
@@ -70,7 +70,8 @@ describe Zest::HandlebarsHelper do
         "comment",
         "curly",
         "open_curly",
-        "close_curly"
+        "close_curly",
+        "tab"
       ])
     end
 
@@ -92,7 +93,8 @@ describe Zest::HandlebarsHelper do
         "comment",
         "curly",
         "open_curly",
-        "close_curly"
+        "close_curly",
+        "tab"
       ])
     end
   end
@@ -108,6 +110,10 @@ describe Zest::HandlebarsHelper do
   context 'hh_join' do
     it 'joins a list with the given joiner' do
       expect(instance.hh_join(nil, [1, 2, 3], '-', nil)).to eq('1-2-3')
+    end
+
+    it 'uses a real tabulatation character when needed' do
+      expect(instance.hh_join(nil, [1, 2, 3], '\t', nil)).to eq("1\t2\t3")
     end
   end
 
