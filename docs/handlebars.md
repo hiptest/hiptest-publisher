@@ -23,7 +23,7 @@ Handlebars and Zest-publisher caveats
 
 ### Whitespaces
 
-Handlebars is designed to generate HTML code, where white spaces and line returns do not really count. With Zest-publisher, we generate code that will be interpreted or compiled, so those characters might be important (for example in python, indentation defines block of code).
+Handlebars is designed to generate HTML code, where white spaces and line returns do not really matter. With Zest-publisher, we generate code that will be interpreted or compiled, so those characters might be important (for example in python, indentation defines block of code).
 
 This explains why templates might look a bit bulky. For the same reason, there is no indentation of the handlebars code. It would look way nicer, but the output code would have a really weird indentation.
 
