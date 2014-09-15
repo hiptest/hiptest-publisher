@@ -6,6 +6,8 @@ module Zest
       end
 
       def walk_node(node)
+        super(node)
+        return unless node.is_a? Zest::Nodes::Node
         node.children.each {|child| child.parent = node if child.is_a? Zest::Nodes::Node}
       end
     end
