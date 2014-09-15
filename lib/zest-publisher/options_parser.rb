@@ -56,6 +56,17 @@ class Option
 end
 
 class OptionsParser
+  def self.languages
+    # First framework is default framework
+
+    {
+      'Ruby' => ['Rspec', 'MiniTest'],
+      'Java' => ['JUnit', 'Test NG'],
+      'Python' => ['Unittest'],
+      'Robot Framework' => []
+    }
+  end
+
   def self.all_options
     [
       Option.new('t', 'token=TOKEN', nil, String, "Secret token (available in your project settings)", :token),
@@ -81,6 +92,12 @@ class OptionsParser
       opts.separator "Specific options:"
 
       all_options.each {|o| o.register(opts, options)}
+
+      opts.on("-lh", "--languages-help", "Show languages and framework options") do
+        self.show_languages
+        exit
+      end
+
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts
         exit
@@ -97,6 +114,31 @@ class OptionsParser
   def self.show_options(options)
     puts "Running Zest-publisher with:".yellow
     options.marshal_dump.each { |k, v| puts " - #{k}: #{v}".white }
+  end
+
+  def self.make_language_option(lang, framework = '')
+    lang_opt = "--language=#{lang.downcase.gsub(' ', '')}"
+    framework_opt = "--framework=#{framework.downcase.gsub(' ', '')}"
+
+    framework.empty? ? lang_opt : "#{lang_opt} #{framework_opt}"
+  end
+
+  def self.show_languages
+    puts "Supported languages:"
+    languages.each do |language, frameworks|
+      puts "#{language}:"
+      if frameworks.empty?
+        puts "  no framework option available #{make_language_option(language, '')}"
+      else
+        frameworks.each_with_index do |fw, index|
+          if index == 0
+            puts " - #{fw} [default] #{make_language_option(language, '')}"
+          else
+            puts " - #{fw} #{make_language_option(language, fw)}"
+          end
+        end
+      end
+    end
   end
 end
 
