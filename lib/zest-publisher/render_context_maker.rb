@@ -21,8 +21,9 @@ module Zest
     end
 
     def walk_dataset(dataset)
+      datatable = dataset.parent
       {
-        :scenario_name => dataset.parent.parent.children[:name]
+        :scenario_name => datatable.parent.children[:name]
       }
     end
 

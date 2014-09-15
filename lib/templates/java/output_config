@@ -1,5 +1,6 @@
 [tests]
 filename = 'ProjectTest.java'
+scenario_filename = '%sTest.java'
 indentation = "    "
 call_prefix = 'actionwords'
 

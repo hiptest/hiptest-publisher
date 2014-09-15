@@ -27,6 +27,20 @@ module Zest
         end
       end
 
+      def direct_children
+        direct = []
+
+        children.each do |key, child|
+          if child.is_a? Zest::Nodes::Node
+            direct << child
+          elsif child.is_a? Array
+            child.each {|c| direct << c if c.is_a? Zest::Nodes::Node }
+          end
+        end
+
+        direct
+      end
+
       private
 
       def all_sub_nodes
