@@ -194,7 +194,7 @@ module Zest
         build_parameters(scenario),
         build_steps(scenario),
         css_first_content(scenario, 'folderUid'),
-        build_node(css_first(scenario, 'datatable')))
+        build_node(css_first(scenario, 'datatable'), Zest::Nodes::Datatable))
     end
 
     def build_datatable(datatable)
