@@ -93,7 +93,7 @@ class OptionsParser
 
       all_options.each {|o| o.register(opts, options)}
 
-      opts.on("-lh", "--languages-help", "Show languages and framework options") do
+      opts.on("-H", "--languages-help", "Show languages and framework options") do
         self.show_languages
         exit
       end
