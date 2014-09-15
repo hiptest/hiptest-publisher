@@ -107,5 +107,6 @@ cp templates/scala/scenario.rb templates/scala/specs/scenario.rb
 Edit the file so it generates proper Scala/Specs code. You should now be able to generate your tests using the following line:
 
 ```shell
+rake install
 zest-publisher --language=scala --framework=specs
 ```
