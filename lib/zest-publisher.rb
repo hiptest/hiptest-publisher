@@ -56,10 +56,13 @@ module Zest
     def export_scenarios
       if @options.split_scenarios
         @project.children[:scenarios].children[:scenarios].each do |scenario|
+          context = @language_config.tests_render_context
+          context[:test_file_name] = @language_config.scenario_output_file(scenario.children[:name])
+
           write_node_to_file(
             @language_config.scenario_output_dir(scenario.children[:name]),
             scenario,
-            @language_config.tests_render_context,
+            context,
             "Exporting scenario \"#{scenario.children[:name]}\"")
         end
       else

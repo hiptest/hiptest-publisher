@@ -249,6 +249,10 @@ describe 'Render as Java' do
       "  }",
       "}"
     ].join("\n")
+
+    @context[:filename] = 'ProjectTest.java'
+    @context[:test_file_name] = 'MyScenarioTest.java'
+    @context[:package] = 'com.example'
   end
 
   context 'JUnit' do
@@ -285,7 +289,7 @@ describe 'Render as Java' do
         "",
         "import junit.framework.TestCase;",
         "",
-        "public class ProjectTest extends TestCase {",
+        "public class MyScenarioTest extends TestCase {",
         "",
         "  public Actionwords actionwords = new Actionwords();",
         "",
@@ -347,7 +351,7 @@ describe 'Render as Java' do
         "",
         "import junit.framework.TestCase;",
         "",
-        "public class ProjectTest extends TestCase {",
+        "public class MyScenarioTest extends TestCase {",
         "",
         "  public Actionwords actionwords = new Actionwords();",
         "",
@@ -394,9 +398,6 @@ describe 'Render as Java' do
         "    actionwords.myActionWord();",
         "  }",
         "}"].join("\n")
-
-      @context[:filename] = 'ProjectTest.java'
-      @context[:package] = 'com.example'
     end
 
     it_behaves_like "a renderer" do
@@ -429,7 +430,7 @@ describe 'Render as Java' do
         "",
         "import org.testng.annotations.*;",
         "",
-        "public class ProjectTest {",
+        "public class MyScenarioTest {",
         "",
         "  public Actionwords actionwords = new Actionwords();",
         "",
@@ -495,7 +496,7 @@ describe 'Render as Java' do
         "",
         "import org.testng.annotations.*;",
         "",
-        "public class ProjectTest {",
+        "public class MyScenarioTest {",
         "",
         "  public Actionwords actionwords = new Actionwords();",
         "",
@@ -541,9 +542,6 @@ describe 'Render as Java' do
         "    actionwords.myActionWord();",
         "  }",
         "}"].join("\n")
-
-      @context[:filename] = 'ProjectTest.java'
-      @context[:package] = 'com.example'
     end
 
     it_behaves_like "a renderer" do
