@@ -145,7 +145,14 @@ end
 class LanguageConfigParser
   def initialize(options)
     @options = options
-    @config = ParseConfig.new("#{zest_publisher_path}/lib/templates/#{options.language}/output_config")
+    @config = ParseConfig.new(find_config_file(options))
+  end
+
+  def find_config_file(options)
+    ["#{options.language}/#{options.framework}", "#{options.language}"].map do |p|
+      path = "#{zest_publisher_path}/lib/templates/#{p}/output_config"
+      path if File.file?(path)
+    end.compact.first
   end
 
   def scenario_output_file(scenario_name)
