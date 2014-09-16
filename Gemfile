@@ -6,7 +6,7 @@ gem 'colorize', '~> 0.7', '>= 0.7.3'
 gem 'parseconfig', '~> 1.0', '>= 1.0.4'
 gem 'i18n', '~> 0.6', '>= 0.6.9'
 gem 'nokogiri', '~> 1.6.2', '>= 1.6.2.1'
-gem 'handlebars'
+gem 'handlebars', '~> 0.6', '>= 0.6.0'
 
 group :development do
   gem 'rspec', '~> 3.0', '>= 3.0.0'

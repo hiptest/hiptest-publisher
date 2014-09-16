@@ -86,7 +86,7 @@ PLATFORMS
 DEPENDENCIES
   codeclimate-test-reporter (~> 0.3, >= 0.3.0)
   colorize (~> 0.7, >= 0.7.3)
-  handlebars
+  handlebars (~> 0.6, >= 0.6.0)
   i18n (~> 0.6, >= 0.6.9)
   jeweler (~> 2.0, >= 2.0.1)
   nokogiri (~> 1.6.2, >= 1.6.2.1)
