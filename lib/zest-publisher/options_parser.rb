@@ -7,13 +7,13 @@ require 'zest-publisher/utils'
 class FileConfigParser
   def self.update_options(options)
     config = ParseConfig.new(options.config)
-
     config.get_params.each do |param|
       options.send("#{param}=", config[param])
     end
     options
 
-  rescue
+  rescue Exception => err
+    trace_exception(err) if options.verbose
     options
   end
 end
@@ -195,9 +195,7 @@ class LanguageConfigParser
     context[:package] = @options.package unless @options.package.nil?
     context[:framework] = @options.framework unless @options.framework.nil?
 
-    @config[group].each {|param, value|
-      context[param.to_sym] = value
-    }
+    @config[group].each {|param, value| context[param.to_sym] = value }
     context
   end
 end
