@@ -11,7 +11,7 @@ describe 'Render as Robot framework' do
     @null_rendered = 'None'
 
     # In Zest: 'What is your quest ?'
-    @what_is_your_quest_rendered = "'What is your quest ?'"
+    @what_is_your_quest_rendered = "What is your quest ?"
 
     # In Zest: 3.14
     @pi_rendered = '3.14'
@@ -20,10 +20,10 @@ describe 'Render as Robot framework' do
     @false_rendered = 'false'
 
     # In Zest: "${foo}fighters"
-    @foo_template_rendered = '"${foo}fighters"'
+    @foo_template_rendered = '${foo}fighters'
 
     # In Zest: "Fighters said \"Foo !\""
-    @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
+    @double_quotes_template_rendered = 'Fighters said \"Foo !\"'
 
     # In Zest: foo (as in 'foo := 1')
     @foo_variable_rendered = '${foo}'
@@ -32,28 +32,28 @@ describe 'Render as Robot framework' do
     @foo_dot_fighters_rendered = '${foo}.fighters'
 
     # In Zest: foo['fighters']
-    @foo_brackets_fighters_rendered = "${foo}['fighters']"
+    @foo_brackets_fighters_rendered = "${foo}[fighters]"
 
     # In Zest: -foo
     @minus_foo_rendered = '-${foo}'
 
     # In Zest: foo - 'fighters'
-    @foo_minus_fighters_rendered = "${foo} - 'fighters'"
+    @foo_minus_fighters_rendered = "${foo} - fighters"
 
     # In Zest: (foo)
     @parenthesis_foo_rendered = '(${foo})'
 
     # In Zest: [foo, 'fighters']
-    @foo_list_rendered = "[${foo}, 'fighters']"
+    @foo_list_rendered = "[${foo}, fighters]"
 
     # In Zest: foo: 'fighters'
-    @foo_fighters_prop_rendered = "${foo}: 'fighters'"
+    @foo_fighters_prop_rendered = "${foo}: fighters"
 
     # In Zest: {foo: 'fighters', Alt: J}
-    @foo_dict_rendered = "{${foo}: 'fighters', Alt: J}"
+    @foo_dict_rendered = "{${foo}: fighters, Alt: J}"
 
     # In Zest: foo := 'fighters'
-    @assign_fighters_to_foo_rendered = "${foo} = 'fighters'"
+    @assign_fighters_to_foo_rendered = "${foo} = fighters"
 
     # In Zest: call 'foo'
     @call_foo_rendered = "foo"
@@ -61,12 +61,12 @@ describe 'Render as Robot framework' do
     @call_foo_bar_rendered = "foo_bar"
 
     # In Zest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = "foo\t'fighters'"
+    @call_foo_with_fighters_rendered = "foo\tfighters"
     # In Zest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = "foo_bar\t'fighters'"
+    @call_foo_bar_with_fighters_rendered = "foo_bar\tfighters"
 
     # In Zest: step {action: "${foo}fighters"}
-    @action_foo_fighters_rendered = '# TODO: Implement action: "${foo}fighters"'
+    @action_foo_fighters_rendered = '# TODO: Implement action: ${foo}fighters'
 
     # In Zest:
     # if (true)
@@ -99,20 +99,18 @@ describe 'Render as Robot framework' do
     @plic_param_rendered = '${plic}'
 
     # In Zest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
-    # NOT SUPPORTED YET
-    @plic_param_default_ploc_rendered = '${plic}'
+    @plic_param_default_ploc_rendered = '${plic}=ploc'
 
     # In Zest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "\nmy_action_word\n"
+    @empty_action_word_rendered = "my_action_word\n"
 
     # In Zest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
     @tagged_action_word_rendered = [
-      "# Tags: myTag myTag:somevalue",
       "my_action_word",
       ""
     ].join("\n")
@@ -121,9 +119,8 @@ describe 'Render as Robot framework' do
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
-      "",
       "my_action_word",
-      "\t[Arguments]\t${plic}\t${flip}",
+      "\t[Arguments]\t${plic}\t${flip}=flap",
       ""
     ].join("\n")
 
@@ -139,7 +136,6 @@ describe 'Render as Robot framework' do
     #   end
     # end
     @full_actionword_rendered = [
-      "# Tags: myTag",
       "compare_to_pi",
       "\t[Arguments]\t${x}",
       "\t${foo} = 3.14",
@@ -151,7 +147,6 @@ describe 'Render as Robot framework' do
     #   step {action: "basic action"}
     # end
     @step_action_word_rendered = [
-      "",
       "my_action_word",
       "\t# TODO: Implement action: basic action",
       ""].join("\n")
@@ -164,9 +159,7 @@ describe 'Render as Robot framework' do
     # end
     @actionwords_rendered = [
       "*** Keywords ***",
-      "",
       "first_action_word",
-      "",
       "",
       "",
       "second_action_word",
@@ -193,30 +186,24 @@ describe 'Render as Robot framework' do
     #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
       "*** Keywords ***",
-      "",
       "aw_with_int_param",
       "\t[Arguments]\t${x}",
-      "",
       "",
       "",
       "aw_with_float_param",
       "\t[Arguments]\t${x}",
       "",
       "",
-      "",
       "aw_with_boolean_param",
       "\t[Arguments]\t${x}",
-      "",
       "",
       "",
       "aw_with_null_param",
       "\t[Arguments]\t${x}",
       "",
       "",
-      "",
       "aw_with_string_param",
       "\t[Arguments]\t${x}",
-      "",
       "",
       "",
       "aw_with_template_param",
@@ -239,10 +226,9 @@ describe 'Render as Robot framework' do
     #   end
     # end
     @full_scenario_rendered = [
-      "*** Keywords ***",
-      "# This is a scenario which description ",
-      "# is on two lines",
-      "# Tags: myTag",
+      "",
+      "*** Test Cases ***",
+      "",
       "compare_to_pi",
       "\t[Arguments]\t${x}",
       "\t${foo} = 3.14",
@@ -252,7 +238,24 @@ describe 'Render as Robot framework' do
 
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
-    @full_scenario_rendered_for_single_file = @full_scenario_rendered
+    @full_scenario_rendered_for_single_file = [
+      "*** Settings ***",
+      "Documentation",
+      "...  This is a scenario which description ",
+      "...  is on two lines",
+      "...  Tags: myTag",
+      "",
+      "Resource          keywords.txt",
+      "",
+      "",
+      "*** Test Cases ***",
+      "",
+      "compare_to_pi",
+      "\t[Arguments]\t${x}",
+      "\t${foo} = 3.14",
+      "\t\# NOT SUPPORTED YET",
+      ""
+      ].join("\n")
 
     # Scenario definition is:
     # call 'fill login' (login = login)
@@ -268,13 +271,17 @@ describe 'Render as Robot framework' do
     # Valid login/password | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
+      "",
+      "Test Template     check_login",
+      "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
       "Wrong login\tinvalid\tinvalid\tInvalid username or password",
       "Wrong password\tvalid\tinvalid\tInvalid username or password",
-      "Valid login/password\tvalid\tvalid\t",
+      "Valid login/password\tvalid\tvalid\tNone",
+      "",
       "",
       "*** Keywords ***",
-      "# Ensure the login process",
+      "",
       "check_login",
       "\t[Arguments]\t${login}\t${password}\t${expected}",
       "\tfill_login\t${login}",
@@ -285,7 +292,32 @@ describe 'Render as Robot framework' do
     ].join("\n")
 
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
-    @scenario_with_datatable_rendered_in_single_file = @scenario_with_datatable_rendered
+    @scenario_with_datatable_rendered_in_single_file = [
+      "*** Settings ***",
+      "Documentation",
+      "...  Ensure the login process",
+      "",
+      "Resource          keywords.txt",
+      "",
+      "",
+      "Test Template     check_login",
+      "",
+      "*** Test Cases ***\tlogin\tpassword\texpected",
+      "Wrong login\tinvalid\tinvalid\tInvalid username or password",
+      "Wrong password\tvalid\tinvalid\tInvalid username or password",
+      "Valid login/password\tvalid\tvalid\tNone",
+      "",
+      "",
+      "*** Keywords ***",
+      "",
+      "check_login",
+      "\t[Arguments]\t${login}\t${password}\t${expected}",
+      "\tfill_login\t${login}",
+      "\tfill_password\t${password}",
+      "\tpress_enter",
+      "\tassert_error_is_displayed\t${expected}",
+      ""
+    ].join("\n")
 
     # In Zest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do

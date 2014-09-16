@@ -1,4 +1,11 @@
-{{#if has_datasets?}}*** Test Cases ***{{#each node.children.parameters}}{{{ tab }}}{{{ this.children.name}}}{{/each}}
+{{#if has_datasets?}}
+Test Template     {{{ underscore rendered_children.name }}}
+
+*** Test Cases ***{{#each node.children.parameters}}{{{ tab }}}{{{ this.children.name}}}{{/each}}
 {{{ rendered_children.datatable }}}
-{{/if}}*** Keywords ***
+
+*** Keywords ***
+{{else}}
+*** Test Cases ***
+{{/if}}
 {{> keyword}}

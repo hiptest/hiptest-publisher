@@ -1,8 +1,8 @@
 [tests]
-filename = 'project'
-scenario_filename = 'test_%s'
+filename = 'project.txt'
+scenario_filename = 'test_%s.txt'
 indentation = "\t"
 
 [actionwords]
-filename = 'keywords'
+filename = 'keywords.txt'
 indentation = "\t"
