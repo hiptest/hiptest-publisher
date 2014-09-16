@@ -1,0 +1,6 @@
+[tests]
+filename = 'project_test.rb'
+scenario_filename = '%s_test.rb'
+
+[actionwords]
+filename = 'actionwords.rb'
