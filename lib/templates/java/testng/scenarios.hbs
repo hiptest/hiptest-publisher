@@ -4,7 +4,12 @@ import org.testng.annotations.*;
 
 public class {{{ clear_extension context.filename }}} {
 
-  public Actionwords {{{ context.call_prefix }}} = new Actionwords();
+{{#indent}}public Actionwords {{{ context.call_prefix }}};
+
+@BeforeMethod
+public void setUp() {
+{{#indent}}{{{ context.call_prefix }}} = new Actionwords();{{/indent}}
+}{{/indent}}
 {{#indent}}{{#each rendered_children.scenarios}}{{{this}}}
 {{/each}}
 {{/indent}}
