@@ -74,6 +74,8 @@ class OptionsParser
       Option.new('f', 'framework=FRAMEWORK', '', String, "Test framework to use", :framework),
       Option.new('o', 'output-directory=PATH', '.', String, "Output directory", :output_directory),
       Option.new('c', 'config-file=PATH', 'config', String, "Configuration file", :config),
+      Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
+      Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
       Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
@@ -95,6 +97,22 @@ class OptionsParser
 
       opts.on("-H", "--languages-help", "Show languages and framework options") do
         self.show_languages
+        exit
+      end
+
+      opts.on("-F", "--filters-help", "Show help about scenario filtering") do
+        [
+          "zest-publisher allows you to filter the exported scenarios.",
+          "You can select the ids of the scenarios:",
+          "zest-publisher --scenario-ids=12",
+          "zest-publisher --scenario-ids=12,15,16",
+          "",
+          "You can also filter by tags:",
+          "zest-publisher --scenario-tags=mytag",
+          "zest-publisher --scenario-tags=mytag,myother:tag",
+          "",
+          "You can not mix ids and tag filtering, only the id filtering will be applied."
+        ].each {|line| puts line}
         exit
       end
 

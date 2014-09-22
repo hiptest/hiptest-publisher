@@ -20,7 +20,7 @@ module Zest
 
     def fetch_xml_file
       show_status_message "Fetching data from Zest"
-      xml = fetch_project_export(@options.site, @options.token, @options.verbose)
+      xml = fetch_project_export(@options)
       show_status_message "Fetching data from Zest", :success
 
       return xml
