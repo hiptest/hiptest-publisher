@@ -21,7 +21,7 @@ module Zest
       end
 
       def walk_call(call)
-        @call_types.add_actionword(call.children[:actionword])
+        @call_types.add_callable_item(call.children[:actionword])
       end
 
       def walk_argument(arg)
@@ -31,7 +31,11 @@ module Zest
       end
 
       def walk_actionword(actionword)
-        @call_types.add_actionword(actionword.children[:name])
+        @call_types.add_callable_item(actionword.children[:name])
+      end
+
+      def walk_scenario(scenario)
+        @call_types.add_callable_item(scenario.children[:name])
       end
 
       private
@@ -48,31 +52,35 @@ module Zest
       def initialize(call_types)
         super(:parent_first)
         @call_types = call_types
-        @actionword_name = nil
+        @callable_item_name = nil
       end
 
       def walk_actionword actionword
-        @actionword_name = actionword.children[:name]
+        @callable_item_name = actionword.children[:name]
+      end
+
+      def walk_scenario(scenario)
+        @callable_item_name = scenario.children[:name]
       end
 
       def walk_parameter parameter
-        parameter.children[:type] = @call_types.type_of(@actionword_name, parameter.children[:name])
+        parameter.children[:type] = @call_types.type_of(@callable_item_name, parameter.children[:name])
       end
     end
 
     class CallTypes
       def initialize
-        @actionwords = {}
+        @callable_items = {}
         @current = nil
       end
 
-      def select_actionword(name)
-        @current = @actionwords[name]
+      def select_callable_item(name)
+        @current = @callable_items[name]
       end
 
-      def add_actionword(name)
-        @actionwords[name] = {} unless @actionwords.keys.include?(name)
-        select_actionword(name)
+      def add_callable_item(name)
+        @callable_items[name] = {} unless @callable_items.keys.include?(name)
+        select_callable_item(name)
       end
 
       def add_argument(name, type, value)
@@ -85,9 +93,9 @@ module Zest
         @current[name][:default] = {type: type, value: value}
       end
 
-      def type_of(actionword_name, parameter_name)
-        return unless @actionwords.keys.include?(actionword_name)
-        parameter =  @actionwords[actionword_name][parameter_name]
+      def type_of(item_name, parameter_name)
+        return unless @callable_items.keys.include?(item_name)
+        parameter =  @callable_items[item_name][parameter_name]
 
         return :String if parameter.nil? || parameter[:values].empty?
         return type_from_values(parameter[:values])
