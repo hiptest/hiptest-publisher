@@ -1,0 +1,9 @@
+[tests]
+filename = 'project.html'
+scenario_filename = '%s.html'
+call_prefix = ''
+indentation = "  "
+
+[actionwords]
+filename = 'actionwords.html'
+indentation = "  "

@@ -1,0 +1,19 @@
+<html>{{#indent}}
+<head>{{#indent}}
+<title>{{{ project_name }}}</title>
+{{/indent}}
+</head>
+<body>{{#indent}}
+<table>{{#indent}}
+<tbody>{{#indent}}
+<tr><td><b>Suite Of Tests</b></td></tr>
+{{#each rendered_children.tests}}{{{this}}}
+{{/each}}
+{{/indent}}
+</tbody>
+{{/indent}}
+</table>
+{{/indent}}
+</body>
+{{/indent}}
+</html>
