@@ -424,7 +424,7 @@ shared_examples "a renderer" do
   end
 
   context 'Test' do
-    it 'can be rendered to be inserted in the scenarios list' do
+    it 'can be rendered to be inserted in the tests list' do
       @context[:call_prefix] = 'actionwords'
       expect(@first_test.render(language, @context)).to eq(@first_test_rendered)
     end
