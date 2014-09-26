@@ -1,5 +1,3 @@
-require 'erb'
-
 require 'zest-publisher/string'
 require 'zest-publisher/utils'
 require 'zest-publisher/renderer'
