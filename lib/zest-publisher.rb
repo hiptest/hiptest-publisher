@@ -53,6 +53,27 @@ module Zest
       end
     end
 
+    def export_tests
+      if @options.split_scenarios
+        @project.children[:tests].children[:tests].each do |test|
+          context = @language_config.tests_render_context
+          context[:test_file_name] = @language_config.scenario_output_file(test.children[:name])
+
+          write_node_to_file(
+            @language_config.scenario_output_dir(test.children[:name]),
+            test,
+            context,
+            "Exporting test \"#{test.children[:name]}\"")
+        end
+      else
+        write_node_to_file(
+          @language_config.tests_output_dir,
+          @project.children[:tests],
+          @language_config.tests_render_context,
+          "Exporting tests")
+      end
+    end
+
     def export_scenarios
       if @options.split_scenarios
         @project.children[:scenarios].children[:scenarios].each do |scenario|
@@ -88,7 +109,10 @@ module Zest
       Zest::Nodes::ParentAdder.add(@project)
       Zest::Nodes::ParameterTypeAdder.add(@project) if @options.language == 'java'
 
-      export_scenarios unless @options.actionwords_only
+      unless @options.actionwords_only
+        @options.leafless_export ? export_tests : export_scenarios
+      end
+
       export_actionwords unless @options.tests_only
     end
   end
