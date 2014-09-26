@@ -215,6 +215,19 @@ module Zest
       build_node_list(scenarios.css('> scenario'), Zest::Nodes::Scenarios)
     end
 
+    def build_tests(tests)
+      build_node_list(tests.css('> test'), Zest::Nodes::Tests)
+    end
+
+    def build_test(test)
+      Zest::Nodes::Test.new(
+        css_first_content(test, 'name'),
+        css_first_content(test, 'description'),
+        build_tags(test),
+        build_steps(test)
+      )
+    end
+
     def build_folder(folder)
       Zest::Nodes::Folder.new(
         css_first_content(folder, 'uid'),
@@ -238,7 +251,8 @@ module Zest
         css_first_content(project, '> description'),
         build_node(css_first(project, '> testPlan'), Zest::Nodes::TestPlan),
         build_node(css_first(project, '> scenarios'), Zest::Nodes::Scenarios),
-        build_node(css_first(project, '> actionwords'), Zest::Nodes::Actionwords))
+        build_node(css_first(project, '> actionwords'), Zest::Nodes::Actionwords),
+        build_node(css_first(project, '> tests'), Zest::Nodes::Tests))
 
       @project.assign_scenarios_to_folders
       return @project

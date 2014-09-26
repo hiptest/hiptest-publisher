@@ -355,6 +355,7 @@ module Zest
       def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new)
         super()
         scenarios.parent = self
+        tests.parent = self
 
         @children = {
           :name => name,
