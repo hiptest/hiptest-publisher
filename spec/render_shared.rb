@@ -179,7 +179,7 @@ shared_context "shared render" do
     ])
     @scenarios.parent = Zest::Nodes::Project.new('My_project')
 
-    @actionwords_with_paramters = Zest::Nodes::Actionwords.new([
+    @actionwords_with_parameters = Zest::Nodes::Actionwords.new([
       Zest::Nodes::Actionword.new('aw with int param', [], [Zest::Nodes::Parameter.new('x')], []),
       Zest::Nodes::Actionword.new('aw with float param', [], [Zest::Nodes::Parameter.new('x')], []),
       Zest::Nodes::Actionword.new('aw with boolean param', [], [Zest::Nodes::Parameter.new('x')], []),
@@ -209,7 +209,7 @@ shared_context "shared render" do
         Zest::Nodes::Call.new('aw with string param', [
           Zest::Nodes::Argument.new('x', Zest::Nodes::Template.new(Zest::Nodes::StringLiteral.new('toto')))])
       ])])
-    @project = Zest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_paramters)
+    @project = Zest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
 
     @context = {framework: framework, forced_templates: {}}
   end
