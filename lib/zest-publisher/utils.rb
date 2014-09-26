@@ -17,7 +17,7 @@ def make_filter(options)
 end
 
 def fetch_project_export(options)
-  url = "#{options.site}/publication/#{options.token}/project?future=1#{make_filter(options)}"
+  url = "#{options.site}/publication/#{options.token}/#{options.leafless_export ? 'leafless_tests' : 'project'}?future=1#{make_filter(options)}"
 
   puts "URL: #{url}".white if options.verbose
   open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
