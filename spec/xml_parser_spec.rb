@@ -730,12 +730,13 @@ describe Zest::XMLParser do
     project = parser.build_project
 
     expect(project.children[:name]).to eq('Zest publisher')
-    expect(project.find_sub_nodes.length).to eq(94)
+    expect(project.find_sub_nodes.length).to eq(95)
     expect(project.find_sub_nodes(Zest::Nodes::Folder).length).to eq(4)
     expect(project.find_sub_nodes(Zest::Nodes::Scenario).length).to eq(2)
     expect(project.find_sub_nodes(Zest::Nodes::Actionword).length).to eq(4)
     expect(project.find_sub_nodes(Zest::Nodes::Step).length).to eq(4)
     expect(project.find_sub_nodes(Zest::Nodes::Datatable).length).to eq(2)
     expect(project.find_sub_nodes(Zest::Nodes::Dataset).length).to eq(0)
+    expect(project.find_sub_nodes(Zest::Nodes::Test).length).to eq(0)
   end
 end

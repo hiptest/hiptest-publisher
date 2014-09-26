@@ -247,6 +247,19 @@ module Zest
       end
     end
 
+    class Test < Node
+      def initialize(name, description = '', tags = [], body = [])
+        super()
+
+        @children = {
+          :name => name,
+          :description => description,
+          :tags => tags,
+          :body => body
+        }
+      end
+    end
+
     class Datatable < Node
       def initialize(datasets = [])
         super()
@@ -280,6 +293,14 @@ module Zest
         super()
         @children = {:scenarios => scenarios}
         scenarios.each {|sc| sc.parent = self}
+      end
+    end
+
+    class Tests < Node
+      def initialize(tests = [])
+        super()
+        @children = {:tests => tests}
+        tests.each {|test| test.parent = self}
       end
     end
 
@@ -331,7 +352,7 @@ module Zest
     end
 
     class Project < Node
-      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new)
+      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new)
         super()
         scenarios.parent = self
 
@@ -340,7 +361,8 @@ module Zest
           :description => description,
           :test_plan => test_plan,
           :scenarios => scenarios,
-          :actionwords => actionwords
+          :actionwords => actionwords,
+          :tests => tests
         }
       end
 
