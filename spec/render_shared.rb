@@ -227,7 +227,7 @@ shared_context "shared render" do
           Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('s3cret'))
         ]),
         Zest::Nodes::Call.new('click', [
-          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit'))
+          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit]'))
         ]),
         Zest::Nodes::Call.new('checkUrl', [
           Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('/welcome')
@@ -249,7 +249,7 @@ shared_context "shared render" do
           Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('notTh4tS3cret'))
         ]),
         Zest::Nodes::Call.new('click', [
-          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit'))
+          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit]'))
         ]),
         Zest::Nodes::Call.new('checkUrl', [
           Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('/login')

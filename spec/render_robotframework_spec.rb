@@ -337,7 +337,7 @@ describe 'Render as Robot framework' do
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
       "\tfill\ts3cret",
-      "\tclick\t.login-form input[type=submit",
+      "\tclick\t.login-form input[type=submit]",
       "\tcheck_url\t/welcome",
       ""
     ].join("\n")
@@ -358,7 +358,7 @@ describe 'Render as Robot framework' do
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
       "\tfill\ts3cret",
-      "\tclick\t.login-form input[type=submit",
+      "\tclick\t.login-form input[type=submit]",
       "\tcheck_url\t/welcome",
       ""
     ].join("\n")

@@ -414,7 +414,7 @@ describe 'Render as Java' do
         '    actionwords.visit("/login");',
         '    actionwords.fill("user@example.com");',
         '    actionwords.fill("s3cret");',
-        '    actionwords.click(".login-form input[type=submit");',
+        '    actionwords.click(".login-form input[type=submit]");',
         '    actionwords.checkUrl("/welcome");',
         '  }',
         '  // ',
@@ -423,7 +423,7 @@ describe 'Render as Java' do
         '    actionwords.visit("/login");',
         '    actionwords.fill("user@example.com");',
         '    actionwords.fill("notTh4tS3cret");',
-        '    actionwords.click(".login-form input[type=submit");',
+        '    actionwords.click(".login-form input[type=submit]");',
         '    actionwords.checkUrl("/login");',
         '  }',
         '}'
@@ -437,7 +437,7 @@ describe 'Render as Java' do
         '  actionwords.visit("/login");',
         '  actionwords.fill("user@example.com");',
         '  actionwords.fill("s3cret");',
-        '  actionwords.click(".login-form input[type=submit");',
+        '  actionwords.click(".login-form input[type=submit]");',
         '  actionwords.checkUrl("/welcome");',
         '}'
       ].join("\n")
@@ -458,7 +458,7 @@ describe 'Render as Java' do
         '    actionwords.visit("/login");',
         '    actionwords.fill("user@example.com");',
         '    actionwords.fill("s3cret");',
-        '    actionwords.click(".login-form input[type=submit");',
+        '    actionwords.click(".login-form input[type=submit]");',
         '    actionwords.checkUrl("/welcome");',
         '  }',
         '}'
@@ -634,7 +634,7 @@ describe 'Render as Java' do
           '    actionwords.visit("/login");',
           '    actionwords.fill("user@example.com");',
           '    actionwords.fill("s3cret");',
-          '    actionwords.click(".login-form input[type=submit");',
+          '    actionwords.click(".login-form input[type=submit]");',
           '    actionwords.checkUrl("/welcome");',
           '  }',
           '  // ',
@@ -644,7 +644,7 @@ describe 'Render as Java' do
           '    actionwords.visit("/login");',
           '    actionwords.fill("user@example.com");',
           '    actionwords.fill("notTh4tS3cret");',
-          '    actionwords.click(".login-form input[type=submit");',
+          '    actionwords.click(".login-form input[type=submit]");',
           '    actionwords.checkUrl("/login");',
           '  }',
           '}'
@@ -659,7 +659,7 @@ describe 'Render as Java' do
           '  actionwords.visit("/login");',
           '  actionwords.fill("user@example.com");',
           '  actionwords.fill("s3cret");',
-          '  actionwords.click(".login-form input[type=submit");',
+          '  actionwords.click(".login-form input[type=submit]");',
           '  actionwords.checkUrl("/welcome");',
           '}',
         ].join("\n")
@@ -681,7 +681,7 @@ describe 'Render as Java' do
          '    actionwords.visit("/login");',
          '    actionwords.fill("user@example.com");',
          '    actionwords.fill("s3cret");',
-         '    actionwords.click(".login-form input[type=submit");',
+         '    actionwords.click(".login-form input[type=submit]");',
          '    actionwords.checkUrl("/welcome");',
          '  }',
          '}',

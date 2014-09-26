@@ -300,7 +300,7 @@ describe 'Render as Ruby' do
        "    visit('/login')",
        "    fill('user@example.com')",
        "    fill('s3cret')",
-       "    click('.login-form input[type=submit')",
+       "    click('.login-form input[type=submit]')",
        "    check_url('/welcome')",
        "  end",
        "",
@@ -309,7 +309,7 @@ describe 'Render as Ruby' do
        "    visit('/login')",
        "    fill('user@example.com')",
        "    fill('notTh4tS3cret')",
-       "    click('.login-form input[type=submit')",
+       "    click('.login-form input[type=submit]')",
        "    check_url('/login')",
        "  end",
        "end"
@@ -323,7 +323,7 @@ describe 'Render as Ruby' do
         "  visit('/login')",
         "  fill('user@example.com')",
         "  fill('s3cret')",
-        "  click('.login-form input[type=submit')",
+        "  click('.login-form input[type=submit]')",
         "  check_url('/welcome')",
         "end"
       ].join("\n")
@@ -344,7 +344,7 @@ describe 'Render as Ruby' do
        "    visit('/login')",
        "    fill('user@example.com')",
        "    fill('s3cret')",
-       "    click('.login-form input[type=submit')",
+       "    click('.login-form input[type=submit]')",
        "    check_url('/welcome')",
        "  end",
        "end"
@@ -487,7 +487,7 @@ describe 'Render as Ruby' do
        "    visit('/login')",
        "    fill('user@example.com')",
        "    fill('s3cret')",
-       "    click('.login-form input[type=submit')",
+       "    click('.login-form input[type=submit]')",
        "    check_url('/welcome')",
        "  end",
        "",
@@ -496,7 +496,7 @@ describe 'Render as Ruby' do
        "    visit('/login')",
        "    fill('user@example.com')",
        "    fill('notTh4tS3cret')",
-       "    click('.login-form input[type=submit')",
+       "    click('.login-form input[type=submit]')",
        "    check_url('/login')",
        "  end",
        "end"
@@ -510,7 +510,7 @@ describe 'Render as Ruby' do
         "  visit('/login')",
         "  fill('user@example.com')",
         "  fill('s3cret')",
-        "  click('.login-form input[type=submit')",
+        "  click('.login-form input[type=submit]')",
         "  check_url('/welcome')",
         "end"
       ].join("\n")
@@ -531,7 +531,7 @@ describe 'Render as Ruby' do
        "    visit('/login')",
        "    fill('user@example.com')",
        "    fill('s3cret')",
-       "    click('.login-form input[type=submit')",
+       "    click('.login-form input[type=submit]')",
        "    check_url('/welcome')",
        "  end",
        "end"

@@ -368,7 +368,7 @@ describe 'Render as Python' do
       "        self.actionwords.visit(url = '/login')",
       "        self.actionwords.fill(login = 'user@example.com')",
       "        self.actionwords.fill(password = 's3cret')",
-      "        self.actionwords.click(path = '.login-form input[type=submit')",
+      "        self.actionwords.click(path = '.login-form input[type=submit]')",
       "        self.actionwords.check_url(path = '/welcome')",
       "",
       "    def test_Failed_login(self):",
@@ -376,7 +376,7 @@ describe 'Render as Python' do
       "        self.actionwords.visit(url = '/login')",
       "        self.actionwords.fill(login = 'user@example.com')",
       "        self.actionwords.fill(password = 'notTh4tS3cret')",
-      "        self.actionwords.click(path = '.login-form input[type=submit')",
+      "        self.actionwords.click(path = '.login-form input[type=submit]')",
       "        self.actionwords.check_url(path = '/login')",
       ""
     ].join("\n")
@@ -389,7 +389,7 @@ describe 'Render as Python' do
       "    self.actionwords.visit(url = '/login')",
       "    self.actionwords.fill(login = 'user@example.com')",
       "    self.actionwords.fill(password = 's3cret')",
-      "    self.actionwords.click(path = '.login-form input[type=submit')",
+      "    self.actionwords.click(path = '.login-form input[type=submit]')",
       "    self.actionwords.check_url(path = '/welcome')",
       ""
     ].join("\n")
@@ -410,7 +410,7 @@ describe 'Render as Python' do
       "        self.actionwords.visit(url = '/login')",
       "        self.actionwords.fill(login = 'user@example.com')",
       "        self.actionwords.fill(password = 's3cret')",
-      "        self.actionwords.click(path = '.login-form input[type=submit')",
+      "        self.actionwords.click(path = '.login-form input[type=submit]')",
       "        self.actionwords.check_url(path = '/welcome')",
       ""
     ].join("\n")
