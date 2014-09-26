@@ -327,6 +327,42 @@ describe 'Render as Robot framework' do
     # end
     @scenarios_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
 
+    @tests_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
+
+    @first_test_rendered = [
+      "",
+      "*** Test Cases ***",
+      "",
+      "login",
+      "\tvisit\t/login",
+      "\tfill\tuser@example.com",
+      "\tfill\ts3cret",
+      "\tclick\t.login-form input[type=submit",
+      "\tcheck_url\t/welcome",
+      ""
+    ].join("\n")
+
+    @first_test_rendered_for_single_file = [
+      "*** Settings ***",
+      "Documentation",
+      "...  The description is on ",
+      "...  two lines",
+      "...  Tags: myTag myTag:somevalue",
+      "",
+      "Resource          keywords.txt",
+      "",
+      "",
+      "*** Test Cases ***",
+      "",
+      "login",
+      "\tvisit\t/login",
+      "\tfill\tuser@example.com",
+      "\tfill\ts3cret",
+      "\tclick\t.login-form input[type=submit",
+      "\tcheck_url\t/welcome",
+      ""
+    ].join("\n")
+
     @context[:indentation] = "\t"
   end
 

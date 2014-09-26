@@ -209,7 +209,57 @@ shared_context "shared render" do
         Zest::Nodes::Call.new('aw with string param', [
           Zest::Nodes::Argument.new('x', Zest::Nodes::Template.new(Zest::Nodes::StringLiteral.new('toto')))])
       ])])
+
     @project = Zest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
+
+    @first_test = Zest::Nodes::Test.new(
+      'Login',
+      "The description is on \ntwo lines",
+      [@simple_tag, @valued_tag],
+      [
+        Zest::Nodes::Call.new('visit', [
+          Zest::Nodes::Argument.new('url', Zest::Nodes::StringLiteral.new('/login'))
+        ]),
+        Zest::Nodes::Call.new('fill', [
+          Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('user@example.com'))
+        ]),
+        Zest::Nodes::Call.new('fill', [
+          Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('s3cret'))
+        ]),
+        Zest::Nodes::Call.new('click', [
+          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit'))
+        ]),
+        Zest::Nodes::Call.new('checkUrl', [
+          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('/welcome')
+        )])
+      ])
+
+    @second_test = Zest::Nodes::Test.new(
+      'Failed login',
+      '',
+      [@valued_tag],
+      [
+        Zest::Nodes::Call.new('visit', [
+          Zest::Nodes::Argument.new('url', Zest::Nodes::StringLiteral.new('/login'))
+        ]),
+        Zest::Nodes::Call.new('fill', [
+          Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('user@example.com'))
+        ]),
+        Zest::Nodes::Call.new('fill', [
+          Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('notTh4tS3cret'))
+        ]),
+        Zest::Nodes::Call.new('click', [
+          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit'))
+        ]),
+        Zest::Nodes::Call.new('checkUrl', [
+          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('/login')
+        )])
+      ])
+
+    @tests = Zest::Nodes::Tests.new([@first_test, @second_test])
+    @first_test.parent = @tests
+    @second_test.parent = @tests
+    @tests.parent = Zest::Nodes::Project.new('My test project')
 
     @context = {framework: framework, forced_templates: {}}
   end
@@ -371,5 +421,24 @@ shared_examples "a renderer" do
   it 'Scenarios' do
     @context[:call_prefix] = 'actionwords'
     expect(@scenarios.render(language, @context)).to eq(@scenarios_rendered)
+  end
+
+  context 'Test' do
+    it 'can be rendered to be inserted in the scenarios list' do
+      @context[:call_prefix] = 'actionwords'
+      expect(@first_test.render(language, @context)).to eq(@first_test_rendered)
+    end
+
+    it 'can also be rendered so it will be in a single file' do
+      @context[:call_prefix] = 'actionwords'
+      @context[:forced_templates] = {'test' => 'single_test'}
+
+      expect(@first_test.render(language, @context)).to eq(@first_test_rendered_for_single_file)
+    end
+  end
+
+  it 'Tests' do
+    @context[:call_prefix] = 'actionwords'
+    expect(@tests.render(language, @context)).to eq(@tests_rendered)
   end
 end

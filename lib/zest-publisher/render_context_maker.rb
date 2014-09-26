@@ -33,6 +33,23 @@ module Zest
       }
     end
 
+    def walk_test(test)
+      {
+        :has_parameters? => false,
+        :has_tags? => !test.children[:tags].empty?,
+        :has_step? => !test.find_sub_nodes(Zest::Nodes::Step).empty?,
+        :is_empty? => test.children[:body].empty?,
+        :has_datasets? => false,
+        :project_name => test.parent.parent.children[:name],
+      }
+    end
+
+    def walk_tests(tests)
+      {
+        :project_name => tests.parent.children[:name]
+      }
+    end
+
     def walk_call(c)
       {
         :has_arguments? => !c.children[:arguments].empty?

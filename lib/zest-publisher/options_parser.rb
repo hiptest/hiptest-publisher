@@ -212,10 +212,7 @@ class LanguageConfigParser
 
     if @options.split_scenarios
       context[:forced_templates]['scenario'] = 'single_scenario'
-      context[:forced_templates]['test'] = 'single_scenario'
-    else
-      context[:forced_templates]['tests'] = 'scenarios'
-      context[:forced_templates]['test'] = 'scenario'
+      context[:forced_templates]['test'] = 'single_test'
     end
 
     context[:package] = @options.package unless @options.package.nil?

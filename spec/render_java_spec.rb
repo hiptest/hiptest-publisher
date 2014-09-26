@@ -398,6 +398,71 @@ describe 'Render as Java' do
         "    actionwords.myActionWord();",
         "  }",
         "}"].join("\n")
+
+      @tests_rendered = [
+        'package com.example;',
+        '',
+        'import junit.framework.TestCase;',
+        '',
+        'public class ProjectTest extends TestCase {',
+        '',
+        '  public Actionwords actionwords = new Actionwords();',
+        '  // The description is on ',
+        '  // two lines',
+        '  // Tags: myTag myTag:somevalue',
+        '  public void testLogin() {',
+        '    actionwords.visit("/login");',
+        '    actionwords.fill("user@example.com");',
+        '    actionwords.fill("s3cret");',
+        '    actionwords.click(".login-form input[type=submit");',
+        '    actionwords.checkUrl("/welcome");',
+        '  }',
+        '  // ',
+        '  // Tags: myTag:somevalue',
+        '  public void testFailedLogin() {',
+        '    actionwords.visit("/login");',
+        '    actionwords.fill("user@example.com");',
+        '    actionwords.fill("notTh4tS3cret");',
+        '    actionwords.click(".login-form input[type=submit");',
+        '    actionwords.checkUrl("/login");',
+        '  }',
+        '}'
+      ].join("\n")
+
+      @first_test_rendered = [
+        '// The description is on ',
+        '// two lines',
+        '// Tags: myTag myTag:somevalue',
+        'public void testLogin() {',
+        '  actionwords.visit("/login");',
+        '  actionwords.fill("user@example.com");',
+        '  actionwords.fill("s3cret");',
+        '  actionwords.click(".login-form input[type=submit");',
+        '  actionwords.checkUrl("/welcome");',
+        '}'
+      ].join("\n")
+
+      @first_test_rendered_for_single_file = [
+        'package com.example;',
+        '',
+        'import junit.framework.TestCase;',
+        '',
+        'public class MyScenarioTest extends TestCase {',
+        '',
+        '  public Actionwords actionwords = new Actionwords();',
+        '',
+        '  // The description is on ',
+        '  // two lines',
+        '  // Tags: myTag myTag:somevalue',
+        '  public void testLogin() {',
+        '    actionwords.visit("/login");',
+        '    actionwords.fill("user@example.com");',
+        '    actionwords.fill("s3cret");',
+        '    actionwords.click(".login-form input[type=submit");',
+        '    actionwords.checkUrl("/welcome");',
+        '  }',
+        '}'
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
@@ -547,6 +612,80 @@ describe 'Render as Java' do
         "    actionwords.myActionWord();",
         "  }",
         "}"].join("\n")
+
+        @tests_rendered = [
+          'package com.example;',
+          '',
+          'import org.testng.annotations.*;',
+          '',
+          'public class ProjectTest {',
+          '',
+          '  public Actionwords actionwords;',
+          '',
+          '  @BeforeMethod',
+          '  public void setUp() {',
+          '    actionwords = new Actionwords();',
+          '  }',
+          '  // The description is on ',
+          '  // two lines',
+          '  // Tags: myTag myTag:somevalue',
+          '  @Test',
+          '  public void login() {',
+          '    actionwords.visit("/login");',
+          '    actionwords.fill("user@example.com");',
+          '    actionwords.fill("s3cret");',
+          '    actionwords.click(".login-form input[type=submit");',
+          '    actionwords.checkUrl("/welcome");',
+          '  }',
+          '  // ',
+          '  // Tags: myTag:somevalue',
+          '  @Test',
+          '  public void failedLogin() {',
+          '    actionwords.visit("/login");',
+          '    actionwords.fill("user@example.com");',
+          '    actionwords.fill("notTh4tS3cret");',
+          '    actionwords.click(".login-form input[type=submit");',
+          '    actionwords.checkUrl("/login");',
+          '  }',
+          '}'
+        ].join("\n")
+
+        @first_test_rendered = [
+          '// The description is on ',
+          '// two lines',
+          '// Tags: myTag myTag:somevalue',
+          '@Test',
+          'public void login() {',
+          '  actionwords.visit("/login");',
+          '  actionwords.fill("user@example.com");',
+          '  actionwords.fill("s3cret");',
+          '  actionwords.click(".login-form input[type=submit");',
+          '  actionwords.checkUrl("/welcome");',
+          '}',
+        ].join("\n")
+
+        @first_test_rendered_for_single_file = [
+         'package com.example;',
+         '',
+         'import org.testng.annotations.*;',
+         '',
+         'public class MyScenarioTest {',
+         '',
+         '  public Actionwords actionwords = new Actionwords();',
+         '',
+         "  // The description is on ",
+         "  // two lines",
+         "  // Tags: myTag myTag:somevalue",
+         "  @Test",
+         "  public void login() {",
+         '    actionwords.visit("/login");',
+         '    actionwords.fill("user@example.com");',
+         '    actionwords.fill("s3cret");',
+         '    actionwords.click(".login-form input[type=submit");',
+         '    actionwords.checkUrl("/welcome");',
+         '  }',
+         '}',
+        ].join("\n")
     end
 
     it_behaves_like "a renderer" do

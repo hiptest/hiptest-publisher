@@ -284,6 +284,71 @@ describe 'Render as Ruby' do
         "    my_action_word",
         "  end",
         "end"].join("\n")
+
+      @tests_rendered = [
+       "# encoding: UTF-8",
+       "require 'spec_helper'",
+       "require_relative 'actionwords'",
+       "",
+       "describe 'MyTestProject' do",
+       "  include Actionwords",
+       "",
+       "  it \"Login\" do",
+       "    # The description is on ",
+       "    # two lines",
+       "    # Tags: myTag myTag:somevalue",
+       "    visit('/login')",
+       "    fill('user@example.com')",
+       "    fill('s3cret')",
+       "    click('.login-form input[type=submit')",
+       "    check_url('/welcome')",
+       "  end",
+       "",
+       "  it \"Failed login\" do",
+       "    # Tags: myTag:somevalue",
+       "    visit('/login')",
+       "    fill('user@example.com')",
+       "    fill('notTh4tS3cret')",
+       "    click('.login-form input[type=submit')",
+       "    check_url('/login')",
+       "  end",
+       "end"
+      ].join("\n")
+
+      @first_test_rendered = [
+        "it \"Login\" do",
+        "  # The description is on ",
+        "  # two lines",
+        "  # Tags: myTag myTag:somevalue",
+        "  visit('/login')",
+        "  fill('user@example.com')",
+        "  fill('s3cret')",
+        "  click('.login-form input[type=submit')",
+        "  check_url('/welcome')",
+        "end"
+      ].join("\n")
+
+      @first_test_rendered_for_single_file = [
+       "# encoding: UTF-8",
+       "require 'spec_helper'",
+       "require_relative 'actionwords'",
+       "",
+       "describe 'MyTestProject' do",
+       "  include Actionwords",
+       "",
+       "",
+       "  it \"Login\" do",
+       "    # The description is on ",
+       "    # two lines",
+       "    # Tags: myTag myTag:somevalue",
+       "    visit('/login')",
+       "    fill('user@example.com')",
+       "    fill('s3cret')",
+       "    click('.login-form input[type=submit')",
+       "    check_url('/welcome')",
+       "  end",
+       "end"
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
@@ -405,6 +470,72 @@ describe 'Render as Ruby' do
         "    my_action_word",
         "  end",
         "end"].join("\n")
+
+      @tests_rendered = [
+       "# encoding: UTF-8",
+       "",
+       "require 'minitest/autorun'",
+       "require_relative 'actionwords'",
+       "",
+       "class TestMyTestProject < MiniTest::Unit::TestCase",
+       "  include Actionwords",
+       "",
+       "  def test_Login",
+       "    # The description is on ",
+       "    # two lines",
+       "    # Tags: myTag myTag:somevalue",
+       "    visit('/login')",
+       "    fill('user@example.com')",
+       "    fill('s3cret')",
+       "    click('.login-form input[type=submit')",
+       "    check_url('/welcome')",
+       "  end",
+       "",
+       "  def test_Failed_login",
+       "    # Tags: myTag:somevalue",
+       "    visit('/login')",
+       "    fill('user@example.com')",
+       "    fill('notTh4tS3cret')",
+       "    click('.login-form input[type=submit')",
+       "    check_url('/login')",
+       "  end",
+       "end"
+      ].join("\n")
+
+      @first_test_rendered = [
+        "def test_Login",
+        "  # The description is on ",
+        "  # two lines",
+        "  # Tags: myTag myTag:somevalue",
+        "  visit('/login')",
+        "  fill('user@example.com')",
+        "  fill('s3cret')",
+        "  click('.login-form input[type=submit')",
+        "  check_url('/welcome')",
+        "end"
+      ].join("\n")
+
+      @first_test_rendered_for_single_file = [
+       "# encoding: UTF-8",
+       "",
+       "require 'minitest/autorun'",
+       "require_relative 'actionwords'",
+       "",
+       "class TestMyTestProject < MiniTest::Unit::TestCase",
+       "  include Actionwords",
+       "",
+       "  def test_Login",
+       "    # The description is on ",
+       "    # two lines",
+       "    # Tags: myTag myTag:somevalue",
+       "    visit('/login')",
+       "    fill('user@example.com')",
+       "    fill('s3cret')",
+       "    click('.login-form input[type=submit')",
+       "    check_url('/welcome')",
+       "  end",
+       "end"
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do

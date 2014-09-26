@@ -1,0 +1,11 @@
+*** Settings ***
+Documentation
+{{#comment '... '}}{{#clear_empty_lines}}
+{{{ rendered_children.description}}}
+{{#if has_tags?}}
+Tags: {{{ join rendered_children.tags ' '}}}
+{{/if}}{{/clear_empty_lines}}{{/comment}}
+
+Resource          keywords.txt
+
+{{> scenario}}

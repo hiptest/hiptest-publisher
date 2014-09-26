@@ -1,0 +1,12 @@
+# encoding: UTF-8
+require 'spec_helper'
+require_relative 'actionwords'
+
+describe '{{{ camelize project_name }}}' do
+  include Actionwords
+{{#indent}}
+{{#each rendered_children.tests}}{{{this}}}
+
+{{/each}}
+{{/indent}}
+end

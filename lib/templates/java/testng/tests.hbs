@@ -1,0 +1,16 @@
+package {{{ context.package }}};
+
+import org.testng.annotations.*;
+
+public class {{{ clear_extension context.filename }}} {
+
+{{#indent}}public Actionwords {{{ context.call_prefix }}};
+
+@BeforeMethod
+public void setUp() {
+{{#indent}}{{{ context.call_prefix }}} = new Actionwords();{{/indent}}
+}{{/indent}}
+{{#indent}}{{#each rendered_children.tests}}{{{this}}}
+{{/each}}
+{{/indent}}
+}
