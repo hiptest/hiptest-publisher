@@ -1,11 +1,20 @@
 require_relative 'spec_helper'
 require_relative '../lib/zest-publisher/nodes'
+require_relative '../lib/zest-publisher/call_arguments_adder'
 
 describe 'Selenium IDE rendering' do
   # Note: we do not want to test everything as we'll only render
   # tests and calls.
 
   before(:each) do
+    project = Zest::Nodes::Project.new('My test project')
+    ['open', 'type', 'click', 'verifyTextPresent'].each do |name|
+      project.children[:actionwords].children[:actionwords] << Zest::Nodes::Actionword.new(name, [], [
+        Zest::Nodes::Parameter.new('target', Zest::Nodes::StringLiteral.new('')),
+        Zest::Nodes::Parameter.new('value', Zest::Nodes::StringLiteral.new(''))
+      ])
+    end
+
     @first_test = Zest::Nodes::Test.new(
       'Login',
       '',
@@ -26,14 +35,17 @@ describe 'Selenium IDE rendering' do
           Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('css=.login-form input[type=submit]'))
         ]),
         Zest::Nodes::Call.new('verifyTextPresent', [
-          Zest::Nodes::Argument.new('value', Zest::Nodes::StringLiteral.new('Welcome user !'))
+          Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('Welcome user !'))
         ])
       ])
 
 
-    @tests = Zest::Nodes::Tests.new([@first_test])
+    @tests = project.children[:tests]
+    @tests.children[:tests] << @first_test
     @first_test.parent = @tests
-    @tests.parent = Zest::Nodes::Project.new('My test project')
+    @tests.parent = project
+
+    Zest::DefaultArgumentAdder.add(project)
 
     @context = {framework: '', forced_templates: {}}
   end
