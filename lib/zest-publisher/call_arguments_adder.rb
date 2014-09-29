@@ -14,8 +14,9 @@ module Zest
     def update_calls
       @project.find_sub_nodes(Zest::Nodes::Call).each do |call|
         aw_data = @indexer.get_index(call.children[:actionword])
-        arguments = {}
+        next if aw_data.nil?
 
+        arguments = {}
         call.children[:arguments].each do |arg|
           arguments[arg.children[:name]] = arg.children[:value]
         end

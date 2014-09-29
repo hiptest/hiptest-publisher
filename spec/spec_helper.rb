@@ -25,7 +25,7 @@ module HelperFactories
     Zest::Nodes::Argument.new(name, value)
   end
 
-  def make_call(actionword, arguments)
+  def make_call(actionword, arguments= [])
     Zest::Nodes::Call.new(actionword, arguments)
   end
 
