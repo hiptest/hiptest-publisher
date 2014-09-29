@@ -58,7 +58,7 @@ describe Zest::DefaultArgumentAdder do
     }
   end
 
-  it 'adds a "all_arguments" children to Call nodes where missing arguments are set with the default value' do
+  it 'adds a :all_arguments children to Call nodes where missing arguments are set with the default value' do
     expect(call_with_no_parameter_set.children.has_key?(:all_arguments)).to be true
 
     expect(get_all_arguments_for_call(call_with_no_parameter_set)).to eq([
@@ -67,16 +67,20 @@ describe Zest::DefaultArgumentAdder do
     ])
   end
 
-  it 'when all value are set in a call, then all_arguments contains the set values' do
-    # Note that the arguments are in the same order than in the definition
+  it 'when all value are set in a call, then :all_arguments contains the set values' do
     expect(get_all_arguments_for_call(call_with_all_parameters_set)).to eq([
       [Zest::Nodes::Argument, 'x', '3.14'],
       [Zest::Nodes::Argument, 'y', 'And another value here']
     ])
   end
 
+  it 'the :all_arguments child are sorted in the same order than in the actionword definition' do
+    expect(call_with_all_parameters_set.children[:arguments].map {|a| a.children[:name]}).to eq(
+      ['y', 'x'])
+    expect(call_with_all_parameters_set.children[:all_arguments].map {|a| a.children[:name]}).to eq(['x', 'y'])
+  end
+
   it 'if the value is not set nor the default one, then we get nil as value' do
-    # Note, it may fail during code generation but Zest should tell the suer there's a problem in the scenario definition.
     arg = call_with_no_parameters_even_if_needed.children[:all_arguments].first
     expect(arg.children[:name]).to eq('x')
     expect(arg.children[:value]).to eq(nil)
