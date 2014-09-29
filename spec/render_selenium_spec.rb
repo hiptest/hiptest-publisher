@@ -3,50 +3,48 @@ require_relative '../lib/zest-publisher/nodes'
 require_relative '../lib/zest-publisher/call_arguments_adder'
 
 describe 'Selenium IDE rendering' do
+  include HelperFactories
+
   # Note: we do not want to test everything as we'll only render
   # tests and calls.
 
-  before(:each) do
-    project = Zest::Nodes::Project.new('My test project')
-    ['open', 'type', 'click', 'verifyTextPresent'].each do |name|
-      project.children[:actionwords].children[:actionwords] << Zest::Nodes::Actionword.new(name, [], [
-        Zest::Nodes::Parameter.new('target', Zest::Nodes::StringLiteral.new('')),
-        Zest::Nodes::Parameter.new('value', Zest::Nodes::StringLiteral.new(''))
+  let(:actionwords) {
+    ['open', 'type', 'click', 'verifyTextPresent'].map do |name|
+      make_actionword(name, [], [
+        make_parameter('target', make_literal(:string, '')),
+        make_parameter('value', make_literal(:string, ''))
       ])
     end
+  }
 
-    @first_test = Zest::Nodes::Test.new(
-      'Login',
-      '',
-      [],
-      [
-        Zest::Nodes::Call.new('open', [
-          Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('/login'))
-        ]),
-        Zest::Nodes::Call.new('type', [
-          Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('id=login')),
-          Zest::Nodes::Argument.new('value', Zest::Nodes::StringLiteral.new('user@example.com'))
-        ]),
-        Zest::Nodes::Call.new('type', [
-          Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('id=password')),
-          Zest::Nodes::Argument.new('value', Zest::Nodes::StringLiteral.new('s3cret'))
-        ]),
-        Zest::Nodes::Call.new('click', [
-          Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('css=.login-form input[type=submit]'))
-        ]),
-        Zest::Nodes::Call.new('verifyTextPresent', [
-          Zest::Nodes::Argument.new('target', Zest::Nodes::StringLiteral.new('Welcome user !'))
-        ])
+  let(:login_test) {
+    make_test('Login', [], [
+      make_call('open', [
+        make_argument('target', make_literal(:string, '/login'))
+      ]),
+      make_call('type', [
+        make_argument('target', make_literal(:string, 'id=login')),
+        make_argument('value', make_literal(:string, 'user@example.com'))
+      ]),
+      make_call('type', [
+        make_argument('target', make_literal(:string, 'id=password')),
+        make_argument('value', make_literal(:string, 's3cret'))
+      ]),
+      make_call('click', [
+        make_argument('target', make_literal(:string, 'css=.login-form input[type=submit]'))
+      ]),
+      make_call('verifyTextPresent', [
+        make_argument('target', make_literal(:string, 'Welcome user !'))
       ])
+    ])
+  }
 
+  let(:project) {
+    make_project('My test project', [], [login_test], actionwords)
+  }
 
-    @tests = project.children[:tests]
-    @tests.children[:tests] << @first_test
-    @first_test.parent = @tests
-    @tests.parent = project
-
+  before(:each) do
     Zest::DefaultArgumentAdder.add(project)
-
     @context = {framework: '', forced_templates: {}}
   end
 
@@ -54,7 +52,7 @@ describe 'Selenium IDE rendering' do
     it 'generates an html file' do
       @context[:forced_templates] = {'test' => 'single_test'}
 
-      expect(@first_test.render('selenium', @context)).to eq([
+      expect(login_test.render('selenium', @context)).to eq([
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
         '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">',
@@ -106,7 +104,7 @@ describe 'Selenium IDE rendering' do
 
   context 'Tests' do
     it 'generates a summary' do
-      expect(@tests.render('selenium', @context)).to eq([
+      expect(project.children[:tests].render('selenium', @context)).to eq([
         '<html>',
         '  <head>',
         '    <title>My test project</title>',

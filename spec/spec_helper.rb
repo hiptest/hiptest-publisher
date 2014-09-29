@@ -42,7 +42,7 @@ module HelperFactories
   end
 
   def make_test(name, tags, body)
-    Zest::Nodes::Test.new(name, tags, body)
+    Zest::Nodes::Test.new(name, '', tags, body)
   end
 
   def make_project(name, scenarios, tests, actionwords)
