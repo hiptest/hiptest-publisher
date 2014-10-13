@@ -47,6 +47,28 @@ For more information on the available options, use the following command:
 zest-publisher --help
 ```
 
+You could obtain for example:
+
+```shell
+Specific options:
+    -t, --token=TOKEN                Secret token (available in your project settings)
+    -l, --language=LANG              Target language (default: ruby)
+    -f, --framework=FRAMEWORK        Test framework to use
+    -o, --output-directory=PATH      Output directory (default: .)
+    -c, --config-file=PATH           Configuration file (default: config)
+        --scenario-ids=IDS           Filter scenarios by ids
+        --scenario-tags=TAGS         Filter scenarios by tags
+        --tests-only                 Export only the tests (default: false)
+        --actionwords-only           Export only the actionwords (default: false)
+        --split-scenarios            Export each scenario in a single file (default: false)
+        --leafless-export            Use only last level action word (default: false)
+    -s, --site=SITE                  Site to fetch from (default: https://www.zest-testing.com)
+    -v, --verbose                    Run verbosely (default: false)
+    -H, --languages-help             Show languages and framework options
+    -F, --filters-help               Show help about scenario filtering
+    -h, --help                       Show this message
+```
+
 Configuration
 -------------
 
