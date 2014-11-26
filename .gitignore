@@ -22,3 +22,6 @@ config
 /*.sublime-workspace
 /.jshintrc
 /.idea
+
+# Ignore gem
+/*.gem
