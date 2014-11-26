@@ -1,11 +1,11 @@
 Hiptest Publisher
 ==============
 
-[![Build Status](https://travis-ci.org/Smartesting/zest-publisher.svg?branch=master)](https://travis-ci.org/Smartesting/zest-publisher)
-[![Gem version](https://badge.fury.io/rb/zest-publisher.svg)](http://badge.fury.io/rb/zest-publisher)
+[![Build Status](https://travis-ci.org/hiptest/hiptest-publisher.svg?branch=master)](https://travis-ci.org/hiptest/hiptest-publisher)
+[![Gem Version](https://badge.fury.io/rb/hiptest-publisher.svg)](http://badge.fury.io/rb/hiptest-publisher)
 [![Code Climate](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/gpa.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
 [![Test Coverage](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/coverage.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
-[![Dependencies](https://gemnasium.com/Smartesting/zest-publisher.svg)](https://gemnasium.com/Smartesting/zest-publisher)
+[![Dependency Status](https://gemnasium.com/hiptest/hiptest-publisher.svg)](https://gemnasium.com/hiptest/hiptest-publisher)
 
 
 Installing
