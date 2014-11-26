@@ -81,7 +81,7 @@ class OptionsParser
       Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
-      Option.new('s', 'site=SITE', 'https://www.hiptest-testing.com', String, "Site to fetch from", :site),
+      Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
