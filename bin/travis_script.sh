@@ -1,4 +1,4 @@
 gem install hiptest-publisher
 hiptest-publisher --help
 
-CODECLIMATE_REPO_TOKEN=5b745097284243406b1098963edd75e7c4cf7e1dcb3941223ec181f7b3581598 bundle exec rspec spec
+CODECLIMATE_REPO_TOKEN=4c579687b0754f976610c89a4ef11c1c95c10b0ee378597d6ddd646fab8af06c bundle exec rspec spec

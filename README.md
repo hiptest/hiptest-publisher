@@ -3,8 +3,8 @@ Hiptest Publisher
 
 [![Build Status](https://travis-ci.org/Smartesting/zest-publisher.svg?branch=master)](https://travis-ci.org/Smartesting/zest-publisher)
 [![Gem version](https://badge.fury.io/rb/zest-publisher.svg)](http://badge.fury.io/rb/zest-publisher)
-[![Code climate](https://codeclimate.com/github/Smartesting/zest-publisher.png)](https://codeclimate.com/github/Smartesting/zest-publisher)
-[![Coverage](https://codeclimate.com/github/Smartesting/zest-publisher/coverage.png)](https://codeclimate.com/github/Smartesting/zest-publisher)
+[![Code Climate](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/gpa.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
+[![Test Coverage](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/coverage.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
 [![Dependencies](https://gemnasium.com/Smartesting/zest-publisher.svg)](https://gemnasium.com/Smartesting/zest-publisher)
 
 
