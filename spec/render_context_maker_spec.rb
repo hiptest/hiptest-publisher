@@ -1,12 +1,12 @@
 require_relative 'spec_helper'
-require_relative '../lib/zest-publisher/nodes'
-require_relative '../lib/zest-publisher/render_context_maker'
+require_relative '../lib/hiptest-publisher/nodes'
+require_relative '../lib/hiptest-publisher/render_context_maker'
 
-describe Zest::RenderContextMaker do
-  subject { Object.new.extend(Zest::RenderContextMaker) }
+describe Hiptest::RenderContextMaker do
+  subject { Object.new.extend(Hiptest::RenderContextMaker) }
 
   context 'walk_item' do
-    let(:node) {Zest::Nodes::Scenario.new('My scenario')}
+    let(:node) {Hiptest::Nodes::Scenario.new('My scenario')}
 
     it 'provides information about the item content' do
       expect(subject.walk_item(node).keys).to eq([
@@ -35,15 +35,15 @@ describe Zest::RenderContextMaker do
       it 'is true when there is steps in the body' do
         expect(subject.walk_item(node)[:has_step?]).to be false
 
-        node.children[:body] << Zest::Nodes::Step.new('action', 'Do something')
+        node.children[:body] << Hiptest::Nodes::Step.new('action', 'Do something')
         expect(subject.walk_item(node)[:has_step?]).to be true
       end
 
       it 'works even if the step is inside another statement' do
-        node.children[:body] << Zest::Nodes::While.new('true', [])
+        node.children[:body] << Hiptest::Nodes::While.new('true', [])
         expect(subject.walk_item(node)[:has_step?]).to be false
 
-        node.children[:body].first.children[:body] << Zest::Nodes::Step.new('action', 'Do something')
+        node.children[:body].first.children[:body] << Hiptest::Nodes::Step.new('action', 'Do something')
         expect(subject.walk_item(node)[:has_step?]).to be true
       end
     end
@@ -58,9 +58,9 @@ describe Zest::RenderContextMaker do
 
   context 'walk_scenario' do
     let(:node) {
-      sc = Zest::Nodes::Scenario.new('My scenario')
-      sc.parent = Zest::Nodes::Scenarios.new([])
-      sc.parent.parent = Zest::Nodes::Project.new('A project')
+      sc = Hiptest::Nodes::Scenario.new('My scenario')
+      sc.parent = Hiptest::Nodes::Scenarios.new([])
+      sc.parent.parent = Hiptest::Nodes::Project.new('A project')
       sc
     }
 
@@ -77,7 +77,7 @@ describe Zest::RenderContextMaker do
       expect(subject.walk_scenario(node)[:project_name]).to eq('A project')
       expect(subject.walk_scenario(node)[:has_datasets?]).to be false
 
-      node.children[:datatable] = Zest::Nodes::Datatable.new()
+      node.children[:datatable] = Hiptest::Nodes::Datatable.new()
       expect(subject.walk_scenario(node)[:has_datasets?]).to be false
 
       node.children[:datatable].children[:datasets] << 'Anything'
@@ -87,8 +87,8 @@ describe Zest::RenderContextMaker do
 
   context 'walk_scenarios' do
     let(:node) {
-      scs = Zest::Nodes::Scenarios.new([])
-      scs.parent = Zest::Nodes::Project.new('Another project')
+      scs = Hiptest::Nodes::Scenarios.new([])
+      scs.parent = Hiptest::Nodes::Project.new('Another project')
       scs
     }
 
@@ -99,7 +99,7 @@ describe Zest::RenderContextMaker do
 
   context 'walk_call' do
     it 'tells if there is arguments' do
-      node = Zest::Nodes::Call.new('my_action_word')
+      node = Hiptest::Nodes::Call.new('my_action_word')
 
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => false
@@ -114,7 +114,7 @@ describe Zest::RenderContextMaker do
 
   context 'walk_ifthen' do
     it 'tells if there is stements in the else part' do
-      node = Zest::Nodes::IfThen.new(nil, nil)
+      node = Hiptest::Nodes::IfThen.new(nil, nil)
 
       expect(subject.walk_ifthen(node)).to eq({
         :has_else? => false
@@ -129,7 +129,7 @@ describe Zest::RenderContextMaker do
 
   context 'walk_parameter' do
     it 'tells if the parameter has a default value' do
-      node = Zest::Nodes::Parameter.new('My parameter')
+      node = Hiptest::Nodes::Parameter.new('My parameter')
 
       expect(subject.walk_parameter(node)).to eq({
         :has_default_value? => false
@@ -144,7 +144,7 @@ describe Zest::RenderContextMaker do
 
   context 'walk_tag' do
     it 'tells if the tag has a value' do
-      node = Zest::Nodes::Tag.new('mytag')
+      node = Hiptest::Nodes::Tag.new('mytag')
 
       expect(subject.walk_tag(node)).to eq({
         :has_value? => false
@@ -158,13 +158,13 @@ describe Zest::RenderContextMaker do
   end
 
   context 'walk_template' do
-    let (:node) {Zest::Nodes::Template.new([])}
+    let (:node) {Hiptest::Nodes::Template.new([])}
     let (:node_with_variables) {
-      Zest::Nodes::Template.new([
-        Zest::Nodes::StringLiteral.new('The value of '),
-        Zest::Nodes::Variable.new('x'),
-        Zest::Nodes::StringLiteral.new('should equal the one of '),
-        Zest::Nodes::Variable.new('y')
+      Hiptest::Nodes::Template.new([
+        Hiptest::Nodes::StringLiteral.new('The value of '),
+        Hiptest::Nodes::Variable.new('x'),
+        Hiptest::Nodes::StringLiteral.new('should equal the one of '),
+        Hiptest::Nodes::Variable.new('y')
       ])
     }
 

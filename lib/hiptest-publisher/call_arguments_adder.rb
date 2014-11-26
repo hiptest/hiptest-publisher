@@ -1,6 +1,6 @@
-require 'zest-publisher/nodes'
+require 'hiptest-publisher/nodes'
 
-module Zest
+module Hiptest
   class DefaultArgumentAdder
     def self.add(project)
       DefaultArgumentAdder.new(project).update_calls
@@ -12,7 +12,7 @@ module Zest
     end
 
     def update_calls
-      @project.find_sub_nodes(Zest::Nodes::Call).each do |call|
+      @project.find_sub_nodes(Hiptest::Nodes::Call).each do |call|
         aw_data = @indexer.get_index(call.children[:actionword])
         next if aw_data.nil?
 
@@ -22,7 +22,7 @@ module Zest
         end
 
         call.children[:all_arguments] = aw_data[:parameters].map do |p_name, default_value|
-          Zest::Nodes::Argument.new(
+          Hiptest::Nodes::Argument.new(
             p_name,
             arguments.has_key?(p_name) ? arguments[p_name] : default_value
           )
@@ -39,7 +39,7 @@ module Zest
     end
 
     def index_actionwords
-      @project.find_sub_nodes(Zest::Nodes::Actionword).each do |aw|
+      @project.find_sub_nodes(Hiptest::Nodes::Actionword).each do |aw|
         aw_name = aw.children[:name]
         indexed_parameters = {}
 

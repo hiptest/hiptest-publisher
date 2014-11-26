@@ -35,11 +35,11 @@ describe 'Render as Ruby' do
     # Statements
     @assign_fighters_to_foo_rendered = "foo = 'fighters'"
     @call_foo_rendered = "foo"
-    # In Zest: call 'foo bar'
+    # In Hiptest: call 'foo bar'
     @call_foo_bar_rendered = "foo_bar"
 
     @call_foo_with_fighters_rendered = "foo('fighters')"
-    # In Zest: call 'foo bar'('fighters')
+    # In Hiptest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "foo_bar('fighters')"
 
     @action_foo_fighters_rendered = '# TODO: Implement action: "#{foo}fighters"'
@@ -124,7 +124,7 @@ describe 'Render as Ruby' do
       "  end",
       "end"].join("\n")
 
-    # In Zest, correspond to these action words with parameters:
+    # In Hiptest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end

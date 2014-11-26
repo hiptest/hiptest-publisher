@@ -1,7 +1,7 @@
-module Zest
+module Hiptest
   class HandlebarsHelper
     def self.register_helpers(handlebars, context)
-      instance = Zest::HandlebarsHelper.new(handlebars, context)
+      instance = Hiptest::HandlebarsHelper.new(handlebars, context)
       instance.register_string_helpers
       instance.register_custom_helpers
     end

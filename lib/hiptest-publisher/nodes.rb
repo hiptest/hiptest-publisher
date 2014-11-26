@@ -1,15 +1,15 @@
-require 'zest-publisher/string'
-require 'zest-publisher/utils'
-require 'zest-publisher/renderer'
+require 'hiptest-publisher/string'
+require 'hiptest-publisher/utils'
+require 'hiptest-publisher/renderer'
 
-module Zest
+module Hiptest
   module Nodes
     class Node
       attr_reader :children, :parent
       attr_writer :parent
 
       def render(language = 'ruby', context = {})
-        return Zest::Renderer.render(self, language, context)
+        return Hiptest::Renderer.render(self, language, context)
       end
 
       def find_sub_nodes(types = [])
@@ -29,10 +29,10 @@ module Zest
         direct = []
 
         children.each do |key, child|
-          if child.is_a? Zest::Nodes::Node
+          if child.is_a? Hiptest::Nodes::Node
             direct << child
           elsif child.is_a? Array
-            child.each {|c| direct << c if c.is_a? Zest::Nodes::Node }
+            child.each {|c| direct << c if c.is_a? Hiptest::Nodes::Node }
           end
         end
 

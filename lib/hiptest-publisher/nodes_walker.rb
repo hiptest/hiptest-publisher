@@ -1,4 +1,4 @@
-module Zest
+module Hiptest
   module Nodes
     class Walker
       def initialize(order = :parent_first)
@@ -12,12 +12,12 @@ module Zest
       private
 
       def walk_children(node)
-        return unless node.is_a? Zest::Nodes::Node
+        return unless node.is_a? Hiptest::Nodes::Node
         node.children.values.each {|child| walk_node(child)}
       end
 
       def call_node_walker(node)
-        return unless node.is_a? Zest::Nodes::Node
+        return unless node.is_a? Hiptest::Nodes::Node
 
         node_class = node.class.name.split('::').last.downcase
         walk_method_name = "walk_#{node_class}".to_sym

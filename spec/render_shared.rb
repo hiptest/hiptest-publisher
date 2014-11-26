@@ -1,265 +1,265 @@
 require_relative 'spec_helper'
-require_relative '../lib/zest-publisher/parameter_type_adder'
-require_relative '../lib/zest-publisher/nodes'
+require_relative '../lib/hiptest-publisher/parameter_type_adder'
+require_relative '../lib/hiptest-publisher/nodes'
 
 shared_context "shared render" do
   before(:each) do
-    @null = Zest::Nodes::NullLiteral.new
-    @what_is_your_quest = Zest::Nodes::StringLiteral.new("What is your quest ?")
-    @fighters = Zest::Nodes::StringLiteral.new('fighters')
-    @pi = Zest::Nodes::NumericLiteral.new('3.14')
-    @false = Zest::Nodes::BooleanLiteral.new(false)
-    @true = Zest::Nodes::BooleanLiteral.new(true)
-    @foo_variable = Zest::Nodes::Variable.new('foo')
-    @foo_bar_variable = Zest::Nodes::Variable.new('foo bar')
-    @x_variable = Zest::Nodes::Variable.new('x')
+    @null = Hiptest::Nodes::NullLiteral.new
+    @what_is_your_quest = Hiptest::Nodes::StringLiteral.new("What is your quest ?")
+    @fighters = Hiptest::Nodes::StringLiteral.new('fighters')
+    @pi = Hiptest::Nodes::NumericLiteral.new('3.14')
+    @false = Hiptest::Nodes::BooleanLiteral.new(false)
+    @true = Hiptest::Nodes::BooleanLiteral.new(true)
+    @foo_variable = Hiptest::Nodes::Variable.new('foo')
+    @foo_bar_variable = Hiptest::Nodes::Variable.new('foo bar')
+    @x_variable = Hiptest::Nodes::Variable.new('x')
 
-    @foo_fighters_prop = Zest::Nodes::Property.new(@foo_variable, @fighters)
-    @foo_dot_fighters = Zest::Nodes::Field.new(@foo_variable, 'fighters')
-    @foo_brackets_fighters = Zest::Nodes::Index.new(@foo_variable, @fighters)
-    @foo_minus_fighters = Zest::Nodes::BinaryExpression.new(@foo_variable, '-', @fighters)
-    @minus_foo = Zest::Nodes::UnaryExpression.new('-', @foo_variable)
-    @parenthesis_foo = Zest::Nodes::Parenthesis.new(@foo_variable)
+    @foo_fighters_prop = Hiptest::Nodes::Property.new(@foo_variable, @fighters)
+    @foo_dot_fighters = Hiptest::Nodes::Field.new(@foo_variable, 'fighters')
+    @foo_brackets_fighters = Hiptest::Nodes::Index.new(@foo_variable, @fighters)
+    @foo_minus_fighters = Hiptest::Nodes::BinaryExpression.new(@foo_variable, '-', @fighters)
+    @minus_foo = Hiptest::Nodes::UnaryExpression.new('-', @foo_variable)
+    @parenthesis_foo = Hiptest::Nodes::Parenthesis.new(@foo_variable)
 
-    @foo_list = Zest::Nodes::List.new([@foo_variable, @fighters])
-    @foo_dict =  Zest::Nodes::Dict.new([@foo_fighters_prop,
-      Zest::Nodes::Property.new('Alt', 'J')
+    @foo_list = Hiptest::Nodes::List.new([@foo_variable, @fighters])
+    @foo_dict =  Hiptest::Nodes::Dict.new([@foo_fighters_prop,
+      Hiptest::Nodes::Property.new('Alt', 'J')
     ])
 
-    @simple_template = Zest::Nodes::Template.new([
-      Zest::Nodes::StringLiteral.new('A simple template')
+    @simple_template = Hiptest::Nodes::Template.new([
+      Hiptest::Nodes::StringLiteral.new('A simple template')
     ])
 
-    @foo_template = Zest::Nodes::Template.new([@foo_variable, @fighters])
-    @double_quotes_template = Zest::Nodes::Template.new([
-      Zest::Nodes::StringLiteral.new('Fighters said "Foo !"')
+    @foo_template = Hiptest::Nodes::Template.new([@foo_variable, @fighters])
+    @double_quotes_template = Hiptest::Nodes::Template.new([
+      Hiptest::Nodes::StringLiteral.new('Fighters said "Foo !"')
     ])
 
-    @assign_fighters_to_foo = Zest::Nodes::Assign.new(@foo_variable, @fighters)
-    @assign_foo_to_fighters = Zest::Nodes::Assign.new(
-      Zest::Nodes::Variable.new('fighters'),
-      Zest::Nodes::StringLiteral.new('foo'))
-    @call_foo = Zest::Nodes::Call.new('foo')
-    @call_foo_bar = Zest::Nodes::Call.new('foo bar')
-    @argument = Zest::Nodes::Argument.new('x', @fighters)
-    @call_foo_with_fighters = Zest::Nodes::Call.new('foo', [@argument])
-    @call_foo_bar_with_fighters = Zest::Nodes::Call.new('foo bar', [@argument])
+    @assign_fighters_to_foo = Hiptest::Nodes::Assign.new(@foo_variable, @fighters)
+    @assign_foo_to_fighters = Hiptest::Nodes::Assign.new(
+      Hiptest::Nodes::Variable.new('fighters'),
+      Hiptest::Nodes::StringLiteral.new('foo'))
+    @call_foo = Hiptest::Nodes::Call.new('foo')
+    @call_foo_bar = Hiptest::Nodes::Call.new('foo bar')
+    @argument = Hiptest::Nodes::Argument.new('x', @fighters)
+    @call_foo_with_fighters = Hiptest::Nodes::Call.new('foo', [@argument])
+    @call_foo_bar_with_fighters = Hiptest::Nodes::Call.new('foo bar', [@argument])
 
-    @simple_tag = Zest::Nodes::Tag.new('myTag')
-    @valued_tag = Zest::Nodes::Tag.new('myTag', 'somevalue')
+    @simple_tag = Hiptest::Nodes::Tag.new('myTag')
+    @valued_tag = Hiptest::Nodes::Tag.new('myTag', 'somevalue')
 
-    @plic_param = Zest::Nodes::Parameter.new('plic')
-    @x_param = Zest::Nodes::Parameter.new('x')
-    @plic_param_default_ploc = Zest::Nodes::Parameter.new(
+    @plic_param = Hiptest::Nodes::Parameter.new('plic')
+    @x_param = Hiptest::Nodes::Parameter.new('x')
+    @plic_param_default_ploc = Hiptest::Nodes::Parameter.new(
       'plic',
-      Zest::Nodes::StringLiteral.new('ploc'))
-    @flip_param_default_flap = Zest::Nodes::Parameter.new(
+      Hiptest::Nodes::StringLiteral.new('ploc'))
+    @flip_param_default_flap = Hiptest::Nodes::Parameter.new(
       'flip',
-      Zest::Nodes::StringLiteral.new('flap'))
+      Hiptest::Nodes::StringLiteral.new('flap'))
 
-    @action_foo_fighters = Zest::Nodes::Step.new('action', @foo_template)
+    @action_foo_fighters = Hiptest::Nodes::Step.new('action', @foo_template)
 
-    @if_then = Zest::Nodes::IfThen.new(@true, [@assign_fighters_to_foo])
-    @if_then_else = Zest::Nodes::IfThen.new(
+    @if_then = Hiptest::Nodes::IfThen.new(@true, [@assign_fighters_to_foo])
+    @if_then_else = Hiptest::Nodes::IfThen.new(
       @true, [@assign_fighters_to_foo], [@assign_foo_to_fighters])
-    @while_loop = Zest::Nodes::While.new(
+    @while_loop = Hiptest::Nodes::While.new(
       @foo_variable,
       [
         @assign_foo_to_fighters,
         @call_foo_with_fighters
       ])
 
-    @empty_action_word = Zest::Nodes::Actionword.new('my action word')
-    @tagged_action_word = Zest::Nodes::Actionword.new(
+    @empty_action_word = Hiptest::Nodes::Actionword.new('my action word')
+    @tagged_action_word = Hiptest::Nodes::Actionword.new(
       'my action word',
       [@simple_tag, @valued_tag])
-    @parameterized_action_word = Zest::Nodes::Actionword.new(
+    @parameterized_action_word = Hiptest::Nodes::Actionword.new(
       'my action word',
       [],
       [@plic_param, @flip_param_default_flap])
 
     full_body = [
-      Zest::Nodes::Assign.new(@foo_variable, @pi),
-      Zest::Nodes::IfThen.new(
-        Zest::Nodes::BinaryExpression.new(
+      Hiptest::Nodes::Assign.new(@foo_variable, @pi),
+      Hiptest::Nodes::IfThen.new(
+        Hiptest::Nodes::BinaryExpression.new(
           @foo_variable,
           '>',
           @x_variable),
         [
-          Zest::Nodes::Step.new('result', "x is greater than Pi")
+          Hiptest::Nodes::Step.new('result', "x is greater than Pi")
         ],
         [
-          Zest::Nodes::Step.new('result', "x is lower than Pi\non two lines")
+          Hiptest::Nodes::Step.new('result', "x is lower than Pi\non two lines")
         ])
       ]
 
-    @full_actionword = Zest::Nodes::Actionword.new(
+    @full_actionword = Hiptest::Nodes::Actionword.new(
       'compare to pi',
       [@simple_tag],
       [@x_param],
       full_body)
 
-    @step_action_word = Zest::Nodes::Actionword.new(
+    @step_action_word = Hiptest::Nodes::Actionword.new(
       'my action word',
       [],
       [],
-      [Zest::Nodes::Step.new('action', "basic action")])
+      [Hiptest::Nodes::Step.new('action', "basic action")])
 
-    @full_scenario = Zest::Nodes::Scenario.new(
+    @full_scenario = Hiptest::Nodes::Scenario.new(
       'compare to pi',
        "This is a scenario which description \nis on two lines",
       [@simple_tag],
       [@x_param],
       full_body)
-    @full_scenario.parent = Zest::Nodes::Scenarios.new([])
-    @full_scenario.parent.parent = Zest::Nodes::Project.new('My project')
+    @full_scenario.parent = Hiptest::Nodes::Scenarios.new([])
+    @full_scenario.parent.parent = Hiptest::Nodes::Project.new('My project')
 
 
-    @dataset1 = Zest::Nodes::Dataset.new('Wrong login', [
-      Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('invalid')),
-      Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('invalid')),
-      Zest::Nodes::Argument.new('expected', Zest::Nodes::StringLiteral.new('Invalid username or password'))
+    @dataset1 = Hiptest::Nodes::Dataset.new('Wrong login', [
+      Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('invalid')),
+      Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('invalid')),
+      Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::StringLiteral.new('Invalid username or password'))
     ])
 
-    @dataset2 = Zest::Nodes::Dataset.new('Wrong password', [
-      Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('valid')),
-      Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('invalid')),
-      Zest::Nodes::Argument.new('expected', Zest::Nodes::StringLiteral.new('Invalid username or password'))
+    @dataset2 = Hiptest::Nodes::Dataset.new('Wrong password', [
+      Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('valid')),
+      Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('invalid')),
+      Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::StringLiteral.new('Invalid username or password'))
     ])
 
-    @dataset3 = Zest::Nodes::Dataset.new('Valid login/password', [
-      Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('valid')),
-      Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('valid')),
-      Zest::Nodes::Argument.new('expected', Zest::Nodes::NullLiteral.new())
+    @dataset3 = Hiptest::Nodes::Dataset.new('Valid login/password', [
+      Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('valid')),
+      Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('valid')),
+      Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::NullLiteral.new())
     ])
-    @datatable = Zest::Nodes::Datatable.new([@dataset1, @dataset2, @dataset3])
+    @datatable = Hiptest::Nodes::Datatable.new([@dataset1, @dataset2, @dataset3])
     [@dataset1, @dataset2, @dataset3].each {|dt| dt.parent = @datatable }
 
-    @scenario_with_datatable = Zest::Nodes::Scenario.new(
+    @scenario_with_datatable = Hiptest::Nodes::Scenario.new(
       'check login',
       "Ensure the login process",
       [],
       [
-        Zest::Nodes::Parameter.new('login'),
-        Zest::Nodes::Parameter.new('password'),
-        Zest::Nodes::Parameter.new('expected')
+        Hiptest::Nodes::Parameter.new('login'),
+        Hiptest::Nodes::Parameter.new('password'),
+        Hiptest::Nodes::Parameter.new('expected')
       ],
       [
-        Zest::Nodes::Call.new('fill login', [
-          Zest::Nodes::Argument.new('login', Zest::Nodes::Variable.new('login')),
+        Hiptest::Nodes::Call.new('fill login', [
+          Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::Variable.new('login')),
         ]),
-        Zest::Nodes::Call.new('fill password', [
-          Zest::Nodes::Argument.new('password', Zest::Nodes::Variable.new('password')),
+        Hiptest::Nodes::Call.new('fill password', [
+          Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::Variable.new('password')),
         ]),
-        Zest::Nodes::Call.new('press enter'),
-        Zest::Nodes::Call.new('assert "error" is displayed', [
-          Zest::Nodes::Argument.new('error', Zest::Nodes::Variable.new('expected')),
+        Hiptest::Nodes::Call.new('press enter'),
+        Hiptest::Nodes::Call.new('assert "error" is displayed', [
+          Hiptest::Nodes::Argument.new('error', Hiptest::Nodes::Variable.new('expected')),
         ])
       ],
       nil,
       @datatable)
     @datatable.parent = @scenario_with_datatable
-    @scenario_with_datatable.parent = Zest::Nodes::Scenarios.new([])
-    @scenario_with_datatable.parent.parent = Zest::Nodes::Project.new('A project with datatables')
+    @scenario_with_datatable.parent = Hiptest::Nodes::Scenarios.new([])
+    @scenario_with_datatable.parent.parent = Hiptest::Nodes::Project.new('A project with datatables')
 
-    @actionwords = Zest::Nodes::Actionwords.new([
-      Zest::Nodes::Actionword.new('first action word'),
-      Zest::Nodes::Actionword.new(
+    @actionwords = Hiptest::Nodes::Actionwords.new([
+      Hiptest::Nodes::Actionword.new('first action word'),
+      Hiptest::Nodes::Actionword.new(
         'second action word', [], [], [
-          Zest::Nodes::Call.new('first action word')
+          Hiptest::Nodes::Call.new('first action word')
         ])
     ])
 
-    @scenarios = Zest::Nodes::Scenarios.new([
-      Zest::Nodes::Scenario.new('first scenario'),
-      Zest::Nodes::Scenario.new(
+    @scenarios = Hiptest::Nodes::Scenarios.new([
+      Hiptest::Nodes::Scenario.new('first scenario'),
+      Hiptest::Nodes::Scenario.new(
         'second scenario', '', [], [], [
-          Zest::Nodes::Call.new('my action word')
+          Hiptest::Nodes::Call.new('my action word')
         ])
     ])
-    @scenarios.parent = Zest::Nodes::Project.new('My_project')
+    @scenarios.parent = Hiptest::Nodes::Project.new('My_project')
 
-    @actionwords_with_parameters = Zest::Nodes::Actionwords.new([
-      Zest::Nodes::Actionword.new('aw with int param', [], [Zest::Nodes::Parameter.new('x')], []),
-      Zest::Nodes::Actionword.new('aw with float param', [], [Zest::Nodes::Parameter.new('x')], []),
-      Zest::Nodes::Actionword.new('aw with boolean param', [], [Zest::Nodes::Parameter.new('x')], []),
-      Zest::Nodes::Actionword.new('aw with null param', [], [Zest::Nodes::Parameter.new('x')], []),
-      Zest::Nodes::Actionword.new('aw with string param', [], [Zest::Nodes::Parameter.new('x')], []),
-      Zest::Nodes::Actionword.new('aw with template param', [], [Zest::Nodes::Parameter.new('x')], [])
+    @actionwords_with_parameters = Hiptest::Nodes::Actionwords.new([
+      Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+      Hiptest::Nodes::Actionword.new('aw with float param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+      Hiptest::Nodes::Actionword.new('aw with boolean param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+      Hiptest::Nodes::Actionword.new('aw with null param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+      Hiptest::Nodes::Actionword.new('aw with string param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+      Hiptest::Nodes::Actionword.new('aw with template param', [], [Hiptest::Nodes::Parameter.new('x')], [])
     ])
 
-    @scenarios_with_many_calls = Zest::Nodes::Scenarios.new([
-      Zest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
-        Zest::Nodes::Call.new('aw with int param', [
-          Zest::Nodes::Argument.new('x', Zest::Nodes::NumericLiteral.new('3'))]),
-        Zest::Nodes::Call.new('aw with float param', [
-          Zest::Nodes::Argument.new('x',
-            Zest::Nodes::NumericLiteral.new('4.2')
+    @scenarios_with_many_calls = Hiptest::Nodes::Scenarios.new([
+      Hiptest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
+        Hiptest::Nodes::Call.new('aw with int param', [
+          Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::NumericLiteral.new('3'))]),
+        Hiptest::Nodes::Call.new('aw with float param', [
+          Hiptest::Nodes::Argument.new('x',
+            Hiptest::Nodes::NumericLiteral.new('4.2')
           )]),
-        Zest::Nodes::Call.new('aw with boolean param', [
-          Zest::Nodes::Argument.new('x',
-            Zest::Nodes::BooleanLiteral.new(true)
+        Hiptest::Nodes::Call.new('aw with boolean param', [
+          Hiptest::Nodes::Argument.new('x',
+            Hiptest::Nodes::BooleanLiteral.new(true)
           )]),
-        Zest::Nodes::Call.new('aw_with_null_param', [
-          Zest::Nodes::Argument.new('x',
-            Zest::Nodes::NullLiteral.new
+        Hiptest::Nodes::Call.new('aw_with_null_param', [
+          Hiptest::Nodes::Argument.new('x',
+            Hiptest::Nodes::NullLiteral.new
           )]),
-        Zest::Nodes::Call.new('aw with string param', [
-          Zest::Nodes::Argument.new('x', Zest::Nodes::StringLiteral.new('toto'))]),
-        Zest::Nodes::Call.new('aw with string param', [
-          Zest::Nodes::Argument.new('x', Zest::Nodes::Template.new(Zest::Nodes::StringLiteral.new('toto')))])
+        Hiptest::Nodes::Call.new('aw with string param', [
+          Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('toto'))]),
+        Hiptest::Nodes::Call.new('aw with string param', [
+          Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::Template.new(Hiptest::Nodes::StringLiteral.new('toto')))])
       ])])
 
-    @project = Zest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
+    @project = Hiptest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
 
-    @first_test = Zest::Nodes::Test.new(
+    @first_test = Hiptest::Nodes::Test.new(
       'Login',
       "The description is on \ntwo lines",
       [@simple_tag, @valued_tag],
       [
-        Zest::Nodes::Call.new('visit', [
-          Zest::Nodes::Argument.new('url', Zest::Nodes::StringLiteral.new('/login'))
+        Hiptest::Nodes::Call.new('visit', [
+          Hiptest::Nodes::Argument.new('url', Hiptest::Nodes::StringLiteral.new('/login'))
         ]),
-        Zest::Nodes::Call.new('fill', [
-          Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('user@example.com'))
+        Hiptest::Nodes::Call.new('fill', [
+          Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('user@example.com'))
         ]),
-        Zest::Nodes::Call.new('fill', [
-          Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('s3cret'))
+        Hiptest::Nodes::Call.new('fill', [
+          Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('s3cret'))
         ]),
-        Zest::Nodes::Call.new('click', [
-          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit]'))
+        Hiptest::Nodes::Call.new('click', [
+          Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('.login-form input[type=submit]'))
         ]),
-        Zest::Nodes::Call.new('checkUrl', [
-          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('/welcome')
+        Hiptest::Nodes::Call.new('checkUrl', [
+          Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('/welcome')
         )])
       ])
 
-    @second_test = Zest::Nodes::Test.new(
+    @second_test = Hiptest::Nodes::Test.new(
       'Failed login',
       '',
       [@valued_tag],
       [
-        Zest::Nodes::Call.new('visit', [
-          Zest::Nodes::Argument.new('url', Zest::Nodes::StringLiteral.new('/login'))
+        Hiptest::Nodes::Call.new('visit', [
+          Hiptest::Nodes::Argument.new('url', Hiptest::Nodes::StringLiteral.new('/login'))
         ]),
-        Zest::Nodes::Call.new('fill', [
-          Zest::Nodes::Argument.new('login', Zest::Nodes::StringLiteral.new('user@example.com'))
+        Hiptest::Nodes::Call.new('fill', [
+          Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('user@example.com'))
         ]),
-        Zest::Nodes::Call.new('fill', [
-          Zest::Nodes::Argument.new('password', Zest::Nodes::StringLiteral.new('notTh4tS3cret'))
+        Hiptest::Nodes::Call.new('fill', [
+          Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('notTh4tS3cret'))
         ]),
-        Zest::Nodes::Call.new('click', [
-          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('.login-form input[type=submit]'))
+        Hiptest::Nodes::Call.new('click', [
+          Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('.login-form input[type=submit]'))
         ]),
-        Zest::Nodes::Call.new('checkUrl', [
-          Zest::Nodes::Argument.new('path', Zest::Nodes::StringLiteral.new('/login')
+        Hiptest::Nodes::Call.new('checkUrl', [
+          Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('/login')
         )])
       ])
 
-    @tests = Zest::Nodes::Tests.new([@first_test, @second_test])
+    @tests = Hiptest::Nodes::Tests.new([@first_test, @second_test])
     @first_test.parent = @tests
     @second_test.parent = @tests
-    @tests.parent = Zest::Nodes::Project.new('My test project')
+    @tests.parent = Hiptest::Nodes::Project.new('My test project')
 
     @context = {framework: framework, forced_templates: {}}
   end
@@ -414,7 +414,7 @@ shared_examples "a renderer" do
   end
 
   it 'Actionwords with parameters of different types' do
-    Zest::Nodes::ParameterTypeAdder.add(@project)
+    Hiptest::Nodes::ParameterTypeAdder.add(@project)
     expect(@project.children[:actionwords].render(language, @context)).to eq(@actionwords_with_params_rendered)
   end
 

@@ -1,13 +1,13 @@
-module Zest
+module Hiptest
   module Nodes
     class ParentAdder < Walker
       def self.add(project)
-        Zest::Nodes::ParentAdder.new().walk_node(project)
+        Hiptest::Nodes::ParentAdder.new().walk_node(project)
       end
 
       def walk_node(node)
         super(node)
-        return unless node.is_a? Zest::Nodes::Node
+        return unless node.is_a? Hiptest::Nodes::Node
 
         node.direct_children.each {|child|
           child.parent = node

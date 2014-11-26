@@ -5,70 +5,70 @@ describe 'Render as Python' do
   include_context "shared render"
 
   before(:each) do
-    # In Zest: null
+    # In Hiptest: null
     @null_rendered = 'None'
 
-    # In Zest: 'What is your quest ?'
+    # In Hiptest: 'What is your quest ?'
     @what_is_your_quest_rendered = "'What is your quest ?'"
 
-    # In Zest: 3.14
+    # In Hiptest: 3.14
     @pi_rendered = '3.14'
 
-    # In Zest: false
+    # In Hiptest: false
     @false_rendered = 'false'
 
-    # In Zest: "${foo}fighters"
+    # In Hiptest: "${foo}fighters"
     @foo_template_rendered = '"%sfighters" % (foo)'
 
-    # In Zest: "Fighters said \"Foo !\""
+    # In Hiptest: "Fighters said \"Foo !\""
     @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
 
-    # In Zest: foo (as in 'foo := 1')
+    # In Hiptest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
     @foo_bar_variable_rendered = 'foo_bar'
 
-    # In Zest: foo.fighters
+    # In Hiptest: foo.fighters
     @foo_dot_fighters_rendered = 'foo.fighters'
 
-    # In Zest: foo['fighters']
+    # In Hiptest: foo['fighters']
     @foo_brackets_fighters_rendered = "foo['fighters']"
 
-    # In Zest: -foo
+    # In Hiptest: -foo
     @minus_foo_rendered = '-foo'
 
-    # In Zest: foo - 'fighters'
+    # In Hiptest: foo - 'fighters'
     @foo_minus_fighters_rendered = "foo - 'fighters'"
 
-    # In Zest: (foo)
+    # In Hiptest: (foo)
     @parenthesis_foo_rendered = '(foo)'
 
-    # In Zest: [foo, 'fighters']
+    # In Hiptest: [foo, 'fighters']
     @foo_list_rendered = "[foo, 'fighters']"
 
-    # In Zest: foo: 'fighters'
+    # In Hiptest: foo: 'fighters'
     @foo_fighters_prop_rendered = "foo: 'fighters'"
 
-    # In Zest: {foo: 'fighters', Alt: J}
+    # In Hiptest: {foo: 'fighters', Alt: J}
     @foo_dict_rendered = "{foo: 'fighters', Alt: J}"
 
-    # In Zest: foo := 'fighters'
+    # In Hiptest: foo := 'fighters'
     @assign_fighters_to_foo_rendered = "foo = 'fighters'"
 
-    # In Zest: call 'foo'
+    # In Hiptest: call 'foo'
     @call_foo_rendered = "self.foo()"
-    # In Zest: call 'foo bar'
+    # In Hiptest: call 'foo bar'
     @call_foo_bar_rendered = "self.foo_bar()"
 
-    # In Zest: call 'foo'('fighters')
+    # In Hiptest: call 'foo'('fighters')
     @call_foo_with_fighters_rendered = "self.foo(x = 'fighters')"
-    # In Zest: call 'foo bar'('fighters')
+    # In Hiptest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "self.foo_bar(x = 'fighters')"
 
 
-    # In Zest: step {action: "${foo}fighters"}
+    # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '# TODO: Implement action: "%sfighters" % (foo)'
 
-    # In Zest:
+    # In Hiptest:
     # if (true)
     #   foo := 'fighters'
     #end
@@ -77,7 +77,7 @@ describe 'Render as Python' do
         "    foo = 'fighters'"
       ].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # if (true)
     #   foo := 'fighters'
     # else
@@ -90,7 +90,7 @@ describe 'Render as Python' do
         "    fighters = 'foo'"
       ].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # while (foo)
     #   fighters := 'foo'
     #   call 'foo' ('fighters')
@@ -101,19 +101,19 @@ describe 'Render as Python' do
         "    self.foo(x = 'fighters')"
       ].join("\n")
 
-    # In Zest: @myTag
+    # In Hiptest: @myTag
     @simple_tag_rendered = 'myTag'
 
-    # In Zest: @myTag:somevalue
+    # In Hiptest: @myTag:somevalue
     @valued_tag_rendered = 'myTag:somevalue'
 
-    # In Zest: plic (as in: call 'foo'(plic))
+    # In Hiptest: plic (as in: call 'foo'(plic))
     @plic_param_rendered = 'plic'
 
-    # In Zest: plic = 'ploc' (as in: call 'foo'(plic = 'ploc'))
+    # In Hiptest: plic = 'ploc' (as in: call 'foo'(plic = 'ploc'))
     @plic_param_default_ploc_rendered = "plic = 'ploc'"
 
-    # In Zest:
+    # In Hiptest:
     # actionword 'my action word' do
     # end
     @empty_action_word_rendered = [
@@ -121,7 +121,7 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
@@ -131,7 +131,7 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
@@ -139,7 +139,7 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # @myTag
     # actionword 'compare to pi' (x) do
     #   foo := 3.14
@@ -162,7 +162,7 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # actionword 'my action word' do
     #   step {action: "basic action"}
     # end
@@ -172,7 +172,7 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
-    # In Zest, correspond to two action words:
+    # In Hiptest, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -192,7 +192,7 @@ describe 'Render as Python' do
       "        self.first_action_word()",
       ""].join("\n")
 
-    # In Zest, correspond to these action words with parameters:
+    # In Hiptest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -233,7 +233,7 @@ describe 'Render as Python' do
       "        pass",
       ""].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # @myTag
     # scenario 'compare to pi' (x) do
     #   foo := 3.14
@@ -330,7 +330,7 @@ describe 'Render as Python' do
       ].join("\n")
 
 
-    # In Zest, correspond to two scenarios in a project called 'My project'
+    # In Hiptest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do
     # end
     # scenario 'second scenario' do

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project format="0.1">
   <uid>9e130e4b-8049-43c0-aae0-09b01f8ebc98</uid>
-  <name>Zest publisher</name>
+  <name>Hiptest publisher</name>
   <description/>
   <testPlan>
     <folder>

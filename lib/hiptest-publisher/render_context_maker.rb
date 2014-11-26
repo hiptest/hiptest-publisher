@@ -1,10 +1,10 @@
-module Zest
+module Hiptest
   module RenderContextMaker
     def walk_item(item)
       {
         :has_parameters? => !item.children[:parameters].empty?,
         :has_tags? => !item.children[:tags].empty?,
-        :has_step? => !item.find_sub_nodes(Zest::Nodes::Step).empty?,
+        :has_step? => !item.find_sub_nodes(Hiptest::Nodes::Step).empty?,
         :is_empty? => item.children[:body].empty?
       }
     end
@@ -37,7 +37,7 @@ module Zest
       {
         :has_parameters? => false,
         :has_tags? => !test.children[:tags].empty?,
-        :has_step? => !test.find_sub_nodes(Zest::Nodes::Step).empty?,
+        :has_step? => !test.find_sub_nodes(Hiptest::Nodes::Step).empty?,
         :is_empty? => test.children[:body].empty?,
         :has_datasets? => false,
         :project_name => test.parent.parent.children[:name],
@@ -77,7 +77,7 @@ module Zest
     def walk_template(t)
       treated = t.children[:chunks].map do |chunk|
         {
-          :is_variable? => chunk.is_a?(Zest::Nodes::Variable),
+          :is_variable? => chunk.is_a?(Hiptest::Nodes::Variable),
           :raw => chunk
         }
       end

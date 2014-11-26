@@ -1,15 +1,15 @@
-require 'zest-publisher/nodes_walker'
+require 'hiptest-publisher/nodes_walker'
 
-module Zest
+module Hiptest
   module Nodes
-    class ParameterTypeAdder < Zest::Nodes::Walker
+    class ParameterTypeAdder < Hiptest::Nodes::Walker
       attr_reader :call_types
 
       def self.add(project)
-        walker = Zest::Nodes::ParameterTypeAdder.new
+        walker = Hiptest::Nodes::ParameterTypeAdder.new
         walker.walk_node(project)
 
-        Zest::Nodes::TypeWriter.new(walker.call_types).walk_node(project)
+        Hiptest::Nodes::TypeWriter.new(walker.call_types).walk_node(project)
       end
 
       def initialize
@@ -48,7 +48,7 @@ module Zest
       end
     end
 
-    class TypeWriter < Zest::Nodes::Walker
+    class TypeWriter < Hiptest::Nodes::Walker
       def initialize(call_types)
         super(:parent_first)
         @call_types = call_types
@@ -109,16 +109,16 @@ module Zest
       end
 
       def type_from_values(values)
-        types = values.map {|val| val[:type] unless val[:type] == Zest::Nodes::NullLiteral}.compact.uniq
+        types = values.map {|val| val[:type] unless val[:type] == Hiptest::Nodes::NullLiteral}.compact.uniq
 
         if types.empty?
           :null
         elsif types.length == 1
-          if types.first == Zest::Nodes::StringLiteral
+          if types.first == Hiptest::Nodes::StringLiteral
             :String
-          elsif types.first == Zest::Nodes::BooleanLiteral
+          elsif types.first == Hiptest::Nodes::BooleanLiteral
             :bool
-          elsif types.first == Zest::Nodes::NumericLiteral
+          elsif types.first == Hiptest::Nodes::NumericLiteral
             determine_numeric(values)
           end
         else
@@ -128,7 +128,7 @@ module Zest
 
       def determine_numeric(values)
         types = values.map do |val|
-          next unless val[:type] == Zest::Nodes::NumericLiteral
+          next unless val[:type] == Hiptest::Nodes::NumericLiteral
           return :float if val[:value].include?(".")
         end.compact.uniq
 

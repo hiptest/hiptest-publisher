@@ -4,7 +4,7 @@ require 'colorize'
 require_relative 'nodes'
 require_relative 'utils'
 
-module Zest
+module Hiptest
   class XMLParser
     attr_reader :project
 
@@ -15,58 +15,58 @@ module Zest
     end
 
     def build_nullliteral(value = nil)
-      Zest::Nodes::NullLiteral.new
+      Hiptest::Nodes::NullLiteral.new
     end
 
     def build_stringliteral(value)
       if value.is_a? String
-        Zest::Nodes::StringLiteral.new(value)
+        Hiptest::Nodes::StringLiteral.new(value)
       else
-        Zest::Nodes::StringLiteral.new(value.content)
+        Hiptest::Nodes::StringLiteral.new(value.content)
       end
     end
 
     def build_numericliteral(value)
       if value.is_a? Numeric
-        Zest::Nodes::NumericLiteral.new(value)
+        Hiptest::Nodes::NumericLiteral.new(value)
       else
-        Zest::Nodes::NumericLiteral.new(value.content)
+        Hiptest::Nodes::NumericLiteral.new(value.content)
       end
     end
 
     def build_booleanliteral(value)
       if value.is_a?(TrueClass) || value.is_a?(FalseClass)
-        Zest::Nodes::BooleanLiteral.new(value)
+        Hiptest::Nodes::BooleanLiteral.new(value)
       else
-        Zest::Nodes::BooleanLiteral.new(value.content)
+        Hiptest::Nodes::BooleanLiteral.new(value.content)
       end
     end
 
     def build_var(variable)
-      Zest::Nodes::Variable.new(variable.content)
+      Hiptest::Nodes::Variable.new(variable.content)
     end
 
     def build_field(field)
-      Zest::Nodes::Field.new(
+      Hiptest::Nodes::Field.new(
         build_node(css_first(field, '> base > *')),
         css_first_content(field, '> name'))
     end
 
     def build_index(index)
-      Zest::Nodes::Index.new(
+      Hiptest::Nodes::Index.new(
         build_node(css_first(index, '> base > *')),
         build_node(css_first(index, '> expression > *')))
     end
 
     def build_binary_expression(operation)
-      Zest::Nodes::BinaryExpression.new(
+      Hiptest::Nodes::BinaryExpression.new(
         build_node(css_first(operation, '> left > *')),
         css_first_content(operation, '> operator'),
         build_node(css_first(operation, '> right > *')))
     end
 
     def build_unary_expression(operation)
-      Zest::Nodes::UnaryExpression.new(
+      Hiptest::Nodes::UnaryExpression.new(
         css_first_content(operation, '> operator'),
         build_node(css_first(operation, '> expression > *')))
     end
@@ -80,35 +80,35 @@ module Zest
     end
 
     def build_parenthesis(parenthesis)
-      Zest::Nodes::Parenthesis.new(
+      Hiptest::Nodes::Parenthesis.new(
         build_node(css_first(parenthesis)))
     end
 
     def build_list(list)
-      Zest::Nodes::List.new(build_node_list(list.css('> item > *')))
+      Hiptest::Nodes::List.new(build_node_list(list.css('> item > *')))
     end
 
     def build_dict(dict)
       items = dict.element_children.map do |item|
-        Zest::Nodes::Property.new(
+        Hiptest::Nodes::Property.new(
           item.name,
           build_node(css_first(item)))
       end
-      Zest::Nodes::Dict.new(items)
+      Hiptest::Nodes::Dict.new(items)
     end
 
     def build_template(template)
-      Zest::Nodes::Template.new(build_node_list(template.css('> *')))
+      Hiptest::Nodes::Template.new(build_node_list(template.css('> *')))
     end
 
     def build_assign(assign)
-      Zest::Nodes::Assign.new(
+      Hiptest::Nodes::Assign.new(
         build_node(css_first(assign, 'to > *')),
         build_node(css_first(assign, 'value > *')))
     end
 
     def build_call(call)
-      Zest::Nodes::Call.new(
+      Hiptest::Nodes::Call.new(
         css_first_content(call, '> actionword'),
         build_arguments(call))
     end
@@ -119,13 +119,13 @@ module Zest
 
     def build_argument(argument)
       value = css_first(argument, '> value')
-      Zest::Nodes::Argument.new(
+      Hiptest::Nodes::Argument.new(
         css_first_content(argument, 'name'),
         value ? build_node(value) : nil)
     end
 
     def build_if(if_then)
-      Zest::Nodes::IfThen.new(
+      Hiptest::Nodes::IfThen.new(
         build_node(css_first(if_then, '> condition > *')),
         build_node_list(if_then.css('> then > *')),
         build_node_list(if_then.css('> else > *')))
@@ -133,19 +133,19 @@ module Zest
 
     def build_step(step)
       first_prop = css_first(step)
-      Zest::Nodes::Step.new(
+      Hiptest::Nodes::Step.new(
         first_prop.name,
         build_node(css_first(first_prop)))
     end
 
     def build_while(while_loop)
-      Zest::Nodes::While.new(
+      Hiptest::Nodes::While.new(
         build_node(css_first(while_loop, '> condition > *')),
         build_node_list(while_loop.css('> body > *')))
     end
 
     def build_tag(tag)
-      Zest::Nodes::Tag.new(
+      Hiptest::Nodes::Tag.new(
         css_first_content(tag, '> key'),
         css_first_content(tag, '> value'))
     end
@@ -153,7 +153,7 @@ module Zest
     def build_parameter(parameter)
       default_value = css_first(parameter, '> default_value')
 
-      Zest::Nodes::Parameter.new(
+      Hiptest::Nodes::Parameter.new(
         css_first_content(parameter, 'name'),
         default_value ? build_node(default_value) : nil)
     end
@@ -179,7 +179,7 @@ module Zest
     end
 
     def build_actionword(actionword)
-      Zest::Nodes::Actionword.new(
+      Hiptest::Nodes::Actionword.new(
         css_first_content(actionword, 'name'),
         build_tags(actionword),
         build_parameters(actionword),
@@ -187,40 +187,40 @@ module Zest
     end
 
     def build_scenario(scenario)
-      Zest::Nodes::Scenario.new(
+      Hiptest::Nodes::Scenario.new(
         css_first_content(scenario, 'name'),
         css_first_content(scenario, 'description'),
         build_tags(scenario),
         build_parameters(scenario),
         build_steps(scenario),
         css_first_content(scenario, 'folderUid'),
-        build_node(css_first(scenario, 'datatable'), Zest::Nodes::Datatable))
+        build_node(css_first(scenario, 'datatable'), Hiptest::Nodes::Datatable))
     end
 
     def build_datatable(datatable)
-      Zest::Nodes::Datatable.new(build_node_list(datatable.css('> dataset')))
+      Hiptest::Nodes::Datatable.new(build_node_list(datatable.css('> dataset')))
     end
 
     def build_dataset(dataset)
-      Zest::Nodes::Dataset.new(
+      Hiptest::Nodes::Dataset.new(
         css_first_content(dataset, '> name'),
         build_node_list(dataset.css('> arguments argument')))
     end
 
     def build_actionwords(actionwords)
-      build_node_list(actionwords.css('> actionword'), Zest::Nodes::Actionwords)
+      build_node_list(actionwords.css('> actionword'), Hiptest::Nodes::Actionwords)
     end
 
     def build_scenarios(scenarios)
-      build_node_list(scenarios.css('> scenario'), Zest::Nodes::Scenarios)
+      build_node_list(scenarios.css('> scenario'), Hiptest::Nodes::Scenarios)
     end
 
     def build_tests(tests)
-      build_node_list(tests.css('> test'), Zest::Nodes::Tests)
+      build_node_list(tests.css('> test'), Hiptest::Nodes::Tests)
     end
 
     def build_test(test)
-      Zest::Nodes::Test.new(
+      Hiptest::Nodes::Test.new(
         css_first_content(test, 'name'),
         css_first_content(test, 'description'),
         build_tags(test),
@@ -229,14 +229,14 @@ module Zest
     end
 
     def build_folder(folder)
-      Zest::Nodes::Folder.new(
+      Hiptest::Nodes::Folder.new(
         css_first_content(folder, 'uid'),
         css_first_content(folder, 'parentUid'),
         css_first_content(folder, 'name'))
     end
 
     def build_testPlan(test_plan)
-      tp = Zest::Nodes::TestPlan.new(
+      tp = Hiptest::Nodes::TestPlan.new(
         build_node_list(test_plan.css('> folder')))
 
       tp.organize_folders
@@ -246,13 +246,13 @@ module Zest
     def build_project
       project = css_first(@xml, 'project')
 
-      @project = Zest::Nodes::Project.new(
+      @project = Hiptest::Nodes::Project.new(
         css_first_content(project, '> name'),
         css_first_content(project, '> description'),
-        build_node(css_first(project, '> testPlan'), Zest::Nodes::TestPlan),
-        build_node(css_first(project, '> scenarios'), Zest::Nodes::Scenarios),
-        build_node(css_first(project, '> actionwords'), Zest::Nodes::Actionwords),
-        build_node(css_first(project, '> tests'), Zest::Nodes::Tests))
+        build_node(css_first(project, '> testPlan'), Hiptest::Nodes::TestPlan),
+        build_node(css_first(project, '> scenarios'), Hiptest::Nodes::Scenarios),
+        build_node(css_first(project, '> actionwords'), Hiptest::Nodes::Actionwords),
+        build_node(css_first(project, '> tests'), Hiptest::Nodes::Tests))
 
       @project.assign_scenarios_to_folders
       return @project

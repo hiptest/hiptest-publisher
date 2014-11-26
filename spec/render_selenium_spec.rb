@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
-require_relative '../lib/zest-publisher/nodes'
-require_relative '../lib/zest-publisher/call_arguments_adder'
+require_relative '../lib/hiptest-publisher/nodes'
+require_relative '../lib/hiptest-publisher/call_arguments_adder'
 
 describe 'Selenium IDE rendering' do
   include HelperFactories
@@ -44,7 +44,7 @@ describe 'Selenium IDE rendering' do
   }
 
   before(:each) do
-    Zest::DefaultArgumentAdder.add(project)
+    Hiptest::DefaultArgumentAdder.add(project)
     @context = {framework: '', forced_templates: {}}
   end
 

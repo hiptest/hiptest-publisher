@@ -2,7 +2,7 @@ require 'optparse'
 require 'parseconfig'
 require 'ostruct'
 
-require 'zest-publisher/utils'
+require 'hiptest-publisher/utils'
 
 class FileConfigParser
   def self.update_options(options)
@@ -81,7 +81,7 @@ class OptionsParser
       Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
-      Option.new('s', 'site=SITE', 'https://www.zest-testing.com', String, "Site to fetch from", :site),
+      Option.new('s', 'site=SITE', 'https://www.hiptest-testing.com', String, "Site to fetch from", :site),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
@@ -91,7 +91,7 @@ class OptionsParser
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: ruby publisher.rb [options]"
       opts.separator ""
-      opts.separator "Exports tests from Zest for automation."
+      opts.separator "Exports tests from Hiptest for automation."
       opts.separator ""
       opts.separator "Specific options:"
 
@@ -104,14 +104,14 @@ class OptionsParser
 
       opts.on("-F", "--filters-help", "Show help about scenario filtering") do
         [
-          "zest-publisher allows you to filter the exported scenarios.",
+          "hiptest-publisher allows you to filter the exported scenarios.",
           "You can select the ids of the scenarios:",
-          "zest-publisher --scenario-ids=12",
-          "zest-publisher --scenario-ids=12,15,16",
+          "hiptest-publisher --scenario-ids=12",
+          "hiptest-publisher --scenario-ids=12,15,16",
           "",
           "You can also filter by tags:",
-          "zest-publisher --scenario-tags=mytag",
-          "zest-publisher --scenario-tags=mytag,myother:tag",
+          "hiptest-publisher --scenario-tags=mytag",
+          "hiptest-publisher --scenario-tags=mytag,myother:tag",
           "",
           "You can not mix ids and tag filtering, only the id filtering will be applied."
         ].each {|line| puts line}
@@ -132,7 +132,7 @@ class OptionsParser
   end
 
   def self.show_options(options)
-    puts "Running Zest-publisher with:".yellow
+    puts "Running Hiptest-publisher with:".yellow
     options.marshal_dump.each { |k, v| puts " - #{k}: #{v}".white }
   end
 
@@ -170,7 +170,7 @@ class LanguageConfigParser
 
   def find_config_file(options)
     ["#{options.language}/#{options.framework}", "#{options.language}"].map do |p|
-      path = "#{zest_publisher_path}/lib/templates/#{p}/output_config"
+      path = "#{hiptest_publisher_path}/lib/templates/#{p}/output_config"
       path if File.file?(path)
     end.compact.first
   end

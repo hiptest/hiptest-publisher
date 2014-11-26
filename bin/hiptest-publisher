@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'rubygems'
+  gem 'hiptest-publisher'
+rescue LoadError
+end
+
+require 'hiptest-publisher'
+
+Hiptest::Publisher.new(ARGV).export

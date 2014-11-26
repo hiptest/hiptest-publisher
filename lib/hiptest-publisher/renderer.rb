@@ -1,17 +1,17 @@
 require 'handlebars'
-require 'zest-publisher/nodes_walker'
-require 'zest-publisher/handlebars_helper'
-require 'zest-publisher/render_context_maker'
+require 'hiptest-publisher/nodes_walker'
+require 'hiptest-publisher/handlebars_helper'
+require 'hiptest-publisher/render_context_maker'
 
-module Zest
-  class Renderer < Zest::Nodes::Walker
+module Hiptest
+  class Renderer < Hiptest::Nodes::Walker
     attr_reader :rendered
     include RenderContextMaker
 
     def self.render(node, language, context)
       context[:language] = language
 
-      renderer = Zest::Renderer.new(context)
+      renderer = Hiptest::Renderer.new(context)
       renderer.walk_node(node)
       renderer.rendered[node]
     end
@@ -23,11 +23,11 @@ module Zest
       @handlebars = Handlebars::Context.new
       register_partials()
 
-      Zest::HandlebarsHelper.register_helpers(@handlebars, @context)
+      Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
     end
 
     def call_node_walker(node)
-      if node.is_a? Zest::Nodes::Node
+      if node.is_a? Hiptest::Nodes::Node
         @rendered_children = {}
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
         @rendered[node] = render_node(node, super(node))
@@ -44,7 +44,7 @@ module Zest
         folders << "#{@context[:language]}/#{@context[:framework]}"
       end
       folders << [@context[:language], 'common']
-      folders.flatten.map {|path| "#{zest_publisher_path}/lib/templates/#{path}"}
+      folders.flatten.map {|path| "#{hiptest_publisher_path}/lib/templates/#{path}"}
     end
 
     def register_partials()

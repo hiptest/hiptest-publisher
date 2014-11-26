@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
-require_relative '../lib/zest-publisher/utils'
+require_relative '../lib/hiptest-publisher/utils'
 
-describe 'Zest publisher utils' do
+describe 'Hiptest publisher utils' do
   describe 'show_status_message' do
     it 'sends a message on STDOUT with brackets before' do
       allow(STDOUT).to receive(:print)

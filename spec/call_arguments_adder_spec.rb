@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
-require_relative '../lib/zest-publisher/call_arguments_adder'
+require_relative '../lib/hiptest-publisher/call_arguments_adder'
 
-describe Zest::DefaultArgumentAdder do
+describe Hiptest::DefaultArgumentAdder do
   include HelperFactories
 
   let(:aw) {
@@ -49,7 +49,7 @@ describe Zest::DefaultArgumentAdder do
   }
 
   before(:each) do
-    Zest::DefaultArgumentAdder.add(project)
+    Hiptest::DefaultArgumentAdder.add(project)
   end
 
   def get_all_arguments_for_call(call)
@@ -62,15 +62,15 @@ describe Zest::DefaultArgumentAdder do
     expect(call_with_no_parameter_set.children.has_key?(:all_arguments)).to be true
 
     expect(get_all_arguments_for_call(call_with_no_parameter_set)).to eq([
-      [Zest::Nodes::Argument, 'x', 'Hi, I am a valued parameter'],
-      [Zest::Nodes::Argument, 'y', 'Hi, I am another valued parameter']
+      [Hiptest::Nodes::Argument, 'x', 'Hi, I am a valued parameter'],
+      [Hiptest::Nodes::Argument, 'y', 'Hi, I am another valued parameter']
     ])
   end
 
   it 'when all value are set in a call, then :all_arguments contains the set values' do
     expect(get_all_arguments_for_call(call_with_all_parameters_set)).to eq([
-      [Zest::Nodes::Argument, 'x', '3.14'],
-      [Zest::Nodes::Argument, 'y', 'And another value here']
+      [Hiptest::Nodes::Argument, 'x', '3.14'],
+      [Hiptest::Nodes::Argument, 'y', 'And another value here']
     ])
   end
 
@@ -91,7 +91,7 @@ describe Zest::DefaultArgumentAdder do
   end
 end
 
-describe Zest::ActionwordIndexer do
+describe Hiptest::ActionwordIndexer do
   include HelperFactories
 
   let(:first_aw) {
@@ -110,7 +110,7 @@ describe Zest::ActionwordIndexer do
   }
 
   let(:indexer) {
-    Zest::ActionwordIndexer.new(project)
+    Hiptest::ActionwordIndexer.new(project)
   }
 
   context 'get_index' do
@@ -134,7 +134,7 @@ describe Zest::ActionwordIndexer do
 
     it 'otherwise it is the parameter default value' do
       index = indexer.get_index('Actionword with parameters')
-      expect(index[:parameters]['y']).to be_a Zest::Nodes::StringLiteral
+      expect(index[:parameters]['y']).to be_a Hiptest::Nodes::StringLiteral
       expect(index[:parameters]['y'].children[:value]).to eq('Hi, I am a valued parameter')
     end
   end

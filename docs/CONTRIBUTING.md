@@ -3,7 +3,7 @@ Contributing
 
 Do not hesitate to contribute to the project by adding support for your favorite language or test framework as explained below. This tool was built to be configurable and have the possibility to export tests in any language.
 
-We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [Zest test description language](https://zest.smartesting.com/tdl_documentation.html) is needed to add support for new languages/frameworks.
+We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [Hiptest test description language](https://hiptest.net/tdl_documentation.html) is needed to add support for new languages/frameworks.
 
 Adding support for a new language
 ---------------------------------
@@ -20,7 +20,7 @@ rspec spec/render_scala_spec.rb -f d
 
 
 Normally, you should see a lot of tests failing and that's totally normal (only 5 tests should pass).
-Now you have to update the expected output when exporting in Scala. That is the variables ``@<some name, mainly about the Foo Fighters>`` declared in the ``before(:each)`` block. For all expected output, we also added the corresponding text in Zest test description language.
+Now you have to update the expected output when exporting in Scala. That is the variables ``@<some name, mainly about the Foo Fighters>`` declared in the ``before(:each)`` block. For all expected output, we also added the corresponding text in Hiptest test description language.
 
 Once all the expectation are written, is it time to write the template. The simplest way is to copy the Ruby sources:
 
@@ -30,7 +30,7 @@ cp templates/ruby/*.hbs templates/scala/
 ```
 
 
-Now edit each template file to generate proper Scala code ([a quick guide for handlebars and Zest publisher](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md>)) until all tests are working.
+Now edit each template file to generate proper Scala code ([a quick guide for handlebars and Hiptest publisher](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md>)) until all tests are working.
 
 Note: templates to describe variables and literals are located in ``templates/common``. If you need to override them, simply copy them to ``templates/scala``.
 
@@ -59,7 +59,7 @@ Now in every node rendered in the scenarios, you can access ``context.action_wor
 Once this is all done, you should be able to generate the Scala tests by running:
 
 ```shell
-zest-publisher --language=scala
+hiptest-publisher --language=scala
 ```
 
 
@@ -108,5 +108,5 @@ Edit the file so it generates proper Scala/Specs code. You should now be able to
 
 ```shell
 rake install
-zest-publisher --language=scala --framework=specs
+hiptest-publisher --language=scala --framework=specs
 ```

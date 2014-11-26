@@ -1,7 +1,7 @@
-A quick guide for handlebars and Zest publisher
-===============================================
+A quick guide for handlebars and Hiptest publisher
+==================================================
 
-Zest publisher uses [handlebars](http://handlebarsjs.com/) as a templating language. This guide explains [some basics about handlebars](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-basics), [caveats to use with Zest](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#handlebars-and-zest-publisher-caveats), [available data for each node](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#available-values-in-templates) and explains our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers).
+Hiptest publisher uses [handlebars](http://handlebarsjs.com/) as a templating language. This guide explains [some basics about handlebars](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#handlebars-basics), [caveats to use with Hiptest](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#handlebars-and-hiptest-publisher-caveats), [available data for each node](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#available-values-in-templates) and explains our [custom helpers](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#hiptest-custom-helpers).
 
 
 Handlebars basics
@@ -15,15 +15,15 @@ We chose handlebars as the templating system as it is language agnostic and pret
  - ``{{#each my_list}}{{{this}}}{{/each}}``: will output every element of 'my_list'
  - ``{{> my_partial}}``: will render the templates names '_my_partial.hbs' with the same context (so you don't have to repeat yourself)
 
-Helpers can be used with the notation ``{{{ helperName value }}}`. You will mainly use our [custom helpers](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#zest-custom-helpers), we provide an example for each one.
+Helpers can be used with the notation ``{{{ helperName value }}}`. You will mainly use our [custom helpers](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#hiptest-custom-helpers), we provide an example for each one.
 
 
-Handlebars and Zest-publisher caveats
--------------------------------------
+Handlebars and hiptest-publisher caveats
+----------------------------------------
 
 ### Whitespaces
 
-Handlebars is designed to generate HTML code, where white spaces and line returns do not really matter. With Zest-publisher, we generate code that will be interpreted or compiled, so those characters might be important (for example in python, indentation defines block of code).
+Handlebars is designed to generate HTML code, where white spaces and line returns do not really matter. With hiptest-publisher, we generate code that will be interpreted or compiled, so those characters might be important (for example in python, indentation defines block of code).
 
 This explains why templates might look a bit bulky. For the same reason, there is no indentation of the handlebars code. It would look way nicer, but the output code would have a really weird indentation.
 
@@ -53,7 +53,7 @@ To avoid this problem, it is better to use the triple bracket notation that will
 ### {Curly braces}
 
 Handlebars relies heavily on curly braces but they are not the only ones. You might run into problems when trying to output curly braces that you do not wnat to be interpreted.
-For that, we added three helpers: [curly](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#curly), [open_curly](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#open_curly) and [close_curly](https://github.com/Smartesting/zest-publisher/blob/master/docs/handlebars.md#close_curly).
+For that, we added three helpers: [curly](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#curly), [open_curly](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#open_curly) and [close_curly](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#close_curly).
 
 ```handlebars
 Considering my_value is "Hi !"
@@ -75,8 +75,8 @@ Available values in templates
 
 In any template, you will have access to the following elements:
  - node: is the currently rendered node. In most cases, you will not need it. The main use case is accessing the project in the list of scenarios (``node.parent``) to get the project name.
- - rendered_children: contains the node's children already rendered. If you write your templates based on existing ones, the content should be pretty straightfoward. For more explanations on the content, you can have a look at the [nodes documentation](https://github.com/Smartesting/zest-publisher/blob/master/docs/nodes.md).
- - context: the rendering context. It contains some usefull information, mainly: ``context.package`` which is th package name and ``context.call_prefix`` which is the name of the actionwords class.
+ - rendered_children: contains the node's children already rendered. If you write your templates based on existing ones, the content should be pretty straightfoward. For more explanations on the content, you can have a look at the [nodes documentation](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md).
+ - context: the rendering context. It contains some usefull information, mainly: ``context.package`` which is the package name and ``context.call_prefix`` which is the name of the actionwords class.
 
 
 For some nodes, we add some extra context shown below for each type of node. Following the Ruby naming convention, names ending with a question mark are booleans.
@@ -93,7 +93,7 @@ Those data can be directly used inside handlebars condition. For example in ``sc
 
 ``has_tags?`` is true when tags have been set on the scenario or action word.
 
-``has_step?`` is true if there is at least one step (action/result in Zest) in the definition.
+``has_step?`` is true if there is at least one step (action/result in Hiptest) in the definition.
 
 ``is_empty?`` is true when the definition is empty.
 
@@ -126,13 +126,13 @@ The same values are available than  for actionword, plus:
 
 ### tag
 
-``has_value?`` is true when the tag has a value (for example: "priority:1" in Zest, 1 is the value).
+``has_value?`` is true when the tag has a value (for example: "priority:1" in Hiptest, 1 is the value).
 
 ### template
 
 A bit more explanation is needed here.
 
-In Zest, templates are double quoted string. It is possible to include some variables inside (for example: "Ensure value is: ${x}"). When exporting the data, the string is splitted into chunks. With the previous example, there will be two chunks: 'Ensure value is: ' which will be a ``Zest::Nodes::StringLiteral`` instance and x which will be a ``Zest::Nodes::Variable`` instance.
+In Hiptest, templates are double quoted string. It is possible to include some variables inside (for example: "Ensure value is: ${x}"). When exporting the data, the string is splitted into chunks. With the previous example, there will be two chunks: 'Ensure value is: ' which will be a ``Hiptest::Nodes::StringLiteral`` instance and x which will be a ``Hiptest::Nodes::Variable`` instance.
 
 ``treated_chunks`` gives the list of chunks with an extra information (``is_variable?``) that tells if the chunks is a variable of not. It also provide the raw node.
 
@@ -140,7 +140,7 @@ In Zest, templates are double quoted string. It is possible to include some vari
 
 The main use for that is to be able to generate code that will do the replacement in string. The easiest way to understand this is to have a look at the ``template.hbs`` file in the Java or Python directory.
 
-Zest custom helpers
+Hiptest custom helpers
 -------------------
 
 We provide a few custom helpers that can be used in templates. For each one, we show an example on how to use it and below the output it will provide.

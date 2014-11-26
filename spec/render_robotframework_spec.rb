@@ -7,74 +7,74 @@ describe 'Render as Robot framework' do
   include_context "shared render"
 
   before(:each) do
-    # In Zest: null
+    # In Hiptest: null
     @null_rendered = 'None'
 
-    # In Zest: 'What is your quest ?'
+    # In Hiptest: 'What is your quest ?'
     @what_is_your_quest_rendered = "What is your quest ?"
 
-    # In Zest: 3.14
+    # In Hiptest: 3.14
     @pi_rendered = '3.14'
 
-    # In Zest: false
+    # In Hiptest: false
     @false_rendered = 'false'
 
-    # In Zest: "${foo}fighters"
+    # In Hiptest: "${foo}fighters"
     @foo_template_rendered = '${foo}fighters'
 
-    # In Zest: "Fighters said \"Foo !\""
+    # In Hiptest: "Fighters said \"Foo !\""
     @double_quotes_template_rendered = 'Fighters said \"Foo !\"'
 
-    # In Zest: foo (as in 'foo := 1')
+    # In Hiptest: foo (as in 'foo := 1')
     @foo_variable_rendered = '${foo}'
 
-    # In Zest: foo.fighters
+    # In Hiptest: foo.fighters
     @foo_dot_fighters_rendered = '${foo}.fighters'
 
-    # In Zest: foo['fighters']
+    # In Hiptest: foo['fighters']
     @foo_brackets_fighters_rendered = "${foo}[fighters]"
 
-    # In Zest: -foo
+    # In Hiptest: -foo
     @minus_foo_rendered = '-${foo}'
 
-    # In Zest: foo - 'fighters'
+    # In Hiptest: foo - 'fighters'
     @foo_minus_fighters_rendered = "${foo} - fighters"
 
-    # In Zest: (foo)
+    # In Hiptest: (foo)
     @parenthesis_foo_rendered = '(${foo})'
 
-    # In Zest: [foo, 'fighters']
+    # In Hiptest: [foo, 'fighters']
     @foo_list_rendered = "[${foo}, fighters]"
 
-    # In Zest: foo: 'fighters'
+    # In Hiptest: foo: 'fighters'
     @foo_fighters_prop_rendered = "${foo}: fighters"
 
-    # In Zest: {foo: 'fighters', Alt: J}
+    # In Hiptest: {foo: 'fighters', Alt: J}
     @foo_dict_rendered = "{${foo}: fighters, Alt: J}"
 
-    # In Zest: foo := 'fighters'
+    # In Hiptest: foo := 'fighters'
     @assign_fighters_to_foo_rendered = "${foo} = fighters"
 
-    # In Zest: call 'foo'
+    # In Hiptest: call 'foo'
     @call_foo_rendered = "foo"
-    # In Zest: call 'foo bar'
+    # In Hiptest: call 'foo bar'
     @call_foo_bar_rendered = "foo_bar"
 
-    # In Zest: call 'foo'('fighters')
+    # In Hiptest: call 'foo'('fighters')
     @call_foo_with_fighters_rendered = "foo\tfighters"
-    # In Zest: call 'foo bar'('fighters')
+    # In Hiptest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "foo_bar\tfighters"
 
-    # In Zest: step {action: "${foo}fighters"}
+    # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '# TODO: Implement action: ${foo}fighters'
 
-    # In Zest:
+    # In Hiptest:
     # if (true)
     #   foo := 'fighters'
     #end
     @if_then_rendered = "# NOT SUPPORTED YET"
 
-    # In Zest:
+    # In Hiptest:
     # if (true)
     #   foo := 'fighters'
     # else
@@ -82,31 +82,31 @@ describe 'Render as Robot framework' do
     #end
     @if_then_else_rendered = "# NOT SUPPORTED YET"
 
-    # In Zest:
+    # In Hiptest:
     # while (foo)
     #   fighters := 'foo'
     #   foo('fighters')
     # end
     @while_loop_rendered = "# NOT SUPPORTED YET"
 
-    # In Zest: @myTag
+    # In Hiptest: @myTag
     @simple_tag_rendered = 'myTag'
 
-    # In Zest: @myTag:somevalue
+    # In Hiptest: @myTag:somevalue
     @valued_tag_rendered = 'myTag:somevalue'
 
-    # In Zest: plic (as in: definition 'foo'(plic))
+    # In Hiptest: plic (as in: definition 'foo'(plic))
     @plic_param_rendered = '${plic}'
 
-    # In Zest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
+    # In Hiptest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
     @plic_param_default_ploc_rendered = '${plic}=ploc'
 
-    # In Zest:
+    # In Hiptest:
     # actionword 'my action word' do
     # end
     @empty_action_word_rendered = "my_action_word\n"
 
-    # In Zest:
+    # In Hiptest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
@@ -115,7 +115,7 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
@@ -124,7 +124,7 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # @myTag
     # actionword 'compare to pi' (x) do
     #   foo := 3.14
@@ -142,7 +142,7 @@ describe 'Render as Robot framework' do
       "\t# NOT SUPPORTED YET",
       ""].join("\n")
 
-    # In Zest:
+    # In Hiptest:
     # actionword 'my action word' do
     #   step {action: "basic action"}
     # end
@@ -151,7 +151,7 @@ describe 'Render as Robot framework' do
       "\t# TODO: Implement action: basic action",
       ""].join("\n")
 
-    # In Zest, correspond to two action words:
+    # In Hiptest, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -169,7 +169,7 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
-    # In Zest, correspond to these action words with parameters:
+    # In Hiptest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -214,7 +214,7 @@ describe 'Render as Robot framework' do
     ].join("\n")
 
 
-    # In Zest:
+    # In Hiptest:
     # @myTag
     # scenario 'compare to pi' (x) do
     #   foo := 3.14
@@ -319,7 +319,7 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
-    # In Zest, correspond to two scenarios in a project called 'My project'
+    # In Hiptest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do
     # end
     # scenario 'second scenario' do

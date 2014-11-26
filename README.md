@@ -1,4 +1,4 @@
-Zest Publisher
+Hiptest Publisher
 ==============
 
 [![Build Status](https://travis-ci.org/Smartesting/zest-publisher.svg?branch=master)](https://travis-ci.org/Smartesting/zest-publisher)
@@ -14,18 +14,18 @@ Installing
 You need to have [Ruby installed on your machine](https://www.ruby-lang.org/en/installation/). You can then install it using gem:
 
 ```shell
-gem install zest-publisher
+gem install hiptest-publisher
 ```
 
 Exporting a project
 -------------------
 
-Go to one of your [Zest projects](https://www.zest-testing.com/#/projects) and select the Settings tab.
+Go to one of your [Hiptest projects](https://hiptest.net/#/projects) and select the Settings tab.
 This tab is available only for projects you own.
 From there, copy the secret token and run this command line:
 
 ```shell
-zest-publisher --token=<YOUR TOKEN>
+hiptest-publisher --token=<YOUR TOKEN>
 ```
 
 This will create a Ruby tests suite. For the moment, we support the following languages and frameworks:
@@ -37,14 +37,14 @@ This will create a Ruby tests suite. For the moment, we support the following la
 You can specify the output language and framework in the command line, for example:
 
 ```shell
-zest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
+hiptest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 ```
 
 
 For more information on the available options, use the following command:
 
 ```shell
-zest-publisher --help
+hiptest-publisher --help
 ```
 
 You could obtain for example:
@@ -62,7 +62,7 @@ Specific options:
         --actionwords-only           Export only the actionwords (default: false)
         --split-scenarios            Export each scenario in a single file (default: false)
         --leafless-export            Use only last level action word (default: false)
-    -s, --site=SITE                  Site to fetch from (default: https://www.zest-testing.com)
+    -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -F, --filters-help               Show help about scenario filtering
@@ -78,9 +78,9 @@ If you have multiple projects, you can have multiple config files and select one
 
 ```shell
 # Use the default config file
-zest-publisher
+hiptest-publisher
 # Use the one to export as minitest
-zest-publisher --config-file=config_minitest
+hiptest-publisher --config-file=config_minitest
 ```
 
 For example, for java you can use this config file content:
@@ -95,4 +95,4 @@ package = 'com.youcompagny'
 Adding support for other languages and framework
 ------------------------------------------------
 
-See the [CONTRIBUTING](https://github.com/Smartesting/zest-publisher/blob/master/docs/CONTRIBUTING.md>) help page for more information.
+See the [CONTRIBUTING](https://github.com/hiptest/hiptest-publisher/blob/master/docs/CONTRIBUTING.md>) help page for more information.

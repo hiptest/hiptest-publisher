@@ -2,8 +2,8 @@ require 'open-uri'
 require 'openssl'
 require 'colorize'
 
-def zest_publisher_path
-  Gem.loaded_specs['zest-publisher'].full_gem_path
+def hiptest_publisher_path
+  Gem.loaded_specs['hiptest-publisher'].full_gem_path
 rescue
   '.'
 end

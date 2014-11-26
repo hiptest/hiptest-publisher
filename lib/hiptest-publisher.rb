@@ -1,14 +1,14 @@
 require 'colorize'
 
-require 'zest-publisher/string'
-require 'zest-publisher/utils'
-require 'zest-publisher/options_parser'
-require 'zest-publisher/xml_parser'
-require 'zest-publisher/parent_adder'
-require 'zest-publisher/parameter_type_adder'
-require 'zest-publisher/call_arguments_adder'
+require 'hiptest-publisher/string'
+require 'hiptest-publisher/utils'
+require 'hiptest-publisher/options_parser'
+require 'hiptest-publisher/xml_parser'
+require 'hiptest-publisher/parent_adder'
+require 'hiptest-publisher/parameter_type_adder'
+require 'hiptest-publisher/call_arguments_adder'
 
-module Zest
+module Hiptest
   class Publisher
     def initialize(args)
       @options = OptionsParser.parse(args)
@@ -20,20 +20,20 @@ module Zest
     end
 
     def fetch_xml_file
-      show_status_message "Fetching data from Zest"
+      show_status_message "Fetching data from Hiptest"
       xml = fetch_project_export(@options)
-      show_status_message "Fetching data from Zest", :success
+      show_status_message "Fetching data from Hiptest", :success
 
       return xml
     rescue Exception => err
-      show_status_message "Fetching data from Zest", :failure
+      show_status_message "Fetching data from Hiptest", :failure
       puts "Unable to open the file, please check that the token is correct".red
       trace_exception(err) if @options.verbose
     end
 
     def get_project(xml)
       show_status_message "Extracting data"
-      parser = Zest::XMLParser.new(xml, @options)
+      parser = Hiptest::XMLParser.new(xml, @options)
       show_status_message "Extracting data", :success
 
       return parser.build_project
@@ -44,7 +44,7 @@ module Zest
       begin
         show_status_message status_message
         File.open(path, 'w') do |file|
-          file.write(Zest::Renderer.render(node, @options.language, context))
+          file.write(Hiptest::Renderer.render(node, @options.language, context))
         end
 
         show_status_message status_message, :success
@@ -107,9 +107,9 @@ module Zest
 
     def export
       @language_config = LanguageConfigParser.new(@options)
-      Zest::Nodes::ParentAdder.add(@project)
-      Zest::Nodes::ParameterTypeAdder.add(@project)
-      Zest::DefaultArgumentAdder.add(@project)
+      Hiptest::Nodes::ParentAdder.add(@project)
+      Hiptest::Nodes::ParameterTypeAdder.add(@project)
+      Hiptest::DefaultArgumentAdder.add(@project)
 
       unless @options.actionwords_only
         @options.leafless_export ? export_tests : export_scenarios

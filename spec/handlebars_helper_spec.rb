@@ -1,5 +1,5 @@
 require_relative 'spec_helper'
-require_relative '../lib/zest-publisher/handlebars_helper'
+require_relative '../lib/hiptest-publisher/handlebars_helper'
 
 class MockHbBlock
   def initialize(content)
@@ -23,9 +23,9 @@ class MockHandlebars
   end
 end
 
-describe Zest::HandlebarsHelper do
+describe Hiptest::HandlebarsHelper do
   let(:handlebars) {MockHandlebars.new}
-  let(:instance) {Zest::HandlebarsHelper.new(handlebars, {})}
+  let(:instance) {Hiptest::HandlebarsHelper.new(handlebars, {})}
 
   let(:block) {
     block = MockHbBlock.new([
@@ -37,7 +37,7 @@ describe Zest::HandlebarsHelper do
 
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
-      Zest::HandlebarsHelper.register_helpers(handlebars, {})
+      Hiptest::HandlebarsHelper.register_helpers(handlebars, {})
       expect(handlebars.helpers.length).to eq(18)
     end
   end
@@ -76,7 +76,7 @@ describe Zest::HandlebarsHelper do
     end
 
     it 'any method named hh_* is register as a helper (hh stands for handlebars helper)' do
-      class CustomHelper < Zest::HandlebarsHelper
+      class CustomHelper < Hiptest::HandlebarsHelper
         def hh_do_something(context, block)
         end
       end
@@ -130,7 +130,7 @@ describe Zest::HandlebarsHelper do
     end
 
     it 'if no indentation is specified, it uses the one from the context' do
-      instance = Zest::HandlebarsHelper.new(nil, {indentation: '---'})
+      instance = Hiptest::HandlebarsHelper.new(nil, {indentation: '---'})
       expect(instance.hh_indent(nil, MockHbBlock.new("La"))).to eq("---La")
     end
 

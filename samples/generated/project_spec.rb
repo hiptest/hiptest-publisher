@@ -2,7 +2,7 @@
 require 'spec_helper'
 require_relative 'actionwords'
 
-describe 'ZestPublisher' do
+describe 'HiptestPublisher' do
   include Actionwords
 
   it 'show_help' do

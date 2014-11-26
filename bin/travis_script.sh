@@ -1,4 +1,4 @@
-gem install zest-publisher
-zest-publisher --help
+gem install hiptest-publisher
+hiptest-publisher --help
 
 CODECLIMATE_REPO_TOKEN=5b745097284243406b1098963edd75e7c4cf7e1dcb3941223ec181f7b3581598 bundle exec rspec spec
