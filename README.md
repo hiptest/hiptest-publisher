@@ -89,7 +89,7 @@ For example, for java you can use this config file content:
 token = '<YOUR TOKEN>'
 language = 'java'
 output_directory = '<YOUR OUTPUT DIRECTORY>'
-package = 'com.youcompagny'
+package = 'com.youcompany'
 ```
 
 Adding support for other languages and framework
