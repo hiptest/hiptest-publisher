@@ -180,22 +180,24 @@ module Hiptest
 
     def build_actionword(actionword)
       Hiptest::Nodes::Actionword.new(
-        css_first_content(actionword, 'name'),
+        css_first_content(actionword, '> name'),
         build_tags(actionword),
         build_parameters(actionword),
         build_steps(actionword))
     end
+    alias :build_actionwordSnapshot :build_actionword
 
     def build_scenario(scenario)
       Hiptest::Nodes::Scenario.new(
-        css_first_content(scenario, 'name'),
-        css_first_content(scenario, 'description'),
+        css_first_content(scenario, '> name'),
+        css_first_content(scenario, '> description'),
         build_tags(scenario),
         build_parameters(scenario),
         build_steps(scenario),
-        css_first_content(scenario, 'folderUid'),
-        build_node(css_first(scenario, 'datatable'), Hiptest::Nodes::Datatable))
+        css_first_content(scenario, '> folderUid'),
+        build_node(css_first(scenario, '> datatable'), Hiptest::Nodes::Datatable))
     end
+    alias :build_scenarioSnapshot :build_scenario
 
     def build_datatable(datatable)
       Hiptest::Nodes::Datatable.new(build_node_list(datatable.css('> dataset')))
@@ -207,12 +209,20 @@ module Hiptest
         build_node_list(dataset.css('> arguments argument')))
     end
 
-    def build_actionwords(actionwords)
-      build_node_list(actionwords.css('> actionword'), Hiptest::Nodes::Actionwords)
+    def build_actionwords(actionwords, actionwords_query = '> actionword')
+      build_node_list(actionwords.css(actionwords_query), Hiptest::Nodes::Actionwords)
     end
 
-    def build_scenarios(scenarios)
-      build_node_list(scenarios.css('> scenario'), Hiptest::Nodes::Scenarios)
+    def build_actionwordSnapshots(actionword_snapshots)
+      build_actionwords(actionword_snapshots, '> actionwordSnapshot')
+    end
+
+    def build_scenarios(scenarios, scenarios_query = '> scenario')
+      build_node_list(scenarios.css(scenarios_query), Hiptest::Nodes::Scenarios)
+    end
+
+    def build_scenarioSnapshots(scenario_snapshots)
+      build_scenarios(scenario_snapshots, '> scenarioSnapshot')
     end
 
     def build_tests(tests)
@@ -234,24 +244,40 @@ module Hiptest
         css_first_content(folder, 'parentUid'),
         css_first_content(folder, 'name'))
     end
+    alias :build_folderSnapshot :build_folder
 
-    def build_testPlan(test_plan)
+    def build_testPlan(test_plan, folders_query = '> folder')
       tp = Hiptest::Nodes::TestPlan.new(
-        build_node_list(test_plan.css('> folder')))
+        build_node_list(test_plan.css(folders_query)))
 
       tp.organize_folders
       return tp
     end
 
+    def build_folderSnapshots(folder_snapshots)
+      build_testPlan(folder_snapshots, '> folderSnapshot')
+    end
+
     def build_project
       project = css_first(@xml, 'project')
+      test_run = css_first(project, '> testRuns > testRun')
+
+      if test_run.nil?
+        test_plan_node = css_first(project, '> testPlan')
+        scenarios_node = css_first(project, '> scenarios')
+        actionwords_node = css_first(project, '> actionwords')
+      else
+        test_plan_node = css_first(test_run, '> folderSnapshots')
+        scenarios_node = css_first(test_run, '> scenarioSnapshots')
+        actionwords_node = css_first(test_run, '> actionwordSnapshots')
+      end
 
       @project = Hiptest::Nodes::Project.new(
         css_first_content(project, '> name'),
         css_first_content(project, '> description'),
-        build_node(css_first(project, '> testPlan'), Hiptest::Nodes::TestPlan),
-        build_node(css_first(project, '> scenarios'), Hiptest::Nodes::Scenarios),
-        build_node(css_first(project, '> actionwords'), Hiptest::Nodes::Actionwords),
+        build_node(test_plan_node, Hiptest::Nodes::TestPlan),
+        build_node(scenarios_node, Hiptest::Nodes::Scenarios),
+        build_node(actionwords_node, Hiptest::Nodes::Actionwords),
         build_node(css_first(project, '> tests'), Hiptest::Nodes::Tests))
 
       @project.assign_scenarios_to_folders
