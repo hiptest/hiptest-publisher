@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project format="0.1">
+  <name>Hiptest publisher</name>
+  <uid>9e130e4b-8049-43c0-aae0-09b01f8ebc98</uid>
+  <tests>
+    <test>
+      <name>A scenario in a subfolder</name>
+      <steps>
+        <step>
+          <action>Some actions to do</action>
+        </step>
+      </steps>
+    </test>
+    <test>
+      <name>show help</name>
+      <steps>
+        <call>
+          <actionword>start publisher</actionword>
+          <arguments>
+            <argument>
+              <name>options</name>
+              <value>
+                <dict>
+                  <help>
+                    <booleanliteral>true</booleanliteral>
+                  </help>
+                </dict>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <step>
+          <result>help is displayed</result>
+        </step>
+      </steps>
+    </test>
+  </tests>
+  <actionwords>
+    <actionword>
+      <name>start publisher</name>
+      <uid>6246a93d-7274-4246-ad68-294db6e9ba17</uid>
+      <parameters>
+        <parameter>
+          <name>options</name>
+          <default_value>
+            <dict/>
+          </default_value>
+        </parameter>
+      </parameters>
+      <steps>
+        <step>
+          <action>
+            <template>
+              <stringliteral>start publisher with options </stringliteral>
+              <var>options</var>
+            </template>
+          </action>
+        </step>
+      </steps>
+    </actionword>
+  </actionwords>
+</project>

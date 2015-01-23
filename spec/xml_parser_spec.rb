@@ -725,18 +725,46 @@ describe Hiptest::XMLParser do
     end
   end
 
-  it 'parses a full example' do
-    parser = Hiptest::XMLParser.new(File.read('samples/xml_input/Hiptest publisher.xml'))
-    project = parser.build_project
+  context 'parses a full example' do
+    it 'from a project export'  do
+      parser = Hiptest::XMLParser.new(File.read('samples/xml_input/Hiptest publisher.xml'))
+      project = parser.build_project
 
-    expect(project.children[:name]).to eq('Hiptest publisher')
-    expect(project.find_sub_nodes.length).to eq(95)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Folder).length).to eq(4)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Scenario).length).to eq(2)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Actionword).length).to eq(4)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Step).length).to eq(4)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Datatable).length).to eq(2)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Dataset).length).to eq(0)
-    expect(project.find_sub_nodes(Hiptest::Nodes::Test).length).to eq(0)
+      expect(project.children[:name]).to eq('Hiptest publisher')
+      expect(project.find_sub_nodes.length).to eq(95)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Folder).length).to eq(4)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Scenario).length).to eq(2)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Actionword).length).to eq(4)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Step).length).to eq(4)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Datatable).length).to eq(2)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Dataset).length).to eq(0)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Test).length).to eq(0)
+    end
+
+    it 'from a test export' do
+      parser = Hiptest::XMLParser.new(File.read('samples/xml_input/Hiptest automation.xml'))
+      project = parser.build_project
+
+      expect(project.children[:name]).to eq('Hiptest publisher')
+      # Folder are not exported
+      expect(project.find_sub_nodes(Hiptest::Nodes::Folder).length).to eq(0)
+      # Scenarios are not exported in automation export, Tests are exported instead
+      expect(project.find_sub_nodes(Hiptest::Nodes::Scenario).length).to eq(0)
+      # Only leaf and used actionwords are exported
+      expect(project.find_sub_nodes(Hiptest::Nodes::Actionword).length).to eq(1)
+      # Two tests where generated from the scenarios
+      expect(project.find_sub_nodes(Hiptest::Nodes::Test).length).to eq(2)
+    end
+
+    it 'from a test_run export' do
+      parser = Hiptest::XMLParser.new(File.read('samples/xml_input/Hiptest test run.xml'))
+      project = parser.build_project
+
+      expect(project.children[:name]).to eq('Hiptest publisher')
+      # And not four as previously, folder without scenarios are not added in a test run
+      expect(project.find_sub_nodes(Hiptest::Nodes::Folder).length).to eq(3)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Scenario).length).to eq(2)
+      expect(project.find_sub_nodes(Hiptest::Nodes::Actionword).length).to eq(4)
+    end
   end
 end
