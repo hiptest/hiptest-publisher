@@ -17,7 +17,12 @@ def make_filter(options)
 end
 
 def fetch_project_export(options)
-  url = "#{options.site}/publication/#{options.token}/#{options.leafless_export ? 'leafless_tests' : 'project'}?future=1#{make_filter(options)}"
+  url = "#{options.site}/publication/#{options.token}"
+  if options.test_run_id.nil?
+    url = "#{url}/#{options.leafless_export ? 'leafless_tests' : 'project'}?future=1#{make_filter(options)}"
+  else
+    url = "#{url}/test_run/#{options.test_run_id}"
+  end
 
   puts "URL: #{url}".white if options.verbose
   open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
