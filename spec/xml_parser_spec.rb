@@ -34,6 +34,15 @@ describe Hiptest::XMLParser do
     create_item('scenario', name, description, tags, parameters, steps)
   end
 
+  def create_actionword_snapshot(name, tags = [], parameters = [], steps = [])
+    create_item('actionwordSnapshot', name, '', tags, parameters, steps)
+  end
+
+  def create_scenario_snapshot(name, description = '', tags = [], parameters = [], steps = [])
+    create_item('scenarioSnapshot', name, description, tags, parameters, steps)
+  end
+
+
   def build_node(xml)
     xml = "<?xml version=\"1.0\"?>#{xml}"
     parser = TestParser.new(xml)
@@ -603,8 +612,24 @@ describe Hiptest::XMLParser do
     expect(node.children[:actionwords][0]).to be_a(Hiptest::Nodes::Actionword)
   end
 
+  it 'actionwordSnapshots' do
+    node = build_node("<actionwordSnapshots>#{create_actionword_snapshot('My actionword')}</actionwordSnapshots>")
+
+    expect(node).to be_a(Hiptest::Nodes::Actionwords)
+    expect(node.children[:actionwords].length).to eq(1)
+    expect(node.children[:actionwords][0]).to be_a(Hiptest::Nodes::Actionword)
+  end
+
   it 'scenarios' do
     node = build_node("<scenarios>#{create_scenario('My scenario')}</scenarios>")
+
+    expect(node).to be_a(Hiptest::Nodes::Scenarios)
+    expect(node.children[:scenarios].length).to eq(1)
+    expect(node.children[:scenarios][0]).to be_a(Hiptest::Nodes::Scenario)
+  end
+
+  it 'scenarioSnapshots' do
+    node = build_node("<scenarioSnapshots>#{create_scenario_snapshot('My scenario')}</scenarioSnapshots>")
 
     expect(node).to be_a(Hiptest::Nodes::Scenarios)
     expect(node.children[:scenarios].length).to eq(1)
