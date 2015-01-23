@@ -56,6 +56,7 @@ Specific options:
     -f, --framework=FRAMEWORK        Test framework to use
     -o, --output-directory=PATH      Output directory (default: .)
     -c, --config-file=PATH           Configuration file (default: config)
+        --test-run-id=ID             Export data from a test run
         --scenario-ids=IDS           Filter scenarios by ids
         --scenario-tags=TAGS         Filter scenarios by tags
         --tests-only                 Export only the tests (default: false)
