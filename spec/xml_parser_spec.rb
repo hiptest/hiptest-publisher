@@ -545,90 +545,18 @@ describe Hiptest::XMLParser do
       end
     end
 
-    context 'Folder structure' do
-      let(:folder_def) {
-        '<name>My folder</name><uid>1234</uid><parentUid>7894</parentUid>'
-      }
+    context 'testPlan and folder' do
+      let(:folder_node_type) {'folder'}
+      let(:folder_container) {'testPlan'}
 
-      let(:folders_defs) {[
-        '<name>my project</name><uid>123</uid>',
-        '<name>Second subfolder</name><uid>456</uid><parentUid>123</parentUid>',
-        '<name>First subfolder</name><uid>789</uid><parentUid>456</parentUid>'
-      ]}
+      it_behaves_like 'folder structure'
+    end
 
-      context 'testPlan' do
-        let(:test_plan) {
-          folders = folders_defs.map {|n| "<folder>#{n}</folder>"}.join("")
-          build_node("<testPlan>#{folders}</testPlan>")
-        }
+    context 'folderSnapshots and folderSnapshot' do
+      let(:folder_node_type) {'folderSnapshot'}
+      let(:folder_container) {'folderSnapshots'}
 
-        it 'stores all folders' do
-          expect(test_plan).to be_a(Hiptest::Nodes::TestPlan)
-          expect(test_plan.children[:folders].length).to eq(3)
-          expect(test_plan.children[:folders].map(&:class).uniq).to eq([Hiptest::Nodes::Folder])
-        end
-
-        it 'updates references' do
-          folders = test_plan.children[:folders]
-
-          expect(folders[0].parent).to be_nil
-          expect(folders[0].children[:subfolders]).to eq([folders[1]])
-
-          expect(folders[1].parent).to eq(folders[0])
-          expect(folders[1].children[:subfolders]).to eq([folders[2]])
-
-          expect(folders[2].parent).to eq(folders[1])
-          expect(folders[2].children[:subfolders]).to eq([])
-        end
-      end
-
-      it 'folder' do
-        node = build_node("<folder>#{folder_def}</folder>")
-
-        expect(node).to be_a(Hiptest::Nodes::Folder)
-        expect(node.children).to eq({
-          name: "My folder",
-          subfolders: [],
-          scenarios: []
-        })
-      end
-
-      context 'folderSnapshots are handled like testPlan' do
-        let(:folder_snapshots) {
-          folders = folders_defs.map {|n| "<folderSnapshot>#{n}</folderSnapshot>"}.join("")
-          build_node("<folderSnapshots>#{folders}</folderSnapshots>")
-        }
-
-        it 'stores all folders' do
-          expect(folder_snapshots).to be_a(Hiptest::Nodes::TestPlan)
-          expect(folder_snapshots.children[:folders].length).to eq(3)
-          expect(folder_snapshots.children[:folders].map(&:class).uniq).to eq([Hiptest::Nodes::Folder])
-        end
-
-        it 'updates references' do
-          folders = folder_snapshots.children[:folders]
-
-          expect(folders[0].parent).to be_nil
-          expect(folders[0].children[:subfolders]).to eq([folders[1]])
-
-          expect(folders[1].parent).to eq(folders[0])
-          expect(folders[1].children[:subfolders]).to eq([folders[2]])
-
-          expect(folders[2].parent).to eq(folders[1])
-          expect(folders[2].children[:subfolders]).to eq([])
-        end
-      end
-
-      it 'folderSnapshot are handled like folders' do
-        node = build_node("<folderSnapshot>#{folder_def}</folderSnapshot>")
-
-        expect(node).to be_a(Hiptest::Nodes::Folder)
-        expect(node.children).to eq({
-          name: "My folder",
-          subfolders: [],
-          scenarios: []
-        })
-      end
+      it_behaves_like 'folder structure'
     end
 
     context 'project' do
