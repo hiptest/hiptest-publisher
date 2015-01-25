@@ -245,6 +245,10 @@ module Hiptest
 
         @folder_uid = folder_uid
       end
+
+      def set_uid(uid)
+        @children[:uid] = uid
+      end
     end
 
     class Test < Node
@@ -278,6 +282,10 @@ module Hiptest
           :name => name,
           :arguments => arguments
         }
+      end
+
+      def set_uid(uid)
+        @children[:uid] = uid
       end
     end
 

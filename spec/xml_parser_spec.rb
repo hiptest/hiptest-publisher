@@ -495,12 +495,69 @@ describe Hiptest::XMLParser do
           create_scenario(*args)
         end
       end
+
+      it 'does not set the uid' do
+        scenario = build_node('<scenario><name>Plop</name><uid>1234</uid></scenario>')
+        expect(scenario.children[:uid]).to be_nil
+      end
     end
 
     context 'scenarioSnapshot' do
       it_behaves_like 'scenario' do
         def scenario_maker(*args)
           create_scenario_snapshot(*args)
+        end
+      end
+
+      context 'uid is set' do
+        it 'at the scenarioLevel snapshot if there is no datatable and it uses the testSnapshot uid' do
+          scenario = build_node([
+            '<scenarioSnapshot>',
+            '  <name>My scenario</name>',
+            '  <uid>1234</uid>',
+            '  <datatable />',
+            '  <testSnapshots>',
+            '    <testSnapshot>',
+            '      <uid>4321</uid>',
+            '    </testSnapshot>',
+            '  </testSnapshots>',
+            '</scenarioSnapshot>'
+          ].join("\n"))
+
+          expect(scenario.children[:uid]).to eq('4321')
+        end
+
+        it 'at the dataset level if a datatable is set and uses the corresponding index from the testSnapshot' do
+          scenario = build_node([
+            '<scenarioSnapshot>',
+            '  <name>My scenario</name>',
+            '  <uid>1234</uid>',
+            '  <datatable>',
+            '    <dataset>',
+            '      <name>My first set</name>',
+            '    </dataset>',
+            '    <dataset>',
+            '      <name>My second set</name>',
+            '    </dataset>',
+            '  </datatable>',
+            '  <testSnapshots>',
+            '    <testSnapshot>',
+            '      <index>1</index>',
+            '      <uid>4321</uid>',
+            '    </testSnapshot>',
+            '    <testSnapshot>',
+            '      <index>0</index>',
+            '      <uid>8765</uid>',
+            '    </testSnapshot>',
+            '  </testSnapshots>',
+            '</scenarioSnapshot>'
+          ].join("\n"))
+
+          expect(scenario.children[:uid]).to be_nil
+          datasets = scenario.children[:datatable].children[:datasets]
+
+          expect(datasets.first.children[:uid]).to eq('8765')
+          expect(datasets.last.children[:uid]).to eq('4321')
         end
       end
     end

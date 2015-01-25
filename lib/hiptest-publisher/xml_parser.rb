@@ -197,7 +197,23 @@ module Hiptest
         css_first_content(scenario, '> folderUid'),
         build_node(css_first(scenario, '> datatable'), Hiptest::Nodes::Datatable))
     end
-    alias :build_scenarioSnapshot :build_scenario
+
+    def build_scenarioSnapshot(scs)
+      scenario = build_scenario(scs)
+      datasets = scenario.find_sub_nodes(Hiptest::Nodes::Dataset)
+
+      if datasets.empty?
+        scenario.set_uid(css_first_content(scs, 'testSnapshot > uid'))
+      else
+        scs.css('testSnapshot').each do |testSnapshot|
+          uid = css_first_content(testSnapshot, '> uid')
+          index = css_first_content(testSnapshot, '> index').to_i
+
+          datasets[index].set_uid(uid) unless index >= datasets.length
+        end
+      end
+      scenario
+    end
 
     def build_datatable(datatable)
       Hiptest::Nodes::Datatable.new(build_node_list(datatable.css('> dataset')))
