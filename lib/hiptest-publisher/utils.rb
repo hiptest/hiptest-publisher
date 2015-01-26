@@ -18,7 +18,7 @@ end
 
 def fetch_project_export(options)
   url = "#{options.site}/publication/#{options.token}"
-  if options.test_run_id.nil?
+  if options.test_run_id.nil? || options.test_run_id.empty?
     url = "#{url}/#{options.leafless_export ? 'leafless_tests' : 'project'}?future=1#{make_filter(options)}"
   else
     url = "#{url}/test_run/#{options.test_run_id}"
