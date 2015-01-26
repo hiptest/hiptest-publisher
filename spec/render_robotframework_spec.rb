@@ -236,6 +236,17 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
+    @full_scenario_with_uid_rendered = [
+      "",
+      "*** Test Cases ***",
+      "",
+      "compare_to_pi_uidabcd1234",
+      "\t[Arguments]\t${x}",
+      "\t${foo} = 3.14",
+      "\t\# NOT SUPPORTED YET",
+      ""
+    ].join("\n")
+
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
@@ -278,6 +289,27 @@ describe 'Render as Robot framework' do
       "Wrong login\tinvalid\tinvalid\tInvalid username or password",
       "Wrong password\tvalid\tinvalid\tInvalid username or password",
       "Valid login/password\tvalid\tvalid\tNone",
+      "",
+      "",
+      "*** Keywords ***",
+      "",
+      "check_login",
+      "\t[Arguments]\t${login}\t${password}\t${expected}",
+      "\tfill_login\t${login}",
+      "\tfill_password\t${password}",
+      "\tpress_enter",
+      "\tassert_error_is_displayed\t${expected}",
+      ""
+    ].join("\n")
+
+    @scenario_with_datatable_rendered_with_uids = [
+      "",
+      "Test Template     check_login",
+      "",
+      "*** Test Cases ***\tlogin\tpassword\texpected",
+      "Wrong login (uid:a-123)\tinvalid\tinvalid\tInvalid username or password",
+      "Wrong password (uid:b-456)\tvalid\tinvalid\tInvalid username or password",
+      "Valid login/password (uid:c-789)\tvalid\tvalid\tNone",
       "",
       "",
       "*** Keywords ***",

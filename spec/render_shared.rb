@@ -407,6 +407,25 @@ shared_examples "a renderer" do
 
       expect(@scenario_with_datatable.render(language, @context)).to eq(@scenario_with_datatable_rendered_in_single_file)
     end
+
+    it 'the UID is displayed in the name if set' do
+      @context[:call_prefix] = 'actionwords'
+
+      @full_scenario.set_uid('abcd-1234')
+      expect(@full_scenario.render(language, @context)).to eq(@full_scenario_with_uid_rendered)
+    end
+
+    it 'when the uid is set at the dataset level, it is rendered in the dataset export name' do
+      @context[:call_prefix] = 'actionwords'
+
+      uids = ['a-123', 'b-456', 'c-789']
+      @scenario_with_datatable.children[:datatable].children[:datasets].each_with_index do |dataset, index|
+        dataset.set_uid(uids[index])
+      end
+
+      expect(@scenario_with_datatable.render(language, @context)).to eq(
+        @scenario_with_datatable_rendered_with_uids)
+    end
   end
 
   it 'Actionwords' do

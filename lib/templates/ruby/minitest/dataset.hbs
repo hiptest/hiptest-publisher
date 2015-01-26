@@ -1,3 +1,3 @@
-def test_{{{ normalize scenario_name}}}_{{{ normalize_lower rendered_children.name}}}
+def test_{{{ normalize scenario_name}}}_{{{ normalize_lower rendered_children.name}}}{{#if rendered_children.uid}}_uid{{{ normalize rendered_children.uid}}}{{/if}}
   {{{ underscore scenario_name }}}({{{ join rendered_children.arguments ', ' }}})
 end

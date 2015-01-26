@@ -284,6 +284,22 @@ describe 'Render as Java' do
         "  throw new UnsupportedOperationException();",
         "}"].join("\n")
 
+      @full_scenario_with_uid_rendered = [
+        "// This is a scenario which description ",
+        "// is on two lines",
+        "// Tags: myTag",
+        "public void testCompareToPiUidabcd1234() {",
+        "  foo = 3.14;",
+        "  if (foo > x) {",
+        "    // TODO: Implement result: x is greater than Pi",
+        "  } else {",
+        "    // TODO: Implement result: x is lower than Pi",
+        "    // on two lines",
+        "  }",
+        "",
+        "  throw new UnsupportedOperationException();",
+        "}"].join("\n")
+
       @full_scenario_rendered_for_single_file = [
         "package com.example;",
         "",
@@ -344,6 +360,30 @@ describe 'Render as Java' do
         "",
         ""
       ].join("\n")
+
+      @scenario_with_datatable_rendered_with_uids = [
+        "public void checkLogin(String login, String password, String expected) {",
+        "  actionwords.fillLogin(login);",
+        "  actionwords.fillPassword(password);",
+        "  actionwords.pressEnter();",
+        "  actionwords.assertErrorIsDisplayed(expected);",
+        "}",
+        "",
+        "public void testCheckLoginWrongLoginUida123() {",
+        '  checkLogin("invalid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "public void testCheckLoginWrongPasswordUidb456() {",
+        '  checkLogin("valid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "public void testCheckLoginValidLoginpasswordUidc789() {",
+        '  checkLogin("valid", "valid", null);',
+        "}",
+        "",
+        ""
+      ].join("\n")
+
 
       # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
       @scenario_with_datatable_rendered_in_single_file = [
@@ -490,6 +530,23 @@ describe 'Render as Java' do
         "  throw new UnsupportedOperationException();",
         "}"].join("\n")
 
+      @full_scenario_with_uid_rendered = [
+        "// This is a scenario which description ",
+        "// is on two lines",
+        "// Tags: myTag",
+        "@Test",
+        "public void compareToPiUidabcd1234() {",
+        "  foo = 3.14;",
+        "  if (foo > x) {",
+        "    // TODO: Implement result: x is greater than Pi",
+        "  } else {",
+        "    // TODO: Implement result: x is lower than Pi",
+        "    // on two lines",
+        "  }",
+        "",
+        "  throw new UnsupportedOperationException();",
+        "}"].join("\n")
+
       @full_scenario_rendered_for_single_file = [
         "package com.example;",
         "",
@@ -549,6 +606,32 @@ describe 'Render as Java' do
         "",
         "@Test",
         "public void checkLoginValidLoginpassword() {",
+        '  checkLogin("valid", "valid", null);',
+        "}",
+        "",
+        ""
+      ].join("\n")
+
+      @scenario_with_datatable_rendered_with_uids = [
+        "public void checkLogin(String login, String password, String expected) {",
+        "  actionwords.fillLogin(login);",
+        "  actionwords.fillPassword(password);",
+        "  actionwords.pressEnter();",
+        "  actionwords.assertErrorIsDisplayed(expected);",
+        "}",
+        "",
+        "@Test",
+        "public void checkLoginWrongLoginUida123() {",
+        '  checkLogin("invalid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "@Test",
+        "public void checkLoginWrongPasswordUidb456() {",
+        '  checkLogin("valid", "invalid", "Invalid username or password");',
+        "}",
+        "",
+        "@Test",
+        "public void checkLoginValidLoginpasswordUidc789() {",
         '  checkLogin("valid", "valid", null);',
         "}",
         "",

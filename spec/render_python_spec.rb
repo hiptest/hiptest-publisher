@@ -258,6 +258,20 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
+    @full_scenario_with_uid_rendered = [
+      "def test_compare_to_pi_uidabcd1234(self, x):",
+      "    # This is a scenario which description ",
+      "    # is on two lines",
+      "    # Tags: myTag",
+      "    foo = 3.14",
+      "    if (foo > x):",
+      "        # TODO: Implement result: x is greater than Pi",
+      "    else:",
+      "        # TODO: Implement result: x is lower than Pi",
+      "        # on two lines",
+      "    raise NotImplementedError",
+      ""].join("\n")
+
     @full_scenario_rendered_for_single_file = [
       "# encoding: UTF-8",
       "import unittest",
@@ -296,6 +310,27 @@ describe 'Render as Python' do
       "    self.check_login(login = 'valid', password = 'invalid', expected = 'Invalid username or password')",
       "",
       "def test_check_login_valid_loginpassword(self):",
+      "    self.check_login(login = 'valid', password = 'valid', expected = None)",
+      "",
+      "",
+      ""
+      ].join("\n")
+
+    @scenario_with_datatable_rendered_with_uids = [
+      "def check_login(self, login, password, expected):",
+      "    # Ensure the login process",
+      "    self.actionwords.fill_login(login = login)",
+      "    self.actionwords.fill_password(password = password)",
+      "    self.actionwords.press_enter()",
+      "    self.actionwords.assert_error_is_displayed(error = expected)",
+      "",
+      "def test_check_login_wrong_login_uida123(self):",
+      "    self.check_login(login = 'invalid', password = 'invalid', expected = 'Invalid username or password')",
+      "",
+      "def test_check_login_wrong_password_uidb456(self):",
+      "    self.check_login(login = 'valid', password = 'invalid', expected = 'Invalid username or password')",
+      "",
+      "def test_check_login_valid_loginpassword_uidc789(self):",
       "    self.check_login(login = 'valid', password = 'valid', expected = None)",
       "",
       "",

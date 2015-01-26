@@ -210,6 +210,21 @@ describe 'Render as Ruby' do
         "  end",
         "end"].join("\n")
 
+      @full_scenario_with_uid_rendered = [
+        "it \"compare to pi (uid:abcd-1234)\" do",
+        "  # This is a scenario which description ",
+        "  # is on two lines",
+        "  # Tags: myTag",
+        "  foo = 3.14",
+        "  if (foo > x)",
+        "    # TODO: Implement result: x is greater than Pi",
+        "  else",
+        "    # TODO: Implement result: x is lower than Pi",
+        "    # on two lines",
+        "  end",
+        "  raise NotImplementedError",
+        "end"].join("\n")
+
       @scenario_with_datatable_rendered = [
         "context \"check login\" do",
         "  def check_login(login, password, expected)",
@@ -234,6 +249,29 @@ describe 'Render as Ruby' do
         "end"
       ].join("\n")
 
+      @scenario_with_datatable_rendered_with_uids = [
+        "context \"check login\" do",
+        "  def check_login(login, password, expected)",
+        "    \# Ensure the login process",
+        "    fill_login(login)",
+        "    fill_password(password)",
+        "    press_enter",
+        "    assert_error_is_displayed(expected)",
+        "  end",
+        "",
+        "  it \"Wrong login (uid:a-123)\" do",
+        "    check_login('invalid', 'invalid', 'Invalid username or password')",
+        "  end",
+        "",
+        "  it \"Wrong password (uid:b-456)\" do",
+        "    check_login('valid', 'invalid', 'Invalid username or password')",
+        "  end",
+        "",
+        "  it \"Valid login/password (uid:c-789)\" do",
+        "    check_login('valid', 'valid', nil)",
+        "  end",
+        "end"
+      ].join("\n")
 
       @scenario_with_datatable_rendered_in_single_file = [
         "# encoding: UTF-8",
@@ -374,6 +412,21 @@ describe 'Render as Ruby' do
         "  raise NotImplementedError",
         "end"].join("\n")
 
+      @full_scenario_with_uid_rendered = [
+        "def test_compare_to_pi_uidabcd1234",
+        "  # This is a scenario which description ",
+        "  # is on two lines",
+        "  # Tags: myTag",
+        "  foo = 3.14",
+        "  if (foo > x)",
+        "    # TODO: Implement result: x is greater than Pi",
+        "  else",
+        "    # TODO: Implement result: x is lower than Pi",
+        "    # on two lines",
+        "  end",
+        "  raise NotImplementedError",
+        "end"].join("\n")
+
       @full_scenario_rendered_for_single_file = [
         "# encoding: UTF-8",
         "",
@@ -421,6 +474,28 @@ describe 'Render as Ruby' do
         ""
       ].join("\n")
 
+      @scenario_with_datatable_rendered_with_uids = [
+        "def check_login(login, password, expected)",
+        "  \# Ensure the login process",
+        "  fill_login(login)",
+        "  fill_password(password)",
+        "  press_enter",
+        "  assert_error_is_displayed(expected)",
+        "end",
+        "",
+        "def test_check_login_wrong_login_uida123",
+        "  check_login('invalid', 'invalid', 'Invalid username or password')",
+        "end",
+        "",
+        "def test_check_login_wrong_password_uidb456",
+        "  check_login('valid', 'invalid', 'Invalid username or password')",
+        "end",
+        "",
+        "def test_check_login_valid_loginpassword_uidc789",
+        "  check_login('valid', 'valid', nil)",
+        "end",
+        ""
+      ].join("\n")
 
       @scenario_with_datatable_rendered_in_single_file = [
         "# encoding: UTF-8",
