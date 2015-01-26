@@ -7,6 +7,7 @@ gem 'parseconfig', '~> 1.0', '>= 1.0.4'
 gem 'i18n', '~> 0.6', '>= 0.6.11'
 gem 'nokogiri', '~> 1.6', '>= 1.6.3'
 gem 'handlebars', '~> 0.6', '>= 0.6.0'
+gem 'multipart-post'
 
 group :development do
   gem 'rspec', '~> 3.0', '>= 3.0.0'

@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'openssl'
 require 'colorize'
+require 'net/http/post/multipart'
 
 def hiptest_publisher_path
   Gem.loaded_specs['hiptest-publisher'].full_gem_path
@@ -49,4 +50,22 @@ def show_status_message(message, status=nil)
   end
 
   output.print "[#{status_icon}] #{message}\r#{line_end}"
+end
+
+def make_push_url(options)
+  "#{options.site}/import_test_results/#{options.token}/tap"
+end
+
+def push_results(options)
+  # Code from: https://github.com/nicksieger/multipart-posthttps://github.com/nicksieger/multipart-post
+  url = URI.parse(make_push_url(options))
+  use_ssl = make_push_url(options).start_with?('https://')
+
+  File.open(options.push) do |results|
+    req = Net::HTTP::Post::Multipart.new(url.path, "file" => UploadIO.new(results, "text", "results.tap"))
+
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl) do |http|
+      http.request(req)
+    end
+  end
 end

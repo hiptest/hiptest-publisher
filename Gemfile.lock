@@ -89,6 +89,7 @@ DEPENDENCIES
   handlebars (~> 0.6, >= 0.6.0)
   i18n (~> 0.6, >= 0.6.11)
   jeweler (~> 2.0, >= 2.0.1)
+  multipart-post
   nokogiri (~> 1.6, >= 1.6.3)
   parseconfig (~> 1.0, >= 1.0.4)
   rspec (~> 3.0, >= 3.0.0)

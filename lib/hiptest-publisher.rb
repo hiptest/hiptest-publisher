@@ -13,6 +13,11 @@ module Hiptest
     def initialize(args)
       @options = OptionsParser.parse(args)
 
+      unless @options.push.nil? || @options.push.empty?
+        post_results
+        return
+      end
+
       xml = fetch_xml_file
       return if xml.nil?
 
@@ -106,6 +111,8 @@ module Hiptest
     end
 
     def export
+      return if @project.nil?
+
       @language_config = LanguageConfigParser.new(@options)
       Hiptest::Nodes::ParentAdder.add(@project)
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
@@ -116,6 +123,19 @@ module Hiptest
       end
 
       export_actionwords unless @options.tests_only
+    end
+
+    def post_results
+      status_message = "Posting #{@options.push} to #{@options.site}"
+      show_status_message(status_message)
+
+      begin
+        push_results(@options)
+        show_status_message(status_message, :success)
+      rescue Exception => err
+        show_status_message(status_message, :failure)
+        trace_exception(err) if @options.verbose
+      end
     end
   end
 end
