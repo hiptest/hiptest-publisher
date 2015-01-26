@@ -64,6 +64,7 @@ Specific options:
         --split-scenarios            Export each scenario in a single file (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
+    -p, --push=FILE.TAP              Push a results file to the server
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -F, --filters-help               Show help about scenario filtering
