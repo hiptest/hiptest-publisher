@@ -4,3 +4,4 @@ scenario_filename = '%s_spec.rb'
 
 [actionwords]
 filename = 'actionwords.rb'
+to_implement_filename = 'to_implement_actionwords.rb'

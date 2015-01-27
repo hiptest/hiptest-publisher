@@ -81,6 +81,7 @@ class OptionsParser
       Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
+      Option.new(nil, 'split-actionwords', false, nil, "Generate two files for the actionwords: one for those that need implementation and one for the others", :split_actionwords),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
@@ -197,6 +198,10 @@ class LanguageConfigParser
 
   def aw_output_dir
     "#{@options.output_directory}/#{@config['actionwords']['filename']}"
+  end
+
+  def to_implement_aw_output_dir
+    "#{@options.output_directory}/#{@config['actionwords']['to_implement_filename']}"
   end
 
   def tests_render_context
