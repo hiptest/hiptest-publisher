@@ -233,6 +233,9 @@ module Hiptest
     end
 
     class Actionword < Item
+      def must_be_implemented?
+        @children[:body].empty? || @children[:body].map {|step| step.class}.compact.include?(Hiptest::Nodes::Step)
+      end
     end
 
     class Scenario < Item
@@ -290,9 +293,25 @@ module Hiptest
     end
 
     class Actionwords < Node
+      attr_reader :to_implement, :no_implement
       def initialize(actionwords = [])
         super()
         @children = {:actionwords => actionwords}
+        mark_actionwords_for_implementation
+      end
+
+      private
+      def mark_actionwords_for_implementation
+        @to_implement = []
+        @no_implement = []
+
+        @children[:actionwords].each do |aw|
+          if aw.must_be_implemented?
+            @to_implement << aw
+          else
+            @no_implement << aw
+          end
+        end
       end
     end
 

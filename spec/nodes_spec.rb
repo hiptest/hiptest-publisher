@@ -22,4 +22,48 @@ describe Hiptest::Nodes do
       end
     end
   end
+
+  context 'Actionword' do
+    context 'must_be_implemented?' do
+      let(:aw) {Hiptest::Nodes::Actionword.new('my action word')}
+
+      it 'returns true if the body is empty' do
+        expect(aw.must_be_implemented?).to be true
+      end
+
+      it 'returns true if it contains a step' do
+        aw.children[:body] << Hiptest::Nodes::Step.new('action', 'Do something')
+        expect(aw.must_be_implemented?).to be true
+      end
+
+      it 'returns false if it contains call' do
+        aw.children[:body] << Hiptest::Nodes::Call.new('another actionword')
+        expect(aw.must_be_implemented?).to be false
+      end
+    end
+  end
+
+  context 'Actionwords' do
+    let(:empty) {
+      Hiptest::Nodes::Actionword.new('empty action word')
+    }
+
+    let(:step) {
+      Hiptest::Nodes::Actionword.new('action word with a step', [], [], [Hiptest::Nodes::Step.new('action', 'Do something')])
+    }
+
+    let(:call) {
+      Hiptest::Nodes::Actionword.new('action word with a step', [], [], [Hiptest::Nodes::Call.new('another actionword')])
+    }
+
+    let(:aws) {Hiptest::Nodes::Actionwords.new([empty, step, call])}
+
+    it '@to_implement contains the list of actionwords that need to be implemented' do
+      expect(aws.to_implement).to eq([empty, step])
+    end
+
+    it '@no_implement contains the list of actionwords that do not need to be implemented' do
+      expect(aws.no_implement).to eq([call])
+    end
+  end
 end
