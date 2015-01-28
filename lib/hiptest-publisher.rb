@@ -102,21 +102,24 @@ module Hiptest
     end
 
     def export_actionwords
+      context = @language_config.actionword_render_context
       if @options.split_actionwords
         actionwords = @project.children[:actionwords]
         to_implement = Hiptest::Nodes::Actionwords.new(actionwords.to_implement)
+
         write_node_to_file(
           @language_config.to_implement_aw_output_dir,
           to_implement,
-          @language_config.actionword_render_context,
+          context,
           "Exporting to implement actionwords"
         )
 
         no_implement = Hiptest::Nodes::Actionwords.new(actionwords.no_implement)
+        context[:include_to_inclement] = true
         write_node_to_file(
           @language_config.aw_output_dir,
           no_implement,
-          @language_config.actionword_render_context,
+          context,
           "Exporting actionwords"
         )
         return
