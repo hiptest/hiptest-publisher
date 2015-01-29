@@ -84,7 +84,7 @@ class OptionsParser
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
-      Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (tap or junit)", :push_format),
+      Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (tap, junit, robot)", :push_format),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
