@@ -65,6 +65,7 @@ Specific options:
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
+        --push-format=tap            Format of the test results (tap or xml) (default: tap)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -F, --filters-help               Show help about scenario filtering
