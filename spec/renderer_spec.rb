@@ -1,3 +1,5 @@
+require 'tmpdir'
+require 'tempfile'
 require 'colorize'
 
 require_relative 'spec_helper'
@@ -25,6 +27,25 @@ describe Hiptest::Renderer do
       renderer = Hiptest::Renderer.new({language: 'ruby', framework: 'minitest', forced_templates: {}})
 
       expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/ruby/minitest/scenarios.hbs')
+    end
+
+    context 'searches first in overriden templates' do
+      let(:node) { Hiptest::Nodes::Scenarios.new([])}
+
+      it 'uses the default one if there is none overriden' do
+        Dir.mktmpdir("overriden_templates") do |dir|
+          renderer = Hiptest::Renderer.new({language: 'python', overriden_templates: "#{dir}", forced_templates: {}})
+          expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/python/scenarios.hbs')
+        end
+      end
+
+      it 'uses the overriden template is it exists' do
+        Dir.mktmpdir("overriden_templates") do |dir|
+          renderer = Hiptest::Renderer.new({language: 'python', overriden_templates: "#{dir}", forced_templates: {}})
+          open("#{dir}/scenarios.hbs", 'w') { |f| f.puts ""}
+          expect(renderer.get_template_path(node, 'hbs')).to eq("#{dir}/scenarios.hbs")
+        end
+      end
     end
   end
 end

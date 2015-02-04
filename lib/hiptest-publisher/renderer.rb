@@ -44,7 +44,12 @@ module Hiptest
         folders << "#{@context[:language]}/#{@context[:framework]}"
       end
       folders << [@context[:language], 'common']
-      folders.flatten.map {|path| "#{hiptest_publisher_path}/lib/templates/#{path}"}
+      folders = folders.flatten.map {|path| "#{hiptest_publisher_path}/lib/templates/#{path}"}
+
+      if @context.has_key?(:overriden_templates)
+        folders = folders.insert(0, @context[:overriden_templates])
+      end
+      return folders
     end
 
     def register_partials()

@@ -75,6 +75,7 @@ class OptionsParser
       Option.new('f', 'framework=FRAMEWORK', '', String, "Test framework to use", :framework),
       Option.new('o', 'output-directory=PATH', '.', String, "Output directory", :output_directory),
       Option.new('c', 'config-file=PATH', 'config', String, "Configuration file", :config),
+      Option.new(nil, 'overriden-templates=PATH', '', String, "Folder for overriden templates", :overriden_templates),
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
       Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
       Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
@@ -85,6 +86,7 @@ class OptionsParser
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
+      Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (tap, junit, robot)", :push_format),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
@@ -225,6 +227,10 @@ class LanguageConfigParser
 
     context[:package] = @options.package unless @options.package.nil?
     context[:framework] = @options.framework unless @options.framework.nil?
+
+    unless @options.overriden_templates.nil? || @options.overriden_templates.empty?
+      context[:overriden_templates] = @options.overriden_templates
+    end
 
     @config[group].each {|param, value| context[param.to_sym] = value }
     context

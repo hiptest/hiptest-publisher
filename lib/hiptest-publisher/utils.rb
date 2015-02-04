@@ -53,7 +53,7 @@ def show_status_message(message, status=nil)
 end
 
 def make_push_url(options)
-  "#{options.site}/import_test_results/#{options.token}/tap"
+  "#{options.site}/import_test_results/#{options.token}/#{options.push_format}"
 end
 
 def push_results(options)
