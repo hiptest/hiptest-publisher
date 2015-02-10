@@ -57,7 +57,7 @@ def make_push_url(options)
 end
 
 def push_results(options)
-  # Code from: https://github.com/nicksieger/multipart-posthttps://github.com/nicksieger/multipart-post
+  # Code from: https://github.com/nicksieger/multipart-post
   url = URI.parse(make_push_url(options))
   use_ssl = make_push_url(options).start_with?('https://')
 
