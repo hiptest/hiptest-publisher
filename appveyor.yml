@@ -1,0 +1,6 @@
+version: 1.0.{build}
+build:
+  verbosity: minimal
+build_script:
+ - appveyor DownloadFile http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.1.5.exe?direct
+ - rubyinstaller-2.1.5.exe
