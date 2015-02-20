@@ -1,5 +1,5 @@
-require 'handlebars'
 require 'hiptest-publisher/nodes_walker'
+require 'hiptest-publisher/handlebars'
 require 'hiptest-publisher/handlebars_helper'
 require 'hiptest-publisher/render_context_maker'
 
@@ -20,7 +20,7 @@ module Hiptest
       super(:children_first)
       @rendered = {}
       @context = context
-      @handlebars = Handlebars::Context.new
+      @handlebars = Hiptest::Handlebars::Context.new
       register_partials()
 
       Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
