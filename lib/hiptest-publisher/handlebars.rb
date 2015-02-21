@@ -4,12 +4,14 @@ require 'handlebars/source'
 module Hiptest
   module Handlebars
     class Context
-      attr_reader :js
+      attr_reader :js, :partials, :helpers
 
       def initialize
-        # src = File.open(::Handlebars::Source.bundled_path, 'r').read
-        src =  File.open('/home/vincent/dev/hiptest/hiptest-publisher/handlebars.js').read
+        src = File.open(::Handlebars::Source.bundled_path, 'r').read
+        # src =  File.open('/home/vincent/dev/hiptest/hiptest-publisher/handlebars.js').read
         @js = ExecJS.compile(src)
+        @partials = {}
+        @helpers = {}
       end
 
       def compile(*args)
@@ -17,11 +19,11 @@ module Hiptest
       end
 
       def register_helper(name, &fn)
-        @js.call('Handlebars.registerHelper', name, fn)
+        @helpers[name] = fn
       end
 
       def register_partial(name, content)
-        @js.call('(function (n, p) {Handlebars.registerPartial(n, p);})', name, content)
+        @partials[name] = content
       end
     end
 
@@ -32,7 +34,16 @@ module Hiptest
       end
 
       def call(*args)
-        @context.js.call("(function (tmpl, args) {return Handlebars.compile(tmpl).apply(null, args)})", @template, args)
+        @context.js.call([
+          "(function (partials, helpers, tmpl, args) {",
+          "  Object.keys(partials).forEach(function (key) {",
+          "    Handlebars.registerPartial(key, partials[key]);",
+          "  })",
+          "  Object.keys(helpers).forEach(function (key) {",
+          "    Handlebars.registerHelper(key, helpers[key]);",
+          "  })",
+          "  return Handlebars.compile(tmpl).apply(null, args);",
+          "})"].join("\n"), @context.partials, @context.helpers, @template, args)
       end
     end
   end
