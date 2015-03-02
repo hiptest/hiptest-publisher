@@ -8,8 +8,8 @@ module Hiptest
 
       def initialize
         src = File.open(::Handlebars::Source.bundled_path, 'r').read
-        # src =  File.open('/home/vincent/dev/hiptest/hiptest-publisher/handlebars.js').read
         @js = ExecJS.compile(src)
+
         @partials = {}
         @helpers = {}
       end
@@ -40,7 +40,9 @@ module Hiptest
           "    Handlebars.registerPartial(key, partials[key]);",
           "  })",
           "  Object.keys(helpers).forEach(function (key) {",
-          "    Handlebars.registerHelper(key, helpers[key]);",
+          "    Handlebars.registerHelper(key, function () {",
+          "      return helpers[key].apply(this, arguments);",
+          "    });",
           "  })",
           "  return Handlebars.compile(tmpl).apply(null, args);",
           "})"].join("\n"), @context.partials, @context.helpers, @template, args)

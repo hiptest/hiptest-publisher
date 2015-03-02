@@ -1,4 +1,5 @@
 require 'pry'
+require 'v8'
 
 require_relative 'spec_helper'
 require_relative '../lib/hiptest-publisher/handlebars'
@@ -26,6 +27,7 @@ describe Hiptest::Handlebars do
     end
 
     context 'helpers' do
+      # Those examples come from Handlebars.rb specs
       before do
         ctx.register_helper('alsowith') do |this, context, block|
           block.fn(context)
@@ -38,12 +40,12 @@ describe Hiptest::Handlebars do
 
       it "correctly passes context and implementation" do
         t = ctx.compile("it's so {{#alsowith weather}}*{{summary}}*{{/alsowith}}!")
-        t.call(:weather => {:summary => "sunny"}).should eql "it's so *sunny*!"
+        expect(t.call(:weather => {:summary => "sunny"})).to eq("it's so *sunny*!")
       end
 
       it "doesn't nee a context or arguments to the call" do
         t = ctx.compile("{{#twice}}Hurray!{{/twice}}")
-        t.call.should eql "Hurray!Hurray!"
+        expect(t.call).to eq("Hurray!Hurray!")
       end
     end
   end
