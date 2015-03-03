@@ -9,6 +9,7 @@ gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
 gem 'handlebars-source', '~> 2.0.0', '>= 2.0.0'
 gem 'execjs', '~> 2.3', '>= 2.3.0'
 gem 'multipart-post', '~> 2.0', '>= 2.0.0'
+gem 'therubyracer'
 
 group :development do
   gem 'pry'

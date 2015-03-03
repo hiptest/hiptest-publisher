@@ -1,6 +1,3 @@
-require 'pry'
-require 'v8'
-
 require_relative 'spec_helper'
 require_relative '../lib/hiptest-publisher/handlebars'
 
