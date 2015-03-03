@@ -1,7 +1,16 @@
+require 'pry'
+
 require_relative 'spec_helper'
 require_relative '../lib/hiptest-publisher/handlebars'
 
 describe Hiptest::Handlebars do
+  context 'HandlebarsParser' do
+    it 'does stuff' do
+      parser = Hiptest::Handlebars::HandlebarsParser.new
+      binding.pry
+    end
+  end
+
   context 'Context' do
     let(:ctx) { Hiptest::Handlebars::Context.new }
 

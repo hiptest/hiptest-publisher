@@ -1,8 +1,28 @@
-require 'execjs'
-require 'handlebars/source'
+require 'pp'
+require 'parslet'
 
 module Hiptest
   module Handlebars
+    class HandlebarsParser < Parslet::Parser
+      rule(:space)       { match('\s').repeat(1) }
+      rule(:space?)      { space.maybe }
+      rule(:dot)         { str('.') }
+      rule(:ocurly)      { str('{')}
+      rule(:ccurly)      { str('}')}
+
+      rule(:identifier)  { match['a-zA-Z0-9_'].repeat(1) }
+      rule(:path)        { identifier >> (dot >> identifier).repeat }
+
+      rule(:replacement) { ocurly >> ocurly >> space? >> path.as(:item) >> space? >> ccurly >> ccurly}
+      rule(:safe_replacement) { ocurly >> replacement >> ccurly }
+
+      rule(:noise) { match('[^{}]').repeat(1).as(:content) }
+
+      rule(:block) { (noise | replacement | safe_replacement).repeat }
+
+      root :block
+    end
+
     class Context
       attr_reader :js, :partials, :helpers
 
