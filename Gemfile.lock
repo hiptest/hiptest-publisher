@@ -1,5 +1,6 @@
-PATH
-  remote: ~/dev/open-source/ruby-handlebars
+GIT
+  remote: git://github.com/vincent-psarga/ruby-handlebars.git
+  revision: fab37b9c8310900d2dfd1ecc9285042862e2f256
   specs:
     ruby-handlebars (0.1.0)
       colorize (~> 0.7, >= 0.7.5)
