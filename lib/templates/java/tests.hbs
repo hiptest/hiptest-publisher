@@ -2,10 +2,10 @@ package {{{ context.package }}};
 
 import junit.framework.TestCase;
 
-public class {{{ clear_extension context.filename }}} extends TestCase {
+public class {{{ clear_extension context.filename }}} extends TestCase {{#curly}}
 
   public Actionwords {{{ context.call_prefix }}} = new Actionwords();
 {{#indent}}{{#each rendered_children.tests}}{{{this}}}
 {{/each}}
 {{/indent}}
-}
+{{/curly}}

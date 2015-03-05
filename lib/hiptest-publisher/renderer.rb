@@ -1,5 +1,6 @@
+require 'ruby-handlebars'
+
 require 'hiptest-publisher/nodes_walker'
-require 'hiptest-publisher/handlebars'
 require 'hiptest-publisher/handlebars_helper'
 require 'hiptest-publisher/render_context_maker'
 
@@ -20,7 +21,7 @@ module Hiptest
       super(:children_first)
       @rendered = {}
       @context = context
-      @handlebars = Hiptest::Handlebars::Context.new
+      @handlebars = Handlebars::Handlebars.new
       register_partials()
 
       Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
@@ -70,7 +71,7 @@ module Hiptest
       render_context[:context] = @context
 
       template = get_template_path(node)
-      @handlebars.compile(File.read(template)).send(:call, render_context)
+      @handlebars.compile(File.read(template)).call(render_context)
     end
 
     def get_template_by_name(name, extension)

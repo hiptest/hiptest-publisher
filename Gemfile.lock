@@ -1,13 +1,23 @@
+PATH
+  remote: ~/dev/open-source/ruby-handlebars
+  specs:
+    ruby-handlebars (0.1.0)
+      colorize (~> 0.7, >= 0.7.5)
+      parslet
+
 GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     blankslate (3.1.3)
     builder (3.2.2)
     codeclimate-test-reporter (0.4.6)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     colorize (0.7.5)
+    debug_inspector (0.0.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
@@ -57,6 +67,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-stack_explorer (0.4.9.1)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
     rack (1.6.0)
     rake (10.4.2)
     rdoc (4.2.0)
@@ -92,7 +105,8 @@ DEPENDENCIES
   multipart-post (~> 2.0, >= 2.0.0)
   nokogiri (~> 1.6, >= 1.6.6.2)
   parseconfig (~> 1.0, >= 1.0.4)
-  parslet
   pry
+  pry-stack_explorer
   rspec (~> 3.1, >= 3.1.0)
   rspec-mocks (~> 3.1, >= 3.1.3)
+  ruby-handlebars!
