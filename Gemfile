@@ -7,7 +7,7 @@ gem 'parseconfig', '~> 1.0', '>= 1.0.4'
 gem 'i18n', '~> 0.7', '>= 0.7.0'
 gem 'nokogiri', '~> 1.6', '>= 1.6.6.2'
 gem 'multipart-post', '~> 2.0', '>= 2.0.0'
-gem 'ruby-handlebars', '>= 0.0.1'
+gem 'ruby-handlebars', '>= 0.0.2'
 
 group :development do
   gem 'pry'
