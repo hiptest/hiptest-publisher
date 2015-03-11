@@ -13,14 +13,15 @@ describe Hiptest::RenderContextMaker do
         :has_parameters?,
         :has_tags?,
         :has_step?,
-        :is_empty?
+        :is_empty?,
+        :declared_variables
       ])
     end
 
     it 'has_parameters? is true when there is parameters' do
       expect(subject.walk_item(node)[:has_parameters?]).to be false
 
-      node.children[:parameters] << 'x'
+      node.children[:parameters] << Hiptest::Nodes::Parameter.new('x')
       expect(subject.walk_item(node)[:has_parameters?]).to be true
     end
 
@@ -70,6 +71,7 @@ describe Hiptest::RenderContextMaker do
         :has_tags?,
         :has_step?,
         :is_empty?,
+        :declared_variables,
         :project_name,
         :has_datasets?
       ])

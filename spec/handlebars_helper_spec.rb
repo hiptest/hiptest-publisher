@@ -38,7 +38,7 @@ describe Hiptest::HandlebarsHelper do
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Hiptest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(19)
+      expect(handlebars.helpers.length).to eq(20 )
     end
   end
 
@@ -72,7 +72,8 @@ describe Hiptest::HandlebarsHelper do
         "curly",
         "open_curly",
         "close_curly",
-        "tab"
+        "tab",
+        "debug"
       ])
     end
 
@@ -96,7 +97,8 @@ describe Hiptest::HandlebarsHelper do
         "curly",
         "open_curly",
         "close_curly",
-        "tab"
+        "tab",
+        "debug"
       ])
     end
   end
