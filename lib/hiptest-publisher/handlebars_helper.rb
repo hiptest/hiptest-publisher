@@ -47,6 +47,18 @@ module Hiptest
       "#{items.join(joiner)}"
     end
 
+    def hh_block_join(context, items, joiner, block)
+      current_this = context.get('this')
+
+      result = items.map do |item|
+        context.add_item(:this, item)
+        block.fn(context)
+      end.join(joiner)
+
+      context.add_item(:this, current_this)
+      result
+    end
+
     def hh_indent(context, block)
       indentation = @context[:indentation] || '  '
       indentation = "\t" if indentation == '\t'

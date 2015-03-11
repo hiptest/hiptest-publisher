@@ -38,7 +38,7 @@ describe Hiptest::HandlebarsHelper do
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Hiptest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(18)
+      expect(handlebars.helpers.length).to eq(19)
     end
   end
 
@@ -63,6 +63,7 @@ describe Hiptest::HandlebarsHelper do
       expect(handlebars.helpers).to eq([
         "to_string",
         "join",
+        "block_join",
         "indent",
         "clear_empty_lines",
         "remove_quotes",
@@ -86,6 +87,7 @@ describe Hiptest::HandlebarsHelper do
         "do_something",
         "to_string",
         "join",
+        "block_join",
         "indent",
         "clear_empty_lines",
         "remove_quotes",
@@ -112,7 +114,7 @@ describe Hiptest::HandlebarsHelper do
       expect(instance.hh_join(nil, [1, 2, 3], '-', nil)).to eq('1-2-3')
     end
 
-    it 'uses a real tabulatation character when needed' do
+    it 'uses a real tabulation character when needed' do
       expect(instance.hh_join(nil, [1, 2, 3], '\t', nil)).to eq("1\t2\t3")
     end
   end
