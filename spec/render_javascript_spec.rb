@@ -133,7 +133,7 @@ describe 'Render as Javascript' do
     # end
     @parameterized_action_word_rendered = [
       "myActionWord: function (plic, flip) {",
-      " if (typeof(flip) == 'undefined') {flip = 'flap'}",
+      "",
       "}"].join("\n")
 
     # In Hiptest:
@@ -158,6 +158,7 @@ describe 'Render as Javascript' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "  throw 'Not implemented';",
       "}"].join("\n")
 
     # In Hiptest:
@@ -249,6 +250,7 @@ describe 'Render as Javascript' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "  throw 'Not implemented';",
       "});"].join("\n")
 
     # Same than previous scenario, except that is is rendered
@@ -273,6 +275,7 @@ describe 'Render as Javascript' do
       "      // TODO: Implement result: x is lower than Pi",
       "      // on two lines",
       "    }",
+      "    throw 'Not implemented';",
       "  });",
       "})();"].join("\n")
 
@@ -289,6 +292,7 @@ describe 'Render as Javascript' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "  throw 'Not implemented';",
       "});"].join("\n")
 
     # Scenario definition is:

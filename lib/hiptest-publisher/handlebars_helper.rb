@@ -105,5 +105,11 @@ module Hiptest
     def hh_tab (context, block)
       "\t"
     end
+
+    def hh_debug(context, block)
+      require 'pry'
+      binding.pry
+      ""
+    end
   end
 end
