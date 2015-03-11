@@ -177,7 +177,7 @@ shared_context "shared render" do
           Hiptest::Nodes::Call.new('my action word')
         ])
     ])
-    @scenarios.parent = Hiptest::Nodes::Project.new('My_project')
+    @scenarios.parent = Hiptest::Nodes::Project.new('My project')
 
     @actionwords_with_parameters = Hiptest::Nodes::Actionwords.new([
       Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),

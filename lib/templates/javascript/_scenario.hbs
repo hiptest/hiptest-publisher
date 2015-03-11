@@ -1,0 +1,4 @@
+{{#if has_datasets?}}{{> item_as_function}}
+{{{ rendered_children.datatable }}}{{else}}test('{{{ remove_quotes rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}', function () {{#curly}}
+{{> body}}
+{{/curly}});{{/if}}

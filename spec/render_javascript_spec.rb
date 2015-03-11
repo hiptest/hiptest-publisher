@@ -51,17 +51,17 @@ describe 'Render as Javascript' do
     @foo_dict_rendered = "{foo: 'fighters', Alt: J}"
 
     # In Hiptest: foo := 'fighters'
-    @assign_fighters_to_foo_rendered = "foo = 'fighters'"
+    @assign_fighters_to_foo_rendered = "foo = 'fighters';"
 
     # In Hiptest: call 'foo'
-    @call_foo_rendered = "foo()"
+    @call_foo_rendered = "this.foo();"
     # In Hiptest: call 'foo bar'
-    @call_foo_bar_rendered = "fooBar()"
+    @call_foo_bar_rendered = "this.fooBar();"
 
     # In Hiptest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = "foo('fighters')"
+    @call_foo_with_fighters_rendered = "this.foo('fighters');"
     # In Hiptest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = "fooBar('fighters')"
+    @call_foo_bar_with_fighters_rendered = "this.fooBar('fighters');"
 
     # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '// TODO: Implement action: String(foo) + "fighters"'
@@ -72,7 +72,7 @@ describe 'Render as Javascript' do
     #end
     @if_then_rendered = [
         "if (true) {",
-        "  foo = 'fighters'",
+        "  foo = 'fighters';",
         "}\n"
       ].join("\n")
 
@@ -84,9 +84,9 @@ describe 'Render as Javascript' do
     #end
     @if_then_else_rendered = [
         "if (true) {",
-        "  foo = 'fighters'",
-        "} else }",
-        "  fighters = 'foo'",
+        "  foo = 'fighters';",
+        "} else {",
+        "  fighters = 'foo';",
         "}\n"
       ].join("\n")
 
@@ -96,10 +96,10 @@ describe 'Render as Javascript' do
     #   foo('fighters')
     # end
     @while_loop_rendered = [
-        "while (foo)",
-        "  fighters = 'foo'",
-        "  foo('fighters')",
-        "end\n"
+        "while (foo) {",
+        "  fighters = 'foo';",
+        "  this.foo('fighters');",
+        "}\n"
       ].join("\n")
 
     # In Hiptest: @myTag
@@ -112,12 +112,12 @@ describe 'Render as Javascript' do
     @plic_param_rendered = 'plic'
 
     # In Hiptest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
-    @plic_param_default_ploc_rendered = "plic = 'ploc'"
+    @plic_param_default_ploc_rendered = "plic"
 
     # In Hiptest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "function myActionWord() {}\n"
+    @empty_action_word_rendered = "myActionWord: function () {\n\n}"
 
     # In Hiptest:
     # @myTag @myTag:somevalue
@@ -148,10 +148,10 @@ describe 'Render as Javascript' do
     #   end
     # end
     @full_actionword_rendered = [
-      "compareToPi(x): function {",
+      "compareToPi: function (x) {",
       "  // Tags: myTag",
       "  var foo;",
-      "  foo = 3.14",
+      "  foo = 3.14;",
       "  if (foo > x) {",
       "    // TODO: Implement result: x is greater than Pi",
       "  } else {",
@@ -165,7 +165,7 @@ describe 'Render as Javascript' do
     #   step {action: "basic action"}
     # end
     @step_action_word_rendered = [
-      "myActionWord: function ()",
+      "myActionWord: function () {",
       "  // TODO: Implement action: basic action",
       "  throw 'Not implemented';",
       "}"].join("\n")
@@ -179,6 +179,7 @@ describe 'Render as Javascript' do
     @actionwords_rendered = [
       "var Actionwords = {",
       "  firstActionWord: function () {",
+      "",
       "  },",
       "  secondActionWord: function () {",
       "    this.firstActionWord();",
@@ -203,21 +204,22 @@ describe 'Render as Javascript' do
     @actionwords_with_params_rendered = [
       "var Actionwords = {",
       "  awWithIntParam: function (x) {",
-      "  },",
       "",
+      "  },",
       "  awWithFloatParam: function (x) {",
-      "  },",
       "",
+      "  },",
       "  awWithBooleanParam: function (x) {",
-      "  },",
       "",
+      "  },",
       "  awWithNullParam: function (x) {",
-      "  },",
       "",
+      "  },",
       "  awWithStringParam: function (x) {",
-      "  },",
       "",
+      "  },",
       "  awWithTemplateParam: function (x) {",
+      "",
       "  }",
       "}"
     ].join("\n")
@@ -252,7 +254,30 @@ describe 'Render as Javascript' do
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
-      "test('compare to pi', function () {",
+      "(function () {",
+      "  module('My project', {",
+      "    setup: function () {",
+      "      this.actionwords = Object.create(Actionwords);",
+      "    }",
+      "  });",
+      "",
+      "  test('compare to pi', function () {",
+      "    // This is a scenario which description ",
+      "    // is on two lines",
+      "    // Tags: myTag",
+      "    var foo;",
+      "    foo = 3.14;",
+      "    if (foo > x) {",
+      "      // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "      // TODO: Implement result: x is lower than Pi",
+      "      // on two lines",
+      "    }",
+      "  });",
+      "})();"].join("\n")
+
+    @full_scenario_with_uid_rendered = [
+      "test('compare to pi (uid:abcd-1234)', function () {",
       "  // This is a scenario which description ",
       "  // is on two lines",
       "  // Tags: myTag",
@@ -280,24 +305,46 @@ describe 'Render as Javascript' do
     # Valid login/password | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
-      "function checkLogin (login, password, expected)",
+      "function checkLogin (login, password, expected) {",
       "  // Ensure the login process",
-      "  fillLogin(login);",
-      "  fillPassword(password);",
-      "  pressEnter();",
-      "  assertErrorIsDisplayed(expected);",
+      "  this.actionwords.fillLogin(login);",
+      "  this.actionwords.fillPassword(password);",
+      "  this.actionwords.pressEnter();",
+      "  this.actionwords.assertErrorIsDisplayed(expected);",
       "}",
       "",
-      "test(\"check login: Wrong login\", function () {",
-      "  checkLogin('invalid', 'invalid', 'Invalid username or password')",
+      "test('check login: Wrong login', function () {",
+      "  checkLogin('invalid', 'invalid', 'Invalid username or password');",
       "});",
       "",
-      "test(\"check login: Wrong password\", function () {",
-      "  checkLogin('valid', 'invalid', 'Invalid username or password')",
+      "test('check login: Wrong password', function () {",
+      "  checkLogin('valid', 'invalid', 'Invalid username or password');",
       "});",
       "",
-      "test(\"check login: Valid login/password\", function () {",
-      "  checkLogin('valid', 'valid', nil)",
+      "test('check login: Valid login/password', function () {",
+      "  checkLogin('valid', 'valid', null);",
+      "});",
+    ].join("\n")
+
+    @scenario_with_datatable_rendered_with_uids = [
+      "function checkLogin (login, password, expected) {",
+      "  // Ensure the login process",
+      "  this.actionwords.fillLogin(login);",
+      "  this.actionwords.fillPassword(password);",
+      "  this.actionwords.pressEnter();",
+      "  this.actionwords.assertErrorIsDisplayed(expected);",
+      "}",
+      "",
+      "test('check login: Wrong login (uid:a-123)', function () {",
+      "  checkLogin('invalid', 'invalid', 'Invalid username or password');",
+      "});",
+      "",
+      "test('check login: Wrong password (uid:b-456)', function () {",
+      "  checkLogin('valid', 'invalid', 'Invalid username or password');",
+      "});",
+      "",
+      "test('check login: Valid login/password (uid:c-789)', function () {",
+      "  checkLogin('valid', 'valid', null);",
       "});",
     ].join("\n")
 
@@ -306,27 +353,27 @@ describe 'Render as Javascript' do
       "(function () {",
       "  module('A project with datatables', {",
       "    setup: function () {",
-      "      this.actionWords = Object.create(ActionWords);",
+      "      this.actionwords = Object.create(Actionwords);",
       "    }",
       "  });",
       "",
-      "  function checkLogin (login, password, expected)",
+      "  function checkLogin (login, password, expected) {",
       "    // Ensure the login process",
-      "    this.actionWords.fillLogin(login);",
-      "    this.actionWords.fillPassword(password);",
-      "    this.actionWords.pressEnter();",
-      "    this.actionWords.assertErrorIsDisplayed(expected);",
+      "    this.actionwords.fillLogin(login);",
+      "    this.actionwords.fillPassword(password);",
+      "    this.actionwords.pressEnter();",
+      "    this.actionwords.assertErrorIsDisplayed(expected);",
       "  }",
       "",
-      "  test(\"check login: Wrong login\", function () {",
+      "  test('check login: Wrong login', function () {",
       "    checkLogin('invalid', 'invalid', 'Invalid username or password');",
       "  });",
       "",
-      "  test(\"check login: Wrong password\", function () {",
+      "  test('check login: Wrong password', function () {",
       "    checkLogin('valid', 'invalid', 'Invalid username or password');",
       "  });",
       "",
-      "  test(\"check login: Valid login/password\", function () {",
+      "  test('check login: Valid login/password', function () {",
       "    checkLogin('valid', 'valid', null);",
       "  });",
       "})();"
@@ -342,16 +389,82 @@ describe 'Render as Javascript' do
       "(function () {",
       "  module('My project', {",
       "    setup: function () {",
-      "      this.actionWords = Object.create(ActionWords);",
+      "      this.actionwords = Object.create(Actionwords);",
       "    }",
       "  });",
       "",
       "  test('first scenario', function () {",
+      "",
       "  });",
+      "",
       "  test('second scenario', function () {",
-      "    this.actionWords.myActionWord();",
-      "  end",
-      "end"].join("\n")
+      "    this.actionwords.myActionWord();",
+      "  });",
+      "})();"].join("\n")
+
+      @tests_rendered = [
+        "(function () {",
+        "  module('My test project', {",
+        "    setup: function () {",
+        "      this.actionwords = Object.create(Actionwords);",
+        "    }",
+        "  });",
+        "",
+        "  test('Login', function () {",
+        "    // The description is on ",
+        "    // two lines",
+        "    // Tags: myTag myTag:somevalue",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('s3cret');",
+        "    this.actionwords.click('.login-form input[type=submit]');",
+        "    this.actionwords.checkUrl('/welcome');",
+        "  });",
+        "",
+        "  test('Failed login', function () {",
+        "    // Tags: myTag:somevalue",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('notTh4tS3cret');",
+        "    this.actionwords.click('.login-form input[type=submit]');",
+        "    this.actionwords.checkUrl('/login');",
+        "  });",
+        "})();",
+      ].join("\n")
+
+      @first_test_rendered = [
+        "test('Login', function () {",
+        "  // The description is on ",
+        "  // two lines",
+        "  // Tags: myTag myTag:somevalue",
+        "  this.actionwords.visit('/login');",
+        "  this.actionwords.fill('user@example.com');",
+        "  this.actionwords.fill('s3cret');",
+        "  this.actionwords.click('.login-form input[type=submit]');",
+        "  this.actionwords.checkUrl('/welcome');",
+        "});",
+      ].join("\n")
+
+      @first_test_rendered_for_single_file = [
+        "(function () {",
+        "  module('My test project', {",
+        "    setup: function () {",
+        "      this.actionwords = Object.create(Actionwords);",
+        "    }",
+        "  });",
+        "",
+        "  test('Login', function () {",
+        "    // The description is on ",
+        "    // two lines",
+        "    // Tags: myTag myTag:somevalue",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('s3cret');",
+        "    this.actionwords.click('.login-form input[type=submit]');",
+        "    this.actionwords.checkUrl('/welcome');",
+        "  });",
+        "})();"
+      ].join("\n")
   end
 
   context 'qUnit' do

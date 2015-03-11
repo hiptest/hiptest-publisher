@@ -1,0 +1,3 @@
+test('{{scenario_name}}: {{{remove_quotes rendered_children.name}}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}', function () {{#curly}}
+  {{{ camelize_lower scenario_name }}}({{{ join rendered_children.arguments ', ' }}});
+{{/curly}});

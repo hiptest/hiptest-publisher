@@ -1,0 +1,1 @@
+{{#block_join treated_chunks ' + '}}{{#if this.is_variable?}}String({{{this.raw.children.name}}}){{else}}"{{{ escape_quotes this.raw.children.value }}}"{{/if}}{{/block_join}}
