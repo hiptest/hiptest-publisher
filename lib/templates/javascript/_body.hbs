@@ -2,7 +2,8 @@
 {{#indent}}
 {{#comment '//'}}{{{ rendered_children.description }}}{{/comment}}
 {{#if has_tags?}}// Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
-{{#each rendered_children.body}}{{{this}}}
+{{#if declared_variables}}var {{#block_join declared_variables ', '}}{{{camelize_lower this}}}{{/block_join}};
+{{/if}}{{#each rendered_children.body}}{{{this}}}
 {{/each}}
 {{#if has_step?}}throw 'Not implemented';{{/if}}
 {{/indent}}

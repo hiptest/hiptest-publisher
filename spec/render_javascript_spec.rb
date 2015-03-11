@@ -295,8 +295,7 @@ describe 'Render as Javascript' do
       "    // on two lines",
       "  }",
       "  throw 'Not implemented';",
-      "});",
-      ""
+      "});"
     ].join("\n")
 
     # Scenario definition is:

@@ -5,7 +5,8 @@ module Hiptest
         :has_parameters? => !item.children[:parameters].empty?,
         :has_tags? => !item.children[:tags].empty?,
         :has_step? => !item.find_sub_nodes(Hiptest::Nodes::Step).empty?,
-        :is_empty? => item.children[:body].empty?
+        :is_empty? => item.children[:body].empty?,
+        :declared_variables => item.declared_variables_names
       }
     end
 

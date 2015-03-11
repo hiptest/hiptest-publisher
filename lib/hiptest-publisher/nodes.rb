@@ -230,6 +230,14 @@ module Hiptest
           :body => body
         }
       end
+
+      def declared_variables_names
+        p_names = children[:parameters].map {|p| p.children[:name]}
+        find_sub_nodes([Hiptest::Nodes::Variable]).map do |var|
+          v_name = var.children[:name]
+          p_names.include?(v_name) ? nil : v_name
+        end.uniq.compact
+      end
     end
 
     class Actionword < Item
