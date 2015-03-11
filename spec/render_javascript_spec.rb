@@ -277,7 +277,9 @@ describe 'Render as Javascript' do
       "    }",
       "    throw 'Not implemented';",
       "  });",
-      "})();"].join("\n")
+      "})();",
+      ""
+    ].join("\n")
 
     @full_scenario_with_uid_rendered = [
       "test('compare to pi (uid:abcd-1234)', function () {",
@@ -293,7 +295,9 @@ describe 'Render as Javascript' do
       "    // on two lines",
       "  }",
       "  throw 'Not implemented';",
-      "});"].join("\n")
+      "});",
+      ""
+    ].join("\n")
 
     # Scenario definition is:
     # call 'fill login' (login = login)
@@ -328,6 +332,7 @@ describe 'Render as Javascript' do
       "test('check login: Valid login/password', function () {",
       "  checkLogin('valid', 'valid', null);",
       "});",
+      ""
     ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
@@ -350,6 +355,7 @@ describe 'Render as Javascript' do
       "test('check login: Valid login/password (uid:c-789)', function () {",
       "  checkLogin('valid', 'valid', null);",
       "});",
+      ""
     ].join("\n")
 
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
@@ -380,7 +386,8 @@ describe 'Render as Javascript' do
       "  test('check login: Valid login/password', function () {",
       "    checkLogin('valid', 'valid', null);",
       "  });",
-      "})();"
+      "})();",
+      ""
     ].join("\n")
 
     # In Hiptest, correspond to two scenarios in a project called 'My project'
@@ -404,71 +411,75 @@ describe 'Render as Javascript' do
       "  test('second scenario', function () {",
       "    this.actionwords.myActionWord();",
       "  });",
-      "})();"].join("\n")
+      "})();",
+      ""
+    ].join("\n")
 
-      @tests_rendered = [
-        "(function () {",
-        "  module('My test project', {",
-        "    setup: function () {",
-        "      this.actionwords = Object.create(Actionwords);",
-        "    }",
-        "  });",
-        "",
-        "  test('Login', function () {",
-        "    // The description is on ",
-        "    // two lines",
-        "    // Tags: myTag myTag:somevalue",
-        "    this.actionwords.visit('/login');",
-        "    this.actionwords.fill('user@example.com');",
-        "    this.actionwords.fill('s3cret');",
-        "    this.actionwords.click('.login-form input[type=submit]');",
-        "    this.actionwords.checkUrl('/welcome');",
-        "  });",
-        "",
-        "  test('Failed login', function () {",
-        "    // Tags: myTag:somevalue",
-        "    this.actionwords.visit('/login');",
-        "    this.actionwords.fill('user@example.com');",
-        "    this.actionwords.fill('notTh4tS3cret');",
-        "    this.actionwords.click('.login-form input[type=submit]');",
-        "    this.actionwords.checkUrl('/login');",
-        "  });",
-        "})();",
-      ].join("\n")
+    @tests_rendered = [
+      "(function () {",
+      "  module('My test project', {",
+      "    setup: function () {",
+      "      this.actionwords = Object.create(Actionwords);",
+      "    }",
+      "  });",
+      "",
+      "  test('Login', function () {",
+      "    // The description is on ",
+      "    // two lines",
+      "    // Tags: myTag myTag:somevalue",
+      "    this.actionwords.visit('/login');",
+      "    this.actionwords.fill('user@example.com');",
+      "    this.actionwords.fill('s3cret');",
+      "    this.actionwords.click('.login-form input[type=submit]');",
+      "    this.actionwords.checkUrl('/welcome');",
+      "  });",
+      "",
+      "  test('Failed login', function () {",
+      "    // Tags: myTag:somevalue",
+      "    this.actionwords.visit('/login');",
+      "    this.actionwords.fill('user@example.com');",
+      "    this.actionwords.fill('notTh4tS3cret');",
+      "    this.actionwords.click('.login-form input[type=submit]');",
+      "    this.actionwords.checkUrl('/login');",
+      "  });",
+      "})();",
+      ""
+    ].join("\n")
 
-      @first_test_rendered = [
-        "test('Login', function () {",
-        "  // The description is on ",
-        "  // two lines",
-        "  // Tags: myTag myTag:somevalue",
-        "  this.actionwords.visit('/login');",
-        "  this.actionwords.fill('user@example.com');",
-        "  this.actionwords.fill('s3cret');",
-        "  this.actionwords.click('.login-form input[type=submit]');",
-        "  this.actionwords.checkUrl('/welcome');",
-        "});",
-      ].join("\n")
+    @first_test_rendered = [
+      "test('Login', function () {",
+      "  // The description is on ",
+      "  // two lines",
+      "  // Tags: myTag myTag:somevalue",
+      "  this.actionwords.visit('/login');",
+      "  this.actionwords.fill('user@example.com');",
+      "  this.actionwords.fill('s3cret');",
+      "  this.actionwords.click('.login-form input[type=submit]');",
+      "  this.actionwords.checkUrl('/welcome');",
+      "});",
+    ].join("\n")
 
-      @first_test_rendered_for_single_file = [
-        "(function () {",
-        "  module('My test project', {",
-        "    setup: function () {",
-        "      this.actionwords = Object.create(Actionwords);",
-        "    }",
-        "  });",
-        "",
-        "  test('Login', function () {",
-        "    // The description is on ",
-        "    // two lines",
-        "    // Tags: myTag myTag:somevalue",
-        "    this.actionwords.visit('/login');",
-        "    this.actionwords.fill('user@example.com');",
-        "    this.actionwords.fill('s3cret');",
-        "    this.actionwords.click('.login-form input[type=submit]');",
-        "    this.actionwords.checkUrl('/welcome');",
-        "  });",
-        "})();"
-      ].join("\n")
+    @first_test_rendered_for_single_file = [
+      "(function () {",
+      "  module('My test project', {",
+      "    setup: function () {",
+      "      this.actionwords = Object.create(Actionwords);",
+      "    }",
+      "  });",
+      "",
+      "  test('Login', function () {",
+      "    // The description is on ",
+      "    // two lines",
+      "    // Tags: myTag myTag:somevalue",
+      "    this.actionwords.visit('/login');",
+      "    this.actionwords.fill('user@example.com');",
+      "    this.actionwords.fill('s3cret');",
+      "    this.actionwords.click('.login-form input[type=submit]');",
+      "    this.actionwords.checkUrl('/welcome');",
+      "  });",
+      "})();",
+      ""
+    ].join("\n")
   end
 
   context 'qUnit' do
