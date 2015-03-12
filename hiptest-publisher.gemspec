@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-03-11"
+  s.date = "2015-03-12"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -94,6 +94,14 @@ Gem::Specification.new do |s|
     "lib/templates/javascript/field.hbs",
     "lib/templates/javascript/ifthen.hbs",
     "lib/templates/javascript/index.hbs",
+    "lib/templates/javascript/jasmine/_before_each.hbs",
+    "lib/templates/javascript/jasmine/_scenario.hbs",
+    "lib/templates/javascript/jasmine/dataset.hbs",
+    "lib/templates/javascript/jasmine/output_config",
+    "lib/templates/javascript/jasmine/scenarios.hbs",
+    "lib/templates/javascript/jasmine/single_scenario.hbs",
+    "lib/templates/javascript/jasmine/single_test.hbs",
+    "lib/templates/javascript/jasmine/tests.hbs",
     "lib/templates/javascript/list.hbs",
     "lib/templates/javascript/nullliteral.hbs",
     "lib/templates/javascript/output_config",
