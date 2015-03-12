@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-03-06"
+  s.date = "2015-03-11"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -78,6 +78,40 @@ Gem::Specification.new do |s|
     "lib/templates/java/unaryexpression.hbs",
     "lib/templates/java/variable.hbs",
     "lib/templates/java/while.hbs",
+    "lib/templates/javascript/_body.hbs",
+    "lib/templates/javascript/_item_as_function.hbs",
+    "lib/templates/javascript/_item_as_hash_key.hbs",
+    "lib/templates/javascript/_module_declaration.hbs",
+    "lib/templates/javascript/_scenario.hbs",
+    "lib/templates/javascript/actionword.hbs",
+    "lib/templates/javascript/actionwords.hbs",
+    "lib/templates/javascript/argument.hbs",
+    "lib/templates/javascript/assign.hbs",
+    "lib/templates/javascript/binaryexpression.hbs",
+    "lib/templates/javascript/call.hbs",
+    "lib/templates/javascript/dataset.hbs",
+    "lib/templates/javascript/dict.hbs",
+    "lib/templates/javascript/field.hbs",
+    "lib/templates/javascript/ifthen.hbs",
+    "lib/templates/javascript/index.hbs",
+    "lib/templates/javascript/list.hbs",
+    "lib/templates/javascript/nullliteral.hbs",
+    "lib/templates/javascript/output_config",
+    "lib/templates/javascript/parameter.hbs",
+    "lib/templates/javascript/parenthesis.hbs",
+    "lib/templates/javascript/project.hbs",
+    "lib/templates/javascript/property.hbs",
+    "lib/templates/javascript/scenario.hbs",
+    "lib/templates/javascript/scenarios.hbs",
+    "lib/templates/javascript/single_scenario.hbs",
+    "lib/templates/javascript/single_test.hbs",
+    "lib/templates/javascript/step.hbs",
+    "lib/templates/javascript/tag.hbs",
+    "lib/templates/javascript/template.hbs",
+    "lib/templates/javascript/test.hbs",
+    "lib/templates/javascript/tests.hbs",
+    "lib/templates/javascript/unaryexpression.hbs",
+    "lib/templates/javascript/while.hbs",
     "lib/templates/python/_body.hbs",
     "lib/templates/python/_item_as_def.hbs",
     "lib/templates/python/_parameters.hbs",

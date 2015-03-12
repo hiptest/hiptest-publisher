@@ -1,0 +1,7 @@
+[tests]
+filename = 'project_test.js'
+scenario_filename = '%s_test.js'
+call_prefix = 'actionwords'
+
+[actionwords]
+filename = 'actionwords.js'
