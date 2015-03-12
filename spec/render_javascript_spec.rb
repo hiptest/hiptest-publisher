@@ -487,4 +487,264 @@ describe 'Render as Javascript' do
       let(:framework) {'qUnit'}
     end
   end
+
+  context 'Jasmine' do
+    before(:each) do
+      # In Hiptest:
+      # @myTag
+      # scenario 'compare to pi' (x) do
+      #   foo := 3.14
+      #   if (foo > x)
+      #     step {result: "x is greater than Pi"}
+      #   else
+      #     step {result: "x is lower than Pi
+      #       on two lines"}
+      #   end
+      # end
+      @full_scenario_rendered = [
+        "it('compare to pi', function () {",
+        "  // This is a scenario which description ",
+        "  // is on two lines",
+        "  // Tags: myTag",
+        "  var foo;",
+        "  foo = 3.14;",
+        "  if (foo > x) {",
+        "    // TODO: Implement result: x is greater than Pi",
+        "  } else {",
+        "    // TODO: Implement result: x is lower than Pi",
+        "    // on two lines",
+        "  }",
+        "  throw 'Not implemented';",
+        "});"].join("\n")
+
+      # Same than previous scenario, except that is is rendered
+      # so it can be used in a single file (using the --split-scenarios option)
+      @full_scenario_rendered_for_single_file = [
+        "describe('My project', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  it('compare to pi', function () {",
+        "    // This is a scenario which description ",
+        "    // is on two lines",
+        "    // Tags: myTag",
+        "    var foo;",
+        "    foo = 3.14;",
+        "    if (foo > x) {",
+        "      // TODO: Implement result: x is greater than Pi",
+        "    } else {",
+        "      // TODO: Implement result: x is lower than Pi",
+        "      // on two lines",
+        "    }",
+        "    throw 'Not implemented';",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+      @full_scenario_with_uid_rendered = [
+        "it('compare to pi (uid:abcd-1234)', function () {",
+        "  // This is a scenario which description ",
+        "  // is on two lines",
+        "  // Tags: myTag",
+        "  var foo;",
+        "  foo = 3.14;",
+        "  if (foo > x) {",
+        "    // TODO: Implement result: x is greater than Pi",
+        "  } else {",
+        "    // TODO: Implement result: x is lower than Pi",
+        "    // on two lines",
+        "  }",
+        "  throw 'Not implemented';",
+        "});"
+      ].join("\n")
+
+      # Scenario definition is:
+      # call 'fill login' (login = login)
+      # call 'fill password' (password = password)
+      # call 'press enter'
+      # call 'assert "error" is displayed' (error = expected)
+
+      # Scenario datatable is:
+      # Dataset name         | login   | password | expected
+      # -------------------------------------------------------------------------
+      # Wrong login          | invalid | invalid  | 'Invalid username or password
+      # Wrong password       | valid   | invalid  | 'Invalid username or password
+      # Valid login/password | valid   | valid    | nil
+
+      @scenario_with_datatable_rendered = [
+        "describe('check login', function () {",
+        "  function checkLogin (login, password, expected) {",
+        "    // Ensure the login process",
+        "    this.actionwords.fillLogin(login);",
+        "    this.actionwords.fillPassword(password);",
+        "    this.actionwords.pressEnter();",
+        "    this.actionwords.assertErrorIsDisplayed(expected);",
+        "  }",
+        "",
+        "  it('Wrong login', function () {",
+        "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
+        "  });",
+        "",
+        "  it('Wrong password', function () {",
+        "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
+        "  });",
+        "",
+        "  it('Valid login/password', function () {",
+        "    checkLogin.apply(this, ['valid', 'valid', null]);",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+      @scenario_with_datatable_rendered_with_uids = [
+        "describe('check login', function () {",
+        "  function checkLogin (login, password, expected) {",
+        "    // Ensure the login process",
+        "    this.actionwords.fillLogin(login);",
+        "    this.actionwords.fillPassword(password);",
+        "    this.actionwords.pressEnter();",
+        "    this.actionwords.assertErrorIsDisplayed(expected);",
+        "  }",
+        "",
+        "  it('Wrong login (uid:a-123)', function () {",
+        "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
+        "  });",
+        "",
+        "  it('Wrong password (uid:b-456)', function () {",
+        "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
+        "  });",
+        "",
+        "  it('Valid login/password (uid:c-789)', function () {",
+        "    checkLogin.apply(this, ['valid', 'valid', null]);",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+      # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
+      @scenario_with_datatable_rendered_in_single_file = [
+        "describe('A project with datatables', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  describe('check login', function () {",
+        "    function checkLogin (login, password, expected) {",
+        "      // Ensure the login process",
+        "      this.actionwords.fillLogin(login);",
+        "      this.actionwords.fillPassword(password);",
+        "      this.actionwords.pressEnter();",
+        "      this.actionwords.assertErrorIsDisplayed(expected);",
+        "    }",
+        "",
+        "    it('Wrong login', function () {",
+        "      checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
+        "    });",
+        "",
+        "    it('Wrong password', function () {",
+        "      checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
+        "    });",
+        "",
+        "    it('Valid login/password', function () {",
+        "      checkLogin.apply(this, ['valid', 'valid', null]);",
+        "    });",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+      # In Hiptest, correspond to two scenarios in a project called 'My project'
+      # scenario 'first scenario' do
+      # end
+      # scenario 'second scenario' do
+      #   call 'my action word'
+      # end
+      @scenarios_rendered = [
+        "describe('My project', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  it('first scenario', function () {",
+        "",
+        "  });",
+        "",
+        "  it('second scenario', function () {",
+        "    this.actionwords.myActionWord();",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+      @tests_rendered = [
+        "describe('My test project', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  it('Login', function () {",
+        "    // The description is on ",
+        "    // two lines",
+        "    // Tags: myTag myTag:somevalue",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('s3cret');",
+        "    this.actionwords.click('.login-form input[type=submit]');",
+        "    this.actionwords.checkUrl('/welcome');",
+        "  });",
+        "",
+        "  it('Failed login', function () {",
+        "    // Tags: myTag:somevalue",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('notTh4tS3cret');",
+        "    this.actionwords.click('.login-form input[type=submit]');",
+        "    this.actionwords.checkUrl('/login');",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+      @first_test_rendered = [
+        "it('Login', function () {",
+        "  // The description is on ",
+        "  // two lines",
+        "  // Tags: myTag myTag:somevalue",
+        "  this.actionwords.visit('/login');",
+        "  this.actionwords.fill('user@example.com');",
+        "  this.actionwords.fill('s3cret');",
+        "  this.actionwords.click('.login-form input[type=submit]');",
+        "  this.actionwords.checkUrl('/welcome');",
+        "});",
+      ].join("\n")
+
+      @first_test_rendered_for_single_file = [
+        "describe('My test project', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  it('Login', function () {",
+        "    // The description is on ",
+        "    // two lines",
+        "    // Tags: myTag myTag:somevalue",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('s3cret');",
+        "    this.actionwords.click('.login-form input[type=submit]');",
+        "    this.actionwords.checkUrl('/welcome');",
+        "  });",
+        "});",
+        ""
+      ].join("\n")
+
+    end
+
+    it_behaves_like "a renderer" do
+      let(:language) {'javascript'}
+      let(:framework) {'jasmine'}
+    end
+  end
 end
