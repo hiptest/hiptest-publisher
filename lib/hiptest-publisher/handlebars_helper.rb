@@ -42,21 +42,22 @@ module Hiptest
       "#{value.to_s}"
     end
 
-    def hh_join(context, items, joiner, block)
+    def hh_join(context, items, joiner, block, else_block = nil)
       joiner = "\t" if joiner == '\t'
-      "#{items.join(joiner)}"
-    end
 
-    def hh_block_join(context, items, joiner, block)
-      current_this = context.get('this')
+      if block.nil? || block.items.empty?
+        "#{items.join(joiner)}"
+      else
+        current_this = context.get('this')
 
-      result = items.map do |item|
-        context.add_item(:this, item)
-        block.fn(context)
-      end.join(joiner)
+        result = items.map do |item|
+          context.add_item(:this, item)
+          block.fn(context)
+        end.join(joiner)
 
-      context.add_item(:this, current_this)
-      result
+        context.add_item(:this, current_this)
+        result
+      end
     end
 
     def hh_indent(context, block)
