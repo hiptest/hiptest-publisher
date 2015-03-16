@@ -23,6 +23,47 @@ describe Hiptest::Nodes do
     end
   end
 
+  context 'Item' do
+    context 'declared_variables_names' do
+      let(:body) {
+        [
+          Hiptest::Nodes::Assign.new(
+            Hiptest::Nodes::Variable.new('x'),
+            Hiptest::Nodes::Literal.new(1)
+          ),
+          Hiptest::Nodes::Assign.new(
+            Hiptest::Nodes::Variable.new('y'),
+            Hiptest::Nodes::Literal.new(1)
+          ),
+          Hiptest::Nodes::Assign.new(
+            Hiptest::Nodes::Variable.new('z'),
+            Hiptest::Nodes::Literal.new(1)
+          ),
+        ]
+      }
+
+      it 'provide a list of variable name based on the item body' do
+        node = Hiptest::Nodes::Item.new('my node', [], [], body)
+        expect(node.declared_variables_names).to eq(['x', 'y', 'z'])
+      end
+
+      it 'does not provide duplicated name' do
+        body << Hiptest::Nodes::Assign.new(
+            Hiptest::Nodes::Variable.new('z'),
+            Hiptest::Nodes::Literal.new(1)
+          )
+
+        node = Hiptest::Nodes::Item.new('my node', [], [], body)
+        expect(node.declared_variables_names).to eq(['x', 'y', 'z'])
+      end
+
+      it 'does not return parameters' do
+        node = Hiptest::Nodes::Item.new('my node', [Hiptest::Nodes::Parameter.new('x')], [], body)
+        expect(node.declared_variables_names).to eq(['x', 'y', 'z'])
+      end
+    end
+  end
+
   context 'Actionword' do
     context 'must_be_implemented?' do
       let(:aw) {Hiptest::Nodes::Actionword.new('my action word')}
