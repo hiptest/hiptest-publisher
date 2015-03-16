@@ -3,7 +3,6 @@ build:
   verbosity: minimal
 install:
   - gem update --system
-  - gem install libv8 -v '3.16.14.0' -- --with-system-v8
   - gem install hiptest-publisher
   - gem install bundler
   - bundle install
