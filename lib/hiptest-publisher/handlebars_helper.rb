@@ -48,8 +48,11 @@ module Hiptest
       if block.nil? || block.items.empty?
         "#{items.join(joiner)}"
       else
-        current_this = context.get('this')
+        if items.empty? && else_block
+          return else_block.fn(context)
+        end
 
+        current_this = context.get('this')
         result = items.map do |item|
           context.add_item(:this, item)
           block.fn(context)
