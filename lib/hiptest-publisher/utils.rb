@@ -64,7 +64,7 @@ def push_results(options)
   File.open(options.push) do |results|
     req = Net::HTTP::Post::Multipart.new(url.path, "file" => UploadIO.new(results, "text", "results.tap"))
 
-    response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl) do |http|
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
       http.request(req)
     end
   end
