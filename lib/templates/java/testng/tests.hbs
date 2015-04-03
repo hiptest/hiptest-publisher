@@ -2,15 +2,15 @@ package {{{ context.package }}};
 
 import org.testng.annotations.*;
 
-public class {{{ clear_extension context.filename }}} {
+public class {{{ clear_extension context.filename }}} {{#curly}}
 
 {{#indent}}public Actionwords {{{ context.call_prefix }}};
 
 @BeforeMethod
-public void setUp() {
+public void setUp() {{#curly}}
 {{#indent}}{{{ context.call_prefix }}} = new Actionwords();{{/indent}}
-}{{/indent}}
+{{/curly}}{{/indent}}
 {{#indent}}{{#each rendered_children.tests}}{{{this}}}
 {{/each}}
 {{/indent}}
-}
+{{/curly}}

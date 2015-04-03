@@ -57,14 +57,14 @@ def make_push_url(options)
 end
 
 def push_results(options)
-  # Code from: https://github.com/nicksieger/multipart-posthttps://github.com/nicksieger/multipart-post
+  # Code from: https://github.com/nicksieger/multipart-post
   url = URI.parse(make_push_url(options))
   use_ssl = make_push_url(options).start_with?('https://')
 
   File.open(options.push) do |results|
     req = Net::HTTP::Post::Multipart.new(url.path, "file" => UploadIO.new(results, "text", "results.tap"))
 
-    response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl) do |http|
+    response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
       http.request(req)
     end
   end

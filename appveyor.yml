@@ -1,0 +1,11 @@
+version: 1.0.{build}
+build:
+  verbosity: minimal
+install:
+  - gem update --system
+  - gem install hiptest-publisher
+  - gem install bundler
+  - bundle install
+build_script:
+  - hiptest-publisher --help
+  - rspec

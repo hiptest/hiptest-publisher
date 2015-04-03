@@ -256,6 +256,16 @@ Escapes double quotes from a string.
 
 Transforms a list of object into a string, separating each value with the joiner.
 
+If can also accept a block for rendering. In this case, the current item is referred as ``this`` (like in an ``each`` block):
+
+```handlebars
+{{#join [1, 2, 3] ' || ' }}<b>{{this}}</b>{{/join}}
+```
+
+```
+<b>1</b> || <b>2</b> || <b>3</b>
+```
+
 ### indent
 ```handlebars
 {{#indent}}

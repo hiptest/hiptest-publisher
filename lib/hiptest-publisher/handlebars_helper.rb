@@ -42,9 +42,25 @@ module Hiptest
       "#{value.to_s}"
     end
 
-    def hh_join(context, items, joiner, block)
+    def hh_join(context, items, joiner, block, else_block = nil)
       joiner = "\t" if joiner == '\t'
-      "#{items.join(joiner)}"
+
+      if block.nil? || block.items.empty?
+        "#{items.join(joiner)}"
+      else
+        if items.empty? && else_block
+          return else_block.fn(context)
+        end
+
+        current_this = context.get('this')
+        result = items.map do |item|
+          context.add_item(:this, item)
+          block.fn(context)
+        end.join(joiner)
+
+        context.add_item(:this, current_this)
+        result
+      end
     end
 
     def hh_indent(context, block)
@@ -92,6 +108,12 @@ module Hiptest
 
     def hh_tab (context, block)
       "\t"
+    end
+
+    def hh_debug(context, block)
+      require 'pry'
+      binding.pry
+      ""
     end
   end
 end

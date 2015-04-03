@@ -2,8 +2,11 @@ require_relative 'spec_helper'
 require_relative '../lib/hiptest-publisher/handlebars_helper'
 
 class MockHbBlock
-  def initialize(content)
+  attr_reader :items
+
+  def initialize(content, items = [])
     @content = content
+    @items = items
   end
 
   def fn(context)
@@ -24,21 +27,32 @@ class MockHandlebars
 end
 
 describe Hiptest::HandlebarsHelper do
+  def evaluate(template, context)
+    hbs = Handlebars::Handlebars.new
+    Hiptest::HandlebarsHelper.register_helpers(hbs, {})
+
+    hbs.compile(template).call(context)
+  end
+
   let(:handlebars) {MockHandlebars.new}
   let(:instance) {Hiptest::HandlebarsHelper.new(handlebars, {})}
 
-  let(:block) {
-    block = MockHbBlock.new([
+  let(:txt_block) {
+    [
       "A single line",
       "Two\nLines",
       "Three\n  indented\n    lines"
-    ].join("\n"))
+    ].join("\n")
+  }
+
+  let(:block) {
+    block = MockHbBlock.new(txt_block)
   }
 
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Hiptest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(18)
+      expect(handlebars.helpers.length).to eq(19)
     end
   end
 
@@ -71,7 +85,8 @@ describe Hiptest::HandlebarsHelper do
         "curly",
         "open_curly",
         "close_curly",
-        "tab"
+        "tab",
+        "debug"
       ])
     end
 
@@ -94,7 +109,8 @@ describe Hiptest::HandlebarsHelper do
         "curly",
         "open_curly",
         "close_curly",
-        "tab"
+        "tab",
+        "debug"
       ])
     end
   end
@@ -105,6 +121,10 @@ describe Hiptest::HandlebarsHelper do
       expect(instance.hh_to_string(nil, 3.14, nil)).to eq('3.14')
       expect(instance.hh_to_string(nil, 'A string', nil)).to eq('A string')
     end
+
+    it 'real use-case' do
+      expect(evaluate('{{to_string x}}', {x: 123})).to eq('123')
+    end
   end
 
   context 'hh_join' do
@@ -112,8 +132,21 @@ describe Hiptest::HandlebarsHelper do
       expect(instance.hh_join(nil, [1, 2, 3], '-', nil)).to eq('1-2-3')
     end
 
-    it 'uses a real tabulatation character when needed' do
+    it 'uses a real tabulation character when needed' do
       expect(instance.hh_join(nil, [1, 2, 3], '\t', nil)).to eq("1\t2\t3")
+    end
+
+    it 'also supports blocks' do
+      context = Handlebars::Handlebars.new
+      context.set_context({})
+
+      expect(instance.hh_join(context, [1, 2, 3], '||', MockHbBlock.new('-', [1]))).to eq("-||-||-")
+    end
+
+    it 'real use-case' do
+      expect(evaluate('{{join items "-"}}', {items: [1, 2, 3]})).to eq('1-2-3')
+      expect(evaluate('{{#join items "-"}}[{{this}}]{{else}}no items{{/join}}', {items: [1, 2, 3]})).to eq('[1]-[2]-[3]')
+      expect(evaluate('{{#join items "-"}}[{{this}}]{{else}}No items{{/join}}', {items: []})).to eq('No items')
     end
   end
 

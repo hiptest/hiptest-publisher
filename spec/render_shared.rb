@@ -3,6 +3,25 @@ require_relative '../lib/hiptest-publisher/parameter_type_adder'
 require_relative '../lib/hiptest-publisher/nodes'
 
 shared_context "shared render" do
+
+  before(:all) do
+    class Hiptest::Nodes::Call < Hiptest::Nodes::Node
+      def initialize(actionword, arguments = [])
+        super()
+        @children = {:actionword => actionword, :arguments => arguments, :all_arguments => arguments}
+      end
+    end
+  end
+
+  after(:all) do
+    class Hiptest::Nodes::Call < Hiptest::Nodes::Node
+      def initialize(actionword, arguments = [])
+        super()
+        @children = {:actionword => actionword, :arguments => arguments}
+      end
+    end
+  end
+
   before(:each) do
     @null = Hiptest::Nodes::NullLiteral.new
     @what_is_your_quest = Hiptest::Nodes::StringLiteral.new("What is your quest ?")
@@ -177,7 +196,7 @@ shared_context "shared render" do
           Hiptest::Nodes::Call.new('my action word')
         ])
     ])
-    @scenarios.parent = Hiptest::Nodes::Project.new('My_project')
+    @scenarios.parent = Hiptest::Nodes::Project.new('My project')
 
     @actionwords_with_parameters = Hiptest::Nodes::Actionwords.new([
       Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
@@ -255,6 +274,7 @@ shared_context "shared render" do
           Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('/login')
         )])
       ])
+    @second_test
 
     @tests = Hiptest::Nodes::Tests.new([@first_test, @second_test])
     @first_test.parent = @tests

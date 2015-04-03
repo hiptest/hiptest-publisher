@@ -64,7 +64,8 @@ class OptionsParser
       'Java' => ['JUnit', 'Test NG'],
       'Python' => ['Unittest'],
       'Robot Framework' => [''],
-      'Selenium IDE' => ['']
+      'Selenium IDE' => [''],
+      'Javascript' => ['qUnit', 'Jasmine']
     }
   end
 
