@@ -185,7 +185,7 @@ describe 'Render as Javascript' do
       "  secondActionWord: function () {",
       "    this.firstActionWord();",
       "  }",
-      "}"].join("\n")
+      "};"].join("\n")
 
     # In Hiptest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
@@ -222,7 +222,7 @@ describe 'Render as Javascript' do
       "  awWithTemplateParam: function (x) {",
       "",
       "  }",
-      "}"
+      "};"
     ].join("\n")
 
 
