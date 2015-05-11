@@ -183,9 +183,18 @@ module Hiptest
         css_first_content(actionword, '> name'),
         build_tags(actionword),
         build_parameters(actionword),
-        build_steps(actionword))
+        build_steps(actionword),
+        css_first_content(actionword, '> uid'))
     end
-    alias :build_actionwordSnapshot :build_actionword
+
+    def build_actionwordSnapshot(actionword)
+      Hiptest::Nodes::Actionword.new(
+        css_first_content(actionword, '> name'),
+        build_tags(actionword),
+        build_parameters(actionword),
+        build_steps(actionword),
+        css_first_content(actionword, '> actionwordUid'))
+    end
 
     def build_scenario(scenario)
       Hiptest::Nodes::Scenario.new(

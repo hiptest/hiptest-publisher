@@ -394,6 +394,19 @@ describe Hiptest::XMLParser do
           create_actionword(*args)
         end
       end
+
+      it 'finds UIDs in the UID node' do
+        node_xml = [
+          "<actionword>",
+          "  <name>Plop</name>",
+          "  <uid>1234-5678</uid>",
+          "</actionword>"
+        ].join("\n")
+
+        node = build_node(node_xml)
+        expect(node).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:uid]).to eq('1234-5678')
+      end
     end
 
     context 'actionwordSnapshot' do
@@ -401,6 +414,20 @@ describe Hiptest::XMLParser do
         def actionword_maker(*args)
           create_actionword_snapshot(*args)
         end
+      end
+
+      it 'finds UIDs in the actionwordUid node' do
+        node_xml = [
+          "<actionwordSnapshot>",
+          "  <name>Plop</name>",
+          "  <uid>1234-5678</uid>",
+          "  <actionwordUid>9876-5432</actionwordUid>",
+          "</actionwordSnapshot>"
+        ].join("\n")
+
+        node = build_node(node_xml)
+        expect(node).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:uid]).to eq('9876-5432')
       end
     end
 

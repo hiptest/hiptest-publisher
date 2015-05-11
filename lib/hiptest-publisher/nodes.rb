@@ -241,6 +241,11 @@ module Hiptest
     end
 
     class Actionword < Item
+      def initialize(name, tags = [], parameters = [], body = [], uid = nil)
+        super(name, tags, parameters, body)
+        @children[:uid] = uid
+      end
+
       def must_be_implemented?
         @children[:body].empty? || @children[:body].map {|step| step.class}.compact.include?(Hiptest::Nodes::Step)
       end
