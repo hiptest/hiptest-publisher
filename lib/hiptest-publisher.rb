@@ -128,7 +128,7 @@ module Hiptest
       write_to_file(
         "#{@options.output_directory}/actionwords_signature.yaml",
         "Exporting actionword signature"
-      ) { Hiptest::SignatureExporter.export_project(@project) }
+      ) { Hiptest::SignatureExporter.export_actionwords(@project).to_yaml }
     end
 
     def export

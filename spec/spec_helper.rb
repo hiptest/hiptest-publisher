@@ -33,8 +33,8 @@ module HelperFactories
     Hiptest::Nodes::Parameter.new(name, default)
   end
 
-  def make_actionword(name, tags = [], parameters = [], body = [])
-    Hiptest::Nodes::Actionword.new(name, tags, parameters, body)
+  def make_actionword(name, tags = [], parameters = [], body = [], uid = nil)
+    Hiptest::Nodes::Actionword.new(name, tags, parameters, body, uid)
   end
 
   def make_scenario(name, tags, parameters, body)

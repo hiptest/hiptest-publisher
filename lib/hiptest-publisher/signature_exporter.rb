@@ -2,13 +2,13 @@ require 'yaml'
 
 module Hiptest
   class SignatureExporter
-    def self.export_project(project)
+    def self.export_actionwords(project)
       exporter = SignatureExporter.new
-      exporter.export_actionwords(project).to_yaml
+      exporter.export_actionwords(project.children[:actionwords])
     end
 
-    def export_actionwords(project)
-      project.children[:actionwords].children[:actionwords].map {|aw| export_actionword(aw)}
+    def export_actionwords(aws)
+      aws.children[:actionwords].map {|aw| export_actionword(aw)}
     end
 
     def export_item(item)
