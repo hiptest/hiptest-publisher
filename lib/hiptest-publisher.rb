@@ -7,12 +7,15 @@ require 'hiptest-publisher/xml_parser'
 require 'hiptest-publisher/parent_adder'
 require 'hiptest-publisher/parameter_type_adder'
 require 'hiptest-publisher/call_arguments_adder'
+require 'hiptest-publisher/signature_exporter'
 
 module Hiptest
   class Publisher
     def initialize(args)
       @options = OptionsParser.parse(args)
+    end
 
+    def run
       unless @options.push.nil? || @options.push.empty?
         post_results
         return
@@ -22,6 +25,13 @@ module Hiptest
       return if xml.nil?
 
       @project = get_project(xml)
+
+      if @options.actionwords_signature
+        puts Hiptest::SignatureExporter.export_project(@project)
+        return
+      end
+
+      export
     end
 
     def fetch_xml_file
@@ -44,18 +54,24 @@ module Hiptest
       return parser.build_project
     end
 
-    def write_node_to_file(path, node, context, message)
+    def write_to_file(path, message)
       status_message = "#{message}: #{path}"
       begin
         show_status_message status_message
         File.open(path, 'w') do |file|
-          file.write(Hiptest::Renderer.render(node, @options.language, context))
+          file.write(yield)
         end
 
         show_status_message status_message, :success
       rescue Exception => err
         show_status_message status_message, :failure
         trace_exception(err) if @options.verbose
+      end
+    end
+
+    def write_node_to_file(path, node, context, message)
+      write_to_file(path, message) do
+        Hiptest::Renderer.render(node, @options.language, context)
       end
     end
 
@@ -108,6 +124,11 @@ module Hiptest
         @language_config.actionword_render_context,
         "Exporting actionwords"
       )
+
+      write_to_file(
+        "#{@options.output_directory}/actionwords_signature.yaml",
+        "Exporting actionword signature"
+      ) { Hiptest::SignatureExporter.export_project(@project) }
     end
 
     def export
