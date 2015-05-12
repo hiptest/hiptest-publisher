@@ -16,12 +16,14 @@ describe Hiptest::SignatureExporter do
     )
   }
 
+  let(:aw2) { make_actionword('plic') }
+
   let(:aws) {
-    Hiptest::Nodes::Actionwords.new([aw, make_actionword('plic')])
+    Hiptest::Nodes::Actionwords.new([aw, aw2])
   }
 
   let(:project) {
-    make_project('My project', [], [], [aw, make_actionword('plic')])
+    make_project('My project', [], [], [aw, aw2])
   }
 
   describe 'self.export_actionwords' do
@@ -38,6 +40,25 @@ describe Hiptest::SignatureExporter do
           "name" => "plic",
           "uid" => nil,
           "parameters" => []
+        }
+      ])
+    end
+
+    it 'if asked, it also export the AW node' do
+      expect(Hiptest::SignatureExporter.export_actionwords(project, true)).to eq([
+        {
+          "name" => "my action word",
+          "uid" => "1234-5678",
+          "parameters" => [
+            {"name" => "x"},
+            {"name" => "y"}
+          ],
+          "node" => aw},
+        {
+          "name" => "plic",
+          "uid" => nil,
+          "parameters" => [],
+          "node" => aw2
         }
       ])
     end
