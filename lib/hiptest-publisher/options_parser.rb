@@ -83,6 +83,7 @@ class OptionsParser
       Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionword signature", :actionwords_signature),
+      Option.new(nil, 'show-actionwords-diff', false, nil, "Show actionwords diff since last update", :actionwords_diff),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
