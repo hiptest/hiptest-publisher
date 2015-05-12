@@ -35,6 +35,30 @@ describe Hiptest::SignatureDiffer do
     )
   }
 
+  let(:v4) {
+    exporter.export_actionwords(
+      make_project('My project', [], [], [
+        make_actionword('My actionzord', [], [
+          make_parameter('x'),
+          make_parameter('y', make_literal(:string, 'Hi, I am a valued parameters'))
+        ],
+        [], 'id1'),
+      ])
+    )
+  }
+
+  let(:v5) {
+    exporter.export_actionwords(
+      make_project('My project', [], [], [
+        make_actionword('My actionzord', [], [
+          make_parameter('y', make_literal(:string, 'Hi, I am a valued parameter')),
+          make_parameter('z'),
+        ],
+        [], 'id1'),
+      ])
+    )
+  }
+
   it 'finds newly created action words' do
     expect(differ.diff(v1, v2)).to eq({created: [{name: 'My actionwurst'}]})
   end
@@ -47,6 +71,15 @@ describe Hiptest::SignatureDiffer do
     expect(differ.diff(v2, v3)).to eq({renamed: [{name: 'My actionwurst', new_name: 'My actionwürst'}]})
   end
 
-  it 'finds newly added parameters'
-  it 'finds removed parameters'
+  it 'finds updated signature (not really fine diff for now)' do
+    expect(differ.diff(v4, v5)).to eq({signature_changed: [{name: 'My actionzord'}]})
+  end
+
+  it 'can find lots of things at once' do
+    expect(differ.diff(v2, v5)).to eq({
+      deleted: [{name: "My actionwurst"}],
+      renamed: [{name: "My actionword", new_name: "My actionzord"}],
+      signature_changed: [{name: "My actionzord"}]
+    })
+  end
 end

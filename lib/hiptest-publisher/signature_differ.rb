@@ -16,11 +16,13 @@ module Hiptest
       compute_created
       compute_deleted
       compute_renamed
+      compute_signature_changed
 
       diff = {}
       diff[:created] = @created unless @created.empty?
       diff[:deleted] = @deleted unless @deleted.empty?
       diff[:renamed] = @renamed unless @renamed.empty?
+      diff[:signature_changed] = @signature_changed unless @signature_changed.empty?
 
       diff
     end
@@ -43,6 +45,15 @@ module Hiptest
         next if @old_uid[uid]['name'] == aw['name']
 
         {name: @old_uid[uid]['name'], new_name: aw['name']}
+      end.compact
+    end
+
+    def compute_signature_changed
+      @signature_changed = @current_uid.map do |uid, aw|
+        next if @created_uids.include?(uid) || @deleted_uids.include?(uid)
+        next if @old_uid[uid]['parameters'] == aw['parameters']
+
+        {name: aw['name']}
       end.compact
     end
 
