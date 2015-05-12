@@ -27,7 +27,7 @@ module Hiptest
       @project = get_project(xml)
 
       if @options.actionwords_signature
-        puts Hiptest::SignatureExporter.export_project(@project)
+        export_actionword_signature
         return
       end
 
@@ -124,7 +124,10 @@ module Hiptest
         @language_config.actionword_render_context,
         "Exporting actionwords"
       )
+      export_actionword_signature
+    end
 
+    def export_actionword_signature
       write_to_file(
         "#{@options.output_directory}/actionwords_signature.yaml",
         "Exporting actionword signature"
