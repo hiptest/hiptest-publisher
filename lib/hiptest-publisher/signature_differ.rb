@@ -31,7 +31,7 @@ module Hiptest
 
     def compute_created
       @created_uids = @current_uid.keys - @old_uid.keys
-      @created = @created_uids.map {|uid| {name: @current_uid[uid]['name']}}
+      @created = @created_uids.map {|uid| {name: @current_uid[uid]['name'], node: @current_uid[uid]['node']}}
     end
 
     def compute_deleted
@@ -44,7 +44,7 @@ module Hiptest
         next if @created_uids.include?(uid) || @deleted_uids.include?(uid)
         next if @old_uid[uid]['name'] == aw['name']
 
-        {name: @old_uid[uid]['name'], new_name: aw['name']}
+        {name: @old_uid[uid]['name'], new_name: aw['name'], node: aw['node']}
       end.compact
     end
 
@@ -53,7 +53,7 @@ module Hiptest
         next if @created_uids.include?(uid) || @deleted_uids.include?(uid)
         next if @old_uid[uid]['parameters'] == aw['parameters']
 
-        {name: aw['name']}
+        {name: aw['name'], node: aw['node']}
       end.compact
     end
 
