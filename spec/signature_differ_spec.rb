@@ -9,53 +9,55 @@ describe Hiptest::SignatureDiffer do
   let(:exporter) { Hiptest::SignatureExporter }
   let(:differ) { Hiptest::SignatureDiffer }
 
+  let(:aw1v1) { make_actionword('My actionword', [], [], [], 'id1') }
+
+  let(:aw1v2) {
+    make_actionword('My actionzord', [], [
+      make_parameter('x'),
+      make_parameter('y', make_literal(:string, 'Hi, I am a valued parameters'))
+    ],
+    [], 'id1')
+  }
+
+  let(:aw1v3) {
+    make_actionword('My actionzord', [], [
+      make_parameter('y', make_literal(:string, 'Hi, I am a valued parameter')),
+      make_parameter('z'),
+    ],
+    [], 'id1')
+  }
+
+  let(:aw2v1) { make_actionword('My actionwurst', [], [], [], 'id2') }
+
+  let(:aw2v2) { make_actionword('My actionwürst', [], [], [], 'id2') }
+
   let(:v1) {
     exporter.export_actionwords(
-      make_project('My project', [], [], [
-        make_actionword('My actionword', [], [], [], 'id1')
-      ])
+      make_project('My project', [], [], [aw1v1])
     )
   }
 
   let(:v2) {
     exporter.export_actionwords(
-      make_project('My project', [], [], [
-        make_actionword('My actionword', [], [], [], 'id1'),
-        make_actionword('My actionwurst', [], [], [], 'id2')
-      ])
+      make_project('My project', [], [], [aw1v1, aw2v1])
     )
   }
 
   let(:v3) {
     exporter.export_actionwords(
-      make_project('My project', [], [], [
-        make_actionword('My actionword', [], [], [], 'id1'),
-        make_actionword('My actionwürst', [], [], [], 'id2')
-      ])
+      make_project('My project', [], [], [aw1v1, aw2v2])
     )
   }
 
   let(:v4) {
     exporter.export_actionwords(
-      make_project('My project', [], [], [
-        make_actionword('My actionzord', [], [
-          make_parameter('x'),
-          make_parameter('y', make_literal(:string, 'Hi, I am a valued parameters'))
-        ],
-        [], 'id1'),
-      ])
+      make_project('My project', [], [], [aw1v2])
     )
   }
 
   let(:v5) {
     exporter.export_actionwords(
-      make_project('My project', [], [], [
-        make_actionword('My actionzord', [], [
-          make_parameter('y', make_literal(:string, 'Hi, I am a valued parameter')),
-          make_parameter('z'),
-        ],
-        [], 'id1'),
-      ])
+      make_project('My project', [], [], [aw1v3])
     )
   }
 
