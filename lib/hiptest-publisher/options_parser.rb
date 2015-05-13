@@ -216,6 +216,10 @@ class LanguageConfigParser
     make_context('actionwords')
   end
 
+  def name_action_word(name)
+    name.send(@config['actionwords']['naming_convention'])
+  end
+
   private
   def make_context group
     context = {

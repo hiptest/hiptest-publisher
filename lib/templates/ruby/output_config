@@ -4,3 +4,4 @@ scenario_filename = '%s_spec.rb'
 
 [actionwords]
 filename = 'actionwords.rb'
+naming_convention = 'underscore'

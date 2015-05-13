@@ -5,7 +5,7 @@ class_name_convention = 'camelize'
 indentation = "    "
 call_prefix = 'actionwords'
 
-
 [actionwords]
 filename = 'Actionwords.java'
 indentation = "    "
+naming_convention = 'camelize_lower'

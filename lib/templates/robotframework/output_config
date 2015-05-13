@@ -6,3 +6,4 @@ indentation = "\t"
 [actionwords]
 filename = 'keywords.txt'
 indentation = "\t"
+naming_convention = 'underscore'

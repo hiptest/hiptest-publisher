@@ -5,3 +5,4 @@ call_prefix = 'actionwords'
 
 [actionwords]
 filename = 'actionwords.js'
+naming_convention = 'camelize_lower'

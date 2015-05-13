@@ -163,9 +163,7 @@ module Hiptest
         return if diff[:deleted].nil?
 
         diff[:deleted].map {|deleted|
-          aw = Hiptest::Nodes::Actionword.new(deleted[:name])
-          puts Hiptest::Renderer.render(aw, @options.language, @language_config.actionword_render_context)
-          puts ""
+          puts @language_config.name_action_word(deleted[:name])
         }
         return
       end
@@ -183,8 +181,7 @@ module Hiptest
         return if diff[:renamed].nil?
 
         diff[:renamed].map {|renamed|
-          puts Hiptest::Renderer.render(renamed[:node], @options.language, @language_config.actionword_render_context)
-          puts ""
+          puts "#{@language_config.name_action_word(renamed[:name])}\t#{@language_config.name_action_word(renamed[:new_name])}"
         }
         return
       end
