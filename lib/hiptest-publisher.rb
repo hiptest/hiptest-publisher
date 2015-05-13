@@ -33,7 +33,7 @@ module Hiptest
         return
       end
 
-      if @options.actionwords_diff
+      if @options.actionwords_diff || @options.aw_deleted|| @options.aw_created|| @options.aw_renamed|| @options.aw_signature_changed
         show_actionwords_diff
         return
       end
@@ -158,6 +158,46 @@ module Hiptest
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
       diff =  Hiptest::SignatureDiffer.diff( old, current)
+
+      if @options.aw_deleted
+        return if diff[:deleted].nil?
+
+        diff[:deleted].map {|deleted|
+          aw = Hiptest::Nodes::Actionword.new(deleted[:name])
+          puts Hiptest::Renderer.render(aw, @options.language, @language_config.actionword_render_context)
+          puts ""
+        }
+        return
+      end
+
+      if @options.aw_created
+        return if diff[:created].nil?
+        diff[:created].map {|created|
+          puts Hiptest::Renderer.render(created[:node], @options.language, @language_config.actionword_render_context)
+          puts ""
+        }
+        return
+      end
+
+      if @options.aw_renamed
+        return if diff[:renamed].nil?
+
+        diff[:renamed].map {|renamed|
+          puts Hiptest::Renderer.render(renamed[:node], @options.language, @language_config.actionword_render_context)
+          puts ""
+        }
+        return
+      end
+
+      if @options.aw_signature_changed
+        return if diff[:signature_changed].nil?
+
+        diff[:signature_changed].map {|signature_changed|
+          puts Hiptest::Renderer.render(signature_changed[:node], @options.language, @language_config.actionword_render_context)
+          puts ""
+        }
+        return
+      end
 
       unless diff[:deleted].nil?
         puts "#{diff[:deleted].length} action words deleted:"
