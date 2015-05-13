@@ -160,31 +160,27 @@ module Hiptest
       diff =  Hiptest::SignatureDiffer.diff( old, current)
 
       unless diff[:deleted].nil?
-        puts '--------------- DELETED ----------------------'
-        puts diff[:deleted].map {|deleted| deleted[:name]}
+        puts "#{diff[:deleted].length} action words deleted:"
+        puts diff[:deleted].map {|d| "- #{d[:name]}"}.join("\n")
+        puts ""
       end
 
       unless diff[:created].nil?
-        puts '--------------- CREATED ----------------------'
-        diff[:created].map do |created|
-          puts created[:name]
-          puts Hiptest::Renderer.render(created[:node], @options.language, @language_config.actionword_render_context)
-          puts ""
-        end
+        puts "#{diff[:created].length} action words created:"
+        puts diff[:created].map {|c| "- #{c[:name]}"}.join("\n")
+        puts ""
       end
 
       unless diff[:renamed].nil?
-        puts '--------------- RENAMED ---------------------'
-        diff[:renamed].map do |renamed|
-          puts "#{renamed[:name]} => #{renamed[:new_name]}"
-        end
+        puts "#{diff[:renamed].length} action words renamed:"
+        puts diff[:renamed].map {|r| "- #{r[:name]} => #{r[:new_name]}"}.join("\n")
+        puts ""
       end
 
       unless diff[:signature_changed].nil?
-        puts '--------------- SIGNATURE CHANGED ------------------'
-        diff[:signature_changed].map do |signature_changed|
-          puts signature_changed[:name]
-        end
+        puts "#{diff[:signature_changed].length} action words which signature changed:"
+        puts diff[:signature_changed].map {|c| "- #{c[:name]}"}.join("\n")
+        puts ""
       end
     end
 
