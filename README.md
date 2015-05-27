@@ -45,6 +45,7 @@ You can specify the output language and framework in the command line, for examp
 hiptest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 ```
 
+When publishing, you'll notice that a file called ``actionwords_signature.yaml``. Store this file in your code repository, it will be used to [handle updates of the action word](docs/upgrading_actionwords.md).
 
 For more information on the available options, use the following command:
 
