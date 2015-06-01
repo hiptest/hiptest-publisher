@@ -22,6 +22,7 @@ module Hiptest
       @rendered = {}
       @context = context
       @handlebars = Handlebars::Handlebars.new
+      @compiled_handlebars = {}
       register_partials()
 
       Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
@@ -71,7 +72,11 @@ module Hiptest
       render_context[:context] = @context
 
       template = get_template_path(node)
-      @handlebars.compile(File.read(template)).call(render_context)
+      get_compiled_handlebars(template).call(render_context)
+    end
+
+    def get_compiled_handlebars(template)
+      @compiled_handlebars[template] ||= @handlebars.compile(File.read(template))
     end
 
     def get_template_by_name(name, extension)
