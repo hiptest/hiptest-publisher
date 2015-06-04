@@ -169,9 +169,9 @@ module Hiptest
     end
 
     class Call < Node
-      def initialize(actionword, arguments = [])
+      def initialize(actionword, arguments = [], annotation = nil)
         super()
-        @children = {:actionword => actionword, :arguments => arguments}
+        @children = {:actionword => actionword, :arguments => arguments, :all_arguments => arguments, :annotation => annotation}
       end
     end
 

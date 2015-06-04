@@ -86,8 +86,9 @@ describe Hiptest::DefaultArgumentAdder do
     expect(arg.children[:value]).to eq(nil)
   end
 
-  it 'if the action word is unknown, then the :all_arguments key is not even set' do
-    expect(call_to_unknown_actionword.children.has_key?(:all_arguments)).to be false
+  it 'if the action word is unknown, then the :all_arguments key is set to arguments' do
+    expect(call_to_unknown_actionword.children.has_key?(:all_arguments)).to be true
+    expect(call_to_unknown_actionword.children[:all_arguments]).to eq(call_to_unknown_actionword.children[:arguments])
   end
 end
 

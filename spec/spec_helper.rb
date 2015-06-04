@@ -26,6 +26,10 @@ module HelperFactories
     Hiptest::Nodes::Argument.new(name, value)
   end
 
+  def make_annotated_call(annotation, actionword, arguments = [])
+    Hiptest::Nodes::Call.new(actionword, arguments, annotation)
+  end
+
   def make_call(actionword, arguments= [])
     Hiptest::Nodes::Call.new(actionword, arguments)
   end

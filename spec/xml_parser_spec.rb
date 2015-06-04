@@ -261,6 +261,7 @@ describe Hiptest::XMLParser do
         node = build_node('<call><actionword>my action word</actionword></call>')
 
         expect(node).to be_a(Hiptest::Nodes::Call)
+        expect(node.children[:annotation]).to be_nil
         expect(node.children[:actionword]).to eq('my action word')
         expect(node.children[:arguments]).to eq([])
       end
@@ -290,6 +291,18 @@ describe Hiptest::XMLParser do
         expect(node.children[:arguments][1]).to be_a(Hiptest::Nodes::Argument)
         expect(node.children[:arguments][1].children[:name]).to eq('y')
         expect(node.children[:arguments][1].children[:value]).to be_a(Hiptest::Nodes::NumericLiteral)
+      end
+
+      it 'with annotation' do
+        node = build_node("<call>
+          <annotation>given</annotation>
+          <actionword>my action word</actionword>
+        </call>")
+
+        expect(node).to be_a(Hiptest::Nodes::Call)
+        expect(node.children[:annotation]).to eq('given')
+        expect(node.children[:actionword]).to eq('my action word')
+        expect(node.children[:arguments]).to eq([])
       end
     end
 

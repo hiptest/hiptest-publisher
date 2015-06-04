@@ -4,24 +4,6 @@ require_relative '../lib/hiptest-publisher/nodes'
 
 shared_context "shared render" do
 
-  before(:all) do
-    class Hiptest::Nodes::Call < Hiptest::Nodes::Node
-      def initialize(actionword, arguments = [])
-        super()
-        @children = {:actionword => actionword, :arguments => arguments, :all_arguments => arguments}
-      end
-    end
-  end
-
-  after(:all) do
-    class Hiptest::Nodes::Call < Hiptest::Nodes::Node
-      def initialize(actionword, arguments = [])
-        super()
-        @children = {:actionword => actionword, :arguments => arguments}
-      end
-    end
-  end
-
   before(:each) do
     @null = Hiptest::Nodes::NullLiteral.new
     @what_is_your_quest = Hiptest::Nodes::StringLiteral.new("What is your quest ?")

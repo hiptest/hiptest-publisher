@@ -110,7 +110,8 @@ module Hiptest
     def build_call(call)
       Hiptest::Nodes::Call.new(
         css_first_content(call, '> actionword'),
-        build_arguments(call))
+        build_arguments(call),
+        css_first_content(call, '> annotation'))
     end
 
     def build_arguments(arguments)
