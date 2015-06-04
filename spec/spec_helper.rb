@@ -1,4 +1,5 @@
 require "codeclimate-test-reporter"
+require 'pry'
 require_relative '../lib/hiptest-publisher/nodes'
 
 CodeClimate::TestReporter.start
