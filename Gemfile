@@ -11,6 +11,7 @@ gem 'ruby-handlebars', '>= 0.0.2'
 
 group :development do
   gem 'pry'
+  gem 'pry-byebug'
   gem 'pry-stack_explorer'
   gem 'rspec', '~> 3.1', '>= 3.1.0'
   gem 'rspec-mocks', '~> 3.1', '>= 3.1.3'

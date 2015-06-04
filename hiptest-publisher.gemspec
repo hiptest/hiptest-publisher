@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-05-27"
+  s.date = "2015-06-04"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -242,7 +242,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://hiptest.net"
   s.licenses = ["GPL 2"]
-  s.rubygems_version = "2.4.3"
+  s.rubygems_version = "2.4.7"
   s.summary = "Export your tests from Hiptest into executable tests."
 
   if s.respond_to? :specification_version then
@@ -256,6 +256,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<multipart-post>, [">= 2.0.0", "~> 2.0"])
       s.add_runtime_dependency(%q<ruby-handlebars>, [">= 0.0.2"])
       s.add_development_dependency(%q<pry>, [">= 0"])
+      s.add_development_dependency(%q<pry-byebug>, [">= 0"])
       s.add_development_dependency(%q<pry-stack_explorer>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 3.1.0", "~> 3.1"])
       s.add_development_dependency(%q<rspec-mocks>, [">= 3.1.3", "~> 3.1"])
@@ -269,6 +270,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<multipart-post>, [">= 2.0.0", "~> 2.0"])
       s.add_dependency(%q<ruby-handlebars>, [">= 0.0.2"])
       s.add_dependency(%q<pry>, [">= 0"])
+      s.add_dependency(%q<pry-byebug>, [">= 0"])
       s.add_dependency(%q<pry-stack_explorer>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 3.1.0", "~> 3.1"])
       s.add_dependency(%q<rspec-mocks>, [">= 3.1.3", "~> 3.1"])
@@ -283,6 +285,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<multipart-post>, [">= 2.0.0", "~> 2.0"])
     s.add_dependency(%q<ruby-handlebars>, [">= 0.0.2"])
     s.add_dependency(%q<pry>, [">= 0"])
+    s.add_dependency(%q<pry-byebug>, [">= 0"])
     s.add_dependency(%q<pry-stack_explorer>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 3.1.0", "~> 3.1"])
     s.add_dependency(%q<rspec-mocks>, [">= 3.1.3", "~> 3.1"])
