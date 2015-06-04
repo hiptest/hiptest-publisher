@@ -14,8 +14,7 @@ class String
   end
 
   def normalize_lower
-    literated = self.literate
-    literated.strip.gsub(/\s+/, '_').gsub(/\W/, '').downcase
+    self.normalize.downcase
   end
 
   def underscore
