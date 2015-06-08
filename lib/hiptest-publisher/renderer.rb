@@ -1,5 +1,6 @@
 require 'ruby-handlebars'
 
+require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/nodes_walker'
 require 'hiptest-publisher/handlebars_helper'
 require 'hiptest-publisher/render_context_maker'
@@ -11,6 +12,10 @@ module Hiptest
 
     def self.render(node, language, context)
       context[:language] = language
+      # TODO move elsewhere once stabilized
+      if language == 'cucumber'
+        Hiptest::GherkinAdder.add(node)
+      end
 
       renderer = Hiptest::Renderer.new(context)
       renderer.walk_node(node)
@@ -72,6 +77,7 @@ module Hiptest
       render_context[:context] = @context
 
       template = get_template_path(node)
+      raise ArgumentError.new("no template for node #{node.class}") if template.nil?
       get_compiled_handlebars(template).call(render_context)
     end
 
