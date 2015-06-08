@@ -59,7 +59,7 @@ describe Hiptest::HandlebarsHelper do
   context 'register_string_helpers' do
     it 'register helpers based on our custom string methods' do
       instance.register_string_helpers
-      expect(handlebars.helpers).to eq([
+      expect(handlebars.helpers).to include(
         :literate,
         :normalize,
         :normalize_lower,
@@ -67,14 +67,14 @@ describe Hiptest::HandlebarsHelper do
         :camelize,
         :camelize_lower,
         :clear_extension
-      ])
+      )
     end
   end
 
   context 'register_custom_helpers' do
     it 'registers the helpers' do
       instance.register_custom_helpers
-      expect(handlebars.helpers).to eq([
+      expect(handlebars.helpers).to include(
         "to_string",
         "join",
         "indent",
@@ -87,7 +87,7 @@ describe Hiptest::HandlebarsHelper do
         "close_curly",
         "tab",
         "debug"
-      ])
+      )
     end
 
     it 'any method named hh_* is register as a helper (hh stands for handlebars helper)' do
@@ -97,21 +97,9 @@ describe Hiptest::HandlebarsHelper do
       end
 
       CustomHelper.new(handlebars, {}).register_custom_helpers
-      expect(handlebars.helpers).to eq([
+      expect(handlebars.helpers).to include(
         "do_something",
-        "to_string",
-        "join",
-        "indent",
-        "clear_empty_lines",
-        "remove_quotes",
-        "escape_quotes",
-        "comment",
-        "curly",
-        "open_curly",
-        "close_curly",
-        "tab",
-        "debug"
-      ])
+      )
     end
   end
 
