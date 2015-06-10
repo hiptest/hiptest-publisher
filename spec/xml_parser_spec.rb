@@ -52,6 +52,7 @@ describe Hiptest::XMLParser do
   end
 
   before(:each) do
+    RSpec::Matchers.alias_matcher :having_attributes, :an_object_having_attributes
     @zero = '<numericliteral>0</numericliteral>'
     @my_var = '<var>my_var</var>'
     @assign_zero_to_my_var = "
@@ -291,6 +292,41 @@ describe Hiptest::XMLParser do
         expect(node.children[:arguments][1]).to be_a(Hiptest::Nodes::Argument)
         expect(node.children[:arguments][1].children[:name]).to eq('y')
         expect(node.children[:arguments][1].children[:value]).to be_a(Hiptest::Nodes::NumericLiteral)
+      end
+
+      it 'with templated arguments' do
+        node = build_node("
+          <call>
+            <actionword>another action word</actionword>
+            <arguments>
+              <argument>
+                <name>x</name>
+                <value>
+                  <template>#{@my_var}</template>
+                </value>
+              </argument>
+              <argument>
+                <name>y</name>
+                  <value>
+                    <template>#{@zero}</template>
+                  </value>
+              </argument>
+            </arguments>
+          </call>")
+
+        expect(node).to be_a(Hiptest::Nodes::Call)
+        expect(node.children[:actionword]).to eq('another action word')
+        expect(node.children[:arguments].length).to eq(2)
+        expect(node.children[:arguments][0]).to be_a(Hiptest::Nodes::Argument)
+        expect(node.children[:arguments][0].children[:name]).to eq('x')
+        expect(node.children[:arguments][0].children[:value]).to be_a(Hiptest::Nodes::Template)
+        expect(node.children[:arguments][0].children[:value].children[:chunks]).to contain_exactly(
+          an_instance_of(Hiptest::Nodes::Variable).and having_attributes(:children => {:name => "my_var"}))
+        expect(node.children[:arguments][1]).to be_a(Hiptest::Nodes::Argument)
+        expect(node.children[:arguments][1].children[:name]).to eq('y')
+        expect(node.children[:arguments][1].children[:value]).to be_a(Hiptest::Nodes::Template)
+        expect(node.children[:arguments][1].children[:value].children[:chunks]).to contain_exactly(
+          an_instance_of(Hiptest::Nodes::NumericLiteral).and having_attributes(:children => {:value => "0"}))
       end
 
       it 'with annotation' do
