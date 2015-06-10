@@ -8,6 +8,10 @@ module Hiptest
       attr_reader :children, :parent
       attr_writer :parent
 
+      def pretty_print_instance_variables
+        super - [:@parent] # do not overload pry output
+      end
+
       def render(language = 'ruby', context = {})
         return Hiptest::Renderer.render(self, language, context)
       end
