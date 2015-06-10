@@ -26,6 +26,26 @@ module HelperFactories
     Hiptest::Nodes::Argument.new(name, value)
   end
 
+  def make_template(*chunks)
+    Hiptest::Nodes::Template.new(chunks)
+  end
+
+  def literal(arg)
+    case arg
+    when String                      then Hiptest::Nodes::StringLiteral.new(arg)
+    when Numeric                     then Hiptest::Nodes::NumericLiteral.new(arg.to_s)
+    when true, false                 then Hiptest::Nodes::BooleanLiteral.new(arg.to_s)
+    when nil                         then Hiptest::Nodes::NullLiteral.new
+    when Hiptest::Nodes::Literal     then arg
+    when Hiptest::Nodes::NullLiteral then arg
+    else raise ArgumentError.new("bad argument #{arg}")
+    end
+  end
+
+  def template_of_literals(*args)
+    Hiptest::Nodes::Template.new(args.map { |arg| literal(arg) })
+  end
+
   def make_annotated_call(annotation, actionword, arguments = [])
     Hiptest::Nodes::Call.new(actionword, arguments, annotation)
   end

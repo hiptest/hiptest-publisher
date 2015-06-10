@@ -6,13 +6,13 @@ describe Hiptest::GherkinAdder do
 
   let(:actionword) {
     make_actionword("Hello \"name\"", [], [
-      make_parameter("name", make_literal(:string, "World")),
+      make_parameter("name", literal("World")),
     ])
   }
 
   let(:call) {
     make_annotated_call("given", "Hello \"name\"", [
-      make_argument("name", make_literal(:string, "John")),
+      make_argument("name", literal("John")),
     ])
   }
 
@@ -71,7 +71,7 @@ describe Hiptest::GherkinAdder do
     context "but with quoted text, and with a call having a matching argument (which is invalid because actionword has no parameters)" do
       let(:actionword_name) { "I say \"hello\"" }
       let(:call)  { make_annotated_call("when", actionword_name, [
-          make_argument("hello", make_literal(:string, "Guten tag")),
+          make_argument("hello", literal("Guten tag")),
         ])
       }
 
@@ -94,7 +94,7 @@ describe Hiptest::GherkinAdder do
   context "actionword with one parameter" do
     let(:actionword) {
       make_actionword(actionword_name, [], [
-        make_parameter("name", make_literal(:string, "World")),
+        make_parameter("name", literal("World")),
       ])
     }
 
@@ -104,7 +104,7 @@ describe Hiptest::GherkinAdder do
       context "called with an argument" do
         let(:call) {
           make_annotated_call("given", actionword_name, [
-            make_argument("name", make_literal(:string, "John")),
+            make_argument("name", literal("John")),
           ])
         }
 
@@ -128,7 +128,7 @@ describe Hiptest::GherkinAdder do
       context "called with an argument" do
         let(:call) {
           make_annotated_call("given", actionword_name, [
-            make_argument("name", make_literal(:string, "John")),
+            make_argument("name", literal("John")),
           ])
         }
 
@@ -150,9 +150,9 @@ describe Hiptest::GherkinAdder do
   context "actionword with multiple parameters" do
     let(:actionword) {
       make_actionword(actionword_name, [], [
-        make_parameter("name1", make_literal(:string, "Riri")),
-        make_parameter("name2", make_literal(:string, "Fifi")),
-        make_parameter("name3", make_literal(:string, "Loulou")),
+        make_parameter("name1", literal("Riri")),
+        make_parameter("name2", literal("Fifi")),
+        make_parameter("name3", literal("Loulou")),
       ])
     }
 
@@ -171,9 +171,9 @@ describe Hiptest::GherkinAdder do
         let(:call) {
           make_annotated_call("given", actionword_name, [
             # unordered, just to see if it works
-            make_argument("name2", make_literal(:string, "Paul")),
-            make_argument("name3", make_literal(:string, "Jacques")),
-            make_argument("name1", make_literal(:string, "Pierre")),
+            make_argument("name2", literal("Paul")),
+            make_argument("name3", literal("Jacques")),
+            make_argument("name1", literal("Pierre")),
           ])
         }
 
@@ -198,9 +198,9 @@ describe Hiptest::GherkinAdder do
         let(:call) {
           make_annotated_call("given", actionword_name, [
             # unordered, just to see if it works
-            make_argument("name2", make_literal(:string, "Paul")),
-            make_argument("name3", make_literal(:string, "Jacques")),
-            make_argument("name1", make_literal(:string, "Pierre")),
+            make_argument("name2", literal("Paul")),
+            make_argument("name3", literal("Jacques")),
+            make_argument("name1", literal("Pierre")),
           ])
         }
 
@@ -216,26 +216,51 @@ describe Hiptest::GherkinAdder do
 
     let(:actionword) {
       make_actionword(actionword_name, [], [
-        make_parameter("name", make_literal(:string, "Tom")),
-        make_parameter("day", make_literal(:string, "Monday")),
-        make_parameter("temperature", make_literal(:string, "25°C")),
-        make_parameter("weather", make_literal(:string, "Sunny")),
+        make_parameter("name", literal("Tom")),
+        make_parameter("day", literal("Monday")),
+        make_parameter("temperature", literal("25°C")),
+        make_parameter("weather", literal("Sunny")),
         # "something" is not a parameter
       ])
     }
 
     let(:call) {
       make_call(actionword_name, [
-        make_argument("weather", make_literal(:string, "rainy")),
-        make_argument("name", make_literal(:string, "Captain obvious")),
-        make_argument("something", make_literal(:string, "in the way")), # it's a trap !
+        make_argument("weather", literal("rainy")),
+        make_argument("name", literal("Captain obvious")),
+        make_argument("something", literal("in the way")), # it's a trap !
       ])
     }
 
     it "produces the expected :gherkin_text" do
       expect(gherkin_text).to eq("Given good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
     end
+  end
 
+  context "using templated parameters and arguments" do # same, but with templates
+    let(:actionword_name) { "good morning \"name\", we are \"day\". Say \"something\"!" }
+
+    let(:actionword) {
+      make_actionword(actionword_name, [], [
+        make_parameter("name", template_of_literals("Tom")),
+        make_parameter("day", template_of_literals("Mon", "day")),
+        make_parameter("temperature", template_of_literals("25°C")),
+        make_parameter("weather", template_of_literals("Sunny")),
+        # "something" is not a parameter
+      ])
+    }
+
+    let(:call) {
+      make_call(actionword_name, [
+        make_argument("weather", template_of_literals("rainy")),
+        make_argument("name", template_of_literals("Captain obvious")),
+        make_argument("something", template_of_literals("in the way")), # it's a trap !
+      ])
+    }
+
+    it "produces the expected :gherkin_text" do
+      expect(gherkin_text).to eq("Given good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
+    end
   end
 
 

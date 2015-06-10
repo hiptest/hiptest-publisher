@@ -50,18 +50,43 @@ module Hiptest
     end
 
     def all_valued_arguments_for(call)
-      actionword = @indexer.get_index(call.children[:actionword])
-      actionword_parameters = actionword ? actionword[:parameters] : {}
-      call_arguments = call.children[:arguments].map do |argument|
-        [argument.children[:name], argument.children[:value]]
-      end.to_h
+      evaluated_call_arguments = evaluated_map(call.children[:arguments])
+      evaluated_actionword_parameters = evaluated_map(get_actionword_parameters(call))
+      names = evaluated_actionword_parameters.keys
 
-      arguments = actionword_parameters.map do |name, default_value|
-        value = call_arguments.fetch(name, default_value)
-        value = value.nil? ? "" : value.children[:value]
+      names.map { |name|
+        value = evaluated_call_arguments[name] || evaluated_actionword_parameters[name] || ""
         [name, value]
+      }.to_h
+    end
+
+    def get_actionword_parameters(call)
+      actionword = @indexer.get_index(call.children[:actionword])
+      if actionword
+        actionword[:actionword].children[:parameters]
+      else
+        []
       end
-      arguments.to_h
+    end
+
+    def evaluated_map(named_values)
+      named_values.map do |named_value|
+        name = named_value.children[:name]
+        value = evaluate(named_value.children[:value] || named_value.children[:default])
+        [name, value]
+      end.to_h
+    end
+
+    def evaluate(value)
+      if value.nil?
+        nil
+      elsif value.children[:chunks]
+        value.children[:chunks].map {|chunk| evaluate(chunk) }.join('')
+      elsif value.children[:value]
+        value.children[:value]
+      else
+        nil
+      end
     end
   end
 end

@@ -43,19 +43,25 @@ module Hiptest
         direct
       end
 
+      def ==(other)
+        other.class == self.class && other.children == @children
+      end
+
       private
 
       def all_sub_nodes
         path = [self]
         children = []
+        parsed_nodes_id = Set.new
 
         until path.empty?
           current_node = path.pop
 
           if current_node.is_a?(Node)
-            next if children.include? current_node
+            next if parsed_nodes_id.include? current_node.object_id
 
             children << current_node
+            parsed_nodes_id << current_node.object_id
             current_node.children.values.reverse.each {|item| path << item}
           elsif current_node.is_a?(Array)
             current_node.reverse.each {|item| path << item}
