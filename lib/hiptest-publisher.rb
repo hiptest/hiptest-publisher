@@ -228,6 +228,7 @@ module Hiptest
       Hiptest::Nodes::ParentAdder.add(@project)
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
       Hiptest::DefaultArgumentAdder.add(@project)
+      Hiptest::GherkinAdder.add(@project)
 
       unless @options.actionwords_only
         @options.leafless_export ? export_tests : export_scenarios

@@ -12,10 +12,6 @@ module Hiptest
 
     def self.render(node, language, context)
       context[:language] = language
-      # TODO move elsewhere once stabilized
-      if language == 'cucumber'
-        Hiptest::GherkinAdder.add(node)
-      end
 
       renderer = Hiptest::Renderer.new(context)
       renderer.walk_node(node)

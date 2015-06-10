@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-06-04"
+  s.date = "2015-06-10"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -20,7 +20,9 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     "lib/hiptest-publisher.rb",
+    "lib/hiptest-publisher/actionword_indexer.rb",
     "lib/hiptest-publisher/call_arguments_adder.rb",
+    "lib/hiptest-publisher/gherkin_adder.rb",
     "lib/hiptest-publisher/handlebars_helper.rb",
     "lib/hiptest-publisher/nodes.rb",
     "lib/hiptest-publisher/nodes_walker.rb",
@@ -41,6 +43,10 @@ Gem::Specification.new do |s|
     "lib/templates/common/numericliteral.hbs",
     "lib/templates/common/stringliteral.hbs",
     "lib/templates/common/variable.hbs",
+    "lib/templates/cucumber/argument.hbs",
+    "lib/templates/cucumber/call.hbs",
+    "lib/templates/cucumber/single_test.hbs",
+    "lib/templates/cucumber/template.hbs",
     "lib/templates/java/_body.hbs",
     "lib/templates/java/_item_as_function.hbs",
     "lib/templates/java/_scenario.hbs",
