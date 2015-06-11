@@ -335,10 +335,16 @@ describe Hiptest::XMLParser do
           <actionword>my action word</actionword>
         </call>")
 
-        expect(node).to be_a(Hiptest::Nodes::Call)
         expect(node.children[:annotation]).to eq('given')
-        expect(node.children[:actionword]).to eq('my action word')
-        expect(node.children[:arguments]).to eq([])
+      end
+
+      it 'with empty annotation' do
+        node = build_node("<call>
+          <annotation/>
+          <actionword>my action word</actionword>
+        </call>")
+
+        expect(node.children[:annotation]).to be_nil
       end
     end
 

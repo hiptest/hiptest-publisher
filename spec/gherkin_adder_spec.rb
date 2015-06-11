@@ -52,6 +52,14 @@ describe Hiptest::GherkinAdder do
       end
     end
 
+    context "with empty annotation on call" do
+      let(:call) { make_annotated_call("", actionword_name) }
+
+      it "uses 'Given' as default annotation" do
+        expect(gherkin_text).to eq("Given I say hello world")
+      end
+    end
+
     context "with 1 quote in its name" do
       let(:actionword_name) { "I say \"hello world" }
 
