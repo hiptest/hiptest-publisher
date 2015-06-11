@@ -15,6 +15,7 @@ describe 'Cucumber rendering' do
       make_actionword("the color \"color\"", [], [make_parameter("color")]),
       make_actionword("you mix colors"),
       make_actionword("you obtain \"color\"", [], [make_parameter("color")]),
+      make_actionword("unused action word"),
     ]
   }
 
@@ -46,6 +47,28 @@ describe 'Cucumber rendering' do
         "  And the color \"green\"",
         "  When you mix colors",
         "  Then you obtain \"white\"",
+        "",
+      ].join("\n"))
+    end
+  end
+
+  context 'Actionwords' do
+    it 'generates an steps ruby file' do
+      rendered = project.children[:actionwords].render('cucumber', options)
+      expect(rendered).to eq([
+        "# encoding: UTF-8",
+        "",
+        "Given /^the color \"(.*)\"$/ do |color|",
+        "  the_color_color(color)",
+        "end",
+        "",
+        "When /^you mix colors$/ do",
+        "  you_mix_colors",
+        "end",
+        "",
+        "Then /^you obtain \"(.*)\"$/ do |color|",
+        "  you_obtain_color(color)",
+        "end",
         "",
       ].join("\n"))
     end

@@ -4,14 +4,15 @@ require_relative "../lib/hiptest-publisher/gherkin_adder"
 describe Hiptest::GherkinAdder do
   include HelperFactories
 
+  let(:actionword_name) { "Hello \"name\"" }
   let(:actionword) {
-    make_actionword("Hello \"name\"", [], [
+    make_actionword(actionword_name, [], [
       make_parameter("name", literal("World")),
     ])
   }
 
   let(:call) {
-    make_annotated_call("given", "Hello \"name\"", [
+    make_annotated_call("given", actionword_name, [
       make_argument("name", literal("John")),
     ])
   }
@@ -29,10 +30,13 @@ describe Hiptest::GherkinAdder do
     make_project("My project", scenarios, tests, actionwords)
   }
 
-  subject(:gherkin_text) do
+  subject(:gherkin_text) { call.children[:gherkin_text] }
+  subject(:gherkin_annotation) { actionword.children[:gherkin_annotation] }
+  subject(:gherkin_pattern) { actionword.children[:gherkin_pattern] }
+
+  before(:each) {
     Hiptest::GherkinAdder.add(project)
-    call.children[:gherkin_text]
-  end
+  }
 
   context "actionword without parameters" do
     let(:actionword_name) { "I say hello world" }
@@ -44,11 +48,38 @@ describe Hiptest::GherkinAdder do
       expect(call.children[:gherkin_text]).to eq("When I say hello world")
     end
 
+    it "adds the corresponding :gherkin_annotation to Actionword" do
+      Hiptest::GherkinAdder.add(project)
+      expect(actionword.children[:gherkin_annotation]).to eq("When")
+    end
+
+    it "adds the corresponding :gherkin_pattern to Actionword" do
+      Hiptest::GherkinAdder.add(project)
+      expect(actionword.children[:gherkin_pattern]).to eq("^I say hello world$")
+    end
+
+    context "with actionword name containing with regex reserved characters" do
+      let(:actionword_name) { "Nom. de. Zeués... [|]\\+*?()$^ Marty!?" }
+
+      it "escapes the characters in the :gherkin_pattern" do
+        expect(gherkin_pattern).to eq("^Nom\\. de\\. Zeués\\.\\.\\. \\[\\|\\]\\\\\\+\\*\\?\\(\\)\\$\\^ Marty!\\?$")
+      end
+    end
+
+    context "with actionword name containing with regex reserved characters" do
+      let(:actionword_name) { "hello\\world" }
+
+      it "escapes the characters in the :gherkin_pattern" do
+        expect(gherkin_pattern).to eq("^hello\\\\world$")
+      end
+    end
+
     context "without annotation on call" do
       let(:call) { make_call(actionword_name) }
 
       it "uses 'Given' as default annotation" do
         expect(gherkin_text).to eq("Given I say hello world")
+        expect(gherkin_annotation).to eq("Given")
       end
     end
 
@@ -57,6 +88,7 @@ describe Hiptest::GherkinAdder do
 
       it "uses 'Given' as default annotation" do
         expect(gherkin_text).to eq("Given I say hello world")
+        expect(gherkin_annotation).to eq("Given")
       end
     end
 
@@ -65,6 +97,7 @@ describe Hiptest::GherkinAdder do
 
       it "keeps the quoted text untouched" do
         expect(gherkin_text).to eq("When I say \"hello world")
+        expect(gherkin_pattern).to eq("^I say \"hello world$")
       end
     end
 
@@ -73,6 +106,7 @@ describe Hiptest::GherkinAdder do
 
       it "keeps the quoted text untouched" do
         expect(gherkin_text).to eq("When I say \"hello world\"")
+        expect(gherkin_pattern).to eq("^I say \"hello world\"$")
       end
     end
 
@@ -85,6 +119,7 @@ describe Hiptest::GherkinAdder do
 
       it "keeps the quoted text untouched nevertheless" do
         expect(gherkin_text).to eq("When I say \"hello\"")
+        expect(gherkin_pattern).to eq("^I say \"hello\"$")
       end
     end
   end
@@ -92,10 +127,17 @@ describe Hiptest::GherkinAdder do
   context "actionword with one parameter without default value and called without parameters" do
     let(:actionword_name) { "Hello \"name\"" }
     let(:actionword) { make_actionword(actionword_name, [], [make_parameter("name")]) }
-    let(:call) { make_annotated_call("and", actionword_name) }
 
-    it "uses empty string as default value for gherkin_text" do
-      expect(gherkin_text).to eq("And Hello \"\"")
+    it "adds corresponding :gherkin_pattern to Actionword" do
+      expect(gherkin_pattern).to eq("^Hello \"(.*)\"$")
+    end
+
+    context "called without parameters" do
+      let(:call) { make_annotated_call("and", actionword_name) }
+
+      it "uses empty string as default value for gherkin_text" do
+        expect(gherkin_text).to eq("And Hello \"\"")
+      end
     end
   end
 
@@ -108,6 +150,10 @@ describe Hiptest::GherkinAdder do
 
     context "inlined" do
       let(:actionword_name) { "Hello \"name\"" }
+
+      it "adds corresponding :gherkin_pattern to Actionword" do
+        expect(gherkin_pattern).to eq("^Hello \"(.*)\"$")
+      end
 
       context "called with an argument" do
         let(:call) {
@@ -132,6 +178,10 @@ describe Hiptest::GherkinAdder do
 
     context "not inlined" do
       let(:actionword_name) { "Hello to all of you" }
+
+      it "adds corresponding :gherkin_pattern to Actionword" do
+        expect(gherkin_pattern).to eq("^Hello to all of you \"(.*)\"$")
+      end
 
       context "called with an argument" do
         let(:call) {
@@ -167,6 +217,10 @@ describe Hiptest::GherkinAdder do
     context "inlined" do
       let(:actionword_name) { "Hello \"name1\", \"name2\", \"name3\"" }
 
+      it "adds corresponding :gherkin_pattern to Actionword" do
+        expect(gherkin_pattern).to eq("^Hello \"(.*)\", \"(.*)\", \"(.*)\"$")
+      end
+
       context "called with no arguments" do
         let(:call) { make_annotated_call("given", actionword_name) }
 
@@ -193,6 +247,10 @@ describe Hiptest::GherkinAdder do
 
     context "not inlined" do
       let(:actionword_name) { "Hello to all of you" }
+
+      it "adds corresponding :gherkin_pattern to Actionword" do
+        expect(gherkin_pattern).to eq("^Hello to all of you \"(.*)\" \"(.*)\" \"(.*)\"$")
+      end
 
       context "called with no arguments" do
         let(:call) { make_annotated_call("given", actionword_name) }
@@ -240,6 +298,10 @@ describe Hiptest::GherkinAdder do
       ])
     }
 
+    it "produces the expected :gherkin_pattern" do
+      expect(gherkin_pattern).to eq("^good morning \"(.*)\", we are \"(.*)\"\\. Say \"something\"! \"(.*)\" \"(.*)\"$")
+    end
+
     it "produces the expected :gherkin_text" do
       expect(gherkin_text).to eq("Given good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
     end
@@ -265,6 +327,10 @@ describe Hiptest::GherkinAdder do
         make_argument("something", template_of_literals("in the way")), # it's a trap !
       ])
     }
+
+    it "produces the expected :gherkin_pattern" do
+      expect(gherkin_pattern).to eq("^good morning \"(.*)\", we are \"(.*)\"\\. Say \"something\"! \"(.*)\" \"(.*)\"$")
+    end
 
     it "produces the expected :gherkin_text" do
       expect(gherkin_text).to eq("Given good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")

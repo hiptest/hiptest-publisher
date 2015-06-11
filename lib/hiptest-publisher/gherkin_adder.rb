@@ -15,6 +15,10 @@ module Hiptest
     def update_calls
       @project.find_sub_nodes(Hiptest::Nodes::Call).each do |call|
         call.children[:gherkin_text] ||= "#{annotation(call)} #{prettified(call)}"
+        if actionword = get_actionword(call)
+          actionword.children[:gherkin_annotation] ||= annotation(call)
+          actionword.children[:gherkin_pattern] ||= pattern(actionword)
+        end
       end
     end
 
@@ -49,6 +53,30 @@ module Hiptest
       prettified
     end
 
+    def pattern(actionword)
+      name = actionword.children[:name]
+      actionword_parameters = evaluated_map(actionword.children[:parameters])
+      name_chunks = name.split("\"", -1)
+      result = []
+      inline_parameter_names = []
+      name_chunks.each_slice(2) do |text, inline_parameter_name|
+        result << text.gsub(/[.|()\\.+*?\[\]{}^$]/) { |c| "\\#{c}" }
+        inline_parameter_names << inline_parameter_name if inline_parameter_name
+        if actionword_parameters.has_key?(inline_parameter_name)
+          result << "(.*)"
+        else
+          result << inline_parameter_name if inline_parameter_name
+        end
+      end
+      missing_parameter_names = actionword_parameters.keys - inline_parameter_names
+
+      patterned = result.join("\"")
+      missing_parameter_names.each do |missing_parameter_name|
+        patterned << " \"(.*)\""
+      end
+      "^#{patterned}$"
+    end
+
     def all_valued_arguments_for(call)
       evaluated_call_arguments = evaluated_map(call.children[:arguments])
       evaluated_actionword_parameters = evaluated_map(get_actionword_parameters(call))
@@ -61,12 +89,13 @@ module Hiptest
     end
 
     def get_actionword_parameters(call)
+      actionword = get_actionword(call)
+      actionword && actionword.children[:parameters] || []
+    end
+
+    def get_actionword(call)
       actionword = @indexer.get_index(call.children[:actionword])
-      if actionword
-        actionword[:actionword].children[:parameters]
-      else
-        []
-      end
+      actionword && actionword[:actionword] || nil
     end
 
     def evaluated_map(named_values)
