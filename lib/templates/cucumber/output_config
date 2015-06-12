@@ -1,0 +1,9 @@
+[tests]
+filename = 'features.feature'
+scenario_filename = '%s.feature'
+indentation = "  "
+
+[actionwords]
+filename = 'step_definitions.rb'
+indentation = "  "
+naming_convention = 'underscore'
