@@ -72,11 +72,13 @@ describe 'Cucumber rendering' do
     it 'generates a feature file' do
       rendered = create_green_scenario.render('cucumber', options)
       expect(rendered).to eq([
-        "Scenario: Create green",
-        "  Given the color \"blue\"",
-        "  And the color \"yellow\"",
-        "  When you mix colors",
-        "  Then you obtain \"green\"",
+        "Feature: Create green",
+        "",
+        "  Scenario: Create green",
+        "    Given the color \"blue\"",
+        "    And the color \"yellow\"",
+        "    When you mix colors",
+        "    Then you obtain \"green\"",
         "",
       ].join("\n"))
     end
