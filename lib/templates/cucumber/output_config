@@ -7,3 +7,4 @@ indentation = "  "
 filename = 'step_definitions.rb'
 indentation = "  "
 naming_convention = 'underscore'
+ignore_unknown_templates = true

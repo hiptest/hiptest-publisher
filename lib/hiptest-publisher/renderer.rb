@@ -73,8 +73,16 @@ module Hiptest
       render_context[:context] = @context
 
       template = get_template_path(node)
-      raise ArgumentError.new("no template for node #{node.class}") if template.nil?
-      get_compiled_handlebars(template).call(render_context)
+      if template
+        get_compiled_handlebars(template).call(render_context)
+      else
+        raise ArgumentError.new("no template for node #{node.class}") unless ignore_unknown_templates?
+        ""
+      end
+    end
+
+    def ignore_unknown_templates?
+      @context[:ignore_unknown_templates]
     end
 
     def get_compiled_handlebars(template)

@@ -7,7 +7,7 @@ require_relative '../lib/hiptest-publisher/renderer'
 require_relative '../lib/hiptest-publisher/nodes'
 
 describe Hiptest::Renderer do
-  context 'get_template_path' do
+  context '#get_template_path' do
     it 'checks if the file exists in the common templates' do
       node = Hiptest::Nodes::StringLiteral.new('coucou')
       renderer = Hiptest::Renderer.new({language: 'python', forced_templates: {}})
@@ -44,6 +44,32 @@ describe Hiptest::Renderer do
           renderer = Hiptest::Renderer.new({language: 'python', overriden_templates: "#{dir}", forced_templates: {}})
           open("#{dir}/scenarios.hbs", 'w') { |f| f.puts ""}
           expect(renderer.get_template_path(node, 'hbs')).to eq("#{dir}/scenarios.hbs")
+        end
+      end
+    end
+  end
+
+  describe "#render_node" do
+    context "when no template is found" do
+      subject(:rendered_node) do
+        renderer = Hiptest::Renderer.new({ignore_unknown_templates: ignore_unknown_templates, language: 'baraccuda', forced_templates: {}})
+        node = Hiptest::Nodes::Call.new('Is anybody here?')
+        renderer.render_node(node, nil)
+      end
+
+      context "when option[:ignore_unknown_templates] is set" do
+        let(:ignore_unknown_templates) { true }
+
+        it "returns empty string" do
+          expect(rendered_node).to eq('')
+        end
+      end
+
+      context "when option[:ignore_unknown_templates] is not set" do
+        let(:ignore_unknown_templates) { false }
+
+        it "raises a ArgumentError" do
+          expect{rendered_node}.to raise_error(ArgumentError)
         end
       end
     end

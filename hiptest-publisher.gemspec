@@ -45,8 +45,8 @@ Gem::Specification.new do |s|
     "lib/templates/common/variable.hbs",
     "lib/templates/cucumber/actionword.hbs",
     "lib/templates/cucumber/actionwords.hbs",
-    "lib/templates/cucumber/argument.hbs",
     "lib/templates/cucumber/call.hbs",
+    "lib/templates/cucumber/output_config",
     "lib/templates/cucumber/parameter.hbs",
     "lib/templates/cucumber/single_scenario.hbs",
     "lib/templates/cucumber/single_test.hbs",
@@ -253,7 +253,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://hiptest.net"
   s.licenses = ["GPL 2"]
-  s.rubygems_version = "2.4.7"
+  s.rubygems_version = "2.4.5"
   s.summary = "Export your tests from Hiptest into executable tests."
 
   if s.respond_to? :specification_version then
