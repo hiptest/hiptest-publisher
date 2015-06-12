@@ -29,13 +29,29 @@ describe 'Cucumber rendering' do
     ])
   }
 
+  let(:create_green_scenario) {
+    make_scenario("Create green", [], [], [
+      make_annotated_call("given", "the color \"color\"", [make_argument("color", template_of_literals("blue"))]),
+      make_annotated_call(  "and", "the color \"color\"", [make_argument("color", template_of_literals("yellow"))]),
+      make_annotated_call( "when", "you mix colors"),
+      make_annotated_call( "then", "you obtain \"color\"", [make_argument("color", template_of_literals("green"))]),
+    ])
+  }
+
   let!(:project) {
-    make_project("Colors", [], [create_white_test], actionwords).tap do |p|
+    make_project("Colors", [create_green_scenario], [create_white_test], actionwords).tap do |p|
       Hiptest::GherkinAdder.add(p)
     end
   }
 
-  let(:options) { {forced_templates: {'test' => 'single_test'}} }
+  let(:options) {
+    {
+      forced_templates: {
+        'scenario' => 'single_scenario',
+        'test' => 'single_test',
+      }
+    }
+  }
 
   context 'Test' do
     it 'generates an feature file' do
@@ -47,6 +63,20 @@ describe 'Cucumber rendering' do
         "  And the color \"green\"",
         "  When you mix colors",
         "  Then you obtain \"white\"",
+        "",
+      ].join("\n"))
+    end
+  end
+
+  context 'Scenario' do
+    it 'generates a feature file' do
+      rendered = create_green_scenario.render('cucumber', options)
+      expect(rendered).to eq([
+        "Scenario: Create green",
+        "  Given the color \"blue\"",
+        "  And the color \"yellow\"",
+        "  When you mix colors",
+        "  Then you obtain \"green\"",
         "",
       ].join("\n"))
     end
