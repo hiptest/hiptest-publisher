@@ -46,6 +46,7 @@ describe 'Cucumber rendering' do
 
   let(:options) {
     {
+      ignore_unknown_templates: true,
       forced_templates: {
         'scenario' => 'single_scenario',
         'test' => 'single_test',
