@@ -76,13 +76,8 @@ module Hiptest
       if template
         get_compiled_handlebars(template).call(render_context)
       else
-        raise ArgumentError.new("no template for node #{node.class}") unless ignore_unknown_templates?
-        ""
+        raise ArgumentError.new("no template for node #{node.class}")
       end
-    end
-
-    def ignore_unknown_templates?
-      @context[:ignore_unknown_templates]
     end
 
     def get_compiled_handlebars(template)
@@ -96,13 +91,21 @@ module Hiptest
       end.compact.first
     end
 
+    def fallback_template(extension)
+      @fallback_template ||= begin
+        if @context[:fallback_template]
+          get_template_by_name(@context[:fallback_template], extension)
+        end
+      end
+    end
+
     def get_template_path(node, extension = 'hbs')
       normalized_name = node.class.name.split('::').last.downcase
       unless @context[:forced_templates][normalized_name].nil?
         normalized_name = @context[:forced_templates][normalized_name]
       end
 
-      get_template_by_name(normalized_name, extension)
+      get_template_by_name(normalized_name, extension) || fallback_template(extension)
     end
   end
 end

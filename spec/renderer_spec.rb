@@ -47,31 +47,32 @@ describe Hiptest::Renderer do
         end
       end
     end
+
+    context 'when option[:fallback_template] is set' do
+      it 'uses the given fallback template if no template is found' do
+        node = Hiptest::Nodes::Assign.new("name", "value")
+
+        renderer = Hiptest::Renderer.new({language: 'cucumber', fallback_template: "empty", forced_templates: {}})
+        expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/cucumber/empty.hbs')
+      end
+
+      it 'still uses the template if found' do
+        node = Hiptest::Nodes::StringLiteral.new("polop")
+
+        renderer = Hiptest::Renderer.new({language: 'cucumber', fallback_template: "empty", forced_templates: {}})
+        expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/cucumber/stringliteral.hbs')
+      end
+    end
   end
 
   describe "#render_node" do
-    context "when no template is found" do
-      subject(:rendered_node) do
-        renderer = Hiptest::Renderer.new({ignore_unknown_templates: ignore_unknown_templates, language: 'baraccuda', forced_templates: {}})
-        node = Hiptest::Nodes::Call.new('Is anybody here?')
+    it "raises a ArgumentError when no templates is found" do
+      node = Hiptest::Nodes::Call.new('Is anybody here?')
+      renderer = Hiptest::Renderer.new({language: 'baraccuda', forced_templates: {}})
+
+      expect{
         renderer.render_node(node, nil)
-      end
-
-      context "when option[:ignore_unknown_templates] is set" do
-        let(:ignore_unknown_templates) { true }
-
-        it "returns empty string" do
-          expect(rendered_node).to eq('')
-        end
-      end
-
-      context "when option[:ignore_unknown_templates] is not set" do
-        let(:ignore_unknown_templates) { false }
-
-        it "raises a ArgumentError" do
-          expect{rendered_node}.to raise_error(ArgumentError)
-        end
-      end
+      }.to raise_error(ArgumentError)
     end
   end
 end

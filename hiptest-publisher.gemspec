@@ -49,6 +49,7 @@ Gem::Specification.new do |s|
     "lib/templates/cucumber/call.hbs",
     "lib/templates/cucumber/dataset.hbs",
     "lib/templates/cucumber/datatable.hbs",
+    "lib/templates/cucumber/empty.hbs",
     "lib/templates/cucumber/output_config",
     "lib/templates/cucumber/parameter.hbs",
     "lib/templates/cucumber/single_scenario.hbs",
