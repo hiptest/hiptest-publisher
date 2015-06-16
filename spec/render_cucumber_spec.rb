@@ -149,6 +149,9 @@ describe 'Cucumber rendering' do
       expect(rendered).to eq([
         "# encoding: UTF-8",
         "",
+        "require_relative 'actionwords'",
+        "World(Actionwords)",
+        "",
         "Given /^the color \"(.*)\"$/ do |color|",
         "  the_color_color(color)",
         "end",
