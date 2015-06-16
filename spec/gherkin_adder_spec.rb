@@ -124,7 +124,7 @@ describe Hiptest::GherkinAdder do
     end
   end
 
-  context "actionword with one parameter without default value and called without parameters" do
+  context "actionword with one parameter without default value" do
     let(:actionword_name) { "Hello \"name\"" }
     let(:actionword) { make_actionword(actionword_name, [], [make_parameter("name")]) }
 
@@ -132,7 +132,7 @@ describe Hiptest::GherkinAdder do
       expect(gherkin_pattern).to eq("^Hello \"(.*)\"$")
     end
 
-    context "called without parameters" do
+    context "called without arguments" do
       let(:call) { make_annotated_call("and", actionword_name) }
 
       it "uses empty string as default value for gherkin_text" do
@@ -155,7 +155,7 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_pattern).to eq("^Hello \"(.*)\"$")
       end
 
-      context "called with an argument" do
+      context "called with a string argument" do
         let(:call) {
           make_annotated_call("given", actionword_name, [
             make_argument("name", literal("John")),
@@ -167,7 +167,19 @@ describe Hiptest::GherkinAdder do
         end
       end
 
-      context "called without parameters" do
+      context "called with a variable argument" do
+        let(:call) {
+          make_annotated_call("given", actionword_name, [
+            make_argument("name", variable("name")),
+          ])
+        }
+
+        it "adds the variable name enclosed with chevrons <>" do
+          expect(gherkin_text).to eq("Given Hello \"<name>\"")
+        end
+      end
+
+      context "called without arguments" do
         let(:call) { make_annotated_call("given", actionword_name) }
 
         it "uses the default value of the actionword parameter" do
@@ -195,7 +207,19 @@ describe Hiptest::GherkinAdder do
         end
       end
 
-      context "called without parameters" do
+      context "called with a variable argument" do
+        let(:call) {
+          make_annotated_call("given", actionword_name, [
+            make_argument("name", variable("name")),
+          ])
+        }
+
+        it "adds the variable name enclosed with chevrons <>" do
+          expect(gherkin_text).to eq("Given Hello to all of you \"<name>\"")
+        end
+      end
+
+      context "called without arguments" do
         let(:call) { make_annotated_call("given", actionword_name) }
 
         it "adds the default value at the end of the gherkin text" do

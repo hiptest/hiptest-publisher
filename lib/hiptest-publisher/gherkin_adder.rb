@@ -109,6 +109,8 @@ module Hiptest
     def evaluate(value)
       if value.nil?
         nil
+      elsif Hiptest::Nodes::Variable === value
+        "<#{value.children[:name]}>"
       elsif value.children[:chunks]
         value.children[:chunks].map {|chunk| evaluate(chunk) }.join('')
       elsif value.children[:value]

@@ -42,6 +42,10 @@ module HelperFactories
     end
   end
 
+  def variable(name)
+    Hiptest::Nodes::Variable.new(name)
+  end
+
   def template_of_literals(*args)
     Hiptest::Nodes::Template.new(args.map { |arg| literal(arg) })
   end
