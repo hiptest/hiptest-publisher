@@ -2,6 +2,7 @@
 filename = 'features.feature'
 scenario_filename = '%s.feature'
 indentation = "  "
+fallback_template = 'empty'
 
 [actionwords]
 filename = 'step_definitions.rb'

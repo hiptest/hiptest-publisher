@@ -52,6 +52,7 @@ Gem::Specification.new do |s|
     "lib/templates/cucumber/empty.hbs",
     "lib/templates/cucumber/output_config",
     "lib/templates/cucumber/parameter.hbs",
+    "lib/templates/cucumber/scenarios.hbs",
     "lib/templates/cucumber/single_scenario.hbs",
     "lib/templates/cucumber/single_test.hbs",
     "lib/templates/cucumber/step.hbs",

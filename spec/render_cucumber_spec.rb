@@ -186,6 +186,24 @@ describe 'Cucumber rendering' do
     end
   end
 
+  context 'Scenarios with split_scenarios = false' do
+    let(:options) {
+      {
+        fallback_template: 'empty',
+        forced_templates: {},
+      }
+    }
+
+    it 'generates a features.feature file asking to use --split-scenarios' do
+      rendered = project.children[:scenarios].render('cucumber', options)
+      expect(rendered).to eq([
+        "# To export your project to Cucumber correctly, please add the option",
+        "# --split-scenarios when calling hiptest-publisher. It will generate one",
+        "# feature file per scenario from your project.",
+      ].join("\n"))
+    end
+  end
+
   context 'Actionwords' do
     it 'generates an steps ruby file' do
       rendered = project.children[:actionwords].render('cucumber', options)
