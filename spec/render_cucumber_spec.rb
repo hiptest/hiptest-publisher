@@ -106,8 +106,9 @@ describe 'Cucumber rendering' do
   end
 
   context 'Scenario' do
+    let(:scenario) { create_green_scenario }
     it 'generates a feature file' do
-      rendered = create_green_scenario.render('cucumber', options)
+      rendered = scenario.render('cucumber', options)
       expect(rendered).to eq([
         "Feature: Create green",
         "",
@@ -119,11 +120,29 @@ describe 'Cucumber rendering' do
         "",
       ].join("\n"))
     end
+
+    it 'appends the UID if known' do
+      scenario.children[:uid] = '1234-4567'
+
+      rendered = scenario.render('cucumber', options)
+      expect(rendered).to eq([
+        "Feature: Create green",
+        "",
+        "  Scenario: Create green (uid:1234-4567)",
+        "    Given the color \"blue\"",
+        "    And the color \"yellow\"",
+        "    When you mix colors",
+        "    Then you obtain \"green\"",
+        "",
+      ].join("\n"))
+    end
   end
 
   context 'Scenario with datatable' do
+    let(:scenario) { create_secondary_colors_scenario }
+
     it 'generates a feature file with an Examples section' do
-      rendered = create_secondary_colors_scenario.render('cucumber', options)
+      rendered = scenario.render('cucumber', options)
       expect(rendered).to eq([
         "Feature: Create secondary colors",
         "",
@@ -134,10 +153,34 @@ describe 'Cucumber rendering' do
         "    Then you obtain \"<got_color>\"",
         "",
         "    Examples:",
-        "      | first_color | second_color | got_color |",
-        "      | blue | yellow | green |",
-        "      | yellow | red | orange |",
-        "      | red | blue | purple |",
+        "      | first_color | second_color | got_color | hiptest-uid |",
+        "      | blue | yellow | green |  |",
+        "      | yellow | red | orange |  |",
+        "      | red | blue | purple |  |",
+        "",
+      ].join("\n"))
+    end
+
+    it 'adds dataset UID as parameters if set (so they appear in output)' do
+      datasets = scenario.children[:datatable].children[:datasets]
+      datasets.first.children[:uid] = '1234'
+      datasets.last.children[:uid] = '5678'
+
+      rendered = scenario.render('cucumber', options)
+      expect(rendered).to eq([
+        "Feature: Create secondary colors",
+        "",
+        "  Scenario Outline: Create secondary colors",
+        "    Given the color \"<first_color>\"",
+        "    And the color \"<second_color>\"",
+        "    When you mix colors",
+        "    Then you obtain \"<got_color>\"",
+        "",
+        "    Examples:",
+        "      | first_color | second_color | got_color | hiptest-uid |",
+        "      | blue | yellow | green | uid:1234 |",
+        "      | yellow | red | orange |  |",
+        "      | red | blue | purple | uid:5678 |",
         "",
       ].join("\n"))
     end
