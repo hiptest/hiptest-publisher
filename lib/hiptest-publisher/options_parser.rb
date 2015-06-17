@@ -61,6 +61,7 @@ class OptionsParser
 
     {
       'Ruby' => ['Rspec', 'MiniTest'],
+      'Cucumber' => ['Ruby'],
       'Java' => ['JUnit', 'Test NG'],
       'Python' => ['Unittest'],
       'Robot Framework' => [''],
