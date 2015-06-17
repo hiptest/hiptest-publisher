@@ -174,16 +174,23 @@ class OptionsParser
 end
 
 class LanguageConfigParser
-  def initialize(options)
+  def initialize(options, language_config_path = nil)
     @options = options
-    @config = ParseConfig.new(find_config_file(options))
+    language_config_path ||= LanguageConfigParser.config_path_for(options)
+    @config = ParseConfig.new(language_config_path)
   end
 
-  def find_config_file(options)
-    ["#{options.language}/#{options.framework}", "#{options.language}"].map do |p|
+  def self.config_path_for(options)
+    config_path = ["#{options.language}/#{options.framework}", "#{options.language}"].map do |p|
       path = "#{hiptest_publisher_path}/lib/templates/#{p}/output_config"
-      path if File.file?(path)
+      File.expand_path(path) if File.file?(path)
     end.compact.first
+    if config_path.nil?
+      message = "cannot find output_config file in \"#{hiptest_publisher_path}/lib/templates\" for language #{options.language.inspect}"
+      message << " and framework #{options.framework.inspect}" if options.framework
+      raise ArgumentError.new(message)
+    end
+    config_path
   end
 
   def scenario_output_file(scenario_name)
