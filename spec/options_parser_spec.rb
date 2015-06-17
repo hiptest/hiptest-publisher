@@ -26,7 +26,9 @@ describe LanguageConfigParser do
 
     it "raises an error if language config file could not be found" do
       options.language = "carakoko"
-      expect{LanguageConfigParser.config_path_for(options)}.to raise_error
+      options.framework = "lalakoko"
+      expect{LanguageConfigParser.config_path_for(options)}.
+        to raise_error('cannot find output_config file in "./lib/templates" for language "carakoko" and framework "lalakoko"')
     end
   end
 
@@ -37,7 +39,8 @@ describe LanguageConfigParser do
 
     it "raises an error if language config file cannot be found" do
       options.language = "carakoko"
-      expect{LanguageConfigParser.new(options)}.to raise_error
+      expect{LanguageConfigParser.new(options)}.
+        to raise_error('cannot find output_config file in "./lib/templates" for language "carakoko"')
     end
   end
 end

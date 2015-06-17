@@ -37,8 +37,9 @@ describe HelperFactories do
       end
     end
 
-    it "raises an error for other types" do
-      expect{literal(Object.new)}.to raise_error
+    it "raises an error for other types" do*
+      object = Object.new
+      expect{literal(object)}.to raise_error("bad argument #{object}")
     end
   end
 
