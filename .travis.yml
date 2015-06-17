@@ -1,4 +1,4 @@
 language: ruby
-rvm: 2.1.5
+rvm: 2.2.2
 
 script: "./bin/travis_script.sh"
