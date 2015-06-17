@@ -72,7 +72,7 @@ GEM
     pry-stack_explorer (0.4.9.1)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
-    rack (1.6.0)
+    rack (1.6.2)
     rake (10.4.2)
     rdoc (4.2.0)
       json (~> 1.4)
