@@ -197,25 +197,25 @@ module Hiptest
       end
 
       unless diff[:deleted].nil?
-        puts "#{diff[:deleted].length} action words deleted:"
+        puts "#{pluralize(diff[:deleted].length, "action word")} deleted:"
         puts diff[:deleted].map {|d| "- #{d[:name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:created].nil?
-        puts "#{diff[:created].length} action words created:"
+        puts "#{pluralize(diff[:created].length, "action word")} created:"
         puts diff[:created].map {|c| "- #{c[:name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:renamed].nil?
-        puts "#{diff[:renamed].length} action words renamed:"
+        puts "#{pluralize(diff[:renamed].length, "action word")} renamed:"
         puts diff[:renamed].map {|r| "- #{r[:name]} => #{r[:new_name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:signature_changed].nil?
-        puts "#{diff[:signature_changed].length} action words which signature changed:"
+        puts "#{pluralize(diff[:signature_changed].length, "action word")} which signature changed:"
         puts diff[:signature_changed].map {|c| "- #{c[:name]}"}.join("\n")
         puts ""
       end

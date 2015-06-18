@@ -15,6 +15,15 @@ rescue
   File.read("#{hiptest_publisher_path}/VERSION") if File.exists?("#{hiptest_publisher_path}/VERSION")
 end
 
+def pluralize(count, singular)
+  word = if count == 1
+    singular
+  else
+    "#{singular}s"
+  end
+  "#{count} #{word}"
+end
+
 def make_filter(options)
   ids = options.filter_ids.split(',').map {|id| "filter[]=id:#{id}"}
   tags = options.filter_tags.split(',').map {|tag| "filter[]=tag:#{tag}"}
