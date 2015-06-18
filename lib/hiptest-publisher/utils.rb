@@ -9,6 +9,12 @@ rescue
   '.'
 end
 
+def hiptest_publisher_version
+  Gem.loaded_specs['hiptest-publisher'].version.to_s
+rescue
+  File.read("#{hiptest_publisher_path}/VERSION") if File.exists?("#{hiptest_publisher_path}/VERSION")
+end
+
 def make_filter(options)
   ids = options.filter_ids.split(',').map {|id| "filter[]=id:#{id}"}
   tags = options.filter_tags.split(',').map {|tag| "filter[]=tag:#{tag}"}

@@ -101,6 +101,7 @@ class OptionsParser
   def self.parse(args)
     options = OpenStruct.new
     opt_parser = OptionParser.new do |opts|
+      opts.version = hiptest_publisher_version if hiptest_publisher_version
       opts.banner = "Usage: ruby publisher.rb [options]"
       opts.separator ""
       opts.separator "Exports tests from Hiptest for automation."
