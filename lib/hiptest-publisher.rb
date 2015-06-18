@@ -219,6 +219,11 @@ module Hiptest
         puts diff[:signature_changed].map {|c| "- #{c[:name]}"}.join("\n")
         puts ""
       end
+
+      if diff.empty?
+        puts "No action words changed"
+        puts ""
+      end
     end
 
     def export
