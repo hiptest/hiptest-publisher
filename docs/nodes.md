@@ -164,10 +164,11 @@ This node a two chidren:
 ### [Call](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#call)
 
 ```ruby
-call 'my_actionword' (x = 2)
+call given 'my_actionword' (x = 2)
 ```
 
-This node has two children:
+This node has three children:
+ - annotation: a string representing the kind of step in Gherkin laguage: given, when, then, and, etc... It is null if none is specified
  - actionword: a string representing the name of the called action word (in our example 'my_actionword')
  - arguments: a list of [Argument](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#argument) nodes
 
