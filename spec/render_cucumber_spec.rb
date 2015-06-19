@@ -38,7 +38,7 @@ describe 'Cucumber rendering' do
     ])
   }
 
-  let(:create_unannotated_scenario) {
+  let(:unannotated_scenario) {
     make_scenario("Create orange", [], [], [
       make_call("the color \"color\"", [make_argument("color", template_of_literals("red"))]),
       make_call("the color \"color\"", [make_argument("color", template_of_literals("yellow"))]),
@@ -80,7 +80,7 @@ describe 'Cucumber rendering' do
 
   let!(:project) {
     make_project("Colors",
-      [create_green_scenario, create_secondary_colors_scenario, create_unannotated_scenario],
+      [create_green_scenario, create_secondary_colors_scenario, unannotated_scenario],
       [create_white_test],
       actionwords
     ).tap do |p|
@@ -99,9 +99,12 @@ describe 'Cucumber rendering' do
     }
   }
 
+  subject(:rendered) { node_to_render.render('cucumber', options) }
+
   context 'Test' do
+    let(:node_to_render) { create_white_test }
+
     it 'generates an feature file' do
-      rendered = create_white_test.render('cucumber', options)
       expect(rendered).to eq([
         "Scenario: Create white",
         "  Given the color \"blue\"",
@@ -115,10 +118,10 @@ describe 'Cucumber rendering' do
   end
 
   context 'Scenario' do
+    let(:node_to_render) { scenario }
     let(:scenario) { create_green_scenario }
 
     it 'generates a feature file' do
-      rendered = scenario.render('cucumber', options)
       expect(rendered).to eq([
         "Feature: Create green",
         "",
@@ -134,7 +137,6 @@ describe 'Cucumber rendering' do
     it 'appends the UID if known' do
       scenario.children[:uid] = '1234-4567'
 
-      rendered = scenario.render('cucumber', options)
       expect(rendered).to eq([
         "Feature: Create green",
         "",
@@ -146,76 +148,73 @@ describe 'Cucumber rendering' do
         "",
       ].join("\n"))
     end
-  end
 
+    context 'without annotated calls' do
+      let(:scenario) { unannotated_scenario }
 
-  context 'Scenario without annotated calls' do
-    let(:scenario) { create_unannotated_scenario }
-
-    it 'generates a feature file' do
-      rendered = scenario.render('cucumber', options)
-      expect(rendered).to eq([
-        "Feature: Create orange",
-        "",
-        "  Scenario: Create orange",
-        "    * the color \"red\"",
-        "    * the color \"yellow\"",
-        "    * you mix colors",
-        "    * you obtain \"orange\"",
-        "",
-      ].join("\n"))
-    end
-  end
-
-  context 'Scenario with datatable' do
-    let(:scenario) { create_secondary_colors_scenario }
-
-    it 'generates a feature file with an Examples section' do
-      rendered = scenario.render('cucumber', options)
-      expect(rendered).to eq([
-        "Feature: Create secondary colors",
-        "",
-        "  Scenario Outline: Create secondary colors",
-        "    Given the color \"<first_color>\"",
-        "    And the color \"<second_color>\"",
-        "    When you mix colors",
-        "    Then you obtain \"<got_color>\"",
-        "",
-        "    Examples:",
-        "      | first_color | second_color | got_color | hiptest-uid |",
-        "      | blue | yellow | green |  |",
-        "      | yellow | red | orange |  |",
-        "      | red | blue | purple |  |",
-        "",
-      ].join("\n"))
+      it 'generates a feature file with bullet points steps' do
+        expect(rendered).to eq([
+          "Feature: Create orange",
+          "",
+          "  Scenario: Create orange",
+          "    * the color \"red\"",
+          "    * the color \"yellow\"",
+          "    * you mix colors",
+          "    * you obtain \"orange\"",
+          "",
+        ].join("\n"))
+      end
     end
 
-    it 'adds dataset UID as parameters if set (so they appear in output)' do
-      datasets = scenario.children[:datatable].children[:datasets]
-      datasets.first.children[:uid] = '1234'
-      datasets.last.children[:uid] = '5678'
+    context 'with datatable' do
+      let(:scenario) { create_secondary_colors_scenario }
 
-      rendered = scenario.render('cucumber', options)
-      expect(rendered).to eq([
-        "Feature: Create secondary colors",
-        "",
-        "  Scenario Outline: Create secondary colors",
-        "    Given the color \"<first_color>\"",
-        "    And the color \"<second_color>\"",
-        "    When you mix colors",
-        "    Then you obtain \"<got_color>\"",
-        "",
-        "    Examples:",
-        "      | first_color | second_color | got_color | hiptest-uid |",
-        "      | blue | yellow | green | uid:1234 |",
-        "      | yellow | red | orange |  |",
-        "      | red | blue | purple | uid:5678 |",
-        "",
-      ].join("\n"))
+      it 'generates a feature file with an Examples section' do
+        expect(rendered).to eq([
+          "Feature: Create secondary colors",
+          "",
+          "  Scenario Outline: Create secondary colors",
+          "    Given the color \"<first_color>\"",
+          "    And the color \"<second_color>\"",
+          "    When you mix colors",
+          "    Then you obtain \"<got_color>\"",
+          "",
+          "    Examples:",
+          "      | first_color | second_color | got_color | hiptest-uid |",
+          "      | blue | yellow | green |  |",
+          "      | yellow | red | orange |  |",
+          "      | red | blue | purple |  |",
+          "",
+        ].join("\n"))
+      end
+
+      it 'adds dataset UID as parameters if set (so they appear in output)' do
+        datasets = scenario.children[:datatable].children[:datasets]
+        datasets.first.children[:uid] = '1234'
+        datasets.last.children[:uid] = '5678'
+
+        expect(rendered).to eq([
+          "Feature: Create secondary colors",
+          "",
+          "  Scenario Outline: Create secondary colors",
+          "    Given the color \"<first_color>\"",
+          "    And the color \"<second_color>\"",
+          "    When you mix colors",
+          "    Then you obtain \"<got_color>\"",
+          "",
+          "    Examples:",
+          "      | first_color | second_color | got_color | hiptest-uid |",
+          "      | blue | yellow | green | uid:1234 |",
+          "      | yellow | red | orange |  |",
+          "      | red | blue | purple | uid:5678 |",
+          "",
+        ].join("\n"))
+      end
     end
   end
 
   context 'Scenarios with split_scenarios = false' do
+    let(:node_to_render) { project.children[:scenarios] }
     let(:options) {
       {
         fallback_template: 'empty',
@@ -224,7 +223,6 @@ describe 'Cucumber rendering' do
     }
 
     it 'generates a features.feature file asking to use --split-scenarios' do
-      rendered = project.children[:scenarios].render('cucumber', options)
       expect(rendered).to eq([
         "# To export your project to Cucumber correctly, please add the option",
         "# --split-scenarios when calling hiptest-publisher. It will generate one",
@@ -234,8 +232,9 @@ describe 'Cucumber rendering' do
   end
 
   context 'Actionwords' do
+    let(:node_to_render) { project.children[:actionwords] }
+
     it 'generates an steps ruby file' do
-      rendered = project.children[:actionwords].render('cucumber', options)
       expect(rendered).to eq([
         "# encoding: UTF-8",
         "",
