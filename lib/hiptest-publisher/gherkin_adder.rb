@@ -14,20 +14,24 @@ module Hiptest
 
     def update_calls
       @project.find_sub_nodes(Hiptest::Nodes::Call).each do |call|
-        call.children[:gherkin_text] ||= "#{annotation(call)} #{prettified(call)}"
+        call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
         if actionword = get_actionword(call)
-          actionword.children[:gherkin_annotation] ||= annotation(call)
+          actionword.children[:gherkin_annotation] ||= code_annotation(call)
           actionword.children[:gherkin_pattern] ||= pattern(actionword)
         end
       end
     end
 
     def annotation(call)
-      if call.children[:annotation]
-        call.children[:annotation].capitalize
-      else
-        "Given"
-      end
+      call.children[:annotation].capitalize if call.children[:annotation]
+    end
+
+    def text_annotation(call)
+      annotation(call) || "*"
+    end
+
+    def code_annotation(call)
+      annotation(call) || "Given"
     end
 
     def prettified(call)

@@ -38,6 +38,15 @@ describe 'Cucumber rendering' do
     ])
   }
 
+  let(:create_unannotated_scenario) {
+    make_scenario("Create orange", [], [], [
+      make_call("the color \"color\"", [make_argument("color", template_of_literals("red"))]),
+      make_call("the color \"color\"", [make_argument("color", template_of_literals("yellow"))]),
+      make_call("you mix colors"),
+      make_call("you obtain \"color\"", [make_argument("color", template_of_literals("orange"))]),
+    ])
+  }
+
   let(:create_secondary_colors_scenario) {
     make_scenario("Create secondary colors", [], [
         make_parameter("first_color"),
@@ -71,7 +80,7 @@ describe 'Cucumber rendering' do
 
   let!(:project) {
     make_project("Colors",
-      [create_green_scenario, create_secondary_colors_scenario],
+      [create_green_scenario, create_secondary_colors_scenario, create_unannotated_scenario],
       [create_white_test],
       actionwords
     ).tap do |p|
@@ -107,6 +116,7 @@ describe 'Cucumber rendering' do
 
   context 'Scenario' do
     let(:scenario) { create_green_scenario }
+
     it 'generates a feature file' do
       rendered = scenario.render('cucumber', options)
       expect(rendered).to eq([
@@ -133,6 +143,25 @@ describe 'Cucumber rendering' do
         "    And the color \"yellow\"",
         "    When you mix colors",
         "    Then you obtain \"green\"",
+        "",
+      ].join("\n"))
+    end
+  end
+
+
+  context 'Scenario without annotated calls' do
+    let(:scenario) { create_unannotated_scenario }
+
+    it 'generates a feature file' do
+      rendered = scenario.render('cucumber', options)
+      expect(rendered).to eq([
+        "Feature: Create orange",
+        "",
+        "  Scenario: Create orange",
+        "    * the color \"red\"",
+        "    * the color \"yellow\"",
+        "    * you mix colors",
+        "    * you obtain \"orange\"",
         "",
       ].join("\n"))
     end

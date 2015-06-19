@@ -74,22 +74,26 @@ describe Hiptest::GherkinAdder do
       end
     end
 
+    shared_examples "generic gherkin annotations" do
+      it "uses 'Given' as default annotation in gherkin code" do
+        expect(gherkin_annotation).to eq("Given")
+      end
+
+      it "uses '* ' as default annotation in gherkin text" do
+        expect(gherkin_text).to eq("* I say hello world")
+      end
+    end
+
     context "without annotation on call" do
       let(:call) { make_call(actionword_name) }
 
-      it "uses 'Given' as default annotation" do
-        expect(gherkin_text).to eq("Given I say hello world")
-        expect(gherkin_annotation).to eq("Given")
-      end
+      include_examples "generic gherkin annotations"
     end
 
     context "with empty annotation on call" do
       let(:call) { make_annotated_call("", actionword_name) }
 
-      it "uses 'Given' as default annotation" do
-        expect(gherkin_text).to eq("Given I say hello world")
-        expect(gherkin_annotation).to eq("Given")
-      end
+      include_examples "generic gherkin annotations"
     end
 
     context "with 1 quote in its name" do
@@ -326,8 +330,12 @@ describe Hiptest::GherkinAdder do
       expect(gherkin_pattern).to eq("^good morning \"(.*)\", we are \"(.*)\"\\. Say \"something\"! \"(.*)\" \"(.*)\"$")
     end
 
+    it "produces the expected :gherkin_annotation" do
+      expect(gherkin_annotation).to eq("Given")
+    end
+
     it "produces the expected :gherkin_text" do
-      expect(gherkin_text).to eq("Given good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
+      expect(gherkin_text).to eq("* good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
     end
   end
 
@@ -356,8 +364,12 @@ describe Hiptest::GherkinAdder do
       expect(gherkin_pattern).to eq("^good morning \"(.*)\", we are \"(.*)\"\\. Say \"something\"! \"(.*)\" \"(.*)\"$")
     end
 
+    it "produces the expected :gherkin_annotation" do
+      expect(gherkin_annotation).to eq("Given")
+    end
+
     it "produces the expected :gherkin_text" do
-      expect(gherkin_text).to eq("Given good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
+      expect(gherkin_text).to eq("* good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
     end
   end
 
