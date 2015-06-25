@@ -1,3 +1,5 @@
+require 'set'
+
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/renderer'
