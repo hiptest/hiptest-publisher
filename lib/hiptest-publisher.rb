@@ -1,6 +1,7 @@
 require 'colorize'
 require 'yaml'
 
+require 'hiptest-publisher/formatters/reporter'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/options_parser'
@@ -13,8 +14,11 @@ require 'hiptest-publisher/signature_differ'
 
 module Hiptest
   class Publisher
+    attr_reader :reporter
+
     def initialize(args)
-      @options = OptionsParser.parse(args)
+      @reporter = Reporter.new
+      @options = OptionsParser.parse(args, reporter)
     end
 
     def run
@@ -50,12 +54,12 @@ module Hiptest
     rescue Exception => err
       show_status_message "Fetching data from Hiptest", :failure
       puts "Unable to open the file, please check that the token is correct".red
-      trace_exception(err) if @options.verbose
+      reporter.dump_error(err)
     end
 
     def get_project(xml)
       show_status_message "Extracting data"
-      parser = Hiptest::XMLParser.new(xml, @options)
+      parser = Hiptest::XMLParser.new(xml, reporter)
       show_status_message "Extracting data", :success
 
       return parser.build_project
@@ -72,8 +76,12 @@ module Hiptest
         show_status_message status_message, :success
       rescue Exception => err
         show_status_message status_message, :failure
-        trace_exception(err) if @options.verbose
+        reporter.dump_error(err)
       end
+    end
+
+    def add_listener(listener)
+      reporter.add_listener(listener)
     end
 
     def write_node_to_file(path, node, context, message)
@@ -148,7 +156,7 @@ module Hiptest
         show_status_message("Loading previous definition", :success)
       rescue Exception => err
         show_status_message("Loading previous definition", :failure)
-        trace_exception(err) if @options.verbose
+        reporter.dump_error(err)
       end
 
       @language_config = LanguageConfigParser.new(@options)
@@ -251,7 +259,7 @@ module Hiptest
         show_status_message(status_message, :success)
       rescue Exception => err
         show_status_message(status_message, :failure)
-        trace_exception(err) if @options.verbose
+        reporter.dump_error(err)
       end
     end
   end

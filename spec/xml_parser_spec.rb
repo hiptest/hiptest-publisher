@@ -760,6 +760,27 @@ describe Hiptest::XMLParser do
     end
   end
 
+  context 'error during parsing' do
+    it 'returns a nil node' do
+      parser = TestParser.new("<?xml version=\"1.0\"?>
+        <zlob>Cannot be built</zlob>")
+      node = parser.build_main_node
+      expect(node).to eq(nil)
+    end
+
+    it 'reports the error' do
+      reporter_spy = instance_spy(Reporter)
+      xml = "<zlob>I can't be built</zlob>"
+      parser = TestParser.new("<?xml version=\"1.0\"?>#{xml}", reporter_spy)
+      node = parser.build_main_node
+
+      expect(node).to be(nil)
+      expect(reporter_spy).to have_received(:dump_error).with(
+        a_kind_of(StandardError),
+        "Unable to build: \n#{xml}")
+    end
+  end
+
   context 'parses a full example' do
     it 'from a project export'  do
       parser = Hiptest::XMLParser.new(File.read('samples/xml_input/Hiptest publisher.xml'))

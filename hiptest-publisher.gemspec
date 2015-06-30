@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-06-25"
+  s.date = "2015-06-30"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
     "lib/hiptest-publisher.rb",
     "lib/hiptest-publisher/actionword_indexer.rb",
     "lib/hiptest-publisher/call_arguments_adder.rb",
+    "lib/hiptest-publisher/formatters/console_formatter.rb",
+    "lib/hiptest-publisher/formatters/reporter.rb",
     "lib/hiptest-publisher/gherkin_adder.rb",
     "lib/hiptest-publisher/handlebars_helper.rb",
     "lib/hiptest-publisher/nodes.rb",
@@ -259,7 +261,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://hiptest.net"
   s.licenses = ["GPL 2"]
-  s.rubygems_version = "2.4.6"
+  s.rubygems_version = "2.4.5"
   s.summary = "Export your tests from Hiptest into executable tests."
 
   if s.respond_to? :specification_version then

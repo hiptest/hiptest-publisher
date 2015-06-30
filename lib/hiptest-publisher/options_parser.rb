@@ -2,10 +2,11 @@ require 'optparse'
 require 'parseconfig'
 require 'ostruct'
 
+require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/utils'
 
 class FileConfigParser
-  def self.update_options(options)
+  def self.update_options(options, reporter)
     config = ParseConfig.new(options.config)
     config.get_params.each do |param|
       options.send("#{param}=", config[param])
@@ -13,7 +14,7 @@ class FileConfigParser
     options
 
   rescue Exception => err
-    trace_exception(err) if options.verbose
+    reporter.dump_error(err)
     options
   end
 end
@@ -98,7 +99,7 @@ class OptionsParser
     ]
   end
 
-  def self.parse(args)
+  def self.parse(args, reporter)
     options = OpenStruct.new
     opt_parser = OptionParser.new do |opts|
       opts.version = hiptest_publisher_version if hiptest_publisher_version
@@ -138,15 +139,11 @@ class OptionsParser
     end
 
     opt_parser.parse!(args)
-    FileConfigParser.update_options options
+    reporter.add_listener(ConsoleFormatter.new(options.verbose))
+    FileConfigParser.update_options(options, reporter)
 
-    show_options(options) if options.verbose
+    reporter.show_options(options.marshal_dump)
     options
-  end
-
-  def self.show_options(options)
-    puts "Running Hiptest-publisher with:".yellow
-    options.marshal_dump.each { |k, v| puts " - #{k}: #{v}".white }
   end
 
   def self.make_language_option(lang, framework = '')

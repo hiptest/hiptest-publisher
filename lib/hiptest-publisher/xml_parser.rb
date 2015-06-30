@@ -3,15 +3,16 @@ require 'colorize'
 
 require_relative 'nodes'
 require_relative 'utils'
+require_relative 'formatters/reporter'
 
 module Hiptest
   class XMLParser
     attr_reader :project
 
-    def initialize(source, options = nil)
+    def initialize(source, reporter = nil)
       @source = source
       @xml = Nokogiri::XML(source)
-      @options = options
+      @reporter = reporter || NullReporter.new
     end
 
     def build_nullliteral(value = nil)
@@ -317,11 +318,9 @@ module Hiptest
         return default_node.new
       end
       self.send("build_#{node.name}", node)
-    rescue Exception => exception
-      if @options && @options.verbose
-        puts "Unable to build: \n#{node}".blue
-        trace_exception(exception)
-      end
+    rescue => error
+      @reporter.dump_error(error, "Unable to build: \n#{node}")
+      nil
     end
 
     def build_node_list(l, container_class=nil)
