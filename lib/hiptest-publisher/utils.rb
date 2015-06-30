@@ -12,7 +12,7 @@ end
 def hiptest_publisher_version
   Gem.loaded_specs['hiptest-publisher'].version.to_s
 rescue
-  File.read("#{hiptest_publisher_path}/VERSION") if File.exists?("#{hiptest_publisher_path}/VERSION")
+  File.read("#{hiptest_publisher_path}/VERSION").strip if File.exists?("#{hiptest_publisher_path}/VERSION")
 end
 
 def pluralize(count, singular)
