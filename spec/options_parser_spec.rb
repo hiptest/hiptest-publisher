@@ -1,5 +1,36 @@
 require "spec_helper"
 require_relative "../lib/hiptest-publisher/options_parser"
+require_relative "../lib/hiptest-publisher/formatters/reporter"
+
+describe OptionParser do
+
+  context "with config file" do
+    it "merges options from config file" do
+      f = Tempfile.new('config')
+      File.write(f, "language = java")
+      options = OptionsParser.parse([
+        "--config-file", f.path], NullReporter.new)
+      expect(options.language).to eq("java")
+    end
+
+    it "does not overwrite an option already defined on cli" do
+      f = Tempfile.new('config')
+      File.write(f, "language = java\nframework = tartanpion")
+      options = OptionsParser.parse([
+        "--language", "ruby",
+        "--config-file", f.path], NullReporter.new)
+      expect(options.language).to eq("ruby")
+      expect(options.framework).to eq("tartanpion")
+    end
+
+    it "works if config file is nil" do
+      options = OpenStruct.new
+      options.config = nil
+      expect { FileConfigParser.update_options(options, NullReporter.new) }.not_to raise_error
+    end
+  end
+end
+
 
 describe LanguageConfigParser do
 

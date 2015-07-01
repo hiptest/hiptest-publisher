@@ -9,13 +9,12 @@ class FileConfigParser
   def self.update_options(options, reporter)
     config = ParseConfig.new(options.config)
     config.get_params.each do |param|
-      options.send("#{param}=", config[param])
+      next if options.__cli_args && options.__cli_args.include?(param.to_sym)
+      options[param] = config[param]
+      options.__config_args << param.to_sym if options.__config_args
     end
-    options
-
-  rescue Exception => err
+  rescue => err
     reporter.dump_error(err)
-    options
   end
 end
 
@@ -32,10 +31,8 @@ class Option
   end
 
   def help
-    return @help if default.nil?
-
-    if @default.is_a? String
-      @default.empty? ? @help : "#{@help} (default: #{@default})"
+    if default == nil || default == ""
+      @help
     else
       "#{@help} (default: #{@default})"
     end
@@ -52,6 +49,7 @@ class Option
 
     opts.on(*on_values) do |value|
       options[attribute] = value
+      options.__cli_args << attribute
     end
   end
 end
@@ -100,7 +98,7 @@ class OptionsParser
   end
 
   def self.parse(args, reporter)
-    options = OpenStruct.new
+    options = OpenStruct.new(__cli_args: Set.new, __config_args: Set.new)
     opt_parser = OptionParser.new do |opts|
       opts.version = hiptest_publisher_version if hiptest_publisher_version
       opts.banner = "Usage: ruby publisher.rb [options]"

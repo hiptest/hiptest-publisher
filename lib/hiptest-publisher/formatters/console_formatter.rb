@@ -20,6 +20,6 @@ class ConsoleFormatter
   def show_options(options)
     return unless verbose
     puts "Running Hiptest-publisher #{hiptest_publisher_version} with:".yellow
-    options.each { |k, v| puts " - #{k}: #{v}".white }
+    options.each { |k, v| puts " - #{k}: #{v.inspect}".white }
   end
 end
