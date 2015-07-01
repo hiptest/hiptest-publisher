@@ -1,8 +1,8 @@
 
 
 class Reporter
-  def initialize
-    @listeners = []
+  def initialize(listeners = nil)
+    @listeners = listeners || []
   end
 
   def add_listener(listener)
@@ -10,15 +10,18 @@ class Reporter
   end
 
   def dump_error(error, message = nil)
-    @listeners.each do |listener|
-      listener.dump_error(error, message)
-    end
+    notify(:dump_error, error, message)
   end
 
   def show_options(options)
+    notify(:show_options, options)
+  end
+
+  def notify(message, *args)
     @listeners.each do |listener|
-      listener.show_options(options)
+      listener.send(message, *args)
     end
+    nil
   end
 end
 

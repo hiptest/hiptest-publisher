@@ -77,7 +77,7 @@ class OptionsParser
       Option.new('l', 'language=LANG', 'ruby', String, "Target language", :language),
       Option.new('f', 'framework=FRAMEWORK', '', String, "Test framework to use", :framework),
       Option.new('o', 'output-directory=PATH', '.', String, "Output directory", :output_directory),
-      Option.new('c', 'config-file=PATH', 'config', String, "Configuration file", :config),
+      Option.new('c', 'config-file=PATH', nil, String, "Configuration file", :config),
       Option.new(nil, 'overriden-templates=PATH', '', String, "Folder for overriden templates", :overriden_templates),
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
       Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),

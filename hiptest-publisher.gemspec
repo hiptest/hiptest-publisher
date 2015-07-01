@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-06-30"
+  s.date = "2015-07-01"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -277,8 +277,8 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<pry>, [">= 0"])
       s.add_development_dependency(%q<pry-byebug>, [">= 0"])
       s.add_development_dependency(%q<pry-stack_explorer>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, [">= 3.1.0", "~> 3.1"])
-      s.add_development_dependency(%q<rspec-mocks>, [">= 3.1.3", "~> 3.1"])
+      s.add_development_dependency(%q<rspec>, ["~> 3.3"])
+      s.add_development_dependency(%q<rspec-mocks>, ["~> 3.3"])
       s.add_development_dependency(%q<codeclimate-test-reporter>, [">= 0.4.6", "~> 0.4"])
       s.add_development_dependency(%q<jeweler>, [">= 2.0.1", "~> 2.0"])
     else
@@ -291,8 +291,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<pry>, [">= 0"])
       s.add_dependency(%q<pry-byebug>, [">= 0"])
       s.add_dependency(%q<pry-stack_explorer>, [">= 0"])
-      s.add_dependency(%q<rspec>, [">= 3.1.0", "~> 3.1"])
-      s.add_dependency(%q<rspec-mocks>, [">= 3.1.3", "~> 3.1"])
+      s.add_dependency(%q<rspec>, ["~> 3.3"])
+      s.add_dependency(%q<rspec-mocks>, ["~> 3.3"])
       s.add_dependency(%q<codeclimate-test-reporter>, [">= 0.4.6", "~> 0.4"])
       s.add_dependency(%q<jeweler>, [">= 2.0.1", "~> 2.0"])
     end
@@ -306,8 +306,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<pry>, [">= 0"])
     s.add_dependency(%q<pry-byebug>, [">= 0"])
     s.add_dependency(%q<pry-stack_explorer>, [">= 0"])
-    s.add_dependency(%q<rspec>, [">= 3.1.0", "~> 3.1"])
-    s.add_dependency(%q<rspec-mocks>, [">= 3.1.3", "~> 3.1"])
+    s.add_dependency(%q<rspec>, ["~> 3.3"])
+    s.add_dependency(%q<rspec-mocks>, ["~> 3.3"])
     s.add_dependency(%q<codeclimate-test-reporter>, [">= 0.4.6", "~> 0.4"])
     s.add_dependency(%q<jeweler>, [">= 2.0.1", "~> 2.0"])
   end

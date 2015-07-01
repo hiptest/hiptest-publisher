@@ -16,8 +16,8 @@ module Hiptest
   class Publisher
     attr_reader :reporter
 
-    def initialize(args)
-      @reporter = Reporter.new
+    def initialize(args, listeners: nil)
+      @reporter = Reporter.new(listeners)
       @options = OptionsParser.parse(args, reporter)
     end
 
