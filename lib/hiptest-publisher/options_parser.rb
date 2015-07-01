@@ -138,6 +138,7 @@ class OptionsParser
       end
     end
 
+    args << "--help" if args.empty?
     opt_parser.parse!(args)
     reporter.add_listener(ConsoleFormatter.new(options.verbose))
     FileConfigParser.update_options(options, reporter)
