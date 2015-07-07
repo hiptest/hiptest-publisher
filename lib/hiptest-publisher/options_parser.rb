@@ -171,6 +171,162 @@ class OptionsParser
   end
 end
 
+
+class FileOutputContext
+
+  def initialize(properties)
+    # should contain  :node, :path, :language, :template_dirs, :description, :indentation
+    @properties = OpenStruct.new(properties)
+  end
+
+  def method_missing(name, *)
+    @properties[name]
+  end
+
+  def node
+    @properties.node
+  end
+
+  def [](key)
+    @properties[key]
+  end
+
+  def update(properties)
+    properties.each_pair { |key, value| @properties[key] = value }
+  end
+
+  def []=(key, value)
+  end
+
+  def has_key?(key)
+    @properties.respond_to?(key)
+  end
+
+  def test_file_name
+    File.basename(@properties.path)
+  end
+end
+
+def template_dirs_for(language: "ruby", framework: nil, overriden_templates: nil, **)
+  dirs = []
+  if framework
+    dirs << "#{language}/#{framework}"
+  end
+  dirs << language
+  dirs << "common"
+  dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
+
+  dirs.unshift(overriden_templates) if overriden_templates
+
+  return dirs
+end
+
+class NodeOutputConfig
+  def initialize(user_params, node_params = nil)
+    @output_directory = user_params.output_directory
+    @split_scenarios = user_params.split_scenarios
+    @leafless_export = user_params.leafless_export
+    @user_language = user_params.language
+    @user_framework = user_params.framework
+    @node_params = node_params || {}
+  end
+
+  def [](key)
+    # puts "=> [#{key}]"
+    @node_params[key]
+  end
+
+  def splitted_files?
+    if self[:scenario_filename].nil?
+      false
+    elsif self[:filename].nil?
+      true
+    else
+      @split_scenarios
+    end
+  end
+
+  def language
+    @node_params[:language] || @user_language
+  end
+
+  def framework
+    @node_params[:framework] || @user_framework
+  end
+
+  def each_node(project)
+    if splitted_files?
+      project.children[node_name].children[node_name].each do |node|
+        yield node
+      end
+    else
+      yield project.children[node_name]
+    end
+  end
+
+  def template_dirs
+    template_dirs_for(
+      language:language,
+      framework: framework,
+      overriden_templates: @node_params[:overriden_templates]
+    )
+  end
+
+  def each_file_output_context(project)
+    each_node(project) do |node|
+      filename = output_file(node.children[:name])
+      path = "#{@output_directory}/#{filename}"
+      indentation = @node_params[:indentation]
+
+      if splitted_files?
+        description = "scenario \"#{node.children[:name]}\""
+        forced_templates = {
+          "scenario" => "single_scenario",
+          "test" => "single_test",
+        }
+      else
+        description = node_name.to_s
+        forced_templates = {}
+      end
+      yield FileOutputContext.new(
+        path: path,
+        language: language,
+        indentation: indentation,
+        template_dirs: template_dirs,
+        forced_templates: forced_templates,
+        description: description,
+        node: node,
+      )
+    end
+  end
+
+  def output_file(name)
+    if splitted_files?
+      class_name_convention = @node_params[:class_name_convention] || :normalize
+      name = name.send(class_name_convention)
+
+      self[:scenario_filename].gsub('%s', name)
+    else
+      self[:filename]
+    end
+  end
+
+  def scenario_output_dir(scenario_name)
+    "#{@output_directory}/#{output_file(scenario_name)}"
+  end
+
+  private
+
+  def node_name
+    if self[:category] == "tests" || self[:name] == "tests"
+      @leafless_export ? :tests : :scenarios
+    else
+      :actionwords
+    end
+  end
+end
+
+
 class LanguageConfigParser
   def initialize(options, language_config_path = nil)
     @options = options
@@ -179,8 +335,12 @@ class LanguageConfigParser
   end
 
   def self.config_path_for(options)
-    config_path = ["#{options.language}/#{options.framework}", "#{options.language}"].map do |p|
-      path = "#{hiptest_publisher_path}/lib/templates/#{p}/output_config"
+    config_path = [
+      "#{hiptest_publisher_path}/lib/config/#{options.language}-#{options.framework}.conf",
+      "#{hiptest_publisher_path}/lib/config/#{options.language}.conf",
+      "#{hiptest_publisher_path}/lib/templates/#{options.language}/#{options.framework}/output_config",
+      "#{hiptest_publisher_path}/lib/templates/#{options.language}/output_config",
+    ].map do |path|
       File.expand_path(path) if File.file?(path)
     end.compact.first
     if config_path.nil?
@@ -213,12 +373,18 @@ class LanguageConfigParser
     "#{@options.output_directory}/#{@config['actionwords']['filename']}"
   end
 
+  def node_output_configs
+    @config.groups.map { |group_name|
+      make_node_output_config(group_name)
+    }
+  end
+
   def tests_render_context
-    make_context('tests')
+    make_node_output_config('tests')
   end
 
   def actionword_render_context
-    make_context('actionwords')
+    make_node_output_config('actionwords')
   end
 
   def name_action_word(name)
@@ -245,5 +411,21 @@ class LanguageConfigParser
 
     @config[group].each {|param, value| context[param.to_sym] = value }
     context
+  end
+
+  def make_node_output_config group_name
+    node_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
+    if group_name == "tests" || group_name == "actionwords"
+      node_params[:category] = group_name
+    end
+    node_params[:name] = group_name
+    node_params[:package] = @options.package if @options.package
+    node_params[:framework] = @options.framework if @options.framework
+
+    unless @options.overriden_templates.nil? || @options.overriden_templates.empty?
+      node_params[:overriden_templates] = @options.overriden_templates
+    end
+
+    NodeOutputConfig.new(@options, node_params)
   end
 end

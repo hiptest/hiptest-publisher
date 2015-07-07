@@ -45,12 +45,13 @@ describe 'Selenium IDE rendering' do
 
   before(:each) do
     Hiptest::DefaultArgumentAdder.add(project)
-    @context = {framework: '', forced_templates: {}}
+
+    @context = context_for(language: 'seleniumide')
   end
 
   context 'Test' do
     it 'generates an html file' do
-      @context[:forced_templates] = {'test' => 'single_test'}
+      @context.update(forced_templates: {'test' => 'single_test'})
 
       expect(login_test.render('seleniumide', @context)).to eq([
         '<?xml version="1.0" encoding="UTF-8"?>',

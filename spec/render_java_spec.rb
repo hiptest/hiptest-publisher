@@ -250,9 +250,9 @@ describe 'Render as Java' do
       "}"
     ].join("\n")
 
-    @context[:filename] = 'ProjectTest.java'
-    @context[:test_file_name] = 'MyScenarioTest.java'
-    @context[:package] = 'com.example'
+    @context.update(filename: 'ProjectTest.java')
+    @context.update(test_file_name: 'MyScenarioTest.java')
+    @context.update(package: 'com.example')
   end
 
   context 'JUnit' do

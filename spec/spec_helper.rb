@@ -1,6 +1,7 @@
 require "codeclimate-test-reporter"
 require 'pry'
 require_relative '../lib/hiptest-publisher/nodes'
+require_relative '../lib/hiptest-publisher/options_parser'
 
 CodeClimate::TestReporter.start
 
@@ -82,4 +83,10 @@ module HelperFactories
       Hiptest::Nodes::Tests.new(tests)
     )
   end
+end
+
+def context_for(properties)
+  properties[:forced_templates] ||= {}
+  properties[:template_dirs] = template_dirs_for(**properties)
+  FileOutputContext.new(properties)
 end

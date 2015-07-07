@@ -42,17 +42,7 @@ module Hiptest
     end
 
     def searched_folders()
-      folders = []
-      if @context.has_key?(:framework)
-        folders << "#{@context[:language]}/#{@context[:framework]}"
-      end
-      folders << [@context[:language], 'common']
-      folders = folders.flatten.map {|path| "#{hiptest_publisher_path}/lib/templates/#{path}"}
-
-      if @context.has_key?(:overriden_templates)
-        folders = folders.insert(0, @context[:overriden_templates])
-      end
-      return folders
+      @context.template_dirs
     end
 
     def register_partials()

@@ -86,21 +86,23 @@ module Hiptest
 
     def write_node_to_file(path, node, context, message)
       write_to_file(path, message) do
-        Hiptest::Renderer.render(node, @options.language, context)
+        language = context[:language] || @options.language
+        Hiptest::Renderer.render(node, language, context)
       end
     end
 
     def export_tests
       if @options.split_scenarios
-        @project.children[:tests].children[:tests].each do |test|
-          context = @language_config.tests_render_context
-          context[:test_file_name] = @language_config.scenario_output_file(test.children[:name])
+        @language_config.tests_render_contexts.each do |context|
+          @project.children[:tests].children[:tests].each do |test|
+            context[:test_file_name] = @language_config.scenario_output_file(test.children[:name])
 
-          write_node_to_file(
-            @language_config.scenario_output_dir(test.children[:name]),
-            test,
-            context,
-            "Exporting test \"#{test.children[:name]}\"")
+            write_node_to_file(
+              @language_config.scenario_output_dir(test.children[:name]),
+              test,
+              context,
+              "Exporting test \"#{test.children[:name]}\"")
+          end
         end
       else
         write_node_to_file(
@@ -111,17 +113,33 @@ module Hiptest
       end
     end
 
+    def export_files
+      @language_config.node_output_configs.each do |node_output_config|
+        next if @options.actionwords_only && node_output_config[:category] != "actionwords"
+        next if @options.tests_only && node_output_config[:category] != "tests"
+        node_output_config.each_file_output_context(@project) do |file_output_context|
+          write_node_to_file(
+            file_output_context.path,
+            file_output_context.node,
+            file_output_context,
+            "Exporting #{file_output_context.description}",
+          )
+        end
+      end
+    end
+
     def export_scenarios
       if @options.split_scenarios
-        @project.children[:scenarios].children[:scenarios].each do |scenario|
-          context = @language_config.tests_render_context
-          context[:test_file_name] = @language_config.scenario_output_file(scenario.children[:name])
+        @language_config.tests_render_contexts.each do |context|
+          @project.children[:scenarios].children[:scenarios].each do |scenarios|
+            context[:test_file_name] = context.output_file(scenario.children[:name])
 
-          write_node_to_file(
-            @language_config.scenario_output_dir(scenario.children[:name]),
-            scenario,
-            context,
-            "Exporting scenario \"#{scenario.children[:name]}\"")
+            write_node_to_file(
+              context.scenario_output_dir(scenario.children[:name]),
+              scenario,
+              context,
+              "Exporting scenario \"#{scenario.children[:name]}\"")
+          end
         end
       else
         write_node_to_file(
@@ -243,11 +261,8 @@ module Hiptest
       Hiptest::DefaultArgumentAdder.add(@project)
       Hiptest::GherkinAdder.add(@project)
 
-      unless @options.actionwords_only
-        @options.leafless_export ? export_tests : export_scenarios
-      end
-
-      export_actionwords unless @options.tests_only
+      export_files
+      export_actionword_signature unless @options.tests_only
     end
 
     def post_results

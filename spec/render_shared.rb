@@ -1,6 +1,7 @@
 require_relative 'spec_helper'
 require_relative '../lib/hiptest-publisher/parameter_type_adder'
 require_relative '../lib/hiptest-publisher/nodes'
+require_relative '../lib/hiptest-publisher/options_parser'
 
 shared_context "shared render" do
 
@@ -263,7 +264,7 @@ shared_context "shared render" do
     @second_test.parent = @tests
     @tests.parent = Hiptest::Nodes::Project.new('My test project')
 
-    @context = {framework: framework, forced_templates: {}}
+    @context = context_for(language: language, framework: framework)
   end
 end
 
@@ -391,34 +392,36 @@ shared_examples "a renderer" do
     end
 
     it 'can also be rendered so it will be in a single file' do
-      @context[:forced_templates] = {'scenario' => 'single_scenario'}
-      @context[:call_prefix] = 'actionwords'
+      @context.update(
+        forced_templates: {'scenario' => 'single_scenario'},
+        call_prefix: 'actionwords')
 
       expect(@full_scenario.render(language, @context)).to eq(@full_scenario_rendered_for_single_file)
     end
 
     it 'can be rendered with its datatable' do
-      @context[:call_prefix] = 'actionwords'
+      @context.update(call_prefix: 'actionwords')
 
       expect(@scenario_with_datatable.render(language, @context)).to eq(@scenario_with_datatable_rendered)
     end
 
     it 'can be rendered with its datatable in a single file' do
-      @context[:forced_templates] = {'scenario' => 'single_scenario'}
-      @context[:call_prefix] = 'actionwords'
+      @context.update(
+        forced_templates: {'scenario' => 'single_scenario'},
+        call_prefix: 'actionwords')
 
       expect(@scenario_with_datatable.render(language, @context)).to eq(@scenario_with_datatable_rendered_in_single_file)
     end
 
     it 'the UID is displayed in the name if set' do
-      @context[:call_prefix] = 'actionwords'
+      @context.update(call_prefix: 'actionwords')
 
       @full_scenario.set_uid('abcd-1234')
       expect(@full_scenario.render(language, @context)).to eq(@full_scenario_with_uid_rendered)
     end
 
     it 'when the uid is set at the dataset level, it is rendered in the dataset export name' do
-      @context[:call_prefix] = 'actionwords'
+      @context.update(call_prefix: 'actionwords')
 
       uids = ['a-123', 'b-456', 'c-789']
       @scenario_with_datatable.children[:datatable].children[:datasets].each_with_index do |dataset, index|
@@ -440,26 +443,27 @@ shared_examples "a renderer" do
   end
 
   it 'Scenarios' do
-    @context[:call_prefix] = 'actionwords'
+    @context.update(call_prefix: 'actionwords')
     expect(@scenarios.render(language, @context)).to eq(@scenarios_rendered)
   end
 
   context 'Test' do
     it 'can be rendered to be inserted in the tests list' do
-      @context[:call_prefix] = 'actionwords'
+      @context.update(call_prefix: 'actionwords')
       expect(@first_test.render(language, @context)).to eq(@first_test_rendered)
     end
 
     it 'can also be rendered so it will be in a single file' do
-      @context[:call_prefix] = 'actionwords'
-      @context[:forced_templates] = {'test' => 'single_test'}
+      @context.update(
+        forced_templates: {'test' => 'single_test'},
+        call_prefix: 'actionwords')
 
       expect(@first_test.render(language, @context)).to eq(@first_test_rendered_for_single_file)
     end
   end
 
   it 'Tests' do
-    @context[:call_prefix] = 'actionwords'
+    @context.update(call_prefix: 'actionwords')
     expect(@tests.render(language, @context)).to eq(@tests_rendered)
   end
 end
