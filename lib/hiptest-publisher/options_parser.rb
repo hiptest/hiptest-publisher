@@ -359,35 +359,11 @@ class LanguageConfigParser
     }
   end
 
-  def actionword_render_context
-    make_node_output_config('actionwords')
-  end
-
   def name_action_word(name)
     name.send(@config['actionwords']['naming_convention'])
   end
 
   private
-  def make_context group
-    context = {
-      :forced_templates => {}
-    }
-
-    if @options.split_scenarios
-      context[:forced_templates]['scenario'] = 'single_scenario'
-      context[:forced_templates]['test'] = 'single_test'
-    end
-
-    context[:package] = @options.package unless @options.package.nil?
-    context[:framework] = @options.framework unless @options.framework.nil?
-
-    unless @options.overriden_templates.nil? || @options.overriden_templates.empty?
-      context[:overriden_templates] = @options.overriden_templates
-    end
-
-    @config[group].each {|param, value| context[param.to_sym] = value }
-    context
-  end
 
   def make_node_output_config group_name
     node_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
