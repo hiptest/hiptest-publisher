@@ -93,8 +93,8 @@ module Hiptest
 
     def export_files
       @language_config.node_output_configs.each do |node_output_config|
-        next if @options.actionwords_only && node_output_config[:category] != "actionwords"
-        next if @options.tests_only && node_output_config[:category] != "tests"
+        next if @options.actionwords_stubs && node_output_config[:category] != "actionwords_stubs"
+        next if @options.test_code && node_output_config[:category] != "test_code"
         node_output_config.each_file_output_context(@project) do |file_output_context|
           write_node_to_file(
             file_output_context.path,
@@ -220,7 +220,7 @@ module Hiptest
       Hiptest::GherkinAdder.add(@project)
 
       export_files
-      export_actionword_signature unless @options.tests_only
+      export_actionword_signature unless @options.test_code
     end
 
     def post_results

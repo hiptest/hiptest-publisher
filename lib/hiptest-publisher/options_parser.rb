@@ -80,8 +80,10 @@ class OptionsParser
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
       Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
       Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
-      Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
-      Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
+      Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --test-code", :test_code_only),
+      Option.new(nil, 'test-code', false, nil, "Export only the generated test code not to be changed", :test_code),
+      Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --actionwords-stubs", :actionwords_stubs),
+      Option.new(nil, 'actionwords-stubs', false, nil, "Export only the actionwords method stubs to be implemented", :actionwords_stubs),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionword signature", :actionwords_signature),
       Option.new(nil, 'show-actionwords-diff', false, nil, "Show actionwords diff since last update (summary)", :actionwords_diff),
       Option.new(nil, 'show-actionwords-deleted', false, nil, "Output signature of deleted action words", :aw_deleted),
@@ -318,7 +320,7 @@ class NodeOutputConfig
   private
 
   def node_name
-    if self[:category] == "tests" || self[:name] == "tests"
+    if self[:node] == "tests" || self[:node] == "scenarios" || self[:name] == "tests"
       @leafless_export ? :tests : :scenarios
     else
       :actionwords
