@@ -127,6 +127,7 @@ module Hiptest
       Hiptest::Nodes::ParentAdder.add(@project)
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
       Hiptest::DefaultArgumentAdder.add(@project)
+      Hiptest::GherkinAdder.add(@project)
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
       diff =  Hiptest::SignatureDiffer.diff( old, current)
@@ -142,10 +143,16 @@ module Hiptest
 
       if @options.aw_created
         return if diff[:created].nil?
-        diff[:created].map {|created|
-          puts Hiptest::Renderer.render(created[:node], @options.language, @language_config.actionword_render_context)
-          puts ""
-        }
+
+        @language_config.node_output_configs.select { |node_output_config|
+          node_output_config[:category] == "actionwords"
+        }.each do |node_output_config|
+          diff[:created].each do |created|
+            file_output_context = node_output_config.build_file_output_context(created[:node])
+            puts Hiptest::Renderer.render(file_output_context[:node], file_output_context.language, file_output_context)
+            puts ""
+          end
+        end
         return
       end
 
@@ -161,10 +168,15 @@ module Hiptest
       if @options.aw_signature_changed
         return if diff[:signature_changed].nil?
 
-        diff[:signature_changed].map {|signature_changed|
-          puts Hiptest::Renderer.render(signature_changed[:node], @options.language, @language_config.actionword_render_context)
-          puts ""
-        }
+        @language_config.node_output_configs.select { |node_output_config|
+          node_output_config[:category] == "actionwords"
+        }.each do |node_output_config|
+          diff[:signature_changed].each do |signature_changed|
+            file_output_context = node_output_config.build_file_output_context(signature_changed[:node])
+            puts Hiptest::Renderer.render(signature_changed[:node], file_output_context.language, file_output_context)
+            puts ""
+          end
+        end
         return
       end
 

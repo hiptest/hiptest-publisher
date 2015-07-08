@@ -274,30 +274,34 @@ class NodeOutputConfig
 
   def each_file_output_context(project)
     each_node(project) do |node|
-      filename = output_file(node.children[:name])
-      path = "#{@output_directory}/#{filename}"
-      indentation = @node_params[:indentation]
-
-      if splitted_files?
-        description = "scenario \"#{node.children[:name]}\""
-        forced_templates = {
-          "scenario" => "single_scenario",
-          "test" => "single_test",
-        }
-      else
-        description = node_name.to_s
-        forced_templates = {}
-      end
-      yield FileOutputContext.new(
-        path: path,
-        language: language,
-        indentation: indentation,
-        template_dirs: template_dirs,
-        forced_templates: forced_templates,
-        description: description,
-        node: node,
-      )
+      yield build_file_output_context(node)
     end
+  end
+
+  def build_file_output_context(node)
+    filename = output_file(node.children[:name])
+    path = "#{@output_directory}/#{filename}"
+    indentation = @node_params[:indentation]
+
+    if splitted_files?
+      description = "scenario \"#{node.children[:name]}\""
+      forced_templates = {
+        "scenario" => "single_scenario",
+        "test" => "single_test",
+      }
+    else
+      description = node_name.to_s
+      forced_templates = {}
+    end
+    FileOutputContext.new(
+      path: path,
+      language: language,
+      indentation: indentation,
+      template_dirs: template_dirs,
+      forced_templates: forced_templates,
+      description: description,
+      node: node,
+    )
   end
 
   def output_file(name)
