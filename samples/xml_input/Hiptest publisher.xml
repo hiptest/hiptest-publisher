@@ -72,6 +72,7 @@
   <actionwords>
     <actionword>
       <name>Parameters and assignements</name>
+      <uid>0803eaf1-224d-4a47-bc5c-827bc8595839</uid>
       <tags>
         <tag>
           <key>parameters</key>
@@ -172,6 +173,7 @@
     </actionword>
     <actionword>
       <name>Control blocks</name>
+      <uid>9e2e1492-b56e-44ef-acc2-3c4e5be64f3f</uid>
       <tags>
         <tag>
           <key>parameters</key>
@@ -269,6 +271,7 @@
     </actionword>
     <actionword>
       <name>start publisher</name>
+      <uid>74a6bbdb-cd52-46ec-aa5d-aa61e420992d</uid>
       <parameters>
         <parameter>
           <name>options</name>
@@ -290,6 +293,7 @@
     </actionword>
     <actionword>
       <name>null param</name>
+      <uid>44519faf-6522-40c2-b61e-4784d6157892</uid>
       <parameters>
         <parameter>
           <name>ploc</name>
