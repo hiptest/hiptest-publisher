@@ -311,10 +311,6 @@ class NodeOutputConfig
     end
   end
 
-  def scenario_output_dir(scenario_name)
-    "#{@output_directory}/#{output_file(scenario_name)}"
-  end
-
   private
 
   def node_name
@@ -351,36 +347,10 @@ class LanguageConfigParser
     config_path
   end
 
-  def scenario_output_file(scenario_name)
-    if make_context('tests').has_key? :class_name_convention
-      scenario_name = scenario_name.send(make_context('tests')[:class_name_convention])
-    else
-      scenario_name = scenario_name.normalize
-    end
-
-    @config['tests']['scenario_filename'].gsub('%s', scenario_name)
-  end
-
-  def scenario_output_dir(scenario_name)
-    "#{@options.output_directory}/#{scenario_output_file(scenario_name)}"
-  end
-
-  def tests_output_dir
-    "#{@options.output_directory}/#{@config['tests']['filename']}"
-  end
-
-  def aw_output_dir
-    "#{@options.output_directory}/#{@config['actionwords']['filename']}"
-  end
-
   def node_output_configs
     @config.groups.map { |group_name|
       make_node_output_config(group_name)
     }
-  end
-
-  def tests_render_context
-    make_node_output_config('tests')
   end
 
   def actionword_render_context

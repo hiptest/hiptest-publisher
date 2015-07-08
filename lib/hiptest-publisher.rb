@@ -91,28 +91,6 @@ module Hiptest
       end
     end
 
-    def export_tests
-      if @options.split_scenarios
-        @language_config.tests_render_contexts.each do |context|
-          @project.children[:tests].children[:tests].each do |test|
-            context[:test_file_name] = @language_config.scenario_output_file(test.children[:name])
-
-            write_node_to_file(
-              @language_config.scenario_output_dir(test.children[:name]),
-              test,
-              context,
-              "Exporting test \"#{test.children[:name]}\"")
-          end
-        end
-      else
-        write_node_to_file(
-          @language_config.tests_output_dir,
-          @project.children[:tests],
-          @language_config.tests_render_context,
-          "Exporting tests")
-      end
-    end
-
     def export_files
       @language_config.node_output_configs.each do |node_output_config|
         next if @options.actionwords_only && node_output_config[:category] != "actionwords"
@@ -126,38 +104,6 @@ module Hiptest
           )
         end
       end
-    end
-
-    def export_scenarios
-      if @options.split_scenarios
-        @language_config.tests_render_contexts.each do |context|
-          @project.children[:scenarios].children[:scenarios].each do |scenarios|
-            context[:test_file_name] = context.output_file(scenario.children[:name])
-
-            write_node_to_file(
-              context.scenario_output_dir(scenario.children[:name]),
-              scenario,
-              context,
-              "Exporting scenario \"#{scenario.children[:name]}\"")
-          end
-        end
-      else
-        write_node_to_file(
-          @language_config.tests_output_dir,
-          @project.children[:scenarios],
-          @language_config.tests_render_context,
-          "Exporting scenarios")
-      end
-    end
-
-    def export_actionwords
-      write_node_to_file(
-        @language_config.aw_output_dir,
-        @project.children[:actionwords],
-        @language_config.actionword_render_context,
-        "Exporting actionwords"
-      )
-      export_actionword_signature
     end
 
     def export_actionword_signature
