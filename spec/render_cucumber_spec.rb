@@ -100,7 +100,7 @@ describe 'Cucumber rendering' do
     )
   }
 
-  subject(:rendered) { node_to_render.render('cucumber', options) }
+  subject(:rendered) { node_to_render.render(options) }
 
   context 'Test' do
     let(:node_to_render) { create_white_test }

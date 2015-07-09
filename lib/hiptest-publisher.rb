@@ -86,8 +86,7 @@ module Hiptest
 
     def write_node_to_file(path, node, context, message)
       write_to_file(path, message) do
-        language = context[:language] || @options.language
-        Hiptest::Renderer.render(node, language, context)
+        Hiptest::Renderer.render(node, context)
       end
     end
 
@@ -149,7 +148,7 @@ module Hiptest
         }.each do |language_group_config|
           diff[:created].each do |created|
             node_rendering_context = language_group_config.build_node_rendering_context(created[:node])
-            puts Hiptest::Renderer.render(node_rendering_context[:node], node_rendering_context.language, node_rendering_context)
+            puts node_rendering_context[:node].render(node_rendering_context)
             puts ""
           end
         end
@@ -173,7 +172,7 @@ module Hiptest
         }.each do |language_group_config|
           diff[:signature_changed].each do |signature_changed|
             node_rendering_context = language_group_config.build_node_rendering_context(signature_changed[:node])
-            puts Hiptest::Renderer.render(signature_changed[:node], node_rendering_context.language, node_rendering_context)
+            puts signature_changed[:node].render(node_rendering_context)
             puts ""
           end
         end

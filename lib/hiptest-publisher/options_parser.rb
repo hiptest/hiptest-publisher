@@ -177,7 +177,7 @@ end
 class NodeRenderingContext
 
   def initialize(properties)
-    # should contain  :node, :path, :language, :template_dirs, :description, :indentation
+    # should contain  :node, :path, :template_dirs, :description, :indentation
     @properties = OpenStruct.new(properties)
   end
 
@@ -267,7 +267,7 @@ class LanguageGroupConfig
 
   def template_dirs
     template_dirs_for(
-      language:language,
+      language: language,
       framework: framework,
       overriden_templates: @language_group_params[:overriden_templates]
     )
@@ -296,7 +296,6 @@ class LanguageGroupConfig
     end
     NodeRenderingContext.new(
       path: path,
-      language: language,
       indentation: indentation,
       template_dirs: template_dirs,
       forced_templates: forced_templates,

@@ -10,9 +10,7 @@ module Hiptest
     attr_reader :rendered
     include RenderContextMaker
 
-    def self.render(node, language, context)
-      context[:language] = language
-
+    def self.render(node, context)
       renderer = Hiptest::Renderer.new(context)
       renderer.walk_node(node)
       renderer.rendered[node]

@@ -14,8 +14,8 @@ module Hiptest
         super - [:@parent] # do not overload pry output
       end
 
-      def render(language = 'ruby', context = {})
-        return Hiptest::Renderer.render(self, language, context)
+      def render(rendering_context)
+        return Hiptest::Renderer.render(self, rendering_context)
       end
 
       def find_sub_nodes(types = [])
