@@ -18,11 +18,11 @@ module Hiptest
 
     def initialize(args, listeners: nil)
       @reporter = Reporter.new(listeners)
-      @options = OptionsParser.parse(args, reporter)
+      @cli_options = OptionsParser.parse(args, reporter)
     end
 
     def run
-      unless @options.push.nil? || @options.push.empty?
+      unless @cli_options.push.nil? || @cli_options.push.empty?
         post_results
         return
       end
@@ -32,12 +32,12 @@ module Hiptest
 
       @project = get_project(xml)
 
-      if @options.actionwords_signature
+      if @cli_options.actionwords_signature
         export_actionword_signature
         return
       end
 
-      if @options.actionwords_diff || @options.aw_deleted|| @options.aw_created|| @options.aw_renamed|| @options.aw_signature_changed
+      if @cli_options.actionwords_diff || @cli_options.aw_deleted|| @cli_options.aw_created|| @cli_options.aw_renamed|| @cli_options.aw_signature_changed
         show_actionwords_diff
         return
       end
@@ -47,7 +47,7 @@ module Hiptest
 
     def fetch_xml_file
       show_status_message "Fetching data from Hiptest"
-      xml = fetch_project_export(@options)
+      xml = fetch_project_export(@cli_options)
       show_status_message "Fetching data from Hiptest", :success
 
       return xml
@@ -92,8 +92,8 @@ module Hiptest
 
     def export_files
       @language_config.language_group_configs.each do |language_group_config|
-        next if @options.actionwords_stubs && !language_group_config.actionwords_stubs?
-        next if @options.test_code && !language_group_config.test_code?
+        next if @cli_options.actionwords_stubs && !language_group_config.actionwords_stubs?
+        next if @cli_options.test_code && !language_group_config.test_code?
         language_group_config.each_node_rendering_context(@project) do |node_rendering_context|
           write_node_to_file(
             node_rendering_context.path,
@@ -107,7 +107,7 @@ module Hiptest
 
     def export_actionword_signature
       write_to_file(
-        "#{@options.output_directory}/actionwords_signature.yaml",
+        "#{@cli_options.output_directory}/actionwords_signature.yaml",
         "Exporting actionword signature"
       ) { Hiptest::SignatureExporter.export_actionwords(@project).to_yaml }
     end
@@ -115,14 +115,14 @@ module Hiptest
     def show_actionwords_diff
       begin
         show_status_message("Loading previous definition")
-        old = YAML.load_file("#{@options.output_directory}/actionwords_signature.yaml")
+        old = YAML.load_file("#{@cli_options.output_directory}/actionwords_signature.yaml")
         show_status_message("Loading previous definition", :success)
       rescue Exception => err
         show_status_message("Loading previous definition", :failure)
         reporter.dump_error(err)
       end
 
-      @language_config = LanguageConfigParser.new(@options)
+      @language_config = LanguageConfigParser.new(@cli_options)
       Hiptest::Nodes::ParentAdder.add(@project)
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
       Hiptest::DefaultArgumentAdder.add(@project)
@@ -131,7 +131,7 @@ module Hiptest
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
       diff =  Hiptest::SignatureDiffer.diff( old, current)
 
-      if @options.aw_deleted
+      if @cli_options.aw_deleted
         return if diff[:deleted].nil?
 
         diff[:deleted].map {|deleted|
@@ -140,7 +140,7 @@ module Hiptest
         return
       end
 
-      if @options.aw_created
+      if @cli_options.aw_created
         return if diff[:created].nil?
 
         @language_config.language_group_configs.select { |language_group_config|
@@ -155,7 +155,7 @@ module Hiptest
         return
       end
 
-      if @options.aw_renamed
+      if @cli_options.aw_renamed
         return if diff[:renamed].nil?
 
         diff[:renamed].map {|renamed|
@@ -164,7 +164,7 @@ module Hiptest
         return
       end
 
-      if @options.aw_signature_changed
+      if @cli_options.aw_signature_changed
         return if diff[:signature_changed].nil?
 
         @language_config.language_group_configs.select { |language_group_config|
@@ -212,22 +212,22 @@ module Hiptest
     def export
       return if @project.nil?
 
-      @language_config = LanguageConfigParser.new(@options)
+      @language_config = LanguageConfigParser.new(@cli_options)
       Hiptest::Nodes::ParentAdder.add(@project)
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
       Hiptest::DefaultArgumentAdder.add(@project)
       Hiptest::GherkinAdder.add(@project)
 
       export_files
-      export_actionword_signature unless @options.test_code
+      export_actionword_signature unless @cli_options.test_code
     end
 
     def post_results
-      status_message = "Posting #{@options.push} to #{@options.site}"
+      status_message = "Posting #{@cli_options.push} to #{@cli_options.site}"
       show_status_message(status_message)
 
       begin
-        push_results(@options)
+        push_results(@cli_options)
         show_status_message(status_message, :success)
       rescue Exception => err
         show_status_message(status_message, :failure)

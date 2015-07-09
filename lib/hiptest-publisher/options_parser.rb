@@ -290,8 +290,7 @@ class LanguageGroupConfig
   end
 
   def build_node_rendering_context(node)
-    filename = output_file(node.children[:name])
-    path = "#{@output_directory}/#{filename}"
+    path = "#{@output_directory}/#{output_file(node)}"
     indentation = @language_group_params[:indentation]
 
     if splitted_files?
@@ -314,10 +313,10 @@ class LanguageGroupConfig
     )
   end
 
-  def output_file(name)
+  def output_file(node)
     if splitted_files?
       class_name_convention = @language_group_params[:class_name_convention] || :normalize
-      name = name.send(class_name_convention)
+      name = node.children[:name].send(class_name_convention)
 
       self[:scenario_filename].gsub('%s', name)
     else
@@ -338,24 +337,24 @@ end
 
 
 class LanguageConfigParser
-  def initialize(options, language_config_path = nil)
-    @options = options
-    language_config_path ||= LanguageConfigParser.config_path_for(options)
+  def initialize(cli_options, language_config_path = nil)
+    @cli_options = cli_options
+    language_config_path ||= LanguageConfigParser.config_path_for(cli_options)
     @config = ParseConfig.new(language_config_path)
   end
 
-  def self.config_path_for(options)
+  def self.config_path_for(cli_options)
     config_path = [
-      "#{hiptest_publisher_path}/lib/config/#{options.language}-#{options.framework}.conf",
-      "#{hiptest_publisher_path}/lib/config/#{options.language}.conf",
-      "#{hiptest_publisher_path}/lib/templates/#{options.language}/#{options.framework}/output_config",
-      "#{hiptest_publisher_path}/lib/templates/#{options.language}/output_config",
+      "#{hiptest_publisher_path}/lib/config/#{cli_options.language}-#{cli_options.framework}.conf",
+      "#{hiptest_publisher_path}/lib/config/#{cli_options.language}.conf",
+      "#{hiptest_publisher_path}/lib/templates/#{cli_options.language}/#{cli_options.framework}/output_config",
+      "#{hiptest_publisher_path}/lib/templates/#{cli_options.language}/output_config",
     ].map do |path|
       File.expand_path(path) if File.file?(path)
     end.compact.first
     if config_path.nil?
-      message = "cannot find output_config file in \"#{hiptest_publisher_path}/lib/templates\" for language #{options.language.inspect}"
-      message << " and framework #{options.framework.inspect}" if options.framework
+      message = "cannot find output_config file in \"#{hiptest_publisher_path}/lib/templates\" for language #{cli_options.language.inspect}"
+      message << " and framework #{cli_options.framework.inspect}" if cli_options.framework
       raise ArgumentError.new(message)
     end
     config_path
@@ -376,13 +375,13 @@ class LanguageConfigParser
   def make_language_group_config group_name
     language_group_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
     language_group_params[:group_name] = group_name
-    language_group_params[:package] = @options.package if @options.package
-    language_group_params[:framework] = @options.framework if @options.framework
+    language_group_params[:package] = @cli_options.package if @cli_options.package
+    language_group_params[:framework] = @cli_options.framework if @cli_options.framework
 
-    unless @options.overriden_templates.nil? || @options.overriden_templates.empty?
-      language_group_params[:overriden_templates] = @options.overriden_templates
+    unless @cli_options.overriden_templates.nil? || @cli_options.overriden_templates.empty?
+      language_group_params[:overriden_templates] = @cli_options.overriden_templates
     end
 
-    LanguageGroupConfig.new(@options, language_group_params)
+    LanguageGroupConfig.new(@cli_options, language_group_params)
   end
 end
