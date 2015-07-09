@@ -174,7 +174,7 @@ class OptionsParser
 end
 
 
-class FileOutputContext
+class NodeRenderingContext
 
   def initialize(properties)
     # should contain  :node, :path, :language, :template_dirs, :description, :indentation
@@ -223,19 +223,18 @@ def template_dirs_for(language: "ruby", framework: nil, overriden_templates: nil
   return dirs
 end
 
-class NodeOutputConfig
-  def initialize(user_params, node_params = nil)
+class LanguageGroupConfig
+  def initialize(user_params, language_group_params = nil)
     @output_directory = user_params.output_directory
     @split_scenarios = user_params.split_scenarios
     @leafless_export = user_params.leafless_export
     @user_language = user_params.language
     @user_framework = user_params.framework
-    @node_params = node_params || {}
+    @language_group_params = language_group_params || {}
   end
 
   def [](key)
-    # puts "=> [#{key}]"
-    @node_params[key]
+    @language_group_params[key]
   end
 
   def splitted_files?
@@ -249,11 +248,11 @@ class NodeOutputConfig
   end
 
   def language
-    @node_params[:language] || @user_language
+    @language_group_params[:language] || @user_language
   end
 
   def framework
-    @node_params[:framework] || @user_framework
+    @language_group_params[:framework] || @user_framework
   end
 
   def each_node(project)
@@ -270,20 +269,20 @@ class NodeOutputConfig
     template_dirs_for(
       language:language,
       framework: framework,
-      overriden_templates: @node_params[:overriden_templates]
+      overriden_templates: @language_group_params[:overriden_templates]
     )
   end
 
-  def each_file_output_context(project)
+  def each_node_rendering_context(project)
     each_node(project) do |node|
-      yield build_file_output_context(node)
+      yield build_node_rendering_context(node)
     end
   end
 
-  def build_file_output_context(node)
+  def build_node_rendering_context(node)
     filename = output_file(node.children[:name])
     path = "#{@output_directory}/#{filename}"
-    indentation = @node_params[:indentation]
+    indentation = @language_group_params[:indentation]
 
     if splitted_files?
       description = "scenario \"#{node.children[:name]}\""
@@ -295,7 +294,7 @@ class NodeOutputConfig
       description = node_name.to_s
       forced_templates = {}
     end
-    FileOutputContext.new(
+    NodeRenderingContext.new(
       path: path,
       language: language,
       indentation: indentation,
@@ -308,7 +307,7 @@ class NodeOutputConfig
 
   def output_file(name)
     if splitted_files?
-      class_name_convention = @node_params[:class_name_convention] || :normalize
+      class_name_convention = @language_group_params[:class_name_convention] || :normalize
       name = name.send(class_name_convention)
 
       self[:scenario_filename].gsub('%s', name)
@@ -320,7 +319,7 @@ class NodeOutputConfig
   private
 
   def node_name
-    if self[:node] == "tests" || self[:node] == "scenarios" || self[:name] == "tests"
+    if self[:node_name] == "tests" || self[:node_name] == "scenarios" || self[:group_name] == "tests"
       @leafless_export ? :tests : :scenarios
     else
       :actionwords
@@ -353,9 +352,9 @@ class LanguageConfigParser
     config_path
   end
 
-  def node_output_configs
+  def language_group_configs
     @config.groups.map { |group_name|
-      make_node_output_config(group_name)
+      make_language_group_config(group_name)
     }
   end
 
@@ -365,19 +364,18 @@ class LanguageConfigParser
 
   private
 
-  def make_node_output_config group_name
-    node_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
-    if group_name == "tests" || group_name == "actionwords"
-      node_params[:category] = group_name
-    end
-    node_params[:name] = group_name
-    node_params[:package] = @options.package if @options.package
-    node_params[:framework] = @options.framework if @options.framework
+  def make_language_group_config group_name
+    language_group_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
+    language_group_params[:category] = "test_code" if group_name == "tests"
+    language_group_params[:category] = "actionwords_stubs" if group_name == "actionwords"
+    language_group_params[:group_name] = group_name
+    language_group_params[:package] = @options.package if @options.package
+    language_group_params[:framework] = @options.framework if @options.framework
 
     unless @options.overriden_templates.nil? || @options.overriden_templates.empty?
-      node_params[:overriden_templates] = @options.overriden_templates
+      language_group_params[:overriden_templates] = @options.overriden_templates
     end
 
-    NodeOutputConfig.new(@options, node_params)
+    LanguageGroupConfig.new(@options, language_group_params)
   end
 end

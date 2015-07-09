@@ -88,5 +88,5 @@ end
 def context_for(properties)
   properties[:forced_templates] ||= {}
   properties[:template_dirs] = template_dirs_for(**properties)
-  FileOutputContext.new(properties)
+  NodeRenderingContext.new(properties)
 end

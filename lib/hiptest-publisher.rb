@@ -92,15 +92,15 @@ module Hiptest
     end
 
     def export_files
-      @language_config.node_output_configs.each do |node_output_config|
-        next if @options.actionwords_stubs && node_output_config[:category] != "actionwords_stubs"
-        next if @options.test_code && node_output_config[:category] != "test_code"
-        node_output_config.each_file_output_context(@project) do |file_output_context|
+      @language_config.language_group_configs.each do |language_group_config|
+        next if @options.actionwords_stubs && language_group_config[:category] != "actionwords_stubs"
+        next if @options.test_code && language_group_config[:category] != "test_code"
+        language_group_config.each_node_rendering_context(@project) do |node_rendering_context|
           write_node_to_file(
-            file_output_context.path,
-            file_output_context.node,
-            file_output_context,
-            "Exporting #{file_output_context.description}",
+            node_rendering_context.path,
+            node_rendering_context.node,
+            node_rendering_context,
+            "Exporting #{node_rendering_context.description}",
           )
         end
       end
@@ -144,12 +144,12 @@ module Hiptest
       if @options.aw_created
         return if diff[:created].nil?
 
-        @language_config.node_output_configs.select { |node_output_config|
-          node_output_config[:category] == "actionwords"
-        }.each do |node_output_config|
+        @language_config.language_group_configs.select { |language_group_config|
+          language_group_config[:category] == "actionwords_stubs"
+        }.each do |language_group_config|
           diff[:created].each do |created|
-            file_output_context = node_output_config.build_file_output_context(created[:node])
-            puts Hiptest::Renderer.render(file_output_context[:node], file_output_context.language, file_output_context)
+            node_rendering_context = language_group_config.build_node_rendering_context(created[:node])
+            puts Hiptest::Renderer.render(node_rendering_context[:node], node_rendering_context.language, node_rendering_context)
             puts ""
           end
         end
@@ -168,12 +168,12 @@ module Hiptest
       if @options.aw_signature_changed
         return if diff[:signature_changed].nil?
 
-        @language_config.node_output_configs.select { |node_output_config|
-          node_output_config[:category] == "actionwords"
-        }.each do |node_output_config|
+        @language_config.language_group_configs.select { |language_group_config|
+          language_group_config[:category] == "actionwords_stubs"
+        }.each do |language_group_config|
           diff[:signature_changed].each do |signature_changed|
-            file_output_context = node_output_config.build_file_output_context(signature_changed[:node])
-            puts Hiptest::Renderer.render(signature_changed[:node], file_output_context.language, file_output_context)
+            node_rendering_context = language_group_config.build_node_rendering_context(signature_changed[:node])
+            puts Hiptest::Renderer.render(signature_changed[:node], node_rendering_context.language, node_rendering_context)
             puts ""
           end
         end

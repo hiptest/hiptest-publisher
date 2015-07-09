@@ -46,19 +46,24 @@ describe Hiptest::Publisher do
     describe "actionwords modifications" do
       before(:each) do
         aw_signatures = YAML.load_file("samples/expected_output/Hiptest publisher/actionwords_signature.yaml")
+
         # simulate "Do something" has been deleted
         aw_signatures << {
           "name" => "Do something",
           "uid" => "a9bd8101-96bc-43d4-bd47-c429a60c6bdc",
           "parameters" => [{"name"=>"x"}]}
+
         # simulate "start publisher" has been created
         aw_signatures.reject! { |aw| aw["name"] == "start publisher" }
+
         # simulate "Parameters and assignements" has been renamed
         aw = aw_signatures.find {|e| e["name"] == "Parameters and assignements"}
         aw["name"] = "Parameters and assinements"
+
         # simulate "Control blocks" signature has changed
         aw = aw_signatures.find {|e| e["name"] == "Control blocks"}
         aw["parameters"] = []
+
         File.write("#{output_dir}/actionwords_signature.yaml", YAML.dump(aw_signatures))
       end
 
