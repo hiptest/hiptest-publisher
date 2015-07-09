@@ -237,6 +237,16 @@ class LanguageGroupConfig
     @language_group_params[key]
   end
 
+  def actionwords_stubs?
+    @language_group_params[:category] == "actionwords_stubs" ||
+        @language_group_params[:group_name] == "actionwords"
+  end
+
+  def test_code?
+    @language_group_params[:category] == "test_code" ||
+        @language_group_params[:group_name] == "tests"
+  end
+
   def splitted_files?
     if self[:scenario_filename].nil?
       false
@@ -365,8 +375,6 @@ class LanguageConfigParser
 
   def make_language_group_config group_name
     language_group_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
-    language_group_params[:category] = "test_code" if group_name == "tests"
-    language_group_params[:category] = "actionwords_stubs" if group_name == "actionwords"
     language_group_params[:group_name] = group_name
     language_group_params[:package] = @options.package if @options.package
     language_group_params[:framework] = @options.framework if @options.framework

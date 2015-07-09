@@ -92,8 +92,8 @@ module Hiptest
 
     def export_files
       @language_config.language_group_configs.each do |language_group_config|
-        next if @options.actionwords_stubs && language_group_config[:category] != "actionwords_stubs"
-        next if @options.test_code && language_group_config[:category] != "test_code"
+        next if @options.actionwords_stubs && !language_group_config.actionwords_stubs?
+        next if @options.test_code && !language_group_config.test_code?
         language_group_config.each_node_rendering_context(@project) do |node_rendering_context|
           write_node_to_file(
             node_rendering_context.path,
@@ -144,7 +144,7 @@ module Hiptest
         return if diff[:created].nil?
 
         @language_config.language_group_configs.select { |language_group_config|
-          language_group_config[:category] == "actionwords_stubs"
+          language_group_config.actionwords_stubs?
         }.each do |language_group_config|
           diff[:created].each do |created|
             node_rendering_context = language_group_config.build_node_rendering_context(created[:node])
@@ -168,7 +168,7 @@ module Hiptest
         return if diff[:signature_changed].nil?
 
         @language_config.language_group_configs.select { |language_group_config|
-          language_group_config[:category] == "actionwords_stubs"
+          language_group_config.actionwords_stubs?
         }.each do |language_group_config|
           diff[:signature_changed].each do |signature_changed|
             node_rendering_context = language_group_config.build_node_rendering_context(signature_changed[:node])
