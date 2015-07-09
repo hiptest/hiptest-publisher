@@ -4,15 +4,6 @@ require_relative '../lib/hiptest-publisher'
 
 describe Hiptest::Publisher do
 
-  class ErrorListener
-    def dump_error(error, message)
-      fail
-    end
-
-    def method_missing(*args)
-    end
-  end
-
   let(:output_dir) {
     @output_dir_created = true
     Dir.mktmpdir
