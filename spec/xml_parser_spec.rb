@@ -47,7 +47,7 @@ describe Hiptest::XMLParser do
 
   def build_node(xml)
     xml = "<?xml version=\"1.0\"?>#{xml}"
-    parser = TestParser.new(xml)
+    parser = TestParser.new(xml, Reporter.new([ErrorListener.new]))
     parser.build_main_node
   end
 
@@ -348,12 +348,31 @@ describe Hiptest::XMLParser do
       end
     end
 
-    it 'step' do
-      node = build_node(@action_step)
+    context 'step' do
 
-      expect(node).to be_a(Hiptest::Nodes::Step)
-      expect(node.children[:key]).to eq('action')
-      expect(node.children[:value]).to be_a(Hiptest::Nodes::Template)
+      it 'action step' do
+        node = build_node(@action_step)
+
+        expect(node).to be_a(Hiptest::Nodes::Step)
+        expect(node.children[:key]).to eq('action')
+        expect(node.children[:value]).to be_a(Hiptest::Nodes::Template)
+      end
+
+      it 'action step with text only' do # in leafless export
+        node = build_node("<step><action>take action</action></step>")
+
+        expect(node).to be_a(Hiptest::Nodes::Step)
+        expect(node.children[:key]).to eq('action')
+        expect(node.children[:value]).to eq("take action")
+      end
+
+      it 'result step' do
+        node = build_node(@result_step)
+
+        expect(node).to be_a(Hiptest::Nodes::Step)
+        expect(node.children[:key]).to eq('result')
+        expect(node.children[:value]).to be_a(Hiptest::Nodes::Template)
+      end
     end
 
     context 'if' do

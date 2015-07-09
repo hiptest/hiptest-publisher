@@ -4,15 +4,6 @@ require_relative '../lib/hiptest-publisher'
 
 describe Hiptest::Publisher do
 
-  class ErrorListener
-    def dump_error(error, message)
-      fail
-    end
-
-    def method_missing(*args)
-    end
-  end
-
   it 'works in the golden case' do
     stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
       to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))

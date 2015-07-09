@@ -135,9 +135,11 @@ module Hiptest
 
     def build_step(step)
       first_prop = css_first(step)
+      step_value_node = css_first(first_prop)
+      step_value = step_value_node ? build_node(step_value_node) : first_prop.text
       Hiptest::Nodes::Step.new(
         first_prop.name,
-        build_node(css_first(first_prop)))
+        step_value)
     end
 
     def build_while(while_loop)

@@ -4,6 +4,17 @@ require_relative '../lib/hiptest-publisher/nodes'
 
 CodeClimate::TestReporter.start
 
+
+class ErrorListener
+  def dump_error(error, message)
+    fail
+  end
+
+  def method_missing(*args)
+  end
+end
+
+
 module HelperFactories
   def make_var(name)
     Hiptest::Nodes::Variable(name)
