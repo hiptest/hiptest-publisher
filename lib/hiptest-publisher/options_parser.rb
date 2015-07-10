@@ -310,6 +310,7 @@ class LanguageGroupConfig
       forced_templates: forced_templates,
       description: description,
       node: node,
+      fallback_template: @language_group_params[:fallback_template],
     )
   end
 

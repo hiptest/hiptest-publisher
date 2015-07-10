@@ -45,7 +45,7 @@ describe Hiptest::Publisher do
       ]
       publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
       publisher.run
-      expect_same_files("samples/expected_output/Hiptest publisher", output_dir)
+      expect_same_files("samples/expected_output/Hiptest publisher-rspec", output_dir)
     end
 
     it "displays exporting scenarios, actionwords and actionword signature" do
@@ -84,7 +84,7 @@ describe Hiptest::Publisher do
 
     describe "actionwords modifications" do
       before(:each) do
-        aw_signatures = YAML.load_file("samples/expected_output/Hiptest publisher/actionwords_signature.yaml")
+        aw_signatures = YAML.load_file("samples/expected_output/Hiptest publisher-rspec/actionwords_signature.yaml")
 
         # simulate "Do something" has been deleted
         aw_signatures << {
@@ -216,6 +216,32 @@ describe Hiptest::Publisher do
         rescue SystemExit
         end
       }.to output(a_string_including("Usage: ruby publisher.rb [options]")).to_stdout
+    end
+  end
+
+  describe "--language=seleniumide" do
+    def run_publisher_command(*extra_args)
+      stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
+        to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
+      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests?future=1").
+        to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
+      args = [
+        "--language", "seleniumide",
+        "--output-directory", output_dir,
+        "--token", "123456789",
+      ] + extra_args
+      publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
+      publisher.run
+    end
+
+    it "does not trigger any error for unknown templates" do
+      run_publisher_command
+    end
+
+    it "produces the files as expected" do
+      # this is not very representative of how a selenium export should look like...
+      run_publisher_command("--leafless-export", "--split-scenarios")
+      expect_same_files("samples/expected_output/Hiptest publisher-selenium", output_dir)
     end
   end
 end
