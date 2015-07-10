@@ -294,7 +294,7 @@ class LanguageGroupConfig
     indentation = @language_group_params[:indentation]
 
     if splitted_files?
-      description = "scenario \"#{node.children[:name]}\""
+      description = "#{singularize(node_name)} \"#{node.children[:name]}\""
       forced_templates = {
         "scenario" => "single_scenario",
         "test" => "single_test",

@@ -24,6 +24,10 @@ def pluralize(count, singular)
   "#{count} #{word}"
 end
 
+def singularize(name)
+  name.to_s.chomp("s")
+end
+
 def make_filter(options)
   ids = options.filter_ids.split(',').map {|id| "filter[]=id:#{id}"}
   tags = options.filter_tags.split(',').map {|tag| "filter[]=tag:#{tag}"}

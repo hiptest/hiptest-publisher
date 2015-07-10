@@ -21,6 +21,20 @@ describe Hiptest::Publisher do
   }
 
   describe "--language=ruby" do
+    def run_publisher_command(*extra_args)
+      stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
+        to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
+      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests?future=1").
+        to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
+      args = [
+        "--language", "ruby",
+        "--output-directory", output_dir,
+        "--token", "123456789",
+      ] + extra_args
+      publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
+      publisher.run
+    end
+
     it "exports correctly in the golden case" do
       stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
@@ -32,6 +46,40 @@ describe Hiptest::Publisher do
       publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
       publisher.run
       expect_same_files("samples/expected_output/Hiptest publisher", output_dir)
+    end
+
+    it "displays exporting scenarios, actionwords and actionword signature" do
+      run_publisher_command
+      expect(STDOUT).to have_printed('Exporting scenarios')
+      expect(STDOUT).to have_printed('Exporting actionwords')
+      expect(STDOUT).to have_printed('Exporting actionword signature')
+    end
+
+    describe "--split-scenarios" do
+      it "displays exporting scenario for each scenario" do
+        run_publisher_command("--split-scenarios")
+        expect(STDOUT).to have_printed('Exporting scenario "A scenario in a subfolder"')
+        expect(STDOUT).to have_printed('Exporting scenario "show help"')
+      end
+    end
+
+    describe "--leafless-export" do
+      it "displays exporting tests" do
+        run_publisher_command("--leafless-export")
+        expect(STDOUT).to have_printed('Exporting tests')
+      end
+
+      describe "--split-scenarios" do
+        it "displays exporting test for each test" do
+          run_publisher_command("--leafless-export", "--split-scenarios")
+          expect(STDOUT).to have_printed('Exporting test "A scenario in a subfolder"')
+          expect(STDOUT).to have_printed('Exporting test "show help"')
+        end
+      end
+    end
+
+    def have_printed(message)
+      have_received(:print).at_least(1).with(a_string_including(message))
     end
 
     describe "actionwords modifications" do
@@ -56,19 +104,6 @@ describe Hiptest::Publisher do
         aw["parameters"] = []
 
         File.write("#{output_dir}/actionwords_signature.yaml", YAML.dump(aw_signatures))
-      end
-
-      def run_publisher_command(command)
-        stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
-          to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-        args = [
-          command,
-          "--language", "ruby",
-          "--output-directory", output_dir,
-          "--token", "123456789",
-        ]
-        publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
-        publisher.run
       end
 
       describe "--show-actionwords-diff" do
