@@ -209,18 +209,84 @@ class NodeRenderingContext
   end
 end
 
-def template_dirs_for(language: "ruby", framework: nil, overriden_templates: nil, **)
-  dirs = []
-  if framework
-    dirs << "#{language}/#{framework}"
+
+class TemplateFinder
+  attr_reader :language, :framework, :overriden_templates, :forced_templates, :fallback_template
+
+  def initialize(
+      language: "ruby",
+      framework: nil,
+      overriden_templates: nil,
+      indentation: '  ',
+      forced_templates: nil,
+      fallback_template: nil,
+      **)
+    @language = language
+    @framework = framework
+    @overriden_templates = overriden_templates
+    @compiled_handlebars = {}
+    @forced_templates = forced_templates || {}
+    @fallback_template = fallback_template
+    @context = {indentation: indentation}
   end
-  dirs << language
-  dirs << "common"
-  dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
 
-  dirs.unshift(overriden_templates) if overriden_templates
+  def dirs
+    dirs = []
+    dirs << "#{language}/#{framework}" if framework
+    dirs << language
+    dirs << "common"
+    dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
 
-  return dirs
+    dirs.unshift(overriden_templates) if overriden_templates
+    dirs
+  end
+
+  def get_compiled_handlebars(template)
+    @compiled_handlebars[template] ||= handlebars.compile(File.read(template))
+  end
+
+  def get_template_by_name(name, extension)
+    return if name.nil?
+    dirs.map do |path|
+      template_path = File.join(path, "#{name}.#{extension}")
+      template_path if File.file?(template_path)
+    end.compact.first
+  end
+
+  def get_template_path(template_name, extension = 'hbs')
+    get_template_by_name(template_name, extension) || get_template_by_name(@fallback_template, extension)
+  end
+
+  def get_template(template_name, extension = 'hbs')
+    template_file = get_template_path(template_name, extension = 'hbs')
+    if template_file
+      get_compiled_handlebars(template).call(render_context)
+    else
+      raise ArgumentError.new("no template with name #{template_name}")
+    end
+  end
+
+  def register_partials
+    dirs.reverse.each do |path|
+      next unless File.directory?(path)
+      Dir.entries(path).select do |file_name|
+        file_path = File.join(path, file_name)
+        next unless File.file?(file_path) && file_name.start_with?('_')
+        @handlebars.register_partial(file_name[1..-5], File.read(file_path))
+      end
+    end
+  end
+
+  private
+
+  def handlebars
+    if !@handlebars
+      @handlebars = Handlebars::Handlebars.new
+      register_partials
+      Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
+    end
+    @handlebars
+  end
 end
 
 class LanguageGroupConfig
@@ -257,14 +323,6 @@ class LanguageGroupConfig
     end
   end
 
-  def language
-    @language_group_params[:language] || @user_language
-  end
-
-  def framework
-    @language_group_params[:framework] || @user_framework
-  end
-
   def each_node(project)
     if splitted_files?
       project.children[node_name].children[node_name].each do |node|
@@ -275,12 +333,19 @@ class LanguageGroupConfig
     end
   end
 
-  def template_dirs
-    template_dirs_for(
-      language: language,
-      framework: framework,
-      overriden_templates: @language_group_params[:overriden_templates]
+  def template_finder
+    @template_finder ||= TemplateFinder.new(
+      language: @language_group_params[:language] || @user_language,
+      framework: @language_group_params[:framework] || @user_framework,
+      overriden_templates: @language_group_params[:overriden_templates],
+      indentation: indentation,
+      forced_templates: @language_group_params[:forced_templates],
+      fallback_template: @language_group_params[:fallback_template],
     )
+  end
+
+  def template_dirs
+    template_finder.dirs
   end
 
   def each_node_rendering_context(project)
@@ -289,9 +354,12 @@ class LanguageGroupConfig
     end
   end
 
+  def indentation
+    @language_group_params[:indentation] || '  '
+  end
+
   def build_node_rendering_context(node)
     path = "#{@output_directory}/#{output_file(node)}"
-    indentation = @language_group_params[:indentation]
 
     if splitted_files?
       description = "#{singularize(node_name)} \"#{node.children[:name]}\""
@@ -303,10 +371,12 @@ class LanguageGroupConfig
       description = node_name.to_s
       forced_templates = {}
     end
+
     NodeRenderingContext.new(
       path: path,
       indentation: indentation,
       template_dirs: template_dirs,
+      template_finder: template_finder,
       forced_templates: forced_templates,
       description: description,
       node: node,

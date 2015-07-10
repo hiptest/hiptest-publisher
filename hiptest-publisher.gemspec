@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Hiptest R&D"]
-  s.date = "2015-07-09"
+  s.date = "2015-07-10"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   s.email = "contact@hiptest.net"
   s.executables = ["hiptest-publisher"]
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
+    "lib/config/cucumber.conf",
     "lib/hiptest-publisher.rb",
     "lib/hiptest-publisher/actionword_indexer.rb",
     "lib/hiptest-publisher/call_arguments_adder.rb",

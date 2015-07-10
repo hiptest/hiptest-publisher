@@ -3,9 +3,9 @@ package {{{ context.package }}};
 import junit.framework.TestCase;
 
 public class {{{ clear_extension context.test_file_name }}} extends TestCase {{#curly}}
-
-  public Actionwords {{{ context.call_prefix }}} = new Actionwords();
 {{#indent}}
+public Actionwords {{{ context.call_prefix }}} = new Actionwords();
+
 {{> scenario}}
 {{/indent}}
 {{/curly}}

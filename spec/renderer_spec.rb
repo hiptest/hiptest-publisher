@@ -7,75 +7,21 @@ require_relative '../lib/hiptest-publisher/renderer'
 require_relative '../lib/hiptest-publisher/nodes'
 
 describe Hiptest::Renderer do
-  context '#get_template_path' do
-    it 'checks if the file exists in the common templates' do
+  context '#normalized_name' do
+    it 'normalizes the node name to a template name' do
       node = Hiptest::Nodes::StringLiteral.new('coucou')
       rendering_context = context_for(language: 'python')
       renderer = Hiptest::Renderer.new(rendering_context)
 
-      expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/common/stringliteral.hbs')
-    end
-
-    it 'checks in the language template folder' do
-      node = Hiptest::Nodes::Assign.new('x', 1)
-      rendering_context = context_for(language: 'ruby')
-      renderer = Hiptest::Renderer.new(rendering_context)
-
-      expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/ruby/assign.hbs')
-    end
-
-    it 'checks in the framework specific folder if existing' do
-      node = Hiptest::Nodes::Scenarios.new([])
-      rendering_context = context_for(language: 'ruby', framework: 'minitest')
-      renderer = Hiptest::Renderer.new(rendering_context)
-
-      expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/ruby/minitest/scenarios.hbs')
-    end
-
-    context 'searches first in overriden templates' do
-      let(:node) { Hiptest::Nodes::Scenarios.new([])}
-
-      it 'uses the default one if there is none overriden' do
-        Dir.mktmpdir("overriden_templates") do |dir|
-          rendering_context = context_for(language: 'python', overriden_templates: "#{dir}")
-          renderer = Hiptest::Renderer.new(rendering_context)
-          expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/python/scenarios.hbs')
-        end
-      end
-
-      it 'uses the overriden template is it exists' do
-        Dir.mktmpdir("overriden_templates") do |dir|
-          rendering_context = context_for(language: 'python', overriden_templates: "#{dir}")
-          renderer = Hiptest::Renderer.new(rendering_context)
-          open("#{dir}/scenarios.hbs", 'w') { |f| f.puts ""}
-          expect(renderer.get_template_path(node, 'hbs')).to eq("#{dir}/scenarios.hbs")
-        end
-      end
-    end
-
-    context 'when option[:fallback_template] is set' do
-      it 'uses the given fallback template if no template is found' do
-        node = Hiptest::Nodes::Assign.new("name", "value")
-
-        rendering_context = context_for({language: 'cucumber', fallback_template: "empty"})
-        renderer = Hiptest::Renderer.new(rendering_context)
-        expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/cucumber/empty.hbs')
-      end
-
-      it 'still uses the template if found' do
-        node = Hiptest::Nodes::StringLiteral.new("polop")
-
-        rendering_context = context_for({language: 'cucumber', fallback_template: "empty"})
-        renderer = Hiptest::Renderer.new(rendering_context)
-        expect(renderer.get_template_path(node, 'hbs')).to eq('./lib/templates/cucumber/stringliteral.hbs')
-      end
+      expect(renderer.normalized_name(node)).to eq('stringliteral')
     end
   end
 
   describe "#render_node" do
     it "raises a ArgumentError when no templates is found" do
-      node = Hiptest::Nodes::Call.new('Is anybody here?')
-      rendering_context = context_for(language: 'baraccuda')
+      node = Object.new # no template file lib/template/ruby/object.hbs for ruby
+
+      rendering_context = context_for(language: 'ruby')
       renderer = Hiptest::Renderer.new(rendering_context)
 
       expect{

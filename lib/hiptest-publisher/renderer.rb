@@ -20,11 +20,8 @@ module Hiptest
       super(:children_first)
       @rendered = {}
       @context = context
-      @handlebars = Handlebars::Handlebars.new
+      @template_finder = context.template_finder
       @compiled_handlebars = {}
-      register_partials()
-
-      Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
     end
 
     def call_node_walker(node)
@@ -39,61 +36,26 @@ module Hiptest
       end
     end
 
-    def searched_folders()
-      @context.template_dirs
-    end
-
-    def register_partials()
-      searched_folders.reverse.each do |path|
-        next unless File.directory?(path)
-        Dir.entries(path).select do |file_name|
-          file_path = File.join(path, file_name)
-          next unless File.file?(file_path) && file_name.start_with?('_')
-          @handlebars.register_partial(file_name[1..-5], File.read(file_path))
-        end
-      end
-    end
-
     def render_node(node, render_context)
       render_context = {} if render_context.nil?
       render_context[:node] = node
       render_context[:rendered_children] = @rendered_children
       render_context[:context] = @context
 
-      template = get_template_path(node)
+      template = @template_finder.get_template_path(normalized_name(node))
       if template
-        get_compiled_handlebars(template).call(render_context)
+        @template_finder.get_compiled_handlebars(template).call(render_context)
       else
         raise ArgumentError.new("no template for node #{node.class}")
       end
     end
 
-    def get_compiled_handlebars(template)
-      @compiled_handlebars[template] ||= @handlebars.compile(File.read(template))
-    end
-
-    def get_template_by_name(name, extension)
-      searched_folders.map do |path|
-        template_path = File.join(path, "#{name}.#{extension}")
-        template_path if File.file?(template_path)
-      end.compact.first
-    end
-
-    def fallback_template(extension)
-      @fallback_template ||= begin
-        if @context[:fallback_template]
-          get_template_by_name(@context[:fallback_template], extension)
-        end
-      end
-    end
-
-    def get_template_path(node, extension = 'hbs')
+    def normalized_name(node)
       normalized_name = node.class.name.split('::').last.downcase
       unless @context[:forced_templates][normalized_name].nil?
         normalized_name = @context[:forced_templates][normalized_name]
       end
-
-      get_template_by_name(normalized_name, extension) || fallback_template(extension)
+      normalized_name
     end
   end
 end
