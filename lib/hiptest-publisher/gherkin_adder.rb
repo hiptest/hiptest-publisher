@@ -86,10 +86,11 @@ module Hiptest
       evaluated_actionword_parameters = evaluated_map(get_actionword_parameters(call))
       names = evaluated_actionword_parameters.keys
 
-      names.map { |name|
+      hash_array = names.map { |name|
         value = evaluated_call_arguments[name] || evaluated_actionword_parameters[name] || ""
         [name, value]
-      }.to_h
+      }
+      Hash[hash_array]
     end
 
     def get_actionword_parameters(call)
@@ -103,11 +104,12 @@ module Hiptest
     end
 
     def evaluated_map(named_values)
-      named_values.map do |named_value|
+      hash_array = named_values.map do |named_value|
         name = named_value.children[:name]
         value = evaluate(named_value.children[:value] || named_value.children[:default])
         [name, value]
-      end.to_h
+      end
+      Hash[hash_array]
     end
 
     def evaluate(value)
