@@ -41,7 +41,7 @@ def fetch_project_export(options)
   end
 
   puts "URL: #{url}".white if options.verbose
-  open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
+  open(url, "User-Agent" => 'Ruby/hiptest-publisher', :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
 end
 
 def show_status_message(message, status=nil)
