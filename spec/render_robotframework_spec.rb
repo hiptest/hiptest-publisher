@@ -395,7 +395,7 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
-    @context[:indentation] = "\t"
+    @context.update(indentation: "\t")
   end
 
   context 'Robot framework' do

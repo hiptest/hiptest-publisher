@@ -24,4 +24,18 @@ describe 'Hiptest publisher utils' do
       expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\r\n").once
     end
   end
+
+  describe "singularize" do
+    it "singularizes a plural form" do
+      expect(singularize("names")).to eq("name")
+      expect(singularize("actionwords")).to eq("actionword")
+      expect(singularize(:actionwords)).to eq("actionword")
+    end
+
+    it "does not modify a singular form" do
+      expect(singularize("name")).to eq("name")
+      expect(singularize("actionword")).to eq("actionword")
+      expect(singularize(:actionword)).to eq("actionword")
+    end
+  end
 end

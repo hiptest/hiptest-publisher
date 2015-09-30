@@ -1,20 +1,20 @@
 ---
 - name: Parameters and assignements
-  uid: 
+  uid: 0803eaf1-224d-4a47-bc5c-827bc8595839
   parameters:
   - name: no_default
   - name: default_integer
   - name: default_string
   - name: default_list
 - name: Control blocks
-  uid: 
+  uid: 9e2e1492-b56e-44ef-acc2-3c4e5be64f3f
   parameters:
   - name: x
 - name: start publisher
-  uid: 
+  uid: 74a6bbdb-cd52-46ec-aa5d-aa61e420992d
   parameters:
   - name: options
 - name: null param
-  uid: 
+  uid: 44519faf-6522-40c2-b61e-4784d6157892
   parameters:
   - name: ploc

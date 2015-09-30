@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
+    "lib/config/cucumber.conf",
     "lib/hiptest-publisher.rb",
     "lib/hiptest-publisher/actionword_indexer.rb",
     "lib/hiptest-publisher/call_arguments_adder.rb",

@@ -80,8 +80,10 @@ class OptionsParser
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
       Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
       Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
-      Option.new(nil, 'tests-only', false, nil, "Export only the tests", :tests_only),
-      Option.new(nil, 'actionwords-only', false, nil, "Export only the actionwords", :actionwords_only),
+      Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --test-code", :test_code_only),
+      Option.new(nil, 'test-code', false, nil, "Export only the generated test code not to be changed", :test_code),
+      Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --actionwords-stubs", :actionwords_stubs),
+      Option.new(nil, 'actionwords-stubs', false, nil, "Export only the actionwords method stubs to be implemented", :actionwords_stubs),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionword signature", :actionwords_signature),
       Option.new(nil, 'show-actionwords-diff', false, nil, "Show actionwords diff since last update (summary)", :actionwords_diff),
       Option.new(nil, 'show-actionwords-deleted', false, nil, "Output signature of deleted action words", :aw_deleted),
@@ -171,54 +173,268 @@ class OptionsParser
   end
 end
 
+
+class NodeRenderingContext
+
+  def initialize(properties)
+    # should contain  :node, :path, :template_dirs, :description, :indentation
+    @properties = OpenStruct.new(properties)
+  end
+
+  def method_missing(name, *)
+    @properties[name]
+  end
+
+  def node
+    @properties.node
+  end
+
+  def [](key)
+    @properties[key]
+  end
+
+  def update(properties)
+    properties.each_pair { |key, value| @properties[key] = value }
+  end
+
+  def []=(key, value)
+  end
+
+  def has_key?(key)
+    @properties.respond_to?(key)
+  end
+
+  def test_file_name
+    File.basename(@properties.path)
+  end
+end
+
+
+class TemplateFinder
+  attr_reader :language, :framework, :overriden_templates, :forced_templates, :fallback_template
+
+  def initialize(
+      language: "ruby",
+      framework: nil,
+      overriden_templates: nil,
+      indentation: '  ',
+      forced_templates: nil,
+      fallback_template: nil,
+      **)
+    @language = language
+    @framework = framework
+    @overriden_templates = overriden_templates
+    @compiled_handlebars = {}
+    @forced_templates = forced_templates || {}
+    @fallback_template = fallback_template
+    @context = {indentation: indentation}
+  end
+
+  def dirs
+    dirs = []
+    dirs << "#{language}/#{framework}" if framework
+    dirs << language
+    dirs << "common"
+    dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
+
+    dirs.unshift(overriden_templates) if overriden_templates
+    dirs
+  end
+
+  def get_compiled_handlebars(template)
+    @compiled_handlebars[template] ||= handlebars.compile(File.read(template))
+  end
+
+  def get_template_by_name(name, extension)
+    return if name.nil?
+    dirs.map do |path|
+      template_path = File.join(path, "#{name}.#{extension}")
+      template_path if File.file?(template_path)
+    end.compact.first
+  end
+
+  def get_template_path(template_name, extension = 'hbs')
+    get_template_by_name(template_name, extension) || get_template_by_name(@fallback_template, extension)
+  end
+
+  def get_template(template_name, extension = 'hbs')
+    template_file = get_template_path(template_name, extension = 'hbs')
+    if template_file
+      get_compiled_handlebars(template).call(render_context)
+    else
+      raise ArgumentError.new("no template with name #{template_name}")
+    end
+  end
+
+  def register_partials
+    dirs.reverse.each do |path|
+      next unless File.directory?(path)
+      Dir.entries(path).select do |file_name|
+        file_path = File.join(path, file_name)
+        next unless File.file?(file_path) && file_name.start_with?('_')
+        @handlebars.register_partial(file_name[1..-5], File.read(file_path))
+      end
+    end
+  end
+
+  private
+
+  def handlebars
+    if !@handlebars
+      @handlebars = Handlebars::Handlebars.new
+      register_partials
+      Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
+    end
+    @handlebars
+  end
+end
+
+class LanguageGroupConfig
+  def initialize(user_params, language_group_params = nil)
+    @output_directory = user_params.output_directory
+    @split_scenarios = user_params.split_scenarios
+    @leafless_export = user_params.leafless_export
+    @user_language = user_params.language
+    @user_framework = user_params.framework
+    @language_group_params = language_group_params || {}
+  end
+
+  def [](key)
+    @language_group_params[key]
+  end
+
+  def actionwords_stubs?
+    @language_group_params[:category] == "actionwords_stubs" ||
+        @language_group_params[:group_name] == "actionwords"
+  end
+
+  def test_code?
+    @language_group_params[:category] == "test_code" ||
+        @language_group_params[:group_name] == "tests"
+  end
+
+  def splitted_files?
+    if self[:scenario_filename].nil?
+      false
+    elsif self[:filename].nil?
+      true
+    else
+      @split_scenarios
+    end
+  end
+
+  def each_node(project)
+    if splitted_files?
+      project.children[node_name].children[node_name].each do |node|
+        yield node
+      end
+    else
+      yield project.children[node_name]
+    end
+  end
+
+  def template_finder
+    @template_finder ||= TemplateFinder.new(
+      language: @language_group_params[:language] || @user_language,
+      framework: @language_group_params[:framework] || @user_framework,
+      overriden_templates: @language_group_params[:overriden_templates],
+      indentation: indentation,
+      forced_templates: @language_group_params[:forced_templates],
+      fallback_template: @language_group_params[:fallback_template],
+    )
+  end
+
+  def template_dirs
+    template_finder.dirs
+  end
+
+  def each_node_rendering_context(project)
+    each_node(project) do |node|
+      yield build_node_rendering_context(node)
+    end
+  end
+
+  def indentation
+    @language_group_params[:indentation] || '  '
+  end
+
+  def build_node_rendering_context(node)
+    path = "#{@output_directory}/#{output_file(node)}"
+
+    if splitted_files?
+      description = "#{singularize(node_name)} \"#{node.children[:name]}\""
+      forced_templates = {
+        "scenario" => "single_scenario",
+        "test" => "single_test",
+      }
+    else
+      description = node_name.to_s
+      forced_templates = {}
+    end
+
+    NodeRenderingContext.new(
+      path: path,
+      indentation: indentation,
+      template_dirs: template_dirs,
+      template_finder: template_finder,
+      forced_templates: forced_templates,
+      description: description,
+      node: node,
+      fallback_template: @language_group_params[:fallback_template],
+    )
+  end
+
+  def output_file(node)
+    if splitted_files?
+      class_name_convention = @language_group_params[:class_name_convention] || :normalize
+      name = node.children[:name].send(class_name_convention)
+
+      self[:scenario_filename].gsub('%s', name)
+    else
+      self[:filename]
+    end
+  end
+
+  private
+
+  def node_name
+    if self[:node_name] == "tests" || self[:node_name] == "scenarios" || self[:group_name] == "tests"
+      @leafless_export ? :tests : :scenarios
+    else
+      :actionwords
+    end
+  end
+end
+
+
 class LanguageConfigParser
-  def initialize(options, language_config_path = nil)
-    @options = options
-    language_config_path ||= LanguageConfigParser.config_path_for(options)
+  def initialize(cli_options, language_config_path = nil)
+    @cli_options = cli_options
+    language_config_path ||= LanguageConfigParser.config_path_for(cli_options)
     @config = ParseConfig.new(language_config_path)
   end
 
-  def self.config_path_for(options)
-    config_path = ["#{options.language}/#{options.framework}", "#{options.language}"].map do |p|
-      path = "#{hiptest_publisher_path}/lib/templates/#{p}/output_config"
+  def self.config_path_for(cli_options)
+    config_path = [
+      "#{hiptest_publisher_path}/lib/config/#{cli_options.language}-#{cli_options.framework}.conf",
+      "#{hiptest_publisher_path}/lib/config/#{cli_options.language}.conf",
+      "#{hiptest_publisher_path}/lib/templates/#{cli_options.language}/#{cli_options.framework}/output_config",
+      "#{hiptest_publisher_path}/lib/templates/#{cli_options.language}/output_config",
+    ].map do |path|
       File.expand_path(path) if File.file?(path)
     end.compact.first
     if config_path.nil?
-      message = "cannot find output_config file in \"#{hiptest_publisher_path}/lib/templates\" for language #{options.language.inspect}"
-      message << " and framework #{options.framework.inspect}" if options.framework
+      message = "cannot find output_config file in \"#{hiptest_publisher_path}/lib/templates\" for language #{cli_options.language.inspect}"
+      message << " and framework #{cli_options.framework.inspect}" if cli_options.framework
       raise ArgumentError.new(message)
     end
     config_path
   end
 
-  def scenario_output_file(scenario_name)
-    if make_context('tests').has_key? :class_name_convention
-      scenario_name = scenario_name.send(make_context('tests')[:class_name_convention])
-    else
-      scenario_name = scenario_name.normalize
-    end
-
-    @config['tests']['scenario_filename'].gsub('%s', scenario_name)
-  end
-
-  def scenario_output_dir(scenario_name)
-    "#{@options.output_directory}/#{scenario_output_file(scenario_name)}"
-  end
-
-  def tests_output_dir
-    "#{@options.output_directory}/#{@config['tests']['filename']}"
-  end
-
-  def aw_output_dir
-    "#{@options.output_directory}/#{@config['actionwords']['filename']}"
-  end
-
-  def tests_render_context
-    make_context('tests')
-  end
-
-  def actionword_render_context
-    make_context('actionwords')
+  def language_group_configs
+    @config.groups.map { |group_name|
+      make_language_group_config(group_name)
+    }
   end
 
   def name_action_word(name)
@@ -226,24 +442,17 @@ class LanguageConfigParser
   end
 
   private
-  def make_context group
-    context = {
-      :forced_templates => {}
-    }
 
-    if @options.split_scenarios
-      context[:forced_templates]['scenario'] = 'single_scenario'
-      context[:forced_templates]['test'] = 'single_test'
+  def make_language_group_config group_name
+    language_group_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
+    language_group_params[:group_name] = group_name
+    language_group_params[:package] = @cli_options.package if @cli_options.package
+    language_group_params[:framework] = @cli_options.framework if @cli_options.framework
+
+    unless @cli_options.overriden_templates.nil? || @cli_options.overriden_templates.empty?
+      language_group_params[:overriden_templates] = @cli_options.overriden_templates
     end
 
-    context[:package] = @options.package unless @options.package.nil?
-    context[:framework] = @options.framework unless @options.framework.nil?
-
-    unless @options.overriden_templates.nil? || @options.overriden_templates.empty?
-      context[:overriden_templates] = @options.overriden_templates
-    end
-
-    @config[group].each {|param, value| context[param.to_sym] = value }
-    context
+    LanguageGroupConfig.new(@cli_options, language_group_params)
   end
 end

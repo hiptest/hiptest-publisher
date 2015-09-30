@@ -451,7 +451,7 @@ describe 'Render as Python' do
     ].join("\n")
 
 
-    @context[:indentation] = '    '
+    @context.update(indentation: '    ')
   end
 
   context 'UnitTest' do

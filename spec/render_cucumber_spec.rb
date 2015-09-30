@@ -90,16 +90,17 @@ describe 'Cucumber rendering' do
   }
 
   let(:options) {
-    {
+    context_for(
+      language: "cucumber",
       fallback_template: 'empty',
       forced_templates: {
         'scenario' => 'single_scenario',
         'test' => 'single_test',
-      }
-    }
+      },
+    )
   }
 
-  subject(:rendered) { node_to_render.render('cucumber', options) }
+  subject(:rendered) { node_to_render.render(options) }
 
   context 'Test' do
     let(:node_to_render) { create_white_test }
@@ -216,10 +217,11 @@ describe 'Cucumber rendering' do
   context 'Scenarios with split_scenarios = false' do
     let(:node_to_render) { project.children[:scenarios] }
     let(:options) {
-      {
+      context_for(
+        language: "cucumber",
         fallback_template: 'empty',
         forced_templates: {},
-      }
+      )
     }
 
     it 'generates a features.feature file asking to use --split-scenarios' do

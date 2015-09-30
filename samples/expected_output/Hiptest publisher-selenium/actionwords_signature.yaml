@@ -1,0 +1,5 @@
+---
+- name: start publisher
+  uid: 6246a93d-7274-4246-ad68-294db6e9ba17
+  parameters:
+  - name: options

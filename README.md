@@ -56,18 +56,29 @@ hiptest-publisher --help
 You could obtain for example:
 
 ```shell
+Exports tests from Hiptest for automation.
+
 Specific options:
     -t, --token=TOKEN                Secret token (available in your project settings)
     -l, --language=LANG              Target language (default: ruby)
     -f, --framework=FRAMEWORK        Test framework to use
     -o, --output-directory=PATH      Output directory (default: .)
-    -c, --config-file=PATH           Configuration file (default: config)
+    -c, --config-file=PATH           Configuration file
         --overriden-templates=PATH   Folder for overriden templates
         --test-run-id=ID             Export data from a test run
         --scenario-ids=IDS           Filter scenarios by ids
         --scenario-tags=TAGS         Filter scenarios by tags
-        --tests-only                 Export only the tests (default: false)
-        --actionwords-only           Export only the actionwords (default: false)
+        --tests-only                 (deprecated) alias for --test-code (default: false)
+        --test-code                  Export only the generated test code not to be changed (default: false)
+        --actionwords-only           (deprecated) alias for --actionwords-stubs (default: false)
+        --actionwords-stubs          Export only the actionwords method stubs to be implemented (default: false)
+        --actionwords-signature      Export actionword signature (default: false)
+        --show-actionwords-diff      Show actionwords diff since last update (summary) (default: false)
+        --show-actionwords-deleted   Output signature of deleted action words (default: false)
+        --show-actionwords-created   Output code for new action words (default: false)
+        --show-actionwords-renamed   Output signatures of renamed action words (default: false)
+        --show-actionwords-signature-changed
+                                     Output signatures of action words for which signature changed (default: false)
         --split-scenarios            Export each scenario in a single file (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)

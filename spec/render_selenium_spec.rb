@@ -45,14 +45,15 @@ describe 'Selenium IDE rendering' do
 
   before(:each) do
     Hiptest::DefaultArgumentAdder.add(project)
-    @context = {framework: '', forced_templates: {}}
+
+    @context = context_for(language: 'seleniumide')
   end
 
   context 'Test' do
     it 'generates an html file' do
-      @context[:forced_templates] = {'test' => 'single_test'}
+      @context.update(forced_templates: {'test' => 'single_test'})
 
-      expect(login_test.render('seleniumide', @context)).to eq([
+      expect(login_test.render(@context)).to eq([
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
         '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">',
@@ -104,7 +105,7 @@ describe 'Selenium IDE rendering' do
 
   context 'Tests' do
     it 'generates a summary' do
-      expect(project.children[:tests].render('seleniumide', @context)).to eq([
+      expect(project.children[:tests].render(@context)).to eq([
         '<html>',
         '  <head>',
         '    <title>My test project</title>',

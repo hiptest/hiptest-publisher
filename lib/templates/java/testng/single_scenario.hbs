@@ -3,9 +3,9 @@ package {{{ context.package }}};
 import org.testng.annotations.*;
 
 public class {{{ clear_extension context.test_file_name }}} {{#curly}}
-
-  public Actionwords {{{ context.call_prefix }}} = new Actionwords();
 {{#indent}}
+public Actionwords {{{ context.call_prefix }}} = new Actionwords();
+
 {{> scenario}}
 {{/indent}}
 {{/curly}}
