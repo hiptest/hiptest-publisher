@@ -102,9 +102,4 @@ def context_for(properties)
   language_group_config = language_config.language_group_configs.find {|g| g.test_code? }
   dummy_node = OpenStruct.new(children: {name: 'dummy'})
   language_group_config.build_node_rendering_context(dummy_node)
-
-  # properties[:forced_templates] ||= {}
-  # properties[:template_finder] = TemplateFinder.new(**properties)
-  # properties[:template_dirs] = properties[:template_finder].dirs
-  # NodeRenderingContext.new(properties)
 end

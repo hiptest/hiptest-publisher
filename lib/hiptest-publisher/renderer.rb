@@ -21,7 +21,6 @@ module Hiptest
       @rendered = {}
       @context = context
       @template_finder = context.template_finder
-      @compiled_handlebars = {}
     end
 
     def call_node_walker(node)
