@@ -394,8 +394,6 @@ describe 'Render as Robot framework' do
       "\tcheck_url\t/welcome",
       ""
     ].join("\n")
-
-    @context.update(indentation: "\t")
   end
 
   context 'Robot framework' do

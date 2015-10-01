@@ -193,18 +193,11 @@ class NodeRenderingContext
     @properties[key]
   end
 
-  def update(properties)
-    properties.each_pair { |key, value| @properties[key] = value }
-  end
-
-  def []=(key, value)
-  end
-
   def has_key?(key)
     @properties.respond_to?(key)
   end
 
-  def test_file_name
+  def filename
     File.basename(@properties.path)
   end
 end
@@ -333,13 +326,27 @@ class LanguageGroupConfig
     end
   end
 
+  def forced_templates
+    forced = {}
+    if splitted_files?
+      forced.merge!(
+        "scenario" => "single_scenario",
+        "test" => "single_test",
+      )
+    end
+    if @language_group_params[:forced_templates]
+      forced.merge!(@language_group_params[:forced_templates])
+    end
+    forced
+  end
+
   def template_finder
     @template_finder ||= TemplateFinder.new(
       language: @language_group_params[:language] || @user_language,
       framework: @language_group_params[:framework] || @user_framework,
       overriden_templates: @language_group_params[:overriden_templates],
       indentation: indentation,
-      forced_templates: @language_group_params[:forced_templates],
+      forced_templates: forced_templates,
       fallback_template: @language_group_params[:fallback_template],
     )
   end
@@ -363,13 +370,8 @@ class LanguageGroupConfig
 
     if splitted_files?
       description = "#{singularize(node_name)} \"#{node.children[:name]}\""
-      forced_templates = {
-        "scenario" => "single_scenario",
-        "test" => "single_test",
-      }
     else
       description = node_name.to_s
-      forced_templates = {}
     end
 
     NodeRenderingContext.new(
@@ -381,6 +383,8 @@ class LanguageGroupConfig
       description: description,
       node: node,
       fallback_template: @language_group_params[:fallback_template],
+      call_prefix: @language_group_params[:call_prefix],
+      package: @language_group_params[:package],
     )
   end
 

@@ -54,14 +54,14 @@ describe 'Render as Javascript' do
     @assign_fighters_to_foo_rendered = "foo = 'fighters';"
 
     # In Hiptest: call 'foo'
-    @call_foo_rendered = "this.foo();"
+    @call_foo_rendered = "this.actionwords.foo();"
     # In Hiptest: call 'foo bar'
-    @call_foo_bar_rendered = "this.fooBar();"
+    @call_foo_bar_rendered = "this.actionwords.fooBar();"
 
     # In Hiptest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = "this.foo('fighters');"
+    @call_foo_with_fighters_rendered = "this.actionwords.foo('fighters');"
     # In Hiptest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = "this.fooBar('fighters');"
+    @call_foo_bar_with_fighters_rendered = "this.actionwords.fooBar('fighters');"
 
     # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '// TODO: Implement action: String(foo) + "fighters"'
@@ -98,7 +98,7 @@ describe 'Render as Javascript' do
     @while_loop_rendered = [
         "while (foo) {",
         "  fighters = 'foo';",
-        "  this.foo('fighters');",
+        "  this.actionwords.foo('fighters');",
         "}\n"
       ].join("\n")
 

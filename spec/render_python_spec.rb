@@ -55,14 +55,14 @@ describe 'Render as Python' do
     @assign_fighters_to_foo_rendered = "foo = 'fighters'"
 
     # In Hiptest: call 'foo'
-    @call_foo_rendered = "self.foo()"
+    @call_foo_rendered = "self.actionwords.foo()"
     # In Hiptest: call 'foo bar'
-    @call_foo_bar_rendered = "self.foo_bar()"
+    @call_foo_bar_rendered = "self.actionwords.foo_bar()"
 
     # In Hiptest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = "self.foo(x = 'fighters')"
+    @call_foo_with_fighters_rendered = "self.actionwords.foo(x = 'fighters')"
     # In Hiptest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = "self.foo_bar(x = 'fighters')"
+    @call_foo_bar_with_fighters_rendered = "self.actionwords.foo_bar(x = 'fighters')"
 
 
     # In Hiptest: step {action: "${foo}fighters"}
@@ -98,7 +98,7 @@ describe 'Render as Python' do
     @while_loop_rendered = [
         "while (foo):",
         "    fighters = 'foo'",
-        "    self.foo(x = 'fighters')"
+        "    self.actionwords.foo(x = 'fighters')"
       ].join("\n")
 
     # In Hiptest: @myTag
@@ -449,9 +449,6 @@ describe 'Render as Python' do
       "        self.actionwords.check_url(path = '/welcome')",
       ""
     ].join("\n")
-
-
-    @context.update(indentation: '    ')
   end
 
   context 'UnitTest' do

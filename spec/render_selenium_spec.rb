@@ -46,13 +46,13 @@ describe 'Selenium IDE rendering' do
   before(:each) do
     Hiptest::DefaultArgumentAdder.add(project)
 
-    @context = context_for(language: 'seleniumide')
+    @context = context_for(language: 'seleniumide', split_scenarios: split_scenarios)
   end
 
   context 'Test' do
-    it 'generates an html file' do
-      @context.update(forced_templates: {'test' => 'single_test'})
+    let(:split_scenarios) { true }
 
+    it 'generates an html file' do
       expect(login_test.render(@context)).to eq([
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
@@ -104,6 +104,8 @@ describe 'Selenium IDE rendering' do
   end
 
   context 'Tests' do
+    let(:split_scenarios) { false }
+
     it 'generates a summary' do
       expect(project.children[:tests].render(@context)).to eq([
         '<html>',

@@ -91,12 +91,9 @@ describe 'Cucumber rendering' do
 
   let(:options) {
     context_for(
+      group_name: "features",
       language: "cucumber",
       fallback_template: 'empty',
-      forced_templates: {
-        'scenario' => 'single_scenario',
-        'test' => 'single_test',
-      },
     )
   }
 
@@ -218,9 +215,9 @@ describe 'Cucumber rendering' do
     let(:node_to_render) { project.children[:scenarios] }
     let(:options) {
       context_for(
+        group_name: "features",
         language: "cucumber",
         fallback_template: 'empty',
-        forced_templates: {},
       )
     }
 

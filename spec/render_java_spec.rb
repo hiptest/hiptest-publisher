@@ -59,14 +59,14 @@ describe 'Render as Java' do
     @assign_fighters_to_foo_rendered = "foo = \"fighters\";"
 
     # In Hiptest: call 'foo'
-    @call_foo_rendered = "foo();"
+    @call_foo_rendered = "actionwords.foo();"
     # In Hiptest: call 'foo bar'
-    @call_foo_bar_rendered = "fooBar();"
+    @call_foo_bar_rendered = "actionwords.fooBar();"
 
     # In Hiptest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = 'foo("fighters");'
+    @call_foo_with_fighters_rendered = 'actionwords.foo("fighters");'
     # In Hiptest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = 'fooBar("fighters");'
+    @call_foo_bar_with_fighters_rendered = 'actionwords.fooBar("fighters");'
 
     # In Hiptest: step {action: "${foo}fighters"}
     # TODO: it is a little big strange to use a string format
@@ -76,7 +76,6 @@ describe 'Render as Java' do
     # if (true)
     #   foo := 'fighters'
     #end
-    #TODO: have indentation of 4 characters ?
     @if_then_rendered = [
       "if (true) {",
       "    foo = \"fighters\";",
@@ -105,7 +104,7 @@ describe 'Render as Java' do
     @while_loop_rendered = [
       "while (foo) {",
       '    fighters = "foo";',
-      '    foo("fighters");',
+      '    actionwords.foo("fighters");',
       "}"
     ].join("\n")
 
@@ -249,10 +248,6 @@ describe 'Render as Java' do
       "    }",
       "}"
     ].join("\n")
-
-    @context.update(filename: 'ProjectTest.java')
-    @context.update(test_file_name: 'MyScenarioTest.java')
-    @context.update(package: 'com.example')
   end
 
   context 'JUnit' do
@@ -508,6 +503,8 @@ describe 'Render as Java' do
     it_behaves_like "a renderer" do
       let(:language) { 'java' }
       let(:framework) { 'JUnit' }
+      let(:test_name) { 'my scenario' }
+      let(:package) { 'com.example' }
     end
   end
 
@@ -774,6 +771,21 @@ describe 'Render as Java' do
     it_behaves_like "a renderer" do
       let(:language) { 'java' }
       let(:framework) { 'testng' }
+      let(:test_name) { 'my scenario' }
+      let(:package) { 'com.example' }
     end
+  end
+end
+
+describe 'default package' do
+
+  it "uses com.example as default package name for Java/JUnit" do
+    rendering_context = context_for(language: 'java', framework: 'JUnit')
+    expect(rendering_context.package).to eq('com.example')
+  end
+
+  it "uses com.example as default package name for Java/JUnit" do
+    rendering_context = context_for(language: 'java', framework: 'TestNG')
+    expect(rendering_context.package).to eq('com.example')
   end
 end
