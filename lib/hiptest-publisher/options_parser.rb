@@ -436,7 +436,9 @@ class LanguageConfigParser
   end
 
   def language_group_configs
-    @config.groups.map { |group_name|
+    @config.groups.reject {|group_name|
+      group_name.start_with?('_')
+    }.map { |group_name|
       make_language_group_config(group_name)
     }
   end
@@ -447,8 +449,17 @@ class LanguageConfigParser
 
   private
 
+  def group_config(group_name)
+    if @config[group_name]
+      @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
+    else
+      {}
+    end
+  end
+
   def make_language_group_config group_name
-    language_group_params = @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
+    language_group_params = group_config('_common')
+    language_group_params.merge!(group_config(group_name))
     language_group_params[:group_name] = group_name
     language_group_params[:package] = @cli_options.package if @cli_options.package
     language_group_params[:framework] = @cli_options.framework if @cli_options.framework
