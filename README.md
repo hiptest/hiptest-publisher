@@ -33,6 +33,7 @@ hiptest-publisher --token=<YOUR TOKEN>
 This will create a Ruby tests suite. For the moment, we support the following languages and frameworks:
 
  - Ruby (rspec / minitest)
+ - Cucumber Ruby
  - Python (unittest)
  - Java (JUnit / TestNg)
  - Robot Framework
@@ -45,7 +46,7 @@ You can specify the output language and framework in the command line, for examp
 hiptest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 ```
 
-When publishing, you'll notice that a file called ``actionwords_signature.yaml``. Store this file in your code repository, it will be used to [handle updates of the action word](docs/upgrading_actionwords.md).
+When publishing, you'll notice a file called ``actionwords_signature.yaml``. Store this file in your code repository, it will be used to [handle updates of the action word](docs/upgrading_actionwords.md).
 
 For more information on the available options, use the following command:
 
@@ -68,11 +69,10 @@ Specific options:
         --test-run-id=ID             Export data from a test run
         --scenario-ids=IDS           Filter scenarios by ids
         --scenario-tags=TAGS         Filter scenarios by tags
-        --tests-only                 (deprecated) alias for --test-code (default: false)
-        --test-code                  Export only the generated test code not to be changed (default: false)
-        --actionwords-only           (deprecated) alias for --actionwords-stubs (default: false)
-        --actionwords-stubs          Export only the actionwords method stubs to be implemented (default: false)
-        --actionwords-signature      Export actionword signature (default: false)
+        --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
+        --tests-only                 (deprecated) alias for --only=tests (default: false)
+        --actionwords-only           (deprecated) alias for --only=actionwords (default: false)
+        --actionwords-signature      Export actionwords signature (default: false)
         --show-actionwords-diff      Show actionwords diff since last update (summary) (default: false)
         --show-actionwords-deleted   Output signature of deleted action words (default: false)
         --show-actionwords-created   Output code for new action words (default: false)

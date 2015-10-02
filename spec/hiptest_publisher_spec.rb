@@ -78,8 +78,86 @@ describe Hiptest::Publisher do
       end
     end
 
+    describe "--only=list" do
+      it "displays available categories (tests & actionwords)" do
+
+        expect {
+          run_publisher_command("--only=list")
+        }.to output([
+          'For language ruby, available file groups are',
+          '  - tests',
+          '  - actionwords',
+          '',
+          'Usage examples:',
+          '',
+          'To export only tests files:',
+          '    hiptest-publisher --language=ruby --only=tests',
+          '',
+          'To export both tests and actionwords files:',
+          '    hiptest-publisher --language=ruby --only=tests,actionwords',
+          '',
+        ].join("\n")).to_stdout
+      end
+    end
+
+    describe "--only=actionwords" do
+      it "limits export to actionwords files" do
+        run_publisher_command("--only=actionwords")
+        expect(STDOUT).to have_printed("Exporting actionwords")
+        expect(STDOUT).to have_not_printed("Exporting scenarios")
+      end
+
+      it "also exports actionword signature file" do
+        run_publisher_command("--only=actionwords")
+        expect(STDOUT).to have_printed("Exporting actionword signature")
+      end
+    end
+
+    describe "--actionwords-only" do
+      it "limits export to actionwords files (but deprecated in favor of --only=actionwords)" do
+        run_publisher_command("--actionwords-only")
+        expect(STDOUT).to have_printed("Exporting actionwords")
+        expect(STDOUT).to have_not_printed("Exporting scenarios")
+      end
+
+      it "also exports actionword signature file" do
+        run_publisher_command("--actionwords-only")
+        expect(STDOUT).to have_printed("Exporting actionword signature")
+      end
+    end
+
+    describe "--only=tests" do
+      it "limits export to tests files" do
+        run_publisher_command("--only=tests")
+        expect(STDOUT).to have_not_printed("Exporting actionwords")
+        expect(STDOUT).to have_printed("Exporting scenarios")
+      end
+
+      it "does not export actionword signature file" do
+        run_publisher_command("--only=tests")
+        expect(STDOUT).to have_not_printed("Exporting actionword signature")
+      end
+    end
+
+    describe "--tests-only" do
+      it "limits export to tests files (but deprecated in favor of --only=tests)" do
+        run_publisher_command("--tests-only")
+        expect(STDOUT).to have_not_printed("Exporting actionwords")
+        expect(STDOUT).to have_printed("Exporting scenarios")
+      end
+
+      it "does not export actionword signature file" do
+        run_publisher_command("--tests-only")
+        expect(STDOUT).to have_not_printed("Exporting actionword signature")
+      end
+    end
+
     def have_printed(message)
       have_received(:print).at_least(1).with(a_string_including(message))
+    end
+
+    def have_not_printed(message)
+      have_received(:print).with(a_string_including(message)).at_most(0)
     end
 
     describe "actionwords modifications" do

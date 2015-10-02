@@ -21,7 +21,24 @@ module Hiptest
       @cli_options = OptionsParser.parse(args, reporter)
     end
 
+    def normalize_cli_options!
+      modified_cli_options = @cli_options.clone
+      if @cli_options.actionwords_only
+        modified_cli_options.only = 'actionwords'
+      elsif @cli_options.tests_only
+        modified_cli_options.only = 'tests'
+      end
+      @cli_options = modified_cli_options
+    end
+
     def run
+      normalize_cli_options!
+
+      if @cli_options.only == 'list'
+        print_categories
+        return
+      end
+
       unless @cli_options.push.nil? || @cli_options.push.empty?
         post_results
         return
@@ -92,8 +109,6 @@ module Hiptest
 
     def export_files
       @language_config.language_group_configs.each do |language_group_config|
-        next if @cli_options.actionwords_stubs && !language_group_config.actionwords_stubs?
-        next if @cli_options.test_code && !language_group_config.test_code?
         language_group_config.each_node_rendering_context(@project) do |node_rendering_context|
           write_node_to_file(
             node_rendering_context.path,
@@ -144,7 +159,7 @@ module Hiptest
         return if diff[:created].nil?
 
         @language_config.language_group_configs.select { |language_group_config|
-          language_group_config.actionwords_stubs?
+          language_group_config[:group_name] == "actionwords"
         }.each do |language_group_config|
           diff[:created].each do |created|
             node_rendering_context = language_group_config.build_node_rendering_context(created[:node])
@@ -168,7 +183,7 @@ module Hiptest
         return if diff[:signature_changed].nil?
 
         @language_config.language_group_configs.select { |language_group_config|
-          language_group_config.actionwords_stubs?
+          language_group_config[:group_name] == "actionwords"
         }.each do |language_group_config|
           diff[:signature_changed].each do |signature_changed|
             node_rendering_context = language_group_config.build_node_rendering_context(signature_changed[:node])
@@ -219,7 +234,26 @@ module Hiptest
       Hiptest::GherkinAdder.add(@project)
 
       export_files
-      export_actionword_signature unless @cli_options.test_code
+      export_actionword_signature if @language_config.include_group?("actionwords")
+    end
+
+    def print_categories
+      language_config = LanguageConfigParser.new(@cli_options)
+      group_names = language_config.group_names
+      puts "For language #{@cli_options.language}, available file groups are"
+      group_names.each do |group_name|
+        puts "  - #{group_name}"
+      end
+      puts [
+        "",
+        "Usage examples:",
+        "",
+        "To export only #{group_names.first} files:",
+        "    hiptest-publisher --language=#{@cli_options.language} --only=#{group_names.first}",
+        "",
+        "To export both #{group_names.first} and #{group_names[1]} files:",
+        "    hiptest-publisher --language=#{@cli_options.language} --only=#{group_names.take(2).join(",")}"
+      ].join("\n")
     end
 
     def post_results

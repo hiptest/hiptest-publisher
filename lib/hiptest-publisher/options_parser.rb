@@ -80,11 +80,10 @@ class OptionsParser
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
       Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
       Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
-      Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --test-code", :test_code_only),
-      Option.new(nil, 'test-code', false, nil, "Export only the generated test code not to be changed", :test_code),
-      Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --actionwords-stubs", :actionwords_stubs),
-      Option.new(nil, 'actionwords-stubs', false, nil, "Export only the actionwords method stubs to be implemented", :actionwords_stubs),
-      Option.new(nil, 'actionwords-signature', false, nil, "Export actionword signature", :actionwords_signature),
+      Option.new(nil, 'only=CATEGORIES', nil, String, "Restrict export to given file categories (--only=list to list them)", :only),
+      Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --only=tests", :tests_only),
+      Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --only=actionwords", :actionwords_only),
+      Option.new(nil, 'actionwords-signature', false, nil, "Export actionwords signature", :actionwords_signature),
       Option.new(nil, 'show-actionwords-diff', false, nil, "Show actionwords diff since last update (summary)", :actionwords_diff),
       Option.new(nil, 'show-actionwords-deleted', false, nil, "Output signature of deleted action words", :aw_deleted),
       Option.new(nil, 'show-actionwords-created', false, nil, "Output code for new action words", :aw_created),
@@ -296,16 +295,6 @@ class LanguageGroupConfig
     @language_group_params[key]
   end
 
-  def actionwords_stubs?
-    @language_group_params[:category] == "actionwords_stubs" ||
-        @language_group_params[:group_name] == "actionwords"
-  end
-
-  def test_code?
-    @language_group_params[:category] == "test_code" ||
-        @language_group_params[:group_name] == "tests"
-  end
-
   def splitted_files?
     if self[:scenario_filename].nil?
       false
@@ -435,12 +424,27 @@ class LanguageConfigParser
     config_path
   end
 
-  def language_group_configs
+  def group_names
     @config.groups.reject {|group_name|
       group_name.start_with?('_')
-    }.map { |group_name|
-      make_language_group_config(group_name)
     }
+  end
+
+  def filtered_group_names
+    if @cli_options.only
+      groups_to_keep = @cli_options.only.split(",")
+      group_names.select {|group_name| groups_to_keep.include?(group_name)}
+    else
+      group_names
+    end
+  end
+
+  def include_group?(group_name)
+    filtered_group_names.include?(group_name)
+  end
+
+  def language_group_configs
+    filtered_group_names.map { |group_name| make_language_group_config(group_name) }
   end
 
   def name_action_word(name)

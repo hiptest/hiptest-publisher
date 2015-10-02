@@ -36,6 +36,21 @@ describe LanguageConfigParser do
 
   let(:options) { OpenStruct.new(language: "ruby") }
 
+  describe "#filtered_group_names" do
+    it "rejects groups not specified in --only clip option" do
+      options = OpenStruct.new(language: "ruby", only: "actionwords")
+      expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords"])
+
+      options = OpenStruct.new(language: "ruby", only: "actionwords,tests")
+      expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords", "tests"])
+    end
+
+    it "keeps all groups if --only option is not specified" do
+      options = OpenStruct.new(language: "ruby")
+      expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords", "tests"])
+    end
+  end
+
   describe ".config_path_for" do
     context "given a language" do
       it "searches an output_config file in lib/templates/<language>" do
