@@ -2,6 +2,7 @@ require 'colorize'
 require 'yaml'
 
 require 'hiptest-publisher/formatters/reporter'
+require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/options_parser'
@@ -16,9 +17,11 @@ module Hiptest
   class Publisher
     attr_reader :reporter
 
-    def initialize(args, listeners: nil)
+    def initialize(args, listeners: nil, exit_on_bad_arguments: true)
       @reporter = Reporter.new(listeners)
       @cli_options = OptionsParser.parse(args, reporter)
+      # pass false to prevent hiptest-publisher from exiting, useful when used embedded
+      @exit_on_bad_arguments = exit_on_bad_arguments
     end
 
     def normalize_cli_options!
@@ -33,6 +36,10 @@ module Hiptest
 
     def run
       normalize_cli_options!
+      if CliOptionsChecker.new(@cli_options, reporter).bad_arguments?
+        exit 1 if @exit_on_bad_arguments
+        return
+      end
 
       if @cli_options.only == 'list'
         print_categories

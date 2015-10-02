@@ -8,7 +8,7 @@ CodeClimate::TestReporter.start
 
 class ErrorListener
   def dump_error(error, message)
-    fail
+    fail("failing the test because the app has dumped an unexpected error: #{message}")
   end
 
   def method_missing(*args)

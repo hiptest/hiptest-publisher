@@ -297,6 +297,58 @@ describe Hiptest::Publisher do
     end
   end
 
+  describe "with invalid arguments" do
+    let(:listeners) { [ErrorListener.new] }
+
+    def run_publisher_command(*args)
+      publisher = Hiptest::Publisher.new(args, listeners: listeners)
+      publisher.run
+    end
+
+    def run_publisher_expecting_exit(*args)
+      begin
+        run_publisher_command(*args)
+        fail("running publisher with args=#{args.inspect} should have exited")
+      rescue SystemExit
+        # ok, it was expected
+      end
+    end
+
+    context "with missing token" do
+      it "outputs an error message inviting to add --token argument" do
+        expect {
+          run_publisher_expecting_exit("--language", "ruby")
+        }.to output(a_string_including("Missing argument --token: you must specify project secret token with --token=<project-token>")).to_stdout
+      end
+    end
+
+    context "with bad token format" do
+      it "outputs an error message that it must be numeric" do
+        expect {
+          run_publisher_expecting_exit("--token", "abc")
+        }.to output(a_string_including("Invalid format --token=\"abc\": the project secret token must be numeric")).to_stdout
+      end
+    end
+
+    context "with non-numeric test-run-id" do
+      it "outputs an error message that it must be numeric" do
+        expect {
+          run_publisher_expecting_exit("--token", "123", "--test-run-id", "125e")
+        }.to output(a_string_including("Invalid format --test-run-id=\"125e\": the test run id must be numeric")).to_stdout
+      end
+    end
+
+    context "with unreadable config file" do
+      let(:listeners) { [] }
+
+      it "outputs an error message that the file could not be read" do
+        expect {
+          run_publisher_expecting_exit("--token", "123", "--config", "polop")
+        }.to output(a_string_including("Error with --config: the file \"polop\" does not exist or is not readable")).to_stdout
+      end
+    end
+  end
+
   describe "--language=seleniumide" do
     def run_publisher_command(*extra_args)
       stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
