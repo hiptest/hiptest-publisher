@@ -411,13 +411,11 @@ class LanguageConfigParser
     config_path = [
       "#{hiptest_publisher_path}/lib/config/#{cli_options.language}-#{cli_options.framework}.conf",
       "#{hiptest_publisher_path}/lib/config/#{cli_options.language}.conf",
-      "#{hiptest_publisher_path}/lib/templates/#{cli_options.language}/#{cli_options.framework}/output_config",
-      "#{hiptest_publisher_path}/lib/templates/#{cli_options.language}/output_config",
     ].map do |path|
       File.expand_path(path) if File.file?(path)
     end.compact.first
     if config_path.nil?
-      message = "cannot find output_config file in \"#{hiptest_publisher_path}/lib/templates\" for language #{cli_options.language.inspect}"
+      message = "cannot find configuration file in \"#{hiptest_publisher_path}/config\" for language #{cli_options.language.inspect}"
       message << " and framework #{cli_options.framework.inspect}" if cli_options.framework
       raise ArgumentError.new(message)
     end

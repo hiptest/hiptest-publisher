@@ -53,20 +53,20 @@ describe LanguageConfigParser do
 
   describe ".config_path_for" do
     context "given a language" do
-      it "searches an output_config file in lib/templates/<language>" do
-        expect(LanguageConfigParser.config_path_for(options)).to end_with("lib/templates/ruby/output_config")
+      it "searches an language configuration file in config/<language>.conf" do
+        expect(LanguageConfigParser.config_path_for(options)).to end_with("config/ruby.conf")
       end
     end
 
     context "given a language and a framework" do
-      it "searches an output_config file in lib/templates/<language>/<framework>" do
+      it "searches an language configuration file in lib/templates/config<language>/<framework>" do
         options.framework = "minitest"
-        expect(LanguageConfigParser.config_path_for(options)).to end_with("lib/templates/ruby/minitest/output_config")
+        expect(LanguageConfigParser.config_path_for(options)).to end_with("config/ruby-minitest.conf")
       end
 
       it "fallbacks to lib/templates/<language> if framework does not no match anything" do
         options.framework = "youplala"
-        expect(LanguageConfigParser.config_path_for(options)).to end_with("lib/templates/ruby/output_config")
+        expect(LanguageConfigParser.config_path_for(options)).to end_with("config/ruby.conf")
       end
     end
 
@@ -74,7 +74,7 @@ describe LanguageConfigParser do
       options.language = "carakoko"
       options.framework = "lalakoko"
       expect{LanguageConfigParser.config_path_for(options)}.
-        to raise_error('cannot find output_config file in "./lib/templates" for language "carakoko" and framework "lalakoko"')
+        to raise_error('cannot find configuration file in "./config" for language "carakoko" and framework "lalakoko"')
     end
   end
 
@@ -86,7 +86,7 @@ describe LanguageConfigParser do
     it "raises an error if language config file cannot be found" do
       options.language = "carakoko"
       expect{LanguageConfigParser.new(options)}.
-        to raise_error('cannot find output_config file in "./lib/templates" for language "carakoko"')
+        to raise_error('cannot find configuration file in "./config" for language "carakoko"')
     end
   end
 end
