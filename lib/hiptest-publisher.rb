@@ -93,6 +93,7 @@ module Hiptest
       status_message = "#{message}: #{path}"
       begin
         show_status_message status_message
+        mkdirs_for(path)
         File.open(path, 'w') do |file|
           file.write(yield)
         end
@@ -101,6 +102,12 @@ module Hiptest
       rescue Exception => err
         show_status_message status_message, :failure
         reporter.dump_error(err)
+      end
+    end
+
+    def mkdirs_for(path)
+      unless Dir.exists?(File.dirname(path))
+        FileUtils.mkpath(File.dirname(path))
       end
     end
 

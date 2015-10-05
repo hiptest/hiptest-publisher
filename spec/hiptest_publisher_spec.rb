@@ -347,6 +347,61 @@ describe Hiptest::Publisher do
         }.to output(a_string_including("Error with --config: the file \"polop\" does not exist or is not readable")).to_stdout
       end
     end
+
+    context "--output-directory" do
+      before(:each) {
+        stub_request(:get, "https://hiptest.net/publication/123/project?future=1").
+          to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
+      }
+
+      context "with unexisting directory with writable parent" do
+        it "creates the output directory automatically" do
+          unexisting_dir = output_dir + "/some_dir"
+          expect {
+            run_publisher_command("--token", "123", "--output-directory", unexisting_dir)
+          }.to change {
+            Dir.exists?(unexisting_dir)
+          }.from(false).to(true)
+        end
+
+        it "creates the output directory automatically, even if deep" do
+          unexisting_dir = output_dir + "/some/dir/deeply/nested"
+          expect {
+            run_publisher_command("--token", "123", "--output-directory", unexisting_dir)
+          }.to change {
+            Dir.exists?(unexisting_dir)
+          }.from(false).to(true)
+        end
+      end
+
+      context "with unexisting directory with UNwritable parent" do
+        it "output an error message and stops" do
+          unexisting_dir = "/usr/lib/some/dir"
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--output-directory", unexisting_dir)
+          }.to output(a_string_including("Error with --output-directory: the directory \"/usr/lib/some/dir\" can not be created because \"/usr/lib\" is not writable")).to_stdout
+        end
+      end
+
+      context "with existing but unwritable directory" do
+        it "output an error message and stops" do
+          unwritable_dir = "/usr/lib"
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--output-directory", unwritable_dir)
+          }.to output(a_string_including("Error with --output-directory: the directory \"/usr/lib\" is not writable")).to_stdout
+        end
+      end
+
+      context "with existing but is not a directory (it's a file)" do
+        it "output an error message and stops" do
+          file = output_dir + "/some_file"
+          FileUtils.touch(file)
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--output-directory", file)
+          }.to output(a_string_including("Error with --output-directory: the file \"#{file}\" is not a directory")).to_stdout
+        end
+      end
+    end
   end
 
   describe "--language=seleniumide" do

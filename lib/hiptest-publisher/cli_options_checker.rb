@@ -25,6 +25,7 @@ class CliOptionsChecker
       return
     end
 
+    # secret token
     if missing?(cli_options.token) || empty?(cli_options.token)
       puts "Missing argument --token: you must specify project secret token with --token=<project-token>"
       puts ""
@@ -41,6 +42,21 @@ class CliOptionsChecker
       return true
     end
 
+    # output directory
+    parent = first_existing_parent(cli_options.output_directory)
+    if !parent.writable?
+      if parent.realpath === Pathname.new(cli_options.output_directory).cleanpath
+        puts "Error with --output-directory: the directory \"#{@cli_options.output_directory}\" is not writable"
+      else
+        puts "Error with --output-directory: the directory \"#{@cli_options.output_directory}\" can not be created because \"#{parent.realpath}\" is not writable"
+      end
+      return true
+    elsif !parent.directory?
+      puts "Error with --output-directory: the file \"#{@cli_options.output_directory}\" is not a directory"
+      return true
+    end
+
+    # test run id
     if present?(cli_options.test_run_id) && !numeric?(cli_options.test_run_id)
       puts "Invalid format --test-run-id=\"#{@cli_options.test_run_id}\": the test run id must be numeric"
       return true
@@ -65,5 +81,13 @@ class CliOptionsChecker
 
   def present?(arg)
     arg && !arg.strip.empty?
+  end
+
+  def first_existing_parent(path)
+    pathname = Pathname.new(path)
+    while !pathname.exist?
+      pathname = pathname.parent
+    end
+    pathname.realpath
   end
 end
