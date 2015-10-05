@@ -8,7 +8,10 @@ CodeClimate::TestReporter.start
 
 class ErrorListener
   def dump_error(error, message)
-    fail("failing the test because the app has dumped an unexpected error: #{message}")
+    fail("failing the test because the app has dumped an unexpected error: #{error.message}\n" \
+      "#{error.backtrace.map {|l| "  #{l}\n"}.join}")
+    Rails.logger.error ""
+
   end
 
   def method_missing(*args)
