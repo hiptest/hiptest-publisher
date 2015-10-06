@@ -306,6 +306,7 @@ class LanguageGroupConfig
   end
 
   def each_node(project)
+    return to_enum(:each_node, project) unless block_given?
     if splitted_files?
       project.children[node_name].children[node_name].each do |node|
         yield node
@@ -345,6 +346,7 @@ class LanguageGroupConfig
   end
 
   def each_node_rendering_context(project)
+    return to_enum(:each_node_rendering_context, project) unless block_given?
     each_node(project) do |node|
       yield build_node_rendering_context(node)
     end
