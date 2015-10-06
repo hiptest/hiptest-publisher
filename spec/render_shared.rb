@@ -265,8 +265,8 @@ shared_context "shared render" do
     @tests.parent = Hiptest::Nodes::Project.new('My test project')
 
     @context = context_for(
-      # group_name to select in tests if we render from [actionwords] group or [tests] group
-      group_name: group_name,
+      # only to select the right config group: we render [actionwords], [tests] and others differently
+      only: only,
       # test_name to customize the resulting file name (used by java for the class name)
       test_name: test_name,
       # in tests, simulate user options like --language, --framework, --split_scenarios, or package= (in config file)
@@ -284,7 +284,7 @@ shared_examples "a renderer" do
   let(:package) { nil } # only used for Java
 
   context "[tests] group" do
-    let(:group_name) { 'tests' }
+    let(:only) { 'tests' }
 
     it 'NullLiteral' do
       expect(@null.render(@context)).to eq(@null_rendered)
@@ -469,7 +469,7 @@ shared_examples "a renderer" do
   end
 
   context '[actionwords] group' do
-    let(:group_name) { 'actionwords' }
+    let(:only) { "actionwords" }
 
     it 'Actionwords' do
       expect(@actionwords.render(@context)).to eq(@actionwords_rendered)
