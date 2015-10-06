@@ -11,8 +11,8 @@ describe 'Selenium IDE rendering' do
   let(:actionwords) {
     ['open', 'type', 'click', 'verifyTextPresent'].map do |name|
       make_actionword(name, parameters: [
-        make_parameter('target', default: make_literal(:string, '')),
-        make_parameter('value', default: make_literal(:string, ''))
+        make_parameter('target', default: literal('')),
+        make_parameter('value', default: literal(''))
       ])
     end
   }
@@ -20,21 +20,21 @@ describe 'Selenium IDE rendering' do
   let(:login_test) {
     make_test('Login', body: [
       make_call('open', arguments: [
-        make_argument('target', make_literal(:string, '/login'))
+        make_argument('target', literal('/login'))
       ]),
       make_call('type', arguments: [
-        make_argument('target', make_literal(:string, 'id=login')),
-        make_argument('value', make_literal(:string, 'user@example.com'))
+        make_argument('target', literal('id=login')),
+        make_argument('value', literal('user@example.com'))
       ]),
       make_call('type', arguments: [
-        make_argument('target', make_literal(:string, 'id=password')),
-        make_argument('value', make_literal(:string, 's3cret'))
+        make_argument('target', literal('id=password')),
+        make_argument('value', literal('s3cret'))
       ]),
       make_call('click', arguments: [
-        make_argument('target', make_literal(:string, 'css=.login-form input[type=submit]'))
+        make_argument('target', literal('css=.login-form input[type=submit]'))
       ]),
       make_call('verifyTextPresent', arguments: [
-        make_argument('target', make_literal(:string, 'Welcome user !'))
+        make_argument('target', literal('Welcome user !'))
       ])
     ])
   }

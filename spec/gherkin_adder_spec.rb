@@ -12,7 +12,7 @@ describe Hiptest::GherkinAdder do
   }
 
   let(:call) {
-    make_annotated_call("given", actionword_name, [
+    make_call(actionword_name, annotation: "given", arguments: [
       make_argument("name", literal("John")),
     ])
   }
@@ -38,7 +38,7 @@ describe Hiptest::GherkinAdder do
   context "actionword without parameters" do
     let(:actionword_name) { "I say hello world" }
     let(:actionword) { make_actionword(actionword_name) }
-    let(:call) { make_annotated_call("when", actionword_name) }
+    let(:call) { make_call(actionword_name, annotation: "when") }
 
     it "adds the corresponding :gherkin_text to Call" do
       Hiptest::GherkinAdder.add(project)
@@ -88,7 +88,7 @@ describe Hiptest::GherkinAdder do
     end
 
     context "with empty annotation on call" do
-      let(:call) { make_annotated_call("", actionword_name) }
+      let(:call) { make_call(actionword_name, annotation: "") }
 
       include_examples "generic gherkin annotations"
     end
@@ -113,7 +113,7 @@ describe Hiptest::GherkinAdder do
 
     context "but with quoted text, and with a call having a matching argument (which is invalid because actionword has no parameters)" do
       let(:actionword_name) { "I say \"hello\"" }
-      let(:call)  { make_annotated_call("when", actionword_name, [
+      let(:call)  { make_call(actionword_name, annotation: "when", arguments: [
           make_argument("hello", literal("Guten tag")),
         ])
       }
@@ -134,7 +134,7 @@ describe Hiptest::GherkinAdder do
     end
 
     context "called without arguments" do
-      let(:call) { make_annotated_call("and", actionword_name) }
+      let(:call) { make_call(actionword_name, annotation: "and") }
 
       it "uses empty string as default value for gherkin_text" do
         expect(gherkin_text).to eq("And Hello \"\"")
@@ -158,7 +158,7 @@ describe Hiptest::GherkinAdder do
 
       context "called with a string argument" do
         let(:call) {
-          make_annotated_call("given", actionword_name, [
+          make_call(actionword_name, annotation: "given", arguments: [
             make_argument("name", literal("John")),
           ])
         }
@@ -170,7 +170,7 @@ describe Hiptest::GherkinAdder do
 
       context "called with a variable argument" do
         let(:call) {
-          make_annotated_call("given", actionword_name, [
+          make_call(actionword_name, annotation: "given", arguments: [
             make_argument("name", variable("name")),
           ])
         }
@@ -181,7 +181,7 @@ describe Hiptest::GherkinAdder do
       end
 
       context "called without arguments" do
-        let(:call) { make_annotated_call("given", actionword_name) }
+        let(:call) { make_call(actionword_name, annotation: "given") }
 
         it "uses the default value of the actionword parameter" do
           expect(gherkin_text).to eq("Given Hello \"World\"")
@@ -198,7 +198,7 @@ describe Hiptest::GherkinAdder do
 
       context "called with an argument" do
         let(:call) {
-          make_annotated_call("given", actionword_name, [
+          make_call(actionword_name, annotation: "given", arguments: [
             make_argument("name", literal("John")),
           ])
         }
@@ -210,7 +210,7 @@ describe Hiptest::GherkinAdder do
 
       context "called with a variable argument" do
         let(:call) {
-          make_annotated_call("given", actionword_name, [
+          make_call(actionword_name, annotation: "given", arguments: [
             make_argument("name", variable("name")),
           ])
         }
@@ -221,7 +221,7 @@ describe Hiptest::GherkinAdder do
       end
 
       context "called without arguments" do
-        let(:call) { make_annotated_call("given", actionword_name) }
+        let(:call) { make_call(actionword_name, annotation: "given") }
 
         it "adds the default value at the end of the gherkin text" do
           expect(gherkin_text).to eq("Given Hello to all of you \"World\"")
@@ -247,7 +247,7 @@ describe Hiptest::GherkinAdder do
       end
 
       context "called with no arguments" do
-        let(:call) { make_annotated_call("given", actionword_name) }
+        let(:call) { make_call(actionword_name, annotation: "given") }
 
         it "adds :gherkin_text to Call using default parameters values" do
           expect(gherkin_text).to eq("Given Hello \"Riri\", \"Fifi\", \"Loulou\"")
@@ -256,7 +256,7 @@ describe Hiptest::GherkinAdder do
 
       context "called with all arguments filled" do
         let(:call) {
-          make_annotated_call("given", actionword_name, [
+          make_call(actionword_name, annotation: "given", arguments: [
             # unordered, just to see if it works
             make_argument("name2", literal("Paul")),
             make_argument("name3", literal("Jacques")),
@@ -278,7 +278,7 @@ describe Hiptest::GherkinAdder do
       end
 
       context "called with no arguments" do
-        let(:call) { make_annotated_call("given", actionword_name) }
+        let(:call) { make_call(actionword_name, annotation: "given") }
 
         it "adds :gherkin_text to Call using default parameters values at the end" do
           expect(gherkin_text).to eq("Given Hello to all of you \"Riri\" \"Fifi\" \"Loulou\"")
@@ -287,7 +287,7 @@ describe Hiptest::GherkinAdder do
 
       context "called with all arguments filled" do
         let(:call) {
-          make_annotated_call("given", actionword_name, [
+          make_call(actionword_name, annotation: "given", arguments: [
             # unordered, just to see if it works
             make_argument("name2", literal("Paul")),
             make_argument("name3", literal("Jacques")),
@@ -372,7 +372,7 @@ describe Hiptest::GherkinAdder do
 
 
   context "call to unknown actionword" do
-    let(:call) { make_annotated_call("given", "Hi \"name\"") }
+    let(:call) { make_call("Hi \"name\"", annotation: "given") }
 
     it "is not handled and behavior is undefined"
   end

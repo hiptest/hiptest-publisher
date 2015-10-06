@@ -6,8 +6,8 @@ describe Hiptest::DefaultArgumentAdder do
 
   let(:aw) {
     make_actionword('first actionword', parameters: [
-      make_parameter('x', default: make_literal(:string, 'Hi, I am a valued parameter')),
-      make_parameter('y', default: make_literal(:string, 'Hi, I am another valued parameter'))
+      make_parameter('x', default: literal('Hi, I am a valued parameter')),
+      make_parameter('y', default: literal('Hi, I am another valued parameter'))
     ])
   }
 
@@ -21,8 +21,8 @@ describe Hiptest::DefaultArgumentAdder do
 
   let(:call_with_all_parameters_set) {
     make_call('first actionword', arguments: [
-      make_argument('y', make_literal(:string, 'And another value here')),
-      make_argument('x', make_literal(:numeric, '3.14'))
+      make_argument('y', literal('And another value here')),
+      make_argument('x', literal(3.14))
     ])
   }
 

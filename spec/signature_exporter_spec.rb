@@ -10,7 +10,7 @@ describe Hiptest::SignatureExporter do
       uid: '1234-5678',
       parameters: [
         make_parameter('x'),
-        make_parameter('y', default: make_literal(:string, 'Hi, I am a valued parameter'))
+        make_parameter('y', default: literal('Hi, I am a valued parameter'))
       ]
     )
   }
@@ -103,7 +103,7 @@ describe Hiptest::SignatureExporter do
   end
 
   describe 'export_parameter' do
-    let(:param) { make_parameter('x', default: make_literal(:string, 'Hi, I am a valued parameter')) }
+    let(:param) { make_parameter('x', default: literal('Hi, I am a valued parameter')) }
 
     it 'exports the name of a parameter' do
       expect(exporter.export_parameter(param)).to eq({'name' => 'x'})

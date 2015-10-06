@@ -11,7 +11,7 @@ describe Hiptest::ActionwordIndexer do
   let(:second_aw) {
     make_actionword('Actionword with parameters', parameters: [
       make_parameter('x'),
-      make_parameter('y', default: make_literal(:string, 'Hi, I am a valued parameter'))
+      make_parameter('y', default: literal('Hi, I am a valued parameter'))
     ])
   }
 

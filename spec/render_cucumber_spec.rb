@@ -21,20 +21,20 @@ describe 'Cucumber rendering' do
 
   let(:create_white_test) {
     make_test("Create white", body: [
-      make_annotated_call("given", "the color \"color\"", [make_argument("color", template_of_literals("blue"))]),
-      make_annotated_call(  "and", "the color \"color\"", [make_argument("color", template_of_literals("red"))]),
-      make_annotated_call(  "and", "the color \"color\"", [make_argument("color", template_of_literals("green"))]),
-      make_annotated_call( "when", "you mix colors"),
-      make_annotated_call( "then", "you obtain \"color\"", [make_argument("color", template_of_literals("white"))]),
+      make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+      make_call("the color \"color\"",  annotation:   "and", arguments: [make_argument("color", template_of_literals("red"))]),
+      make_call("the color \"color\"",  annotation:   "and", arguments: [make_argument("color", template_of_literals("green"))]),
+      make_call("you mix colors",       annotation:  "when"),
+      make_call("you obtain \"color\"", annotation:  "then", arguments: [make_argument("color", template_of_literals("white"))]),
     ])
   }
 
   let(:create_green_scenario) {
     make_scenario("Create green", body: [
-      make_annotated_call("given", "the color \"color\"", [make_argument("color", template_of_literals("blue"))]),
-      make_annotated_call(  "and", "the color \"color\"", [make_argument("color", template_of_literals("yellow"))]),
-      make_annotated_call( "when", "you mix colors"),
-      make_annotated_call( "then", "you obtain \"color\"", [make_argument("color", template_of_literals("green"))]),
+      make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+      make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
+      make_call("you mix colors",       annotation: "when"),
+      make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("green"))]),
     ])
   }
 
@@ -55,10 +55,10 @@ describe 'Cucumber rendering' do
         make_parameter("got_color"),
       ],
       body: [
-        make_annotated_call("given", "the color \"color\"", [make_argument("color", variable("first_color"))]),
-        make_annotated_call(  "and", "the color \"color\"", [make_argument("color", variable("second_color"))]),
-        make_annotated_call( "when", "you mix colors"),
-        make_annotated_call( "then", "you obtain \"color\"", [make_argument("color", variable("got_color"))]),
+        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
+        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
+        make_call("you mix colors",       annotation: "when"),
+        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
     ]).tap do |scenario|
       scenario.children[:datatable] = Hiptest::Nodes::Datatable.new([
         Hiptest::Nodes::Dataset.new("Mix to green", [

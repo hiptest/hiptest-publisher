@@ -14,13 +14,13 @@ describe Hiptest::SignatureDiffer do
   let(:aw1v2) {
     make_actionword('My actionzord', uid: 'id1', parameters: [
       make_parameter('x'),
-      make_parameter('y', default: make_literal(:string, 'Hi, I am a valued parameters'))
+      make_parameter('y', default: literal('Hi, I am a valued parameters'))
     ])
   }
 
   let(:aw1v3) {
     make_actionword('My actionzord', uid: 'id1', parameters: [
-      make_parameter('y', default: make_literal(:string, 'Hi, I am a valued parameter')),
+      make_parameter('y', default: literal('Hi, I am a valued parameter')),
       make_parameter('z'),
     ])
   }

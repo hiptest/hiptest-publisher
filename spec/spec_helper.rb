@@ -20,29 +20,8 @@ end
 
 
 module HelperFactories
-  def make_var(name)
-    Hiptest::Nodes::Variable(name)
-  end
-
-  def make_literal(type, value)
-    if type == :nil
-      return Hiptest::Nodes::NullLiteral.new
-    end
-
-    mapping = {
-      :numeric => Hiptest::Nodes::NumericLiteral,
-      :string =>  Hiptest::Nodes::StringLiteral,
-      :boolean => Hiptest::Nodes::BooleanLiteral
-    }
-    mapping[type].new(value)
-  end
-
   def make_argument(name, value)
     Hiptest::Nodes::Argument.new(name, value)
-  end
-
-  def make_template(*chunks)
-    Hiptest::Nodes::Template.new(chunks)
   end
 
   def literal(arg)
@@ -65,12 +44,8 @@ module HelperFactories
     Hiptest::Nodes::Template.new(args.map { |arg| literal(arg) })
   end
 
-  def make_annotated_call(annotation, actionword, arguments = [])
+  def make_call(actionword, arguments: [], annotation: nil)
     Hiptest::Nodes::Call.new(actionword, arguments, annotation)
-  end
-
-  def make_call(actionword, arguments: [])
-    Hiptest::Nodes::Call.new(actionword, arguments)
   end
 
   def make_parameter(name, default: nil)
