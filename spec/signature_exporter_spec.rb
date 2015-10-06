@@ -6,13 +6,12 @@ describe Hiptest::SignatureExporter do
   let(:exporter) { Hiptest::SignatureExporter.new }
 
   let(:aw) {
-    make_actionword('my action word', [],
-      [
+    make_actionword('my action word',
+      uid: '1234-5678',
+      parameters: [
         make_parameter('x'),
-        make_parameter('y', make_literal(:string, 'Hi, I am a valued parameter'))
-      ],
-      [],
-      '1234-5678'
+        make_parameter('y', default: make_literal(:string, 'Hi, I am a valued parameter'))
+      ]
     )
   }
 
@@ -23,7 +22,7 @@ describe Hiptest::SignatureExporter do
   }
 
   let(:project) {
-    make_project('My project', [], [], [aw, aw2])
+    make_project('My project', actionwords: [aw, aw2])
   }
 
   describe 'self.export_actionwords' do
@@ -104,7 +103,7 @@ describe Hiptest::SignatureExporter do
   end
 
   describe 'export_parameter' do
-    let(:param) { make_parameter('x', make_literal(:string, 'Hi, I am a valued parameter')) }
+    let(:param) { make_parameter('x', default: make_literal(:string, 'Hi, I am a valued parameter')) }
 
     it 'exports the name of a parameter' do
       expect(exporter.export_parameter(param)).to eq({'name' => 'x'})

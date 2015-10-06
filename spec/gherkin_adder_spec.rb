@@ -6,8 +6,8 @@ describe Hiptest::GherkinAdder do
 
   let(:actionword_name) { "Hello \"name\"" }
   let(:actionword) {
-    make_actionword(actionword_name, [], [
-      make_parameter("name", literal("World")),
+    make_actionword(actionword_name, parameters: [
+      make_parameter("name", default: literal("World")),
     ])
   }
 
@@ -18,16 +18,13 @@ describe Hiptest::GherkinAdder do
   }
 
   let(:scenario) {
-    make_scenario("My scenario", [], [], [
+    make_scenario("My scenario", body: [
       call,
     ])
   }
 
-  let(:scenarios) { [scenario] }
-  let(:actionwords) { [actionword] }
-  let(:tests) { [] }
   let(:project) {
-    make_project("My project", scenarios, tests, actionwords)
+    make_project("My project", scenarios: [scenario], actionwords: [actionword])
   }
 
   subject(:gherkin_text) { call.children[:gherkin_text] }
@@ -130,7 +127,7 @@ describe Hiptest::GherkinAdder do
 
   context "actionword with one parameter without default value" do
     let(:actionword_name) { "Hello \"name\"" }
-    let(:actionword) { make_actionword(actionword_name, [], [make_parameter("name")]) }
+    let(:actionword) { make_actionword(actionword_name, parameters: [make_parameter("name")]) }
 
     it "adds corresponding :gherkin_pattern to Actionword" do
       expect(gherkin_pattern).to eq("^Hello \"(.*)\"$")
@@ -147,8 +144,8 @@ describe Hiptest::GherkinAdder do
 
   context "actionword with one parameter" do
     let(:actionword) {
-      make_actionword(actionword_name, [], [
-        make_parameter("name", literal("World")),
+      make_actionword(actionword_name, parameters: [
+        make_parameter("name", default: literal("World")),
       ])
     }
 
@@ -235,10 +232,10 @@ describe Hiptest::GherkinAdder do
 
   context "actionword with multiple parameters" do
     let(:actionword) {
-      make_actionword(actionword_name, [], [
-        make_parameter("name1", literal("Riri")),
-        make_parameter("name2", literal("Fifi")),
-        make_parameter("name3", literal("Loulou")),
+      make_actionword(actionword_name, parameters: [
+        make_parameter("name1", default: literal("Riri")),
+        make_parameter("name2", default: literal("Fifi")),
+        make_parameter("name3", default: literal("Loulou")),
       ])
     }
 
@@ -309,17 +306,17 @@ describe Hiptest::GherkinAdder do
     let(:actionword_name) { "good morning \"name\", we are \"day\". Say \"something\"!" }
 
     let(:actionword) {
-      make_actionword(actionword_name, [], [
-        make_parameter("name", literal("Tom")),
-        make_parameter("day", literal("Monday")),
-        make_parameter("temperature", literal("25°C")),
-        make_parameter("weather", literal("Sunny")),
+      make_actionword(actionword_name, parameters: [
+        make_parameter("name", default: literal("Tom")),
+        make_parameter("day", default: literal("Monday")),
+        make_parameter("temperature", default: literal("25°C")),
+        make_parameter("weather", default: literal("Sunny")),
         # "something" is not a parameter
       ])
     }
 
     let(:call) {
-      make_call(actionword_name, [
+      make_call(actionword_name, arguments: [
         make_argument("weather", literal("rainy")),
         make_argument("name", literal("Captain obvious")),
         make_argument("something", literal("in the way")), # it's a trap !
@@ -343,17 +340,17 @@ describe Hiptest::GherkinAdder do
     let(:actionword_name) { "good morning \"name\", we are \"day\". Say \"something\"!" }
 
     let(:actionword) {
-      make_actionword(actionword_name, [], [
-        make_parameter("name", template_of_literals("Tom")),
-        make_parameter("day", template_of_literals("Mon", "day")),
-        make_parameter("temperature", template_of_literals("25°C")),
-        make_parameter("weather", template_of_literals("Sunny")),
+      make_actionword(actionword_name, parameters: [
+        make_parameter("name", default: template_of_literals("Tom")),
+        make_parameter("day", default: template_of_literals("Mon", "day")),
+        make_parameter("temperature", default: template_of_literals("25°C")),
+        make_parameter("weather", default: template_of_literals("Sunny")),
         # "something" is not a parameter
       ])
     }
 
     let(:call) {
-      make_call(actionword_name, [
+      make_call(actionword_name, arguments: [
         make_argument("weather", template_of_literals("rainy")),
         make_argument("name", template_of_literals("Captain obvious")),
         make_argument("something", template_of_literals("in the way")), # it's a trap !

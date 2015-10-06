@@ -10,37 +10,37 @@ describe 'Selenium IDE rendering' do
 
   let(:actionwords) {
     ['open', 'type', 'click', 'verifyTextPresent'].map do |name|
-      make_actionword(name, [], [
-        make_parameter('target', make_literal(:string, '')),
-        make_parameter('value', make_literal(:string, ''))
+      make_actionword(name, parameters: [
+        make_parameter('target', default: make_literal(:string, '')),
+        make_parameter('value', default: make_literal(:string, ''))
       ])
     end
   }
 
   let(:login_test) {
-    make_test('Login', [], [
-      make_call('open', [
+    make_test('Login', body: [
+      make_call('open', arguments: [
         make_argument('target', make_literal(:string, '/login'))
       ]),
-      make_call('type', [
+      make_call('type', arguments: [
         make_argument('target', make_literal(:string, 'id=login')),
         make_argument('value', make_literal(:string, 'user@example.com'))
       ]),
-      make_call('type', [
+      make_call('type', arguments: [
         make_argument('target', make_literal(:string, 'id=password')),
         make_argument('value', make_literal(:string, 's3cret'))
       ]),
-      make_call('click', [
+      make_call('click', arguments: [
         make_argument('target', make_literal(:string, 'css=.login-form input[type=submit]'))
       ]),
-      make_call('verifyTextPresent', [
+      make_call('verifyTextPresent', arguments: [
         make_argument('target', make_literal(:string, 'Welcome user !'))
       ])
     ])
   }
 
   let(:project) {
-    make_project('My test project', [], [login_test], actionwords)
+    make_project('My test project', tests: [login_test], actionwords: actionwords)
   }
 
   before(:each) do

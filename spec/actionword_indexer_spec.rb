@@ -9,14 +9,14 @@ describe Hiptest::ActionwordIndexer do
   }
 
   let(:second_aw) {
-    make_actionword('Actionword with parameters', [], [
+    make_actionword('Actionword with parameters', parameters: [
       make_parameter('x'),
-      make_parameter('y', make_literal(:string, 'Hi, I am a valued parameter'))
+      make_parameter('y', default: make_literal(:string, 'Hi, I am a valued parameter'))
     ])
   }
 
   let(:project) {
-    make_project('My project', [], [], [first_aw, second_aw])
+    make_project('My project', actionwords: [first_aw, second_aw])
   }
 
   let(:indexer) {

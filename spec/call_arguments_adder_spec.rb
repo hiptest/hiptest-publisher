@@ -5,14 +5,14 @@ describe Hiptest::DefaultArgumentAdder do
   include HelperFactories
 
   let(:aw) {
-    make_actionword('first actionword', [], [
-      make_parameter('x', make_literal(:string, 'Hi, I am a valued parameter')),
-      make_parameter('y', make_literal(:string, 'Hi, I am another valued parameter'))
+    make_actionword('first actionword', parameters: [
+      make_parameter('x', default: make_literal(:string, 'Hi, I am a valued parameter')),
+      make_parameter('y', default: make_literal(:string, 'Hi, I am another valued parameter'))
     ])
   }
 
   let(:aw1) {
-    make_actionword('second actionword', [], [make_parameter('x')])
+    make_actionword('second actionword', parameters: [make_parameter('x')])
   }
 
   let(:call_to_unknown_actionword) {
@@ -20,7 +20,7 @@ describe Hiptest::DefaultArgumentAdder do
   }
 
   let(:call_with_all_parameters_set) {
-    make_call('first actionword', [
+    make_call('first actionword', arguments: [
       make_argument('y', make_literal(:string, 'And another value here')),
       make_argument('x', make_literal(:numeric, '3.14'))
     ])
@@ -36,7 +36,7 @@ describe Hiptest::DefaultArgumentAdder do
   }
 
   let(:scenario) {
-    make_scenario('My scenario', [], [], [
+    make_scenario('My scenario', body: [
       call_to_unknown_actionword,
       call_with_all_parameters_set,
       call_with_no_parameter_set,
@@ -45,7 +45,7 @@ describe Hiptest::DefaultArgumentAdder do
   }
 
   let(:project) {
-    make_project('My project', [scenario], [], [aw, aw1])
+    make_project('My project', scenarios: [scenario], actionwords: [aw, aw1])
   }
 
   before(:each) do

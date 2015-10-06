@@ -69,27 +69,27 @@ module HelperFactories
     Hiptest::Nodes::Call.new(actionword, arguments, annotation)
   end
 
-  def make_call(actionword, arguments= [])
+  def make_call(actionword, arguments: [])
     Hiptest::Nodes::Call.new(actionword, arguments)
   end
 
-  def make_parameter(name, default=nil)
+  def make_parameter(name, default: nil)
     Hiptest::Nodes::Parameter.new(name, default)
   end
 
-  def make_actionword(name, tags = [], parameters = [], body = [], uid = nil)
+  def make_actionword(name, tags: [], parameters: [], body: [], uid: nil)
     Hiptest::Nodes::Actionword.new(name, tags, parameters, body, uid)
   end
 
-  def make_scenario(name, tags, parameters, body)
+  def make_scenario(name, tags: [], parameters: [], body: [])
     Hiptest::Nodes::Scenario.new(name, '', tags, parameters, body)
   end
 
-  def make_test(name, tags, body)
+  def make_test(name, tags: [], body: [])
     Hiptest::Nodes::Test.new(name, '', tags, body)
   end
 
-  def make_project(name, scenarios, tests, actionwords)
+  def make_project(name, scenarios: [], tests: [], actionwords: [])
     Hiptest::Nodes::Project.new(name, '',
       Hiptest::Nodes::TestPlan.new,
       Hiptest::Nodes::Scenarios.new(scenarios),
