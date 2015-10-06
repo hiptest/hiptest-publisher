@@ -10,6 +10,11 @@ describe 'Cucumber rendering' do
   # Note: we do not want to test everything as we'll only render
   # tests and calls.
 
+  let(:root_folder) { make_folder("Colors") }
+  let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
+  let(:cold_colors_folder) { make_folder("Cold colors", parent: root_folder) }
+  let(:other_colors_folder) { make_folder("Other colors", parent: root_folder) }
+
   let(:actionwords) {
     [
       make_actionword("the color \"color\"", parameters: [make_parameter("color")]),
@@ -30,25 +35,41 @@ describe 'Cucumber rendering' do
   }
 
   let(:create_green_scenario) {
-    make_scenario("Create green", body: [
-      make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
-      make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
-      make_call("you mix colors",       annotation: "when"),
-      make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("green"))]),
-    ])
+    make_scenario("Create green",
+      folder: cold_colors_folder,
+      body: [
+        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
+        make_call("you mix colors",       annotation: "when"),
+        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("green"))]),
+      ])
   }
 
-  let(:unannotated_scenario) {
-    make_scenario("Create orange", body: [
-      make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("red"))]),
-      make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("yellow"))]),
-      make_call("you mix colors"),
-      make_call("you obtain \"color\"", arguments: [make_argument("color", template_of_literals("orange"))]),
-    ])
+  let(:create_purple_scenario) {
+    make_scenario("Create purple",
+      folder: cold_colors_folder,
+      body: [
+        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("red"))]),
+        make_call("you mix colors",       annotation: "when"),
+        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("purple"))]),
+      ])
+  }
+
+  let(:unannotated_create_orange_scenario) {
+    make_scenario("Create orange",
+      folder: warm_colors_folder,
+      body: [
+        make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("red"))]),
+        make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("yellow"))]),
+        make_call("you mix colors"),
+        make_call("you obtain \"color\"", arguments: [make_argument("color", template_of_literals("orange"))]),
+      ])
   }
 
   let(:create_secondary_colors_scenario) {
     make_scenario("Create secondary colors",
+      folder: other_colors_folder,
       parameters: [
         make_parameter("first_color"),
         make_parameter("second_color"),
@@ -59,8 +80,8 @@ describe 'Cucumber rendering' do
         make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
         make_call("you mix colors",       annotation: "when"),
         make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
-    ]).tap do |scenario|
-      scenario.children[:datatable] = Hiptest::Nodes::Datatable.new([
+      ],
+      datatable: Hiptest::Nodes::Datatable.new([
         Hiptest::Nodes::Dataset.new("Mix to green", [
           make_argument("first_color", template_of_literals("blue")),
           make_argument("second_color", template_of_literals("yellow")),
@@ -76,15 +97,15 @@ describe 'Cucumber rendering' do
           make_argument("second_color", literal("blue")),
           make_argument("got_color", literal("purple")),
         ]),
-      ])
-    end
+      ]))
   }
 
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_scenario],
+      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario],
       tests: [create_white_test],
-      actionwords: actionwords
+      actionwords: actionwords,
+      folders: [root_folder, warm_colors_folder, cold_colors_folder, other_colors_folder],
     ).tap do |p|
       Hiptest::Nodes::ParentAdder.add(p)
       Hiptest::GherkinAdder.add(p)
@@ -95,7 +116,6 @@ describe 'Cucumber rendering' do
     context_for(
       only: "features",
       language: "cucumber",
-      fallback_template: 'empty',
     )
   }
 
@@ -150,7 +170,7 @@ describe 'Cucumber rendering' do
     end
 
     context 'without annotated calls' do
-      let(:scenario) { unannotated_scenario }
+      let(:scenario) { unannotated_create_orange_scenario }
 
       it 'generates a feature file with bullet points steps' do
         expect(rendered).to eq([
@@ -219,7 +239,6 @@ describe 'Cucumber rendering' do
       context_for(
         only: "features",
         language: "cucumber",
-        fallback_template: 'empty',
       )
     }
 
@@ -253,6 +272,36 @@ describe 'Cucumber rendering' do
         "Then /^you obtain \"(.*)\"$/ do |color|",
         "  you_obtain_color(color)",
         "end",
+        "",
+      ].join("\n"))
+    end
+  end
+
+  context 'Folders as feature files' do
+    let(:node_to_render) { cold_colors_folder }
+    let(:options) {
+      context_for(
+        only: "features",
+        language: "cucumber",
+        framework: "folders_as_features",  # hack
+      )
+    }
+
+    it 'generates Feature from the folder, and Scenarios from folder scenarios' do
+      expect(rendered).to eq([
+        "Feature: Cold colors",
+        "",
+        "  Scenario: Create green",
+        "    Given the color \"blue\"",
+        "    And the color \"yellow\"",
+        "    When you mix colors",
+        "    Then you obtain \"green\"",
+        "",
+        "  Scenario: Create purple",
+        "    Given the color \"blue\"",
+        "    And the color \"red\"",
+        "    When you mix colors",
+        "    Then you obtain \"purple\"",
         "",
       ].join("\n"))
     end

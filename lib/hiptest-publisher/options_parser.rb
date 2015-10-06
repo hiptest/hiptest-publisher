@@ -305,14 +305,12 @@ class LanguageGroupConfig
     end
   end
 
-  def each_node(project)
-    return to_enum(:each_node, project) unless block_given?
-    if splitted_files?
-      project.children[node_name].children[node_name].each do |node|
-        yield node
-      end
-    else
-      yield project.children[node_name]
+  def nodes(project)
+    case node_name
+    when :tests, :scenarios, :actionwords
+      get_children(project, node_name)
+    when :folders
+      project.children[:test_plan].children[:folders]
     end
   end
 
@@ -347,7 +345,7 @@ class LanguageGroupConfig
 
   def each_node_rendering_context(project)
     return to_enum(:each_node_rendering_context, project) unless block_given?
-    each_node(project) do |node|
+    nodes(project).each do |node|
       yield build_node_rendering_context(node)
     end
   end
@@ -395,8 +393,20 @@ class LanguageGroupConfig
   def node_name
     if self[:node_name] == "tests" || self[:node_name] == "scenarios" || self[:group_name] == "tests"
       @leafless_export ? :tests : :scenarios
-    else
+    elsif self[:node_name] == "actionwords" || self[:group_name] == "actionwords"
       :actionwords
+    elsif self[:node_name] == "folders"
+      :folders
+    else
+      raise "Invalid node_name #{self[:node_name]} in language group [#{self[:group_name]}]"
+    end
+  end
+
+  def get_children(project, node_key)
+    if splitted_files?
+      project.children[node_key].children[node_key]
+    else
+      [project.children[node_key]]
     end
   end
 end

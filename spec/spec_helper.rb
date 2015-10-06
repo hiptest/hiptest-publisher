@@ -1,5 +1,6 @@
 require "codeclimate-test-reporter"
 require 'pry'
+require 'securerandom'
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
 
@@ -56,17 +57,31 @@ module HelperFactories
     Hiptest::Nodes::Actionword.new(name, tags, parameters, body, uid)
   end
 
-  def make_scenario(name, tags: [], parameters: [], body: [])
-    Hiptest::Nodes::Scenario.new(name, '', tags, parameters, body)
+  def make_scenario(name, tags: [], parameters: [], body: [], folder: nil, datatable: Hiptest::Nodes::Datatable.new)
+    folder_uid = folder ? folder.uid : nil
+    Hiptest::Nodes::Scenario.new(name, '', tags, parameters, body, folder_uid, datatable).tap do |scenario|
+      folder.children[:scenarios] << scenario if folder
+    end
   end
 
   def make_test(name, tags: [], body: [])
     Hiptest::Nodes::Test.new(name, '', tags, body)
   end
 
-  def make_project(name, scenarios: [], tests: [], actionwords: [])
+  def make_folder(name, parent: nil)
+    uid = SecureRandom.uuid
+    parent_uid = parent.uid if parent
+    Hiptest::Nodes::Folder.new(uid, parent_uid, name).tap do |folder|
+      if parent
+        folder.parent = parent
+        parent.children[:subfolders] << folder
+      end
+    end
+  end
+
+  def make_project(name, scenarios: [], tests: [], actionwords: [], folders: [])
     Hiptest::Nodes::Project.new(name, '',
-      Hiptest::Nodes::TestPlan.new,
+      Hiptest::Nodes::TestPlan.new(folders).tap { |tp| tp.organize_folders },
       Hiptest::Nodes::Scenarios.new(scenarios),
       Hiptest::Nodes::Actionwords.new(actionwords),
       Hiptest::Nodes::Tests.new(tests)
