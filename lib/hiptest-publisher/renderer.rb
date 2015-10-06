@@ -36,7 +36,7 @@ module Hiptest
     end
 
     def render_node(node, render_context)
-      render_context = {} if render_context.nil?
+      render_context ||= {}
       render_context[:node] = node
       render_context[:rendered_children] = @rendered_children
       render_context[:context] = @context

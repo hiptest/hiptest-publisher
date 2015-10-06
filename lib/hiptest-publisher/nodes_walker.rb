@@ -22,7 +22,7 @@ module Hiptest
         node_class = node.class.name.split('::').last.downcase
         walk_method_name = "walk_#{node_class}".to_sym
 
-        if self.methods.include? walk_method_name
+        if respond_to? walk_method_name
           self.send(walk_method_name, node)
         end
       end
