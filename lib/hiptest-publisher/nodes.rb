@@ -303,6 +303,10 @@ module Hiptest
           :body => body
         }
       end
+
+      def folder
+        nil
+      end
     end
 
     class Datatable < Node

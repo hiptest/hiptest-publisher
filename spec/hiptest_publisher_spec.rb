@@ -419,10 +419,6 @@ describe Hiptest::Publisher do
       publisher.run
     end
 
-    it "does not trigger any error for unknown templates" do
-      run_publisher_command
-    end
-
     it "produces the files as expected" do
       # this is not very representative of how a selenium export should look like...
       run_publisher_command("--leafless-export", "--split-scenarios")
