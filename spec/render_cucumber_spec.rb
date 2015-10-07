@@ -12,7 +12,7 @@ describe 'Cucumber rendering' do
 
   let(:root_folder) { make_folder("Colors") }
   let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
-  let(:cold_colors_folder) { make_folder("Cold colors", parent: root_folder) }
+  let(:cool_colors_folder) { make_folder("Cool colors", parent: root_folder) }
   let(:other_colors_folder) { make_folder("Other colors", parent: root_folder) }
 
   let(:actionwords) {
@@ -36,7 +36,7 @@ describe 'Cucumber rendering' do
 
   let(:create_green_scenario) {
     make_scenario("Create green",
-      folder: cold_colors_folder,
+      folder: cool_colors_folder,
       body: [
         make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
         make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
@@ -47,7 +47,7 @@ describe 'Cucumber rendering' do
 
   let(:create_purple_scenario) {
     make_scenario("Create purple",
-      folder: cold_colors_folder,
+      folder: cool_colors_folder,
       body: [
         make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
         make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("red"))]),
@@ -105,7 +105,7 @@ describe 'Cucumber rendering' do
       scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario],
       tests: [create_white_test],
       actionwords: actionwords,
-      folders: [root_folder, warm_colors_folder, cold_colors_folder, other_colors_folder],
+      folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
     ).tap do |p|
       Hiptest::Nodes::ParentAdder.add(p)
       Hiptest::GherkinAdder.add(p)
@@ -278,7 +278,7 @@ describe 'Cucumber rendering' do
   end
 
   context 'Folders as feature files' do
-    let(:node_to_render) { cold_colors_folder }
+    let(:node_to_render) { cool_colors_folder }
     let(:options) {
       context_for(
         only: "features",
@@ -289,7 +289,7 @@ describe 'Cucumber rendering' do
 
     it 'generates Feature from the folder, and Scenarios from folder scenarios' do
       expect(rendered).to eq([
-        "Feature: Cold colors",
+        "Feature: Cool colors",
         "",
         "  Scenario: Create green",
         "    Given the color \"blue\"",
