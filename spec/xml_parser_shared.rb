@@ -173,9 +173,25 @@ shared_examples 'folder structure' do
     expect(node).to be_a(Hiptest::Nodes::Folder)
     expect(node.children).to eq({
       name: "My folder",
+      description: nil,
       subfolders: [],
       scenarios: []
     })
+  end
+
+  it 'reads description tag' do
+    node = build_node(
+      "<#{folder_node_type}>" \
+      "  <name>My folder</name>" \
+      "  <description>This is a description</description>" \
+      "</#{folder_node_type}>")
+    expect(node.children[:description]).to eq("This is a description")
+
+    node = build_node(
+      "<#{folder_node_type}>" \
+      "  <name>My folder</name>" \
+      "</#{folder_node_type}>")
+    expect(node.children[:description]).to be_nil
   end
 
   context 'testPlan' do

@@ -68,10 +68,10 @@ module HelperFactories
     Hiptest::Nodes::Test.new(name, '', tags, body)
   end
 
-  def make_folder(name, parent: nil)
+  def make_folder(name, description: nil, parent: nil)
     uid = SecureRandom.uuid
     parent_uid = parent.uid if parent
-    Hiptest::Nodes::Folder.new(uid, parent_uid, name).tap do |folder|
+    Hiptest::Nodes::Folder.new(uid, parent_uid, name, description).tap do |folder|
       if parent
         folder.parent = parent
         parent.children[:subfolders] << folder
