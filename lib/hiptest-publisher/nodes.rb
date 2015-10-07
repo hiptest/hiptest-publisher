@@ -49,6 +49,14 @@ module Hiptest
         other.class == self.class && other.children == @children
       end
 
+      def project
+        project = self
+        while project && !project.is_a?(Hiptest::Nodes::Project)
+          project = project.parent
+        end
+        project
+      end
+
       private
 
       def all_sub_nodes
@@ -278,6 +286,10 @@ module Hiptest
       def set_uid(uid)
         @children[:uid] = uid
       end
+
+      def folder
+        project && project.children[:test_plan] && project.children[:test_plan].find_folder_by_uid(folder_uid)
+      end
     end
 
     class Test < Node
@@ -358,8 +370,7 @@ module Hiptest
     end
 
     class Folder < Node
-      attr_reader :uid, :parent, :parent_uid
-      attr_writer :parent
+      attr_reader :uid, :parent_uid
 
       def initialize(uid, parent_uid, name)
         super()
@@ -372,6 +383,14 @@ module Hiptest
           :subfolders => [],
           :scenarios => []
         }
+      end
+
+      def root?
+        parent_uid == nil
+      end
+
+      def folder
+        root? ? nil : parent
       end
     end
 
@@ -386,16 +405,19 @@ module Hiptest
       end
 
       def organize_folders
+        @children[:root_folder] = @children[:folders].find(&:root?)
+        @children[:root_folder].parent = self if @children[:root_folder]
+
         @children[:folders].each do |folder|
           @uids_mapping[folder.uid] = folder
-          parent = find_folder_by_uid folder.parent_uid
-          if parent.nil?
-            @children[:root_folder] = folder
-            next
-          end
+        end
 
+        @children[:folders].each do |folder|
+          next if folder.root?
+
+          parent = find_folder_by_uid(folder.parent_uid) || @children[:root_folder]
           folder.parent = parent
-          parent.children[:subfolders] << folder
+          parent.children[:subfolders] << folder unless parent.children[:subfolders].include?(folder)
         end
       end
 
@@ -407,6 +429,7 @@ module Hiptest
     class Project < Node
       def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new)
         super()
+        test_plan.parent = self if test_plan.respond_to?(:parent=)
         scenarios.parent = self
         tests.parent = self
 

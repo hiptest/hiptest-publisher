@@ -89,6 +89,7 @@ class OptionsParser
       Option.new(nil, 'show-actionwords-created', false, nil, "Output code for new action words", :aw_created),
       Option.new(nil, 'show-actionwords-renamed', false, nil, "Output signatures of renamed action words", :aw_renamed),
       Option.new(nil, 'show-actionwords-signature-changed', false, nil, "Output signatures of action words for which signature changed", :aw_signature_changed),
+      Option.new(nil, 'with-folders', false, nil, "Use folders hierarchy to export files in respective directories, to be used with --split-scenarios", :with_folders),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
@@ -283,8 +284,9 @@ end
 
 class LanguageGroupConfig
   def initialize(user_params, language_group_params = nil)
-    @output_directory = user_params.output_directory
+    @output_directory = user_params.output_directory || ""
     @split_scenarios = user_params.split_scenarios
+    @with_folders = user_params.with_folders
     @leafless_export = user_params.leafless_export
     @user_language = user_params.language
     @user_framework = user_params.framework
@@ -293,6 +295,10 @@ class LanguageGroupConfig
 
   def [](key)
     @language_group_params[key]
+  end
+
+  def with_folders?
+    @with_folders
   end
 
   def splitted_files?
@@ -310,7 +316,7 @@ class LanguageGroupConfig
     when :tests, :scenarios, :actionwords
       get_children(project, node_name)
     when :folders
-      project.children[:test_plan].children[:folders]
+      project.children[:test_plan].children[:folders].select {|folder| folder.children[:scenarios].length > 0}
     end
   end
 
@@ -355,7 +361,7 @@ class LanguageGroupConfig
   end
 
   def build_node_rendering_context(node)
-    path = "#{@output_directory}/#{output_file(node)}"
+    path = File.join(@output_directory, output_file(node))
 
     if splitted_files?
       description = "#{singularize(node_name)} \"#{node.children[:name]}\""
@@ -377,12 +383,22 @@ class LanguageGroupConfig
     )
   end
 
+  def output_directory(node)
+    folder = node.folder
+    hierarchy = []
+    while folder && !folder.root?
+      hierarchy << normalized_filename(folder.children[:name])
+      folder = folder.parent
+    end
+    File.join(*hierarchy.reverse)
+  end
+
   def output_file(node)
     if splitted_files?
-      class_name_convention = @language_group_params[:class_name_convention] || :normalize
-      name = node.children[:name].send(class_name_convention)
-
-      self[:scenario_filename].gsub('%s', name)
+      name = normalized_filename(node.children[:name])
+      filename = self[:scenario_filename].gsub('%s', name)
+      directory = with_folders? ? output_directory(node) : ""
+      File.join(directory, filename)
     else
       self[:filename]
     end
@@ -408,6 +424,11 @@ class LanguageGroupConfig
     else
       [project.children[node_key]]
     end
+  end
+
+  def normalized_filename(name)
+    filename_convention = @language_group_params[:filename_convention] || :normalize
+    name.send(filename_convention)
   end
 end
 

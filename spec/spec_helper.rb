@@ -89,11 +89,15 @@ module HelperFactories
   end
 end
 
-def context_for(properties)
-  test_name = properties.delete(:test_name) || 'dummy'
+def language_group_config_for(properties)
   cli_options = OpenStruct.new(properties)
   language_config = LanguageConfigParser.new(cli_options)
-  language_group_config = language_config.language_group_configs.first or fail("no language group defined for --only=#{cli_options.only}")
+  language_config.language_group_configs.first or fail("no language group defined for --only=#{cli_options.only}")
+end
+
+def context_for(properties)
+  test_name = properties.delete(:test_name) || 'dummy'
+  language_group_config = language_group_config_for(properties)
   dummy_node = OpenStruct.new(children: {name: test_name})
   language_group_config.build_node_rendering_context(dummy_node)
 end

@@ -10,7 +10,7 @@ module Hiptest
         return unless node.is_a? Hiptest::Nodes::Node
 
         node.direct_children.each {|child|
-          child.parent = node
+          child.parent ||= node
         }
       end
     end

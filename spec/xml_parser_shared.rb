@@ -193,16 +193,14 @@ shared_examples 'folder structure' do
     it 'updates references' do
       folders = test_plan.children[:folders]
 
-      expect(folders[0].parent).to be_nil
-      expect(folders[0].children[:subfolders]).to eq([folders[1]])
+      expect(folders[0].parent).to be(test_plan)
+      expect(folders[0].children[:subfolders]).to match_array([folders[1]])
 
       expect(folders[1].parent).to eq(folders[0])
-      expect(folders[1].children[:subfolders]).to eq([folders[2]])
+      expect(folders[1].children[:subfolders]).to match_array([folders[2]])
 
       expect(folders[2].parent).to eq(folders[1])
-      expect(folders[2].children[:subfolders]).to eq([])
+      expect(folders[2].children[:subfolders]).to match_array([])
     end
   end
-
-
 end
