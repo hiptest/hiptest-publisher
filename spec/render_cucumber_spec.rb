@@ -12,7 +12,7 @@ describe 'Cucumber rendering' do
 
   let(:root_folder) { make_folder("Colors") }
   let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
-  let(:cool_colors_folder) { make_folder("Cool colors", parent: root_folder) }
+  let(:cool_colors_folder) { make_folder("Cool colors", parent: root_folder, description: "Cool colors calm and relax.\nThey are the hues from blue green through blue violet, most grays included.") }
   let(:other_colors_folder) { make_folder("Other colors", parent: root_folder) }
 
   let(:actionwords) {
@@ -290,6 +290,8 @@ describe 'Cucumber rendering' do
     it 'generates Feature from the folder, and Scenarios from folder scenarios' do
       expect(rendered).to eq([
         "Feature: Cool colors",
+        "    Cool colors calm and relax.",
+        "    They are the hues from blue green through blue violet, most grays included.",
         "",
         "  Scenario: Create green",
         "    Given the color \"blue\"",
