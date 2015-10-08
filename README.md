@@ -48,6 +48,18 @@ hiptest-publisher --token=<YOUR TOKEN> --language=ruby --framework=minitest
 
 When publishing, you'll notice a file called ``actionwords_signature.yaml``. Store this file in your code repository, it will be used to [handle updates of the action word](docs/upgrading_actionwords.md).
 
+Exporting a test run
+--------------------
+
+You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `http://hiptest.net/app#/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
+
+```shell
+hiptest-publisher --token=<YOUR TOKEN> --test-run-id=6941
+```
+
+Available options
+-----------------
+
 For more information on the available options, use the following command:
 
 ```shell
@@ -79,6 +91,7 @@ Specific options:
         --show-actionwords-renamed   Output signatures of renamed action words (default: false)
         --show-actionwords-signature-changed
                                      Output signatures of action words for which signature changed (default: false)
+        --with-folders               Use folders hierarchy to export files in respective directories, to be used with --split-scenarios (default: false)
         --split-scenarios            Export each scenario in a single file (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
@@ -113,10 +126,12 @@ output_directory = '<YOUR OUTPUT DIRECTORY>'
 package = 'com.youcompany'
 ```
 
+Note that options from command line arguments override options from config file.
+
 Posting results to Hiptest
 --------------------------
 
-You can use the options --push to push the results to Hiptest. For this, you first need to generate the test code from a Test run by specifying option ``--test_run_id=<xxx>`` during code generation (or add it to the configuration file).
+You can use the options --push to push the results back to Hiptest. For this, you first need to generate the test code from a Test run by specifying option ``--test-run-id=<xxx>`` during code generation (or add it to the configuration file).
 The tests must then generate a test report that is supported by Hiptest. Currently three types of test results are handled:
  - tap (Test Anything Protocol)
  - jUnit XML style

@@ -285,14 +285,19 @@ The list of the project's action words. Contains a single child, 'actionwords' w
 
 Same as [Actionword](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#actionword)s but for scenarios. The list name is 'scenarios'.
 
+Use `folder` to get the containing folder.
+
 ### [Folder](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#folder)
 
 Represent a folder in the scenario's hierarchical view in Hiptest. It has three children:
  - name: a string
+ - description: a string
  - subfolders: a list of [Folder](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#folder) nodes
  - scenarios: a list of [Scenario](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#scenario) nodes
 
-It is possible to access a folder's parent via the 'parent' attribute.
+It is possible to access a folder's parent via the `parent` attribute. Note that the `parent` of the root folder is the [TestPlan](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#testplan). Use `folder` to get the parent folder, or `nil` if the folder is the root folder.
+
+Use `root?` to know if the folder is the root folder.
 
 ### [TestPlan](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#testplan)
 

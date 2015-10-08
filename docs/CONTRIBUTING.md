@@ -22,7 +22,7 @@ rspec spec/render_scala_spec.rb -f d
 Normally, you should see a lot of tests failing and that's totally normal (only 5 tests should pass).
 Now you have to update the expected output when exporting in Scala. That is the variables ``@<some name, mainly about the Foo Fighters>`` declared in the ``before(:each)`` block. For all expected output, we also added the corresponding text in Hiptest test description language.
 
-Once all the expectation are written, is it time to write the template. The simplest way is to copy the Ruby sources:
+Once all the expectations are written, it is time to write the template. The simplest way is to copy the Ruby sources:
 
 ```shell
 mkdir templates/scala
@@ -34,7 +34,7 @@ Now edit each template file to generate proper Scala code ([a quick guide for ha
 
 Note: templates to describe variables and literals are located in ``templates/common``. If you need to override them, simply copy them to ``templates/scala``.
 
-The last step is to write the config file for the language. It is located at ``templates/scala/config``. It will allow you to define the names of the generated files:
+The last step is to write the config file for the language. It is located at ``config/scala.conf``. It will allow you to define the names of the generated files:
 
 ```
 [tests]
@@ -50,7 +50,7 @@ You can also define some default context for the code generation (that is access
 ```
 [tests]
 filename = 'project_tests.scala'
-action_word_library = 'ActionWord'
+action_word_library = 'Actionword'
 ```
 
 
@@ -103,8 +103,9 @@ mkdir templates/scala/specs
 cp templates/scala/scenario.rb templates/scala/specs/scenario.rb
 ```
 
+Edit the file so it generates proper Scala/Specs code. You can also customize the config file for the framework located at ``config/scala-specs.conf``.
 
-Edit the file so it generates proper Scala/Specs code. You should now be able to generate your tests using the following line:
+You should now be able to generate your tests using the following line:
 
 ```shell
 rake install
