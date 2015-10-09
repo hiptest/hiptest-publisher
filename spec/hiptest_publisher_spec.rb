@@ -401,6 +401,51 @@ describe Hiptest::Publisher do
           }.to output(a_string_including("Error with --output-directory: the file \"#{file}\" is not a directory")).to_stdout
         end
       end
+
+
+      [
+        '--show-actionwords-diff',
+        '--show-actionwords-deleted',
+        '--show-actionwords-created',
+        '--show-actionwords-renamed',
+        '--show-actionwords-signature-changed',
+      ].each do |show_actionword_command|
+        context show_actionword_command do
+          context "invalid 'actionwords_signature.yaml' file" do
+            it "indicates the command to create the actionwords signature file" do
+              expect {
+                run_publisher_expecting_exit("--token", "123", show_actionword_command, "--output-directory", output_dir)
+              }.to output(a_string_including(
+                "Use --actionwords-signature to generate the file \"#{output_dir}/actionwords_signature.yaml\"")).to_stdout
+            end
+
+            it "outputs an error message and stops (existing directory)" do
+              expect {
+                run_publisher_expecting_exit("--token", "123", show_actionword_command, "--output-directory", output_dir)
+              }.to output(a_string_including(
+                "Missing Action Words signature file: the file \"actionwords_signature.yaml\" " \
+                "could not be found in directory \"#{output_dir}\"")).to_stdout
+            end
+
+            it "outputs an error message and stops (unexisting directory, multiple levels)" do
+              unexisting_dir = output_dir + "/some/dir/deeply/nested"
+              expect {
+                run_publisher_expecting_exit("--token", "123", show_actionword_command, "--output-directory", unexisting_dir)
+              }.to output(a_string_including(
+                "Missing Action Words signature file: the file \"actionwords_signature.yaml\" " \
+                "could not be found in directory \"#{unexisting_dir}\"")).to_stdout
+            end
+
+            it "outputs an error message and stops (is a directory)" do
+              Dir.mkdir("#{output_dir}/actionwords_signature.yaml")
+              expect {
+                run_publisher_expecting_exit("--token", "123", show_actionword_command, "--output-directory", output_dir)
+              }.to output(a_string_including(
+                "Bad Action Words signature file: the file \"#{output_dir}/actionwords_signature.yaml\" is a directory")).to_stdout
+            end
+          end
+        end
+      end
     end
   end
 

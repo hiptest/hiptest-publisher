@@ -56,6 +56,20 @@ class CliOptionsChecker
       return true
     end
 
+    # actionwords signature file
+    if cli_options.actionwords_diff || cli_options.aw_deleted || cli_options.aw_created || cli_options.aw_renamed || cli_options.aw_signature_changed
+      actionwords_signature_file = Pathname.new(cli_options.output_directory).join("actionwords_signature.yaml")
+      if actionwords_signature_file.directory?
+        puts "Bad Action Words signature file: the file \"#{actionwords_signature_file.realpath}\" is a directory"
+        return true
+      elsif !actionwords_signature_file.exist?
+        full_path = File.expand_path(cli_options.output_directory)
+        puts "Missing Action Words signature file: the file \"actionwords_signature.yaml\" could not be found in directory \"#{full_path}\""
+        puts "Use --actionwords-signature to generate the file \"#{full_path}/actionwords_signature.yaml\""
+        return true
+      end
+    end
+
     # test run id
     if present?(cli_options.test_run_id) && !numeric?(cli_options.test_run_id)
       puts "Invalid format --test-run-id=\"#{@cli_options.test_run_id}\": the test run id must be numeric"
