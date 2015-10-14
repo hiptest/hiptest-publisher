@@ -17,6 +17,13 @@ begin
 rescue LoadError
 end
 
+# Ensure ruby version >= 2
+if RUBY_VERSION.to_i < 2
+  STDERR.puts "Error: you are using #{RUBY_ENGINE} #{RUBY_VERSION}."
+  STDERR.puts "hiptest-publisher requires Ruby version >= 2.0.0."
+  exit 1
+end
+
 require 'hiptest-publisher'
 begin
   require 'pry' # only available in development
