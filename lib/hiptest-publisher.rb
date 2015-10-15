@@ -36,9 +36,12 @@ module Hiptest
 
     def run
       normalize_cli_options!
-      if CliOptionsChecker.new(@cli_options, reporter).bad_arguments?
+      begin
+        CliOptionsChecker.new(@cli_options, reporter).check!
+      rescue CliOptionError => e
+        puts e.message
         exit 1 if @exit_on_bad_arguments
-        return
+        raise
       end
 
       if @cli_options.only == 'list'
