@@ -152,6 +152,21 @@ describe Hiptest::Publisher do
       end
     end
 
+    describe "--xml-file" do
+      it "reads the xml directly from a xml file" do
+        WebMock.reset!  # to ensure failure if any http requests are done
+        run_publisher_command("--xml-file", "samples/xml_input/Hiptest publisher.xml")
+        expect(STDOUT).to have_printed("Exporting actionwords")
+        expect(STDOUT).to have_printed("Exporting scenarios")
+      end
+
+      it "does not print 'Fetching data from Hiptest'" do
+        WebMock.reset!  # to ensure failure if any http requests are done
+        run_publisher_command("--xml-file", "samples/xml_input/Hiptest publisher.xml")
+        expect(STDOUT).to have_not_printed("Fetching data from Hiptest")
+      end
+    end
+
     def have_printed(message)
       have_received(:print).at_least(1).with(a_string_including(message))
     end
@@ -402,6 +417,24 @@ describe Hiptest::Publisher do
         end
       end
 
+      context "with unexisting xml file" do
+        it "output an error message and stops" do
+          file = output_dir + "/project.xml"
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--xml-file", file)
+          }.to output(a_string_including("Error with --xml-file: the file \"#{file}\" does not exist or is not readable")).to_stdout
+        end
+      end
+
+      context "with xml file being a directory" do
+        it "output an error message and stops" do
+          file = output_dir + "/project.xml"
+          Dir.mkdir(file)
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--xml-file", file)
+          }.to output(a_string_including("Error with --xml-file: the file \"#{file}\" is not a regular file")).to_stdout
+        end
+      end
 
       [
         '--show-actionwords-diff',

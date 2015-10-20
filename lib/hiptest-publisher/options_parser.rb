@@ -81,6 +81,7 @@ class OptionsParser
       Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
       Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
       Option.new(nil, 'only=CATEGORIES', nil, String, "Restrict export to given file categories (--only=list to list them)", :only),
+      Option.new('x', 'xml-file=PROJECT_XML', nil, String, "XML file to use instead of fetching it from Hiptest", :xml_file),
       Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --only=tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --only=actionwords", :actionwords_only),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionwords signature", :actionwords_signature),

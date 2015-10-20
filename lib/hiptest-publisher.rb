@@ -58,7 +58,11 @@ module Hiptest
         return
       end
 
-      xml = fetch_xml_file
+      if @cli_options.xml_file
+        xml = IO.read(@cli_options.xml_file)
+      else
+        xml = fetch_xml_file
+      end
       return if xml.nil?
 
       @project = get_project(xml)

@@ -70,6 +70,15 @@ module Hiptest
         end
       end
 
+      # xml file
+      if cli_options.xml_file
+        if !File.readable?(cli_options.xml_file)
+          raise CliOptionError, "Error with --xml-file: the file \"#{cli_options.xml_file}\" does not exist or is not readable"
+        elsif !File.file?(cli_options.xml_file)
+          raise CliOptionError, "Error with --xml-file: the file \"#{cli_options.xml_file}\" is not a regular file"
+        end
+      end
+
       # test run id
       if present?(cli_options.test_run_id) && !numeric?(cli_options.test_run_id)
         raise CliOptionError, "Invalid format --test-run-id=\"#{@cli_options.test_run_id}\": the test run id must be numeric"
