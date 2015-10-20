@@ -165,6 +165,16 @@ describe Hiptest::Publisher do
         run_publisher_command("--xml-file", "samples/xml_input/Hiptest publisher.xml")
         expect(STDOUT).to have_not_printed("Fetching data from Hiptest")
       end
+
+      it "does not need --token argument" do
+        expect {
+          args = [
+            "--output-directory", output_dir,
+            "--xml-file", "samples/xml_input/Hiptest publisher.xml",
+          ]
+          Hiptest::Publisher.new(args, listeners: [ErrorListener.new]).run
+        }.not_to raise_error
+      end
     end
 
     def have_printed(message)
@@ -421,7 +431,7 @@ describe Hiptest::Publisher do
         it "output an error message and stops" do
           file = output_dir + "/project.xml"
           expect {
-            run_publisher_expecting_exit("--token", "123", "--xml-file", file)
+            run_publisher_expecting_exit("--xml-file", file)
           }.to output(a_string_including("Error with --xml-file: the file \"#{file}\" does not exist or is not readable")).to_stdout
         end
       end
@@ -431,7 +441,7 @@ describe Hiptest::Publisher do
           file = output_dir + "/project.xml"
           Dir.mkdir(file)
           expect {
-            run_publisher_expecting_exit("--token", "123", "--xml-file", file)
+            run_publisher_expecting_exit("--xml-file", file)
           }.to output(a_string_including("Error with --xml-file: the file \"#{file}\" is not a regular file")).to_stdout
         end
       end

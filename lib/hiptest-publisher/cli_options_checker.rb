@@ -28,20 +28,22 @@ module Hiptest
       end
 
       # secret token
-      if missing?(cli_options.token) || empty?(cli_options.token)
-        raise CliOptionError, [
-          "Missing argument --token: you must specify project secret token with --token=<project-token>",
-          "",
-          "The project secret token can be found on Hiptest in the settings section, under",
-          "'Publication settings'. It is a sequence of numbers uniquely identifying your",
-          "project.",
-          "",
-          "Note that settings section is available only to administrators of the project.",
-        ].join("\n")
-      end
+      if absent?(cli_options.xml_file)
+        if absent?(cli_options.token)
+          raise CliOptionError, [
+            "Missing argument --token: you must specify project secret token with --token=<project-token>",
+            "",
+            "The project secret token can be found on Hiptest in the settings section, under",
+            "'Publication settings'. It is a sequence of numbers uniquely identifying your",
+            "project.",
+            "",
+            "Note that settings section is available only to administrators of the project.",
+          ].join("\n")
+        end
 
-      unless numeric?(cli_options.token)
-        raise CliOptionError, "Invalid format --token=\"#{@cli_options.token}\": the project secret token must be numeric"
+        unless numeric?(cli_options.token)
+          raise CliOptionError, "Invalid format --token=\"#{@cli_options.token}\": the project secret token must be numeric"
+        end
       end
 
       # output directory
@@ -99,8 +101,12 @@ module Hiptest
       arg.strip.empty?
     end
 
+    def absent?(arg)
+      missing?(arg) || empty?(arg)
+    end
+
     def present?(arg)
-      arg && !arg.strip.empty?
+      !absent?(arg)
     end
 
     def first_existing_parent(path)
