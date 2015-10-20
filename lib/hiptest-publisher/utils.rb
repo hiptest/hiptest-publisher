@@ -70,6 +70,17 @@ def show_status_message(message, status=nil)
   output.print "[#{status_icon}] #{message}\r#{line_end}"
 end
 
+def with_status_message(message, &blk)
+  show_status_message message
+  status = :success
+  yield
+rescue
+  status = :failure
+  raise
+ensure
+  show_status_message message, status
+end
+
 def push?(options)
   options.push && !options.push.empty?
 end
