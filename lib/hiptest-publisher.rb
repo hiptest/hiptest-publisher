@@ -243,11 +243,13 @@ module Hiptest
     def export
       return if @project.nil?
 
-      @language_config = LanguageConfigParser.new(@cli_options)
-      Hiptest::Nodes::ParentAdder.add(@project)
-      Hiptest::Nodes::ParameterTypeAdder.add(@project)
-      Hiptest::DefaultArgumentAdder.add(@project)
-      Hiptest::GherkinAdder.add(@project)
+      with_status_message "Analyzing data" do
+        @language_config = LanguageConfigParser.new(@cli_options)
+        Hiptest::Nodes::ParentAdder.add(@project)
+        Hiptest::Nodes::ParameterTypeAdder.add(@project)
+        Hiptest::DefaultArgumentAdder.add(@project)
+        Hiptest::GherkinAdder.add(@project)
+      end
 
       export_files
       export_actionword_signature if @language_config.include_group?("actionwords")
