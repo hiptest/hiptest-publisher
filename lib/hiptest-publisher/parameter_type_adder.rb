@@ -2,7 +2,7 @@ require 'hiptest-publisher/nodes_walker'
 
 module Hiptest
   module Nodes
-    class ParameterTypeAdder < Hiptest::Nodes::Walker
+    class ParameterTypeAdder < ParentFirstWalker
       attr_reader :call_types
 
       def self.add(project)
@@ -10,10 +10,6 @@ module Hiptest
         walker.walk_node(project)
 
         Hiptest::Nodes::TypeWriter.new(walker.call_types).walk_node(project)
-      end
-
-      def initialize
-        super(:parent_first)
       end
 
       def walk_project(project)
@@ -48,9 +44,8 @@ module Hiptest
       end
     end
 
-    class TypeWriter < Hiptest::Nodes::Walker
+    class TypeWriter < ParentFirstWalker
       def initialize(call_types)
-        super(:parent_first)
         @call_types = call_types
         @callable_item_name = nil
       end

@@ -1,14 +1,6 @@
 module Hiptest
   module Nodes
     class Walker
-      def initialize(order = :parent_first)
-        @order = order
-      end
-
-      def walk_node(node)
-        self.send(@order, node)
-      end
-
       private
 
       def walk_children(node)
@@ -26,15 +18,19 @@ module Hiptest
           self.send(walk_method_name, node)
         end
       end
+    end
 
-      def parent_first(node)
+    class ParentFirstWalker < Walker
+      def walk_node(node)
         call_node_walker(node)
         node.each {|item| walk_node(item)} if node.is_a? Array
 
         walk_children(node)
       end
+    end
 
-      def children_first(node)
+    class ChildrenFirstWalker < Walker
+      def walk_node(node)
         walk_children(node)
 
         node.each {|item| walk_node(item)} if node.is_a? Array

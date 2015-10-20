@@ -1,8 +1,8 @@
 module Hiptest
   module Nodes
-    class ParentAdder < Walker
+    class ParentAdder < ParentFirstWalker
       def self.add(project)
-        Hiptest::Nodes::ParentAdder.new().walk_node(project)
+        Hiptest::Nodes::ParentAdder.new.walk_node(project)
       end
 
       def walk_node(node)
