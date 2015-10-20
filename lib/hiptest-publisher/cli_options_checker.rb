@@ -23,7 +23,7 @@ module Hiptest
         return
       end
 
-      unless cli_options.push.nil? || cli_options.push.empty?
+      if push?(cli_options)
         return
       end
 

@@ -22,9 +22,9 @@ describe Hiptest::Publisher do
 
   describe "--language=ruby" do
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
+      stub_request(:get, "https://hiptest.net/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests?future=1").
+      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
       args = [
         "--language", "ruby",
@@ -36,7 +36,7 @@ describe Hiptest::Publisher do
     end
 
     it "exports correctly in the golden case" do
-      stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
+      stub_request(:get, "https://hiptest.net/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       args = [
         "--language", "ruby",
@@ -350,7 +350,7 @@ describe Hiptest::Publisher do
 
     context "--output-directory" do
       before(:each) {
-        stub_request(:get, "https://hiptest.net/publication/123/project?future=1").
+        stub_request(:get, "https://hiptest.net/publication/123/project").
           to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       }
 
@@ -451,9 +451,9 @@ describe Hiptest::Publisher do
 
   describe "--language=seleniumide" do
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
+      stub_request(:get, "https://hiptest.net/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests?future=1").
+      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
       args = [
         "--language", "seleniumide",

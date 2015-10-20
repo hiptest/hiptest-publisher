@@ -54,11 +54,11 @@ describe Hiptest::Publisher do
           assertion_text = "--language=#{language}"
           assertion_text <<  " --framework=#{framework}" if framework
           it assertion_text do
-            stub_request(:get, "https://hiptest.net/publication/123456789/project?future=1").
+            stub_request(:get, "https://hiptest.net/publication/123456789/project").
               to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
             stub_request(:get, "https://hiptest.net/publication/123456789/test_run/987").
               to_return(body: File.read('samples/xml_input/Hiptest test run.xml'))
-            stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests?future=1").
+            stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests").
               to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
             args = [
               "--language", language,

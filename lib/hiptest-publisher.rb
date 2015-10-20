@@ -39,6 +39,7 @@ module Hiptest
 
     def run
       normalize_cli_options!
+      puts "URL: #{make_url(@cli_options)}".white if @cli_options.verbose
       begin
         CliOptionsChecker.new(@cli_options, reporter).check!
       rescue CliOptionError => e
@@ -52,7 +53,7 @@ module Hiptest
         return
       end
 
-      unless @cli_options.push.nil? || @cli_options.push.empty?
+      if push?(@cli_options)
         post_results
         return
       end
@@ -90,9 +91,10 @@ module Hiptest
     def get_project(xml)
       show_status_message "Extracting data"
       parser = Hiptest::XMLParser.new(xml, reporter)
-      show_status_message "Extracting data", :success
 
       return parser.build_project
+    ensure
+      show_status_message "Extracting data", :success
     end
 
     def write_to_file(path, message)

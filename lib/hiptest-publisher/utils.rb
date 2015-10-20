@@ -33,18 +33,25 @@ def make_filter(options)
   tags = options.filter_tags.split(',').map {|tag| "filter[]=tag:#{tag}"}
 
   filter = (ids + tags).join("&")
-  filter.empty? ? '' : "&#{filter}"
+  filter.empty? ? '' : "?#{filter}"
+end
+
+def make_url(options)
+  if push?(options)
+    "#{options.site}/import_test_results/#{options.token}/#{options.push_format}"
+  else
+    base_url = "#{options.site}/publication/#{options.token}"
+    if options.test_run_id.nil? || options.test_run_id.empty?
+      "#{base_url}/#{options.leafless_export ? 'leafless_tests' : 'project'}#{make_filter(options)}"
+    else
+      "#{base_url}/test_run/#{options.test_run_id}"
+    end
+  end
 end
 
 def fetch_project_export(options)
-  url = "#{options.site}/publication/#{options.token}"
-  if options.test_run_id.nil? || options.test_run_id.empty?
-    url = "#{url}/#{options.leafless_export ? 'leafless_tests' : 'project'}?future=1#{make_filter(options)}"
-  else
-    url = "#{url}/test_run/#{options.test_run_id}"
-  end
+  url = make_url(options)
 
-  puts "URL: #{url}".white if options.verbose
   open(url, "User-Agent" => 'Ruby/hiptest-publisher', :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
 end
 
@@ -63,14 +70,14 @@ def show_status_message(message, status=nil)
   output.print "[#{status_icon}] #{message}\r#{line_end}"
 end
 
-def make_push_url(options)
-  "#{options.site}/import_test_results/#{options.token}/#{options.push_format}"
+def push?(options)
+  options.push && !options.push.empty?
 end
 
 def push_results(options)
   # Code from: https://github.com/nicksieger/multipart-post
-  url = URI.parse(make_push_url(options))
-  use_ssl = make_push_url(options).start_with?('https://')
+  url = URI.parse(make_url(options))
+  use_ssl = (url.scheme == 'https')
 
   File.open(options.push) do |results|
     req = Net::HTTP::Post::Multipart.new(url.path, "file" => UploadIO.new(results, "text", "results.tap"))
