@@ -239,20 +239,20 @@ class TemplateFinder
     @compiled_handlebars[template] ||= handlebars.compile(File.read(template))
   end
 
-  def get_template_by_name(name, extension)
+  def get_template_by_name(name)
     return if name.nil?
     dirs.map do |path|
-      template_path = File.join(path, "#{name}.#{extension}")
+      template_path = File.join(path, "#{name}.hbs")
       template_path if File.file?(template_path)
     end.compact.first
   end
 
-  def get_template_path(template_name, extension = 'hbs')
-    get_template_by_name(template_name, extension) || get_template_by_name(@fallback_template, extension)
+  def get_template_path(template_name)
+    get_template_by_name(template_name) || get_template_by_name(@fallback_template)
   end
 
-  def get_template(template_name, extension = 'hbs')
-    template_file = get_template_path(template_name, extension = 'hbs')
+  def get_template(template_name)
+    template_file = get_template_path(template_name)
     if template_file
       get_compiled_handlebars(template).call(render_context)
     else
