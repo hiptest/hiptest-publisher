@@ -5,18 +5,26 @@ module Hiptest
 
       def walk_children(node)
         return unless node.is_a? Hiptest::Nodes::Node
-        node.children.values.each {|child| walk_node(child)}
+        node.children.each_value {|child| walk_node(child)}
       end
 
       def call_node_walker(node)
         return unless node.is_a? Hiptest::Nodes::Node
 
-        node_class = node.class.name.split('::').last.downcase
-        walk_method_name = "walk_#{node_class}".to_sym
-
-        if respond_to? walk_method_name
-          self.send(walk_method_name, node)
+        if respond_to? walk_method_name(node)
+          self.send(walk_method_name(node), node)
         end
+      end
+
+      def walk_method_name(node)
+        walk_method_names[node.class] ||= begin
+          node_class = node.class.name.split('::').last.downcase
+          "walk_#{node_class}".to_sym
+        end
+      end
+
+      def walk_method_names
+        @walk_method_names ||= {}
       end
     end
 

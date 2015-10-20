@@ -18,15 +18,14 @@ module Hiptest
         return Hiptest::Renderer.render(self, rendering_context)
       end
 
-      def find_sub_nodes(types = [])
+      def find_sub_nodes(*types)
         sub_nodes = all_sub_nodes
-        types = [types] unless types.is_a?(Array)
 
         if types.empty?
           sub_nodes
         else
-          sub_nodes.keep_if do |node|
-            types.map {|type| node.is_a?(type)}.include?(true)
+          sub_nodes.select do |node|
+            types.any? {|type| node.is_a?(type)}
           end
         end
       end
@@ -60,8 +59,8 @@ module Hiptest
       private
 
       def all_sub_nodes
+        return to_enum(:all_sub_nodes) unless block_given?
         path = [self]
-        children = []
         parsed_nodes_id = Set.new
 
         until path.empty?
@@ -70,14 +69,13 @@ module Hiptest
           if current_node.is_a?(Node)
             next if parsed_nodes_id.include? current_node.object_id
 
-            children << current_node
+            yield current_node
             parsed_nodes_id << current_node.object_id
-            current_node.children.values.reverse.each {|item| path << item}
+            current_node.children.values.reverse_each {|item| path << item}
           elsif current_node.is_a?(Array)
-            current_node.reverse.each {|item| path << item}
+            current_node.reverse_each {|item| path << item}
           end
         end
-        children
       end
     end
 
@@ -254,7 +252,7 @@ module Hiptest
 
       def declared_variables_names
         p_names = children[:parameters].map {|p| p.children[:name]}
-        find_sub_nodes([Hiptest::Nodes::Variable]).map do |var|
+        find_sub_nodes(Hiptest::Nodes::Variable).map do |var|
           v_name = var.children[:name]
           p_names.include?(v_name) ? nil : v_name
         end.uniq.compact

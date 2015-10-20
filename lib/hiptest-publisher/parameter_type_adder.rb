@@ -37,7 +37,7 @@ module Hiptest
       private
 
       def get_literal_values(node)
-        literals = node.find_sub_nodes([StringLiteral, NumericLiteral, BooleanLiteral])
+        literals = node.find_sub_nodes(StringLiteral, NumericLiteral, BooleanLiteral)
 
         return [[NullLiteral, nil]] if literals.empty?
         literals.map {|literal| [literal.class, literal.children[:value]]}
@@ -74,7 +74,7 @@ module Hiptest
       end
 
       def add_callable_item(name)
-        @callable_items[name] = {} unless @callable_items.keys.include?(name)
+        @callable_items[name] = {} unless @callable_items.has_key?(name)
         select_callable_item(name)
       end
 
@@ -89,7 +89,7 @@ module Hiptest
       end
 
       def type_of(item_name, parameter_name)
-        return unless @callable_items.keys.include?(item_name)
+        return unless @callable_items.has_key?(item_name)
         parameter =  @callable_items[item_name][parameter_name]
 
         return :String if parameter.nil? || parameter[:values].empty?
@@ -99,7 +99,7 @@ module Hiptest
       private
 
       def add_parameter(name)
-        return if @current.keys.include?(name)
+        return if @current.has_key?(name)
         @current[name] = {default: nil, values: []}
       end
 

@@ -219,20 +219,23 @@ class TemplateFinder
     @framework = framework
     @overriden_templates = overriden_templates
     @compiled_handlebars = {}
+    @template_path_by_name = {}
     @forced_templates = forced_templates || {}
     @fallback_template = fallback_template
     @context = {indentation: indentation}
   end
 
   def dirs
-    dirs = []
-    dirs << "#{language}/#{framework}" if framework
-    dirs << language
-    dirs << "common"
-    dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
+    @dirs ||= begin
+      search_dirs = []
+      search_dirs << "#{language}/#{framework}" if framework
+      search_dirs << language
+      search_dirs << "common"
+      search_dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
 
-    dirs.unshift(overriden_templates) if overriden_templates
-    dirs
+      search_dirs.unshift(overriden_templates) if overriden_templates
+      search_dirs
+    end
   end
 
   def get_compiled_handlebars(template)
@@ -241,14 +244,19 @@ class TemplateFinder
 
   def get_template_by_name(name)
     return if name.nil?
-    dirs.map do |path|
+    dirs.each do |path|
       template_path = File.join(path, "#{name}.hbs")
-      template_path if File.file?(template_path)
-    end.compact.first
+      return template_path if File.file?(template_path)
+    end
+    nil
   end
 
   def get_template_path(template_name)
-    get_template_by_name(template_name) || get_template_by_name(@fallback_template)
+    if @template_path_by_name.has_key?(template_name)
+      @template_path_by_name[template_name]
+    else
+      @template_path_by_name[template_name] = get_template_by_name(template_name) || get_template_by_name(@fallback_template)
+    end
   end
 
   def get_template(template_name)
@@ -261,7 +269,7 @@ class TemplateFinder
   end
 
   def register_partials
-    dirs.reverse.each do |path|
+    dirs.reverse_each do |path|
       next unless File.directory?(path)
       Dir.entries(path).select do |file_name|
         file_path = File.join(path, file_name)

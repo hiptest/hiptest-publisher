@@ -806,7 +806,7 @@ describe Hiptest::XMLParser do
       project = parser.build_project
 
       expect(project.children[:name]).to eq('Hiptest publisher')
-      expect(project.find_sub_nodes.length).to eq(95)
+      expect(project.find_sub_nodes.to_a.length).to eq(95)
       expect(project.find_sub_nodes(Hiptest::Nodes::Folder).length).to eq(4)
       expect(project.find_sub_nodes(Hiptest::Nodes::Scenario).length).to eq(2)
       expect(project.find_sub_nodes(Hiptest::Nodes::Actionword).length).to eq(4)
