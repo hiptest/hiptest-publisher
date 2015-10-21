@@ -178,7 +178,7 @@ end
 class NodeRenderingContext
 
   def initialize(properties)
-    # should contain  :node, :path, :template_dirs, :description, :indentation
+    # should contain  :node, :path, :description, :indentation
     @properties = OpenStruct.new(properties)
   end
 
@@ -238,12 +238,14 @@ class TemplateFinder
     end
   end
 
-  def get_compiled_handlebars(template)
-    @compiled_handlebars[template] ||= handlebars.compile(File.read(template))
+  def get_compiled_handlebars(template_name)
+    template_path = get_template_path(template_name)
+    @compiled_handlebars[template_path] ||= handlebars.compile(File.read(template_path))
   end
 
   def get_template_by_name(name)
     return if name.nil?
+    name = forced_templates.fetch(name, name)
     dirs.each do |path|
       template_path = File.join(path, "#{name}.hbs")
       return template_path if File.file?(template_path)
@@ -252,20 +254,10 @@ class TemplateFinder
   end
 
   def get_template_path(template_name)
-    if @template_path_by_name.has_key?(template_name)
-      @template_path_by_name[template_name]
-    else
+    unless @template_path_by_name.has_key?(template_name)
       @template_path_by_name[template_name] = get_template_by_name(template_name) || get_template_by_name(@fallback_template)
     end
-  end
-
-  def get_template(template_name)
-    template_file = get_template_path(template_name)
-    if template_file
-      get_compiled_handlebars(template).call(render_context)
-    else
-      raise ArgumentError.new("no template with name #{template_name}")
-    end
+    @template_path_by_name[template_name] or raise ArgumentError.new("no template with name #{template_name}")
   end
 
   def register_partials
@@ -354,10 +346,6 @@ class LanguageGroupConfig
     )
   end
 
-  def template_dirs
-    template_finder.dirs
-  end
-
   def each_node_rendering_context(project)
     return to_enum(:each_node_rendering_context, project) unless block_given?
     nodes(project).each do |node|
@@ -381,12 +369,9 @@ class LanguageGroupConfig
     NodeRenderingContext.new(
       path: path,
       indentation: indentation,
-      template_dirs: template_dirs,
       template_finder: template_finder,
-      forced_templates: forced_templates,
       description: description,
       node: node,
-      fallback_template: @language_group_params[:fallback_template],
       call_prefix: @language_group_params[:call_prefix],
       package: @language_group_params[:package],
     )

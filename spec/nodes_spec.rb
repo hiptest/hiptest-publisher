@@ -32,7 +32,14 @@ describe Hiptest::Nodes do
         yolo2 = yolo1
         template = Hiptest::Nodes::Template.new([yolo1, yolo2])
         expect(template.find_sub_nodes.to_a).to eq([template, yolo1])
-     end
+      end
+    end
+
+    context '#kind' do
+      it 'normalizes the node class name to a string used to lookup templates' do
+        node = Hiptest::Nodes::StringLiteral.new('coucou')
+        expect(node.kind).to eq('stringliteral')
+      end
     end
   end
 

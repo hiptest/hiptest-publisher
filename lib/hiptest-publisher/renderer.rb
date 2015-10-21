@@ -40,16 +40,7 @@ module Hiptest
       render_context[:rendered_children] = @rendered_children
       render_context[:context] = @context
 
-      template = @template_finder.get_template_path(normalized_name(node))
-      if template
-        @template_finder.get_compiled_handlebars(template).call(render_context)
-      else
-        raise ArgumentError.new("no template for node #{node.class}")
-      end
-    end
-
-    def normalized_name(node)
-      @context[:forced_templates].fetch(node.kind, node.kind)
+      @template_finder.get_compiled_handlebars(node.kind).call(render_context)
     end
   end
 end

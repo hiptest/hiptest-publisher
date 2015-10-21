@@ -7,16 +7,6 @@ require_relative '../lib/hiptest-publisher/renderer'
 require_relative '../lib/hiptest-publisher/nodes'
 
 describe Hiptest::Renderer do
-  context '#normalized_name' do
-    it 'normalizes the node name to a template name' do
-      node = Hiptest::Nodes::StringLiteral.new('coucou')
-      rendering_context = context_for(language: 'python')
-      renderer = Hiptest::Renderer.new(rendering_context)
-
-      expect(renderer.normalized_name(node)).to eq('stringliteral')
-    end
-  end
-
   describe "#render_node" do
     it "raises a ArgumentError when no templates is found" do
       class UnknownNode < Hiptest::Nodes::Node
