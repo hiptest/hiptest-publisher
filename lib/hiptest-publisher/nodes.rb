@@ -30,18 +30,14 @@ module Hiptest
         end
       end
 
-      def direct_children
-        direct = []
-
-        children.each do |key, child|
+      def each_direct_children
+        children.each_value do |child|
           if child.is_a? Hiptest::Nodes::Node
-            direct << child
+            yield child
           elsif child.is_a? Array
-            child.each {|c| direct << c if c.is_a? Hiptest::Nodes::Node }
+            child.each {|c| yield c if c.is_a? Hiptest::Nodes::Node }
           end
         end
-
-        direct
       end
 
       def ==(other)
@@ -56,7 +52,17 @@ module Hiptest
         project
       end
 
+      def kind
+        node_kinds[self.class] ||= begin
+          self.class.name.split('::').last.downcase
+        end
+      end
+
       private
+
+      def node_kinds
+        @@node_kinds ||= {}
+      end
 
       def all_sub_nodes
         return to_enum(:all_sub_nodes) unless block_given?
@@ -64,16 +70,16 @@ module Hiptest
         parsed_nodes_id = Set.new
 
         until path.empty?
-          current_node = path.pop
+          current_node = path.shift
 
           if current_node.is_a?(Node)
             next if parsed_nodes_id.include? current_node.object_id
 
             yield current_node
             parsed_nodes_id << current_node.object_id
-            current_node.children.values.reverse_each {|item| path << item}
+            current_node.children.each_value {|item| path << item}
           elsif current_node.is_a?(Array)
-            current_node.reverse_each {|item| path << item}
+            current_node.each {|item| path << item}
           end
         end
       end

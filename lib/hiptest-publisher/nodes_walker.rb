@@ -17,10 +17,7 @@ module Hiptest
       end
 
       def walk_method_name(node)
-        walk_method_names[node.class] ||= begin
-          node_class = node.class.name.split('::').last.downcase
-          "walk_#{node_class}".to_sym
-        end
+        walk_method_names[node.class] ||= "walk_#{node.kind}".to_sym
       end
 
       def walk_method_names

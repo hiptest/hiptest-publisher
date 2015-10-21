@@ -19,7 +19,9 @@ describe Hiptest::Renderer do
 
   describe "#render_node" do
     it "raises a ArgumentError when no templates is found" do
-      node = Object.new # no template file lib/template/ruby/object.hbs for ruby
+      class UnknownNode < Hiptest::Nodes::Node
+      end
+      node = UnknownNode.new # no template file lib/template/ruby/unknownnode.hbs for ruby
 
       rendering_context = context_for(language: 'ruby')
       renderer = Hiptest::Renderer.new(rendering_context)

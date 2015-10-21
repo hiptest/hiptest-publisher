@@ -9,7 +9,7 @@ module Hiptest
         super(node)
         return unless node.is_a? Hiptest::Nodes::Node
 
-        node.direct_children.each {|child|
+        node.each_direct_children {|child|
           child.parent ||= node
         }
       end

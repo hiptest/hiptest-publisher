@@ -49,11 +49,7 @@ module Hiptest
     end
 
     def normalized_name(node)
-      normalized_name = node.class.name.split('::').last.downcase
-      unless @context[:forced_templates][normalized_name].nil?
-        normalized_name = @context[:forced_templates][normalized_name]
-      end
-      normalized_name
+      @context[:forced_templates].fetch(node.kind, node.kind)
     end
   end
 end
