@@ -7,7 +7,7 @@ module Hiptest
     end
 
     def index_actionwords
-      @project.find_sub_nodes(Hiptest::Nodes::Actionword).each do |aw|
+      @project.each_sub_nodes(Hiptest::Nodes::Actionword) do |aw|
         aw_name = aw.children[:name]
         indexed_parameters = {}
 

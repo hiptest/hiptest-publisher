@@ -13,7 +13,7 @@ module Hiptest
     end
 
     def update_calls
-      @project.find_sub_nodes(Hiptest::Nodes::Call).each do |call|
+      @project.each_sub_nodes(Hiptest::Nodes::Call) do |call|
         aw_data = @indexer.get_index(call.children[:actionword])
         next if aw_data.nil?
 

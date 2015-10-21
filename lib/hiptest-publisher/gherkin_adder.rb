@@ -13,7 +13,7 @@ module Hiptest
     end
 
     def update_calls
-      @project.find_sub_nodes(Hiptest::Nodes::Call).each do |call|
+      @project.each_sub_nodes(Hiptest::Nodes::Call) do |call|
         call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
         if actionword = get_actionword(call)
           actionword.children[:gherkin_annotation] ||= code_annotation(call)

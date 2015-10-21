@@ -37,10 +37,12 @@ module Hiptest
       private
 
       def get_literal_values(node)
-        literals = node.find_sub_nodes(StringLiteral, NumericLiteral, BooleanLiteral)
-
-        return [[NullLiteral, nil]] if literals.empty?
-        literals.map {|literal| [literal.class, literal.children[:value]]}
+        values = []
+        node.each_sub_nodes(StringLiteral, NumericLiteral, BooleanLiteral) do |literal|
+          values << [literal.class, literal.children[:value]]
+        end
+        values << [NullLiteral, nil] if values.empty?
+        values
       end
     end
 

@@ -4,7 +4,7 @@ module Hiptest
       {
         :has_parameters? => !item.children[:parameters].empty?,
         :has_tags? => !item.children[:tags].empty?,
-        :has_step? => !item.find_sub_nodes(Hiptest::Nodes::Step).empty?,
+        :has_step? => has_step?(item),
         :is_empty? => item.children[:body].empty?,
         :declared_variables => item.declared_variables_names
       }
@@ -38,7 +38,7 @@ module Hiptest
       {
         :has_parameters? => false,
         :has_tags? => !test.children[:tags].empty?,
-        :has_step? => !test.find_sub_nodes(Hiptest::Nodes::Step).empty?,
+        :has_step? => has_step?(test),
         :is_empty? => test.children[:body].empty?,
         :has_datasets? => false,
         :project_name => test.parent.parent.children[:name],
@@ -88,6 +88,15 @@ module Hiptest
         :treated_chunks => treated,
         :variable_names => variable_names
       }
+    end
+
+    private
+
+    def has_step?(item)
+      item.each_sub_nodes do |node|
+        return true if node.is_a?(Hiptest::Nodes::Step)
+      end
+      false
     end
   end
 end

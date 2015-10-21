@@ -132,7 +132,7 @@ shared_examples 'scenario' do
     ].join("\n"))
 
     expect(node.children[:datatable]).to be_a(Hiptest::Nodes::Datatable)
-    expect(node.find_sub_nodes(Hiptest::Nodes::Dataset).length).to eq(2)
+    expect(node.each_sub_nodes(Hiptest::Nodes::Dataset).count).to eq(2)
   end
 end
 

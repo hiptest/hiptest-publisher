@@ -213,7 +213,7 @@ module Hiptest
 
     def build_scenarioSnapshot(scs)
       scenario = build_scenario(scs)
-      datasets = scenario.find_sub_nodes(Hiptest::Nodes::Dataset)
+      datasets = scenario.each_sub_nodes(Hiptest::Nodes::Dataset).to_a
 
       if datasets.empty?
         scenario.set_uid(css_first_content(scs, 'testSnapshot > uid'))

@@ -18,14 +18,24 @@ module Hiptest
         return Hiptest::Renderer.render(self, rendering_context)
       end
 
-      def find_sub_nodes(*types)
-        sub_nodes = all_sub_nodes
+      def each_sub_nodes(*types)
+        return to_enum(:each_sub_nodes, *types) unless block_given?
+        path = [self]
+        parsed_nodes_id = Set.new
 
-        if types.empty?
-          sub_nodes
-        else
-          sub_nodes.select do |node|
-            types.any? {|type| node.is_a?(type)}
+        until path.empty?
+          current_node = path.shift
+
+          if current_node.is_a?(Node)
+            next if parsed_nodes_id.include? current_node.object_id
+
+            if types.empty? || types.any? {|type| current_node.is_a?(type)}
+              yield current_node
+            end
+            parsed_nodes_id << current_node.object_id
+            current_node.children.each_value {|item| path << item}
+          elsif current_node.is_a?(Array)
+            current_node.each {|item| path << item}
           end
         end
       end
@@ -62,26 +72,6 @@ module Hiptest
 
       def node_kinds
         @@node_kinds ||= {}
-      end
-
-      def all_sub_nodes
-        return to_enum(:all_sub_nodes) unless block_given?
-        path = [self]
-        parsed_nodes_id = Set.new
-
-        until path.empty?
-          current_node = path.shift
-
-          if current_node.is_a?(Node)
-            next if parsed_nodes_id.include? current_node.object_id
-
-            yield current_node
-            parsed_nodes_id << current_node.object_id
-            current_node.children.each_value {|item| path << item}
-          elsif current_node.is_a?(Array)
-            current_node.each {|item| path << item}
-          end
-        end
       end
     end
 
@@ -258,7 +248,7 @@ module Hiptest
 
       def declared_variables_names
         p_names = children[:parameters].map {|p| p.children[:name]}
-        find_sub_nodes(Hiptest::Nodes::Variable).map do |var|
+        each_sub_nodes(Hiptest::Nodes::Variable).map do |var|
           v_name = var.children[:name]
           p_names.include?(v_name) ? nil : v_name
         end.uniq.compact
