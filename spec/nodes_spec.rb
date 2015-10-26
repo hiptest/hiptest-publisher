@@ -11,27 +11,53 @@ describe Hiptest::Nodes do
       let(:var) { Hiptest::Nodes::Variable.new('x') }
       let(:assign) { Hiptest::Nodes::Assign.new(var, literal) }
 
-      it 'finds all sub-nodes (including self)' do
-        expect(literal.each_sub_nodes.to_a).to eq([literal])
-        expect(assign.each_sub_nodes.to_a).to eq([assign, var, literal])
+      context "with deep: true" do
+        it 'finds all sub-nodes (including self)' do
+          expect(literal.each_sub_nodes(deep: true).to_a).to eq([literal])
+          expect(assign.each_sub_nodes(deep: true).to_a).to eq([assign, var, literal])
+        end
+
+        it 'can be filtered by type' do
+          expect(assign.each_sub_nodes(Hiptest::Nodes::Variable).to_a).to eq([var])
+        end
+
+        it 'finds two equal but distinct subnodes' do
+          yolo1 = Hiptest::Nodes::StringLiteral.new("YOLO!")
+          yolo2 = Hiptest::Nodes::StringLiteral.new("YOLO!")
+          template = Hiptest::Nodes::Template.new([yolo1, yolo2])
+          expect(template.each_sub_nodes(deep: true).to_a).to eq([template, yolo1, yolo2])
+        end
+
+        it 'finds same subnodes only once' do
+          yolo1 = Hiptest::Nodes::StringLiteral.new("YOLO!")
+          yolo2 = yolo1
+          template = Hiptest::Nodes::Template.new([yolo1, yolo2])
+          expect(template.each_sub_nodes(deep: true).to_a).to eq([template, yolo1])
+        end
       end
 
-      it 'can be filter by type' do
-        expect(assign.each_sub_nodes(Hiptest::Nodes::Variable).to_a).to eq([var])
-      end
+      context "with deep: false (the default)" do
+        it 'goes not deeper than the first found Node (for performance)' do
+          expect(assign.each_sub_nodes(Hiptest::Nodes::Variable).to_a).to eq([var])
+          expect(assign.each_sub_nodes(Hiptest::Nodes::Literal).to_a).to eq([literal])
+          expect(assign.each_sub_nodes(Hiptest::Nodes::Assign).to_a).to eq([assign])
+          expect(assign.each_sub_nodes.to_a).to eq([assign])
+        end
 
-      it 'finds two equal but distinct subnodes' do
-        yolo1 = Hiptest::Nodes::StringLiteral.new("YOLO!")
-        yolo2 = Hiptest::Nodes::StringLiteral.new("YOLO!")
-        template = Hiptest::Nodes::Template.new([yolo1, yolo2])
-        expect(template.each_sub_nodes.to_a).to eq([template, yolo1, yolo2])
-      end
+        it 'can be filtered by type' do
+          yolo1 = Hiptest::Nodes::StringLiteral.new("YOLO!")
+          yolo2 = Hiptest::Nodes::StringLiteral.new("YOLO!")
+          template = Hiptest::Nodes::Template.new([yolo1, yolo2])
+          expect(template.each_sub_nodes(Hiptest::Nodes::StringLiteral).to_a).to eq([yolo1, yolo2])
+          expect(template.each_sub_nodes(Hiptest::Nodes::Template).to_a).to eq([template])
+        end
 
-      it 'finds same subnodes only once' do
-        yolo1 = Hiptest::Nodes::StringLiteral.new("YOLO!")
-        yolo2 = yolo1
-        template = Hiptest::Nodes::Template.new([yolo1, yolo2])
-        expect(template.each_sub_nodes.to_a).to eq([template, yolo1])
+        it 'finds same subnodes only once' do
+          yolo1 = Hiptest::Nodes::StringLiteral.new("YOLO!")
+          yolo2 = yolo1
+          template = Hiptest::Nodes::Template.new([yolo1, yolo2])
+          expect(template.each_sub_nodes(Hiptest::Nodes::StringLiteral).to_a).to eq([yolo1])
+        end
       end
     end
 

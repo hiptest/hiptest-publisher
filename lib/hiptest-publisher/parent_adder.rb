@@ -1,16 +1,16 @@
+require 'hiptest-publisher/nodes_walker'
+
 module Hiptest
   module Nodes
-    class ParentAdder < ParentFirstWalker
+    class ParentAdder
       def self.add(project)
-        Hiptest::Nodes::ParentAdder.new.walk_node(project)
+        Hiptest::Nodes::ParentAdder.new.process(project)
       end
 
-      def walk_node(node)
-        super(node)
-        return unless node.is_a? Hiptest::Nodes::Node
-
+      def process(node)
         node.each_direct_children {|child|
           child.parent ||= node
+          process(child)
         }
       end
     end

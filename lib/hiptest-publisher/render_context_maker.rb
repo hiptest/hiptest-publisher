@@ -93,7 +93,7 @@ module Hiptest
     private
 
     def has_step?(item)
-      item.each_sub_nodes do |node|
+      item.each_sub_nodes(deep: true) do |node|
         return true if node.is_a?(Hiptest::Nodes::Step)
       end
       false

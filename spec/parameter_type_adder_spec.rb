@@ -41,6 +41,14 @@ describe Hiptest::Nodes do
         expect(parameter.children[:type]).to eq(:String)
       end
 
+      it 'gives string type if called with a variable in a template' do
+        parameter = type_adding(
+          Hiptest::Nodes::Parameter.new('x'),
+          Hiptest::Nodes::Template.new([Hiptest::Nodes::Variable.new('my_variable')])
+        )
+        expect(parameter.children[:type]).to eq(:String)
+      end
+
       it 'gives string type if called with a string value' do
         parameter = type_adding(Hiptest::Nodes::Parameter.new('x'), Hiptest::Nodes::StringLiteral.new('my string'))
         expect(parameter.children[:type]).to eq(:String)
@@ -187,6 +195,39 @@ describe Hiptest::Nodes do
         ])
 
         expect(parameter_types).to eq(["String", "String", "String"])
+      end
+
+      context 'when scenario contains calls' do
+        let(:scenario) {
+          calls = [
+            Hiptest::Nodes::Call.new('aw',
+              [Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::BooleanLiteral.new(true))])
+          ]
+
+          Hiptest::Nodes::Scenario.new('My scenario with calls', '', [], [
+            Hiptest::Nodes::Parameter.new('x'),
+            Hiptest::Nodes::Parameter.new('y'),
+            Hiptest::Nodes::Parameter.new('z')
+          ], calls)
+        }
+
+        it 'is not confused by the calls presence' do
+          scenario.children[:datatable] = Hiptest::Nodes::Datatable.new([
+            Hiptest::Nodes::Dataset.new('First row', [
+              Hiptest::Nodes::Argument.new('x',
+                Hiptest::Nodes::BooleanLiteral.new('true')
+              ),
+              Hiptest::Nodes::Argument.new('y',
+                Hiptest::Nodes::StringLiteral.new('Hi')
+              ),
+              Hiptest::Nodes::Argument.new('z',
+                Hiptest::Nodes::NumericLiteral.new('3.14')
+              ),
+            ])
+          ])
+
+          expect(parameter_types).to eq(["bool", "String", "float"])
+        end
       end
     end
 

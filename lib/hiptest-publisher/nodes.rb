@@ -18,8 +18,8 @@ module Hiptest
         return Hiptest::Renderer.render(self, rendering_context)
       end
 
-      def each_sub_nodes(*types)
-        return to_enum(:each_sub_nodes, *types) unless block_given?
+      def each_sub_nodes(*types, deep: false)
+        return to_enum(:each_sub_nodes, *types, deep: deep) unless block_given?
         path = [self]
         parsed_nodes_id = Set.new
 
@@ -28,11 +28,12 @@ module Hiptest
 
           if current_node.is_a?(Node)
             next if parsed_nodes_id.include? current_node.object_id
+            parsed_nodes_id << current_node.object_id
 
             if types.empty? || types.any? {|type| current_node.is_a?(type)}
               yield current_node
+              next unless deep
             end
-            parsed_nodes_id << current_node.object_id
             current_node.children.each_value {|item| path << item}
           elsif current_node.is_a?(Array)
             current_node.each {|item| path << item}

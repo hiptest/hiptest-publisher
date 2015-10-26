@@ -2,134 +2,102 @@ require 'hiptest-publisher/nodes_walker'
 
 module Hiptest
   module Nodes
-    class ParameterTypeAdder < ParentFirstWalker
+    class ParameterTypeAdder
       attr_reader :call_types
 
       def self.add(project)
-        walker = Hiptest::Nodes::ParameterTypeAdder.new
-        walker.walk_node(project)
-
-        Hiptest::Nodes::TypeWriter.new(walker.call_types).walk_node(project)
+        Hiptest::Nodes::ParameterTypeAdder.new.process(project)
       end
 
-      def walk_project(project)
+      def initialize
         @call_types = CallTypes.new
       end
 
-      def walk_call(call)
-        @call_types.add_callable_item(call.children[:actionword])
+      def process(project)
+        gather_scenarios_argument_types(project)
+        gather_call_argument_types(project)
+        write_parameter_types(project)
       end
 
-      def walk_argument(arg)
-        get_literal_values(arg).each {|value|
-          @call_types.add_argument(arg.children[:name], value[0], value[1])
-        }
+      def gather_scenarios_argument_types(project)
+        project.children[:scenarios].children[:scenarios].each do |scenario|
+          @call_types.add_callable_item(scenario.children[:name])
+          add_arguments_from(scenario.children[:datatable])
+        end
       end
 
-      def walk_actionword(actionword)
-        @call_types.add_callable_item(actionword.children[:name])
+      def gather_call_argument_types(project)
+        project.each_sub_nodes(Call) do |call|
+          @call_types.add_callable_item(call.children[:actionword])
+          add_arguments_from(call)
+        end
       end
 
-      def walk_scenario(scenario)
-        @call_types.add_callable_item(scenario.children[:name])
+      def write_parameter_types(project)
+        project.each_sub_nodes(Actionword, Scenario) do |callable_item|
+          callable_item.each_sub_nodes(Parameter) do |parameter|
+            parameter.children[:type] = @call_types.type_of(callable_item.children[:name], parameter.children[:name])
+          end
+        end
+      end
+
+      def add_arguments_from(node)
+        node.each_sub_nodes(Argument) do |argument|
+          @call_types.add_argument_type(argument.children[:name], get_type(argument))
+        end
       end
 
       private
 
-      def get_literal_values(node)
-        values = []
-        node.each_sub_nodes(StringLiteral, NumericLiteral, BooleanLiteral) do |literal|
-          values << [literal.class, literal.children[:value]]
+      def get_type(node)
+        value = node.children[:value]
+        case value
+          when StringLiteral, Template then :String
+          when NumericLiteral then value.children[:value].include?(".") ? :float : :int
+          when BooleanLiteral then :bool
+          else :null
         end
-        values << [NullLiteral, nil] if values.empty?
-        values
-      end
-    end
-
-    class TypeWriter < ParentFirstWalker
-      def initialize(call_types)
-        @call_types = call_types
-        @callable_item_name = nil
-      end
-
-      def walk_actionword actionword
-        @callable_item_name = actionword.children[:name]
-      end
-
-      def walk_scenario(scenario)
-        @callable_item_name = scenario.children[:name]
-      end
-
-      def walk_parameter parameter
-        parameter.children[:type] = @call_types.type_of(@callable_item_name, parameter.children[:name])
       end
     end
 
     class CallTypes
       def initialize
         @callable_items = {}
-        @current = nil
-      end
-
-      def select_callable_item(name)
-        @current = @callable_items[name]
+        @current_callable_item = nil
       end
 
       def add_callable_item(name)
-        @callable_items[name] = {} unless @callable_items.has_key?(name)
-        select_callable_item(name)
+        @callable_items[name] ||= {}
+        @current_callable_item = @callable_items[name]
       end
 
-      def add_argument(name, type, value)
-        add_parameter(name)
-        @current[name][:values] << {type: type, value: value}
-      end
-
-      def add_default_value(name, type, value)
-        add_parameter(name)
-        @current[name][:default] = {type: type, value: value}
+      def add_argument_type(name, type)
+        @current_callable_item[name] ||= {types: Set.new}
+        @current_callable_item[name][:types] << type
       end
 
       def type_of(item_name, parameter_name)
-        return unless @callable_items.has_key?(item_name)
-        parameter =  @callable_items[item_name][parameter_name]
+        callable_item =  @callable_items[item_name]
+        return :String if callable_item.nil?
+        parameter = callable_item[parameter_name]
 
-        return :String if parameter.nil? || parameter[:values].empty?
-        return type_from_values(parameter[:values])
+        return :String if parameter.nil?
+        return type_from_types(parameter[:types])
       end
 
       private
 
-      def add_parameter(name)
-        return if @current.has_key?(name)
-        @current[name] = {default: nil, values: []}
-      end
-
-      def type_from_values(values)
-        types = values.map {|val| val[:type] unless val[:type] == Hiptest::Nodes::NullLiteral}.compact.uniq
-
+      def type_from_types(types)
+        types = types - [:null]
         if types.empty?
           :null
         elsif types.length == 1
-          if types.first == Hiptest::Nodes::StringLiteral
-            :String
-          elsif types.first == Hiptest::Nodes::BooleanLiteral
-            :bool
-          elsif types.first == Hiptest::Nodes::NumericLiteral
-            determine_numeric(values)
-          end
+          types.first
+        elsif types == Set[:float, :int]
+          :float
         else
           :String
         end
-      end
-
-      def determine_numeric(values)
-        types = values.map do |val|
-          next unless val[:type] == Hiptest::Nodes::NumericLiteral
-          return :float if val[:value].include?(".")
-        end.compact.uniq
-
-        :int
       end
     end
   end
