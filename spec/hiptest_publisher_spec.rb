@@ -484,7 +484,7 @@ describe Hiptest::Publisher do
               expect {
                 run_publisher_expecting_exit("--token", "123", show_actionword_command, "--output-directory", output_dir)
               }.to output(a_string_including(
-                "Bad Action Words signature file: the file \"#{output_dir}/actionwords_signature.yaml\" is a directory")).to_stdout
+                "Bad Action Words signature file: the file \"#{Pathname.new(output_dir).realpath}/actionwords_signature.yaml\" is a directory")).to_stdout
             end
           end
         end
