@@ -6,7 +6,7 @@ require 'hiptest-publisher/handlebars_helper'
 require 'hiptest-publisher/render_context_maker'
 
 module Hiptest
-  class Renderer < Hiptest::Nodes::ChildrenFirstWalker
+  class Renderer < Hiptest::Nodes::Walker
     attr_reader :rendered
     include RenderContextMaker
 
