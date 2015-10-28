@@ -480,7 +480,8 @@ class LanguageConfigParser
 
   def group_config(group_name)
     if @config[group_name]
-      @config[group_name].map { |key, value| [key.to_sym, value] }.to_h
+      key_values = @config[group_name].map { |key, value| [key.to_sym, value] }
+      Hash[key_values]
     else
       {}
     end
