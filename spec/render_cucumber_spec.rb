@@ -252,6 +252,13 @@ describe 'Cucumber rendering' do
   end
 
   context 'Actionwords' do
+
+    let(:options) {
+      context_for(
+        only: "step_definitions",
+        language: "cucumber",
+      )
+    }
     let(:node_to_render) { project.children[:actionwords] }
 
     it 'generates an steps ruby file' do

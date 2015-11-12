@@ -205,18 +205,16 @@ end
 
 
 class TemplateFinder
-  attr_reader :language, :framework, :overriden_templates, :forced_templates, :fallback_template
+  attr_reader :template_dirs, :overriden_templates, :forced_templates, :fallback_template
 
   def initialize(
-      language: "ruby",
-      framework: nil,
+      template_dirs: nil,
       overriden_templates: nil,
       indentation: '  ',
       forced_templates: nil,
       fallback_template: nil,
       **)
-    @language = language
-    @framework = framework
+    @template_dirs = template_dirs || []
     @overriden_templates = overriden_templates
     @compiled_handlebars = {}
     @template_path_by_name = {}
@@ -227,12 +225,9 @@ class TemplateFinder
 
   def dirs
     @dirs ||= begin
-      search_dirs = []
-      search_dirs << "#{language}/#{framework}" if framework
-      search_dirs << language
-      search_dirs << "common"
-      search_dirs.map! { |path| "#{hiptest_publisher_path}/lib/templates/#{path}" }
-
+      search_dirs = template_dirs.map { |path|
+        "#{hiptest_publisher_path}/lib/templates/#{path}"
+      }
       search_dirs.unshift(overriden_templates) if overriden_templates
       search_dirs
     end
@@ -257,7 +252,7 @@ class TemplateFinder
     unless @template_path_by_name.has_key?(template_name)
       @template_path_by_name[template_name] = get_template_by_name(template_name) || get_template_by_name(@fallback_template)
     end
-    @template_path_by_name[template_name] or raise ArgumentError.new("no template with name #{template_name}")
+    @template_path_by_name[template_name] or raise ArgumentError.new("no template with name #{template_name} in dirs #{dirs}")
   end
 
   def register_partials
@@ -289,8 +284,6 @@ class LanguageGroupConfig
     @split_scenarios = user_params.split_scenarios
     @with_folders = user_params.with_folders
     @leafless_export = user_params.leafless_export
-    @user_language = user_params.language
-    @user_framework = user_params.framework
     @language_group_params = language_group_params || {}
   end
 
@@ -335,10 +328,17 @@ class LanguageGroupConfig
     forced
   end
 
+  def template_dirs
+    if @language_group_params[:template_dirs]
+      @language_group_params[:template_dirs].split(',').map(&:strip)
+    else
+      []
+    end
+  end
+
   def template_finder
     @template_finder ||= TemplateFinder.new(
-      language: @language_group_params[:language] || @user_language,
-      framework: @language_group_params[:framework] || @user_framework,
+      template_dirs: template_dirs,
       overriden_templates: @language_group_params[:overriden_templates],
       indentation: indentation,
       forced_templates: forced_templates,
@@ -492,7 +492,6 @@ class LanguageConfigParser
     language_group_params.merge!(group_config(group_name))
     language_group_params[:group_name] = group_name
     language_group_params[:package] = @cli_options.package if @cli_options.package
-    language_group_params[:framework] = @cli_options.framework if @cli_options.framework
 
     unless @cli_options.overriden_templates.nil? || @cli_options.overriden_templates.empty?
       language_group_params[:overriden_templates] = @cli_options.overriden_templates
