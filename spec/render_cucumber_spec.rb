@@ -121,6 +121,14 @@ describe 'Cucumber rendering' do
 
   subject(:rendered) { node_to_render.render(options) }
 
+  context 'Argument with a nil value' do
+    let(:node_to_render) { make_argument("first_color", nil) }
+
+    it 'renders as empty string' do
+      expect(rendered).to eq('')
+    end
+  end
+
   context 'Test' do
     let(:node_to_render) { create_white_test }
 
