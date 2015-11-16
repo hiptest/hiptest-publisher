@@ -81,11 +81,11 @@ module Hiptest
     end
 
     def hh_remove_quotes (context, s, block)
-      "#{s.gsub('"', '')}"
+      s ? s.gsub('"', '') : ""
     end
 
     def hh_escape_quotes (context, s, block)
-      "#{s.gsub(/"/) {|_| '\\"' }}"
+      s ? s.gsub(/"/, '\\"') : ""
     end
 
     def hh_comment (context, commenter, block)

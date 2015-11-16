@@ -210,6 +210,10 @@ describe Hiptest::HandlebarsHelper do
     it 'leaves single quotes' do
       expect(instance.hh_remove_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
     end
+
+    it 'returns empty string when nil' do
+      expect(instance.hh_remove_quotes(nil, nil, nil)).to eq("")
+    end
   end
 
   context 'hh_escape_quotes' do
@@ -219,6 +223,10 @@ describe Hiptest::HandlebarsHelper do
 
     it 'leaves single quotes' do
       expect(instance.hh_escape_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+    end
+
+    it 'returns empty string when nil' do
+      expect(instance.hh_escape_quotes(nil, nil, nil)).to eq("")
     end
   end
 
