@@ -92,6 +92,25 @@ describe String do
     end
   end
 
+  context 'camelize_upper' do
+    it 'returns the string in upper camelCase' do
+      expect('camel_case'.camelize_upper).to eq('CamelCase')
+      expect('almostCamelCaseString'.camelize_upper).to eq('AlmostCamelCaseString')
+    end
+
+    it 'leaves intact a string already camelized' do
+      expect('aCamelCaseString'.camelize_upper).to eq('ACamelCaseString')
+    end
+
+    it 'normalize the string before' do
+      expect('Skøl ofenstrü'.camelize_upper).to eq('SkolOfenstru')
+    end
+
+    it "does not fail with multiple spaces" do
+      expect('Tra la  la'.camelize_upper).to eq('TraLaLa')
+    end
+  end
+
   context 'clear_extension' do
     it 'removes the extension' do
       expect('MyProject.java'.clear_extension).to eq('MyProject')

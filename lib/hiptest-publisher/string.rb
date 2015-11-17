@@ -33,16 +33,21 @@ class String
   end
 
   def camelize_lower
-    normalized = self.normalize
-    normalized.split('_').enum_for(:each_with_index).map do |w, i|
-      if w.empty?
-        ""
-      elsif i == 0
-        "#{w[0].downcase}#{w[1..-1]}"
-      else
-        "#{w[0].upcase}#{w[1..-1]}"
-      end
-    end.join
+    camelized = self.camelize
+    if camelized.empty?
+      ""
+    else
+      "#{camelized[0].downcase}#{camelized[1..-1]}"
+    end
+  end
+
+  def camelize_upper
+    camelized = self.camelize
+    if camelized.empty?
+      ""
+    else
+      "#{camelized[0].upcase}#{camelized[1..-1]}"
+    end
   end
 
   def clear_extension

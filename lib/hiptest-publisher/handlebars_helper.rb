@@ -19,7 +19,9 @@ module Hiptest
         :underscore,
         :camelize,
         :camelize_lower,
-        :clear_extension
+        :camelize_upper,
+        :clear_extension,
+        :downcase
       ]
 
       string_helpers.each do |helper|
