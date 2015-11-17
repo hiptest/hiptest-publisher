@@ -1,0 +1,3 @@
+public void {{{ camelize scenario_name}}}{{{ camelize rendered_children.name}}}{{#if rendered_children.uid}}Uid{{{ normalize rendered_children.uid}}}{{/if}}() {{#curly}}
+{{#indent}}{{{ camelize scenario_name }}}({{{ join rendered_children.arguments ', '}}});{{/indent}}
+{{/curly}}

@@ -374,6 +374,7 @@ class LanguageGroupConfig
       node: node,
       call_prefix: @language_group_params[:call_prefix],
       package: @language_group_params[:package],
+      namespace: @language_group_params[:namespace]
     )
   end
 

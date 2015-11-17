@@ -306,10 +306,6 @@ shared_examples "a renderer" do
       expect(@foo_variable.render(@context)).to eq(@foo_variable_rendered)
     end
 
-    it 'Variable' do
-      expect(@foo_variable.render(@context)).to eq(@foo_variable_rendered)
-    end
-
     it 'Property' do
       expect(@foo_fighters_prop.render(@context)).to eq(@foo_fighters_prop_rendered)
     end

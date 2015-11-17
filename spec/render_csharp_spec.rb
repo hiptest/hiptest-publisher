@@ -1,0 +1,516 @@
+require_relative 'spec_helper'
+require_relative "render_shared"
+
+describe 'Render as C#' do
+  include_context "shared render"
+
+  before(:each) do
+    # In Hiptest: null
+    @null_rendered = 'null'
+
+    # In Hiptest: 'What is your quest ?'
+    @what_is_your_quest_rendered = '"What is your quest ?"'
+
+    # In Hiptest: 3.14
+    @pi_rendered = '3.14'
+
+    # In Hiptest: false
+    @false_rendered = 'false'
+
+    # In Hiptest: "${foo}fighters"
+    @foo_template_rendered = 'foo + "fighters"'
+
+    # In Hiptest: "Fighters said \"Foo !\""
+    @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
+
+    # In Hiptest: foo (as in 'foo := 1')
+    @foo_variable_rendered = 'foo'
+    @foo_bar_variable_rendered = 'fooBar'
+
+    # In Hiptest: foo.fighters
+    # TODO: Shouldn't have a better manner ?
+    @foo_dot_fighters_rendered = 'foo.fighters'
+
+    # In Hiptest: foo['fighters']
+    @foo_brackets_fighters_rendered = 'foo["fighters"]'
+
+    # In Hiptest: -foo
+    @minus_foo_rendered = '-foo'
+
+    # In Hiptest: foo - 'fighters'
+    @foo_minus_fighters_rendered = 'foo - "fighters"'
+
+    # In Hiptest: (foo)
+    @parenthesis_foo_rendered = '(foo)'
+
+    # In Hiptest: [foo, 'fighters']
+    @foo_list_rendered = '{foo, "fighters"}'
+
+    # In Hiptest: foo: 'fighters'
+    @foo_fighters_prop_rendered = '{foo, "fighters"}'
+
+    # In Hiptest: {foo: 'fighters', Alt: J}
+    @foo_dict_rendered = 'new Dictionary<String, String>() {{foo, "fighters"}, {Alt, J}}'
+
+    # In Hiptest: foo := 'fighters'
+    @assign_fighters_to_foo_rendered = "foo = \"fighters\";"
+
+    # In Hiptest: call 'foo'
+    @call_foo_rendered = "Actionwords.Foo();"
+    # In Hiptest: call 'foo bar'
+    @call_foo_bar_rendered = "Actionwords.FooBar();"
+
+    # In Hiptest: call 'foo'('fighters')
+    @call_foo_with_fighters_rendered = 'Actionwords.Foo("fighters");'
+    # In Hiptest: call 'foo bar'('fighters')
+    @call_foo_bar_with_fighters_rendered = 'Actionwords.FooBar("fighters");'
+
+    # In Hiptest: step {action: "${foo}fighters"}
+    # TODO: it is a little big strange to use a string format
+    @action_foo_fighters_rendered = '// TODO: Implement action: foo + "fighters"'
+
+    # In Hiptest:
+    # if (true)
+    #   foo := 'fighters'
+    #end
+    @if_then_rendered = [
+      "if (true) {",
+      "    foo = \"fighters\";",
+      "}"
+    ].join("\n")
+
+    # In Hiptest:
+    # if (true)
+    #   foo := 'fighters'
+    # else
+    #   fighters := 'foo'
+    #end
+    @if_then_else_rendered = [
+      "if (true) {",
+      '    foo = "fighters";',
+      "} else {",
+      '    fighters = "foo";',
+      "}"
+    ].join("\n")
+
+    # In Hiptest:
+    # while (foo)
+    #   fighters := 'foo'
+    #   foo('fighters')
+    # end
+    @while_loop_rendered = [
+      "while (foo) {",
+      '    fighters = "foo";',
+      '    Actionwords.Foo("fighters");',
+      "}"
+    ].join("\n")
+
+    # In Hiptest: @myTag
+    @simple_tag_rendered = 'myTag'
+
+    # In Hiptest: @myTag:somevalue
+    @valued_tag_rendered = 'myTag:somevalue'
+
+    # In Hiptest: plic (as in: definition 'foo'(plic))
+    @plic_param_rendered = 'string plic'
+
+    # In Hiptest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
+    # TODO: how render default value ?
+    @plic_param_default_ploc_rendered = "string plic"
+
+    # In Hiptest:
+    # actionword 'my action word' do
+    # end
+    @empty_action_word_rendered = [
+      "public void MyActionWord() {",
+      "",
+      "}"].join("\n")
+
+
+    # In Hiptest:
+    # @myTag @myTag:somevalue
+    # actionword 'my action word' do
+    # end
+    @tagged_action_word_rendered = [
+      "public void MyActionWord() {",
+      "    // Tags: myTag myTag:somevalue",
+      "}"].join("\n")
+
+    # In Hiptest:
+    # actionword 'my action word' (plic, flip = 'flap') do
+    # end
+    @parameterized_action_word_rendered = [
+      "public void MyActionWord(string plic, string flip) {",
+      "",
+      "}"].join("\n")
+
+    # In Hiptest:
+    # @myTag
+    # actionword 'compare to pi' (x) do
+    #   foo := 3.14
+    #   if (foo > x)
+    #     step {result: "x is greater than Pi"}
+    #   else
+    #     step {result: "x is lower than Pi
+    #       on two lines"}
+    #   end
+    # end
+    @full_actionword_rendered = [
+      "public void CompareToPi(string x) {",
+      "    // Tags: myTag",
+      "    foo = 3.14;",
+      "    if (foo > x) {",
+      "        // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "        // TODO: Implement result: x is lower than Pi",
+      "        // on two lines",
+      "    }",
+      "    throw new NotImplementedException();",
+      "}"].join("\n")
+
+    # In Hiptest:
+    # actionword 'my action word' do
+    #   step {action: "basic action"}
+    # end
+    @step_action_word_rendered = [
+      "public void MyActionWord() {",
+      "    // TODO: Implement action: basic action",
+      "    throw new NotImplementedException();",
+      "}"].join("\n")
+
+    # In Hiptest, correspond to two action words:
+    # actionword 'first action word' do
+    # end
+    # actionword 'second action word' do
+    #   call 'first action word'
+    # end
+    @actionwords_rendered = [
+      "namespace Example {",
+      "",
+      "    public class Actionwords {",
+      "",
+      "        public void FirstActionWord() {",
+      "",
+      "        }",
+      "",
+      "        public void SecondActionWord() {",
+      "            this.FirstActionWord();",
+      "        }",
+      "    }",
+      "}"].join("\n")
+
+    # In Hiptest, correspond to these action words with parameters:
+    # actionword 'aw with int param'(x) do end
+    # actionword 'aw with float param'(x) do end
+    # actionword 'aw with boolean param'(x) do end
+    # actionword 'aw with null param'(x) do end
+    # actionword 'aw with string param'(x) do end
+    #
+    # but called by this scenario
+    # scenario 'many calls scenarios' do
+    #   call 'aw with int param'(x = 3)
+    #   call 'aw with float param'(x = 4.2)
+    #   call 'aw with boolean param'(x = true)
+    #   call 'aw with null param'(x = null)
+    #   call 'aw with string param'(x = 'toto')
+    #   call 'aw with template param'(x = "toto")
+    @actionwords_with_params_rendered = [
+      "namespace Example {",
+      "",
+      "    public class Actionwords {",
+      "",
+      "        public void AwWithIntParam(int x) {",
+      "",
+      "        }",
+      "",
+      "        public void AwWithFloatParam(float x) {",
+      "",
+      "        }",
+      "",
+      "        public void AwWithBooleanParam(bool x) {",
+      "",
+      "        }",
+      "",
+      "        public void AwWithNullParam(string x) {",
+      "",
+      "        }",
+      "",
+      "        public void AwWithStringParam(string x) {",
+      "",
+      "        }",
+      "",
+      "        public void AwWithTemplateParam(string x) {",
+      "",
+      "        }",
+      "    }",
+      "}"
+    ].join("\n")
+
+    # In Hiptest:
+    # @myTag
+    # scenario 'compare to pi' (x) do
+    #   foo := 3.14
+    #   if (foo > x)
+    #     step {result: "x is greater than Pi"}
+    #   else
+    #     step {result: "x is lower than Pi
+    #       on two lines"}
+    #   end
+    # end
+    @full_scenario_rendered = [
+      "// This is a scenario which description ",
+      "// is on two lines",
+      "// Tags: myTag",
+      "public void CompareToPi() {",
+      "    foo = 3.14;",
+      "    if (foo > x) {",
+      "        // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "        // TODO: Implement result: x is lower than Pi",
+      "        // on two lines",
+      "    }",
+      "",
+      "    throw new NotImplementedException();",
+      "}"].join("\n")
+
+    @full_scenario_with_uid_rendered = [
+      "// This is a scenario which description ",
+      "// is on two lines",
+      "// Tags: myTag",
+      "public void CompareToPiUidabcd1234() {",
+      "    foo = 3.14;",
+      "    if (foo > x) {",
+      "        // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "        // TODO: Implement result: x is lower than Pi",
+      "        // on two lines",
+      "    }",
+      "",
+      "    throw new NotImplementedException();",
+      "}"].join("\n")
+
+    @full_scenario_rendered_for_single_file = [
+      "namespace Example {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "",
+      "    public class MyScenarioTest {",
+      "",
+      "        public Actionwords Actionwords = new Actionwords();",
+      "",
+      "        // This is a scenario which description ",
+      "        // is on two lines",
+      "        // Tags: myTag",
+      "        public void CompareToPi() {",
+      "            foo = 3.14;",
+      "            if (foo > x) {",
+      "                // TODO: Implement result: x is greater than Pi",
+      "            } else {",
+      "                // TODO: Implement result: x is lower than Pi",
+      "                // on two lines",
+      "            }",
+      "",
+      "            throw new NotImplementedException();",
+      "        }",
+      "    }",
+      "}"].join("\n")
+
+    # Scenario definition is:
+    # call 'fill login' (login = login)
+    # call 'fill password' (password = password)
+    # call 'press enter'
+    # call 'assert "error" is displayed' (error = expected)
+
+    # Scenario datatable is:
+    # Dataset name         | login   | password | expected
+    # -------------------------------------------------------------------------
+    # Wrong login          | invalid | invalid  | 'Invalid username or password
+    # Wrong password       | valid   | invalid  | 'Invalid username or password
+    # Valid login/password | valid   | valid    | nil
+
+    @scenario_with_datatable_rendered = [
+      "public void CheckLogin(string login, string password, string expected) {",
+      "    Actionwords.FillLogin(login);",
+      "    Actionwords.FillPassword(password);",
+      "    Actionwords.PressEnter();",
+      "    Actionwords.AssertErrorIsDisplayed(expected);",
+      "}",
+      "",
+      "public void CheckLoginWrongLogin() {",
+      '    CheckLogin("invalid", "invalid", "Invalid username or password");',
+      "}",
+      "",
+      "public void CheckLoginWrongPassword() {",
+      '    CheckLogin("valid", "invalid", "Invalid username or password");',
+      "}",
+      "",
+      "public void CheckLoginValidLoginpassword() {",
+      '    CheckLogin("valid", "valid", null);',
+      "}",
+      "",
+      ""
+    ].join("\n")
+
+    @scenario_with_datatable_rendered_with_uids = [
+      "public void CheckLogin(string login, string password, string expected) {",
+      "    Actionwords.FillLogin(login);",
+      "    Actionwords.FillPassword(password);",
+      "    Actionwords.PressEnter();",
+      "    Actionwords.AssertErrorIsDisplayed(expected);",
+      "}",
+      "",
+      "public void CheckLoginWrongLoginUida123() {",
+      '    CheckLogin("invalid", "invalid", "Invalid username or password");',
+      "}",
+      "",
+      "public void CheckLoginWrongPasswordUidb456() {",
+      '    CheckLogin("valid", "invalid", "Invalid username or password");',
+      "}",
+      "",
+      "public void CheckLoginValidLoginpasswordUidc789() {",
+      '    CheckLogin("valid", "valid", null);',
+      "}",
+      "",
+      ""
+    ].join("\n")
+
+
+    # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
+    @scenario_with_datatable_rendered_in_single_file = [
+      "namespace Example {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "",
+      "    public class MyScenarioTest {",
+      "",
+      "        public Actionwords Actionwords = new Actionwords();",
+      "",
+      "        public void CheckLogin(string login, string password, string expected) {",
+      "            Actionwords.FillLogin(login);",
+      "            Actionwords.FillPassword(password);",
+      "            Actionwords.PressEnter();",
+      "            Actionwords.AssertErrorIsDisplayed(expected);",
+      "        }",
+      "",
+      "        public void CheckLoginWrongLogin() {",
+      '            CheckLogin("invalid", "invalid", "Invalid username or password");',
+      "        }",
+      "",
+      "        public void CheckLoginWrongPassword() {",
+      '            CheckLogin("valid", "invalid", "Invalid username or password");',
+      "        }",
+      "",
+      "        public void CheckLoginValidLoginpassword() {",
+      '            CheckLogin("valid", "valid", null);',
+      "        }",
+      "    }",
+      "}"
+    ].join("\n")
+
+    # In Hiptest, correspond to two scenarios in a project called 'My project'
+    # scenario 'first scenario' do
+    # end
+    # scenario 'second scenario' do
+    #   call 'my action word'
+    # end
+    @scenarios_rendered = [
+      "namespace Example {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "",
+      "    public class ProjectTest {",
+      "",
+      "        public Actionwords Actionwords = new Actionwords();",
+      "",
+      "        public void FirstScenario() {",
+      "        }",
+      "",
+      "        public void SecondScenario() {",
+      "            Actionwords.MyActionWord();",
+      "        }",
+      "    }",
+      "}"
+    ].join("\n")
+
+    @tests_rendered = [
+      "namespace Example {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "",
+      "    public class ProjectTest {",
+      "",
+      '        public Actionwords Actionwords = new Actionwords();',
+      '        // The description is on ',
+      '        // two lines',
+      '        // Tags: myTag myTag:somevalue',
+      '        public void Login() {',
+      '            Actionwords.Visit("/login");',
+      '            Actionwords.Fill("user@example.com");',
+      '            Actionwords.Fill("s3cret");',
+      '            Actionwords.Click(".login-form input[type=submit]");',
+      '            Actionwords.CheckUrl("/welcome");',
+      '        }',
+      '        // ',
+      '        // Tags: myTag:somevalue',
+      '        public void FailedLogin() {',
+      '            Actionwords.Visit("/login");',
+      '            Actionwords.Fill("user@example.com");',
+      '            Actionwords.Fill("notTh4tS3cret");',
+      '            Actionwords.Click(".login-form input[type=submit]");',
+      '            Actionwords.CheckUrl("/login");',
+      '        }',
+      '    }',
+      '}'
+    ].join("\n")
+
+    @first_test_rendered = [
+      '// The description is on ',
+      '// two lines',
+      '// Tags: myTag myTag:somevalue',
+      'public void Login() {',
+      '    Actionwords.Visit("/login");',
+      '    Actionwords.Fill("user@example.com");',
+      '    Actionwords.Fill("s3cret");',
+      '    Actionwords.Click(".login-form input[type=submit]");',
+      '    Actionwords.CheckUrl("/welcome");',
+      '}'
+    ].join("\n")
+
+    @first_test_rendered_for_single_file = [
+      "namespace Example {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "",
+      "    public class MyScenarioTest {",
+      "",
+      '        public Actionwords Actionwords = new Actionwords();',
+      '',
+      '        // The description is on ',
+      '        // two lines',
+      '        // Tags: myTag myTag:somevalue',
+      '        public void Login() {',
+      '            Actionwords.Visit("/login");',
+      '            Actionwords.Fill("user@example.com");',
+      '            Actionwords.Fill("s3cret");',
+      '            Actionwords.Click(".login-form input[type=submit]");',
+      '            Actionwords.CheckUrl("/welcome");',
+      '        }',
+      '    }',
+      '}'
+    ].join("\n")
+  end
+
+  context '<The test framework>' do
+    it_behaves_like "a renderer" do
+      let(:language) {'csharp'}
+      let(:framework) {'nunit'}
+      let(:test_name) { 'my scenario' }
+      let(:namespace) { 'example' }
+    end
+  end
+end
