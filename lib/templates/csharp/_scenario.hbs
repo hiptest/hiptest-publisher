@@ -3,5 +3,6 @@
 {{else}}{{#comment '//'}}{{{ rendered_children.description }}}
 {{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
 {{/comment}}
+[Test]
 public void {{{ camelize rendered_children.name }}}{{#if rendered_children.uid}}Uid{{{ normalize rendered_children.uid}}}{{/if}}() {{#curly}}{{> body}}
 {{/curly}}{{/if}}
