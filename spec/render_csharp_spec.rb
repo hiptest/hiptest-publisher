@@ -537,3 +537,11 @@ describe 'Render as C#' do
     end
   end
 end
+
+
+describe 'default namespace' do
+  it 'uses Example for C#' do
+    rendering_context = context_for(language: 'csharp')
+    expect(rendering_context.namespace).to eq('Example')
+  end
+end

@@ -493,6 +493,8 @@ class LanguageConfigParser
     language_group_params.merge!(group_config(group_name))
     language_group_params[:group_name] = group_name
     language_group_params[:package] = @cli_options.package if @cli_options.package
+    language_group_params[:namespace] = @cli_options.namespace if @cli_options.namespace
+
 
     unless @cli_options.overriden_templates.nil? || @cli_options.overriden_templates.empty?
       language_group_params[:overriden_templates] = @cli_options.overriden_templates

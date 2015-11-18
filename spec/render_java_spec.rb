@@ -778,7 +778,6 @@ describe 'Render as Java' do
 end
 
 describe 'default package' do
-
   it "uses com.example as default package name for Java/JUnit" do
     rendering_context = context_for(language: 'java', framework: 'JUnit')
     expect(rendering_context.package).to eq('com.example')
@@ -789,3 +788,4 @@ describe 'default package' do
     expect(rendering_context.package).to eq('com.example')
   end
 end
+
