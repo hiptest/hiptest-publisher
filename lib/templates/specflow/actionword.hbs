@@ -1,0 +1,5 @@
+[Given(@"{{{escape_quotes rendered_children.gherkin_pattern }}}")]
+public void {{{ camelize_upper rendered_children.name }}}({{#if has_parameters?}}{{{join rendered_children.parameters ', '}}}{{/if}}) {{#curly}}{{#indent}}
+{{ camelize_upper rendered_children.name }}({{{ join rendered_children.parameters ', '}}});
+{{/indent}}
+{{/curly}}
