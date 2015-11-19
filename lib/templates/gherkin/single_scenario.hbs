@@ -1,4 +1,3 @@
-Feature: {{{ rendered_children.name }}}{{#indent}}
 {{#if has_datasets?}}
 Scenario Outline: {{{ rendered_children.name }}}{{#indent}}
 {{#each rendered_children.body}}{{{ this }}}
@@ -13,4 +12,3 @@ Scenario: {{{ rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{re
 {{/each}}
 {{/indent}}
 {{/if}}
-{{/indent}}

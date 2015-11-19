@@ -613,7 +613,7 @@ shared_examples "a BDD renderer" do
   context 'Test' do
     let(:node_to_render) { create_white_test }
 
-    it 'generates an feature file' do
+    it 'generates a feature file' do
       expect(rendered).to eq([
         "Scenario: Create white",
         "  Given the color \"blue\"",
@@ -632,13 +632,12 @@ shared_examples "a BDD renderer" do
 
     it 'generates a feature file' do
       expect(rendered).to eq([
-        "Feature: Create green",
         "",
-        "  Scenario: Create green",
-        "    Given the color \"blue\"",
-        "    And the color \"yellow\"",
-        "    When you mix colors",
-        "    Then you obtain \"green\"",
+        "Scenario: Create green",
+        "  Given the color \"blue\"",
+        "  And the color \"yellow\"",
+        "  When you mix colors",
+        "  Then you obtain \"green\"",
         "",
       ].join("\n"))
     end
@@ -647,13 +646,12 @@ shared_examples "a BDD renderer" do
       scenario.children[:uid] = '1234-4567'
 
       expect(rendered).to eq([
-        "Feature: Create green",
         "",
-        "  Scenario: Create green (uid:1234-4567)",
-        "    Given the color \"blue\"",
-        "    And the color \"yellow\"",
-        "    When you mix colors",
-        "    Then you obtain \"green\"",
+        "Scenario: Create green (uid:1234-4567)",
+        "  Given the color \"blue\"",
+        "  And the color \"yellow\"",
+        "  When you mix colors",
+        "  Then you obtain \"green\"",
         "",
       ].join("\n"))
     end
@@ -663,13 +661,12 @@ shared_examples "a BDD renderer" do
 
       it 'generates a feature file with bullet points steps' do
         expect(rendered).to eq([
-          "Feature: Create orange",
           "",
-          "  Scenario: Create orange",
-          "    * the color \"red\"",
-          "    * the color \"yellow\"",
-          "    * you mix colors",
-          "    * you obtain \"orange\"",
+          "Scenario: Create orange",
+          "  * the color \"red\"",
+          "  * the color \"yellow\"",
+          "  * you mix colors",
+          "  * you obtain \"orange\"",
           "",
         ].join("\n"))
       end
@@ -680,19 +677,18 @@ shared_examples "a BDD renderer" do
 
       it 'generates a feature file with an Examples section' do
         expect(rendered).to eq([
-          "Feature: Create secondary colors",
           "",
-          "  Scenario Outline: Create secondary colors",
-          "    Given the color \"<first_color>\"",
-          "    And the color \"<second_color>\"",
-          "    When you mix colors",
-          "    Then you obtain \"<got_color>\"",
+          "Scenario Outline: Create secondary colors",
+          "  Given the color \"<first_color>\"",
+          "  And the color \"<second_color>\"",
+          "  When you mix colors",
+          "  Then you obtain \"<got_color>\"",
           "",
-          "    Examples:",
-          "      | first_color | second_color | got_color | hiptest-uid |",
-          "      | blue | yellow | green |  |",
-          "      | yellow | red | orange |  |",
-          "      | red | blue | purple |  |",
+          "  Examples:",
+          "    | first_color | second_color | got_color | hiptest-uid |",
+          "    | blue | yellow | green |  |",
+          "    | yellow | red | orange |  |",
+          "    | red | blue | purple |  |",
           "",
         ].join("\n"))
       end
@@ -703,19 +699,18 @@ shared_examples "a BDD renderer" do
         datasets.last.children[:uid] = '5678'
 
         expect(rendered).to eq([
-          "Feature: Create secondary colors",
           "",
-          "  Scenario Outline: Create secondary colors",
-          "    Given the color \"<first_color>\"",
-          "    And the color \"<second_color>\"",
-          "    When you mix colors",
-          "    Then you obtain \"<got_color>\"",
+          "Scenario Outline: Create secondary colors",
+          "  Given the color \"<first_color>\"",
+          "  And the color \"<second_color>\"",
+          "  When you mix colors",
+          "  Then you obtain \"<got_color>\"",
           "",
-          "    Examples:",
-          "      | first_color | second_color | got_color | hiptest-uid |",
-          "      | blue | yellow | green | uid:1234 |",
-          "      | yellow | red | orange |  |",
-          "      | red | blue | purple | uid:5678 |",
+          "  Examples:",
+          "    | first_color | second_color | got_color | hiptest-uid |",
+          "    | blue | yellow | green | uid:1234 |",
+          "    | yellow | red | orange |  |",
+          "    | red | blue | purple | uid:5678 |",
           "",
         ].join("\n"))
       end
@@ -733,9 +728,9 @@ shared_examples "a BDD renderer" do
 
     it 'generates a features.feature file asking to use --split-scenarios' do
       expect(rendered).to eq([
-        "# To export your project to Cucumber correctly, please add the option",
+        "# To export your project to Gherkin correctly, please add the option",
         "# --split-scenarios when calling hiptest-publisher. It will generate one",
-        "# feature file per scenario from your project.",
+        "# feature file per folder from your project."
       ].join("\n"))
     end
   end

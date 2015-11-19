@@ -110,30 +110,24 @@ describe LanguageGroupConfig do
 
 
   context "outputing feature files" do
-
-    it "with cucumber-folders_as_features language, ignores folder nodes without any scenarios" do
-      language_group_config = language_group_config_for(
-        only: "features",
-        language: "cucumber",
-        framework: "folders_as_features",
-      )
-      nodes = language_group_config.nodes(project)
-      # using node names to limit output when test fails
-      expect(node_names(nodes)).not_to include(*node_names([root_folder, trade_folder, loan_folder]))
+    ['cucumber', 'specflow'].each do |language|
+      it "with Gherkin language, ignores folder nodes without any scenarios" do
+        language_group_config = language_group_config_for(
+          only: "features",
+          language: language
+        )
+        nodes = language_group_config.nodes(project)
+        # using node names to limit output when test fails
+        expect(node_names(nodes)).not_to include(*node_names([root_folder, trade_folder, loan_folder]))
+      end
     end
 
-
-    [
-      "cucumber",
-      "cucumber-folders_as_features"
-    ].each do |dialect|
-      it "with #{dialect} language --split-scenarios is forced" do
-        language, framework = dialect.split("-", 2)
+    ['cucumber', 'specflow'].each do |language|
+      it "with #{language} language --split-scenarios is forced" do
 
         language_group_config_splitted = language_group_config_for(
           only: "features",
           language: language,
-          framework: framework,
           split_scenarios: true,
         )
         filenames_splitted = language_group_config_splitted.each_node_rendering_context(project).map(&:path)
@@ -141,7 +135,6 @@ describe LanguageGroupConfig do
         language_group_config_not_splitted = language_group_config_for(
           only: "features",
           language: language,
-          framework: framework,
           split_scenarios: false,
         )
         filenames_not_splitted = language_group_config_not_splitted.each_node_rendering_context(project).map(&:path)
@@ -152,17 +145,13 @@ describe LanguageGroupConfig do
 
     context "without --with-folders" do
       let(:with_folders) { false }
+      let(:output_files) { ["/Buy_goods.feature", "/Sell_goods.feature"] }
 
-      {
-        "cucumber"                      => ["/Buy_Pontarlier.feature", "/Sell_Mont_dOr.feature"],
-        "cucumber-folders_as_features"  => ["/Buy_goods.feature", "/Sell_goods.feature"],
-      }.each do |dialect, output_files|
-        it "for #{dialect} language, it outputs scenarios in feature files #{output_files.join(', ')}" do
-          language, framework = dialect.split("-", 2)
+      ['cucumber', 'specflow'].each do |language|
+        it "for #{language} language, it outputs scenarios in feature files based on the folder" do
           language_group_config = language_group_config_for(
             only: "features",
             language: language,
-            framework: framework,
             with_folders: with_folders,
           )
           filenames = language_group_config.each_node_rendering_context(project).map(&:path)
@@ -173,17 +162,14 @@ describe LanguageGroupConfig do
 
     context "with --with-folders" do
       let(:with_folders) { true }
+      let(:output_files) { ["/Global_trades/Buy_goods.feature", "/Global_trades/Sell_goods.feature"] }
 
-      {
-        "cucumber"                      => ["/Global_trades/Buy_goods/Buy_Pontarlier.feature", "/Global_trades/Sell_goods/Sell_Mont_dOr.feature"],
-        "cucumber-folders_as_features"  => ["/Global_trades/Buy_goods.feature", "/Global_trades/Sell_goods.feature"],
-      }.each do |dialect, output_files|
-        it "for #{dialect} language, it outputs scenarios in feature files #{output_files.join(', ')}" do
-          language, framework = dialect.split("-", 2)
+
+      ['cucumber', 'specflow'].each do |language|
+        it "for #{language} language, it outputs scenarios in feature files based on the folder" do
           language_group_config = language_group_config_for(
             only: "features",
             language: language,
-            framework: framework,
             with_folders: with_folders,
           )
           filenames = language_group_config.each_node_rendering_context(project).map(&:path)
