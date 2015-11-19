@@ -1,6 +1,6 @@
-require_relative 'spec_helper'
-require_relative '../lib/hiptest-publisher/nodes'
-require_relative '../lib/hiptest-publisher/call_arguments_adder'
+require_relative '../spec_helper'
+require_relative '../../lib/hiptest-publisher/nodes'
+require_relative '../../lib/hiptest-publisher/call_arguments_adder'
 
 describe 'Selenium IDE rendering' do
   include HelperFactories

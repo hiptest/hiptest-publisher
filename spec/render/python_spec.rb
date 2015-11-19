@@ -1,5 +1,5 @@
-require_relative 'spec_helper'
-require_relative "render_shared"
+require_relative '../spec_helper'
+require_relative "../render_shared"
 
 describe 'Render as Python' do
   include_context "shared render"

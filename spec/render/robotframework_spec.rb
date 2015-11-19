@@ -1,5 +1,5 @@
-require_relative 'spec_helper'
-require_relative "render_shared"
+require_relative '../spec_helper'
+require_relative "../render_shared"
 
 # ALPHA VERSON: search for "NOT SUPPORTED YET" to found what is not yet supported.
 
