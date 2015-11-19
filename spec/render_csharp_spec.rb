@@ -185,7 +185,7 @@ describe 'Render as C#' do
     #   call 'first action word'
     # end
     @actionwords_rendered = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    public class Actionwords {",
       "",
@@ -215,7 +215,7 @@ describe 'Render as C#' do
     #   call 'aw with string param'(x = 'toto')
     #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    public class Actionwords {",
       "",
@@ -292,7 +292,7 @@ describe 'Render as C#' do
       "}"].join("\n")
 
     @full_scenario_rendered_for_single_file = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    using System;",
       "    using NUnit.Framework;",
@@ -388,7 +388,7 @@ describe 'Render as C#' do
 
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    using System;",
       "    using NUnit.Framework;",
@@ -430,7 +430,7 @@ describe 'Render as C#' do
     #   call 'my action word'
     # end
     @scenarios_rendered = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    using System;",
       "    using NUnit.Framework;",
@@ -453,7 +453,7 @@ describe 'Render as C#' do
     ].join("\n")
 
     @tests_rendered = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    using System;",
       "    using NUnit.Framework;",
@@ -502,7 +502,7 @@ describe 'Render as C#' do
     ].join("\n")
 
     @first_test_rendered_for_single_file = [
-      "namespace Example {",
+      "namespace MyProject {",
       "",
       "    using System;",
       "    using NUnit.Framework;",
@@ -533,7 +533,7 @@ describe 'Render as C#' do
       let(:language) {'csharp'}
       let(:framework) {'nunit'}
       let(:test_name) { 'my scenario' }
-      let(:namespace) { 'example' }
+      let(:namespace) { 'MyProject' }
     end
   end
 end

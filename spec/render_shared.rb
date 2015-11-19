@@ -269,10 +269,11 @@ shared_context "shared render" do
       only: only,
       # test_name to customize the resulting file name (used by java for the class name)
       test_name: test_name,
-      # in tests, simulate user options like --language, --framework, --split_scenarios, or package= (in config file)
+      # in tests, simulate user options like --language, --framework, --split_scenarios, package= or namespace= (in config file)
       language: language,
       framework: framework,
       split_scenarios: split_scenarios,
+      namespace: namespace,
       package: package)
   end
 end
@@ -282,6 +283,7 @@ shared_examples "a renderer" do
   let(:split_scenarios) { nil }
   let(:test_name) { nil }
   let(:package) { nil } # only used for Java
+  let(:namespace) { nil } # only used for C#
 
   context "[tests] group" do
     let(:only) { 'tests' }
