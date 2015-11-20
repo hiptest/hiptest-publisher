@@ -250,6 +250,15 @@ describe 'Render as <My language>' do
       "  end",
       "end"].join("\n")
 
+    # In hiptest
+    # scenario 'reset password' do
+    #   call given 'Page "url" is opened'(url='/login')
+    #   call when 'I click on "link"'(link='Reset password')
+    #   call then 'page "url" should be opened'(url='/reset-password')
+    # end
+    @bdd_scenario_rendered = [
+    ].join("\n")
+
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [

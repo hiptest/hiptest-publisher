@@ -274,6 +274,20 @@ describe 'Render as C#' do
       "    throw new NotImplementedException();",
       "}"].join("\n")
 
+
+    @bdd_scenario_rendered = [
+      '',
+      '[Test]',
+      'public void ResetPassword() {',
+      '    // Given Page "/login" is opened',
+      '    Actionwords.PageUrlIsOpened("/login");',
+      '    // When I click on "Reset password"',
+      '    Actionwords.IClickOnLink("Reset password");',
+      '    // Then Page "/reset-password" should be opened',
+      '    Actionwords.PageUrlShouldBeOpened("/reset-password");',
+      '}'
+    ].join("\n")
+
     @full_scenario_with_uid_rendered = [
       "// This is a scenario which description ",
       "// is on two lines",

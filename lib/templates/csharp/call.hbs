@@ -1,1 +1,2 @@
-{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}{{{ camelize_upper rendered_children.actionword }}}({{{ join rendered_children.arguments ', '}}});
+{{#if has_annotation? }}{{#comment '//'}}{{{ rendered_children.gherkin_text }}}{{/comment}}
+{{/if}}{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}{{{ camelize_upper rendered_children.actionword }}}({{{ join rendered_children.arguments ', '}}});

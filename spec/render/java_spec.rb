@@ -279,6 +279,24 @@ describe 'Render as Java' do
         "    throw new UnsupportedOperationException();",
         "}"].join("\n")
 
+        # In hiptest
+        # scenario 'reset password' do
+        #   call given 'Page "url" is opened'(url='/login')
+        #   call when 'I click on "link"'(link='Reset password')
+        #   call then 'page "url" should be opened'(url='/reset-password')
+        # end
+        @bdd_scenario_rendered = [
+          '',
+          'public void testResetPassword() {',
+          '    // Given Page "/login" is opened',
+          '    actionwords.pageUrlIsOpened("/login");',
+          '    // When I click on "Reset password"',
+          '    actionwords.iClickOnLink("Reset password");',
+          '    // Then Page "/reset-password" should be opened',
+          '    actionwords.pageUrlShouldBeOpened("/reset-password");',
+          '}'
+        ].join("\n")
+
       @full_scenario_with_uid_rendered = [
         "// This is a scenario which description ",
         "// is on two lines",
@@ -526,6 +544,25 @@ describe 'Render as Java' do
         "",
         "    throw new UnsupportedOperationException();",
         "}"].join("\n")
+
+      # In hiptest
+      # scenario 'reset password' do
+      #   call given 'Page "url" is opened'(url='/login')
+      #   call when 'I click on "link"'(link='Reset password')
+      #   call then 'page "url" should be opened'(url='/reset-password')
+      # end
+      @bdd_scenario_rendered = [
+          '',
+          '@Test',
+          'public void resetPassword() {',
+          '    // Given Page "/login" is opened',
+          '    actionwords.pageUrlIsOpened("/login");',
+          '    // When I click on "Reset password"',
+          '    actionwords.iClickOnLink("Reset password");',
+          '    // Then Page "/reset-password" should be opened',
+          '    actionwords.pageUrlShouldBeOpened("/reset-password");',
+          '}'
+      ].join("\n")
 
       @full_scenario_with_uid_rendered = [
         "// This is a scenario which description ",

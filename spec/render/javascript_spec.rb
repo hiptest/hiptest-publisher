@@ -253,6 +253,23 @@ describe 'Render as Javascript' do
       "  throw 'Not implemented';",
       "});"].join("\n")
 
+    # In hiptest
+    # scenario 'reset password' do
+    #   call given 'Page "url" is opened'(url='/login')
+    #   call when 'I click on "link"'(link='Reset password')
+    #   call then 'page "url" should be opened'(url='/reset-password')
+    # end
+    @bdd_scenario_rendered = [
+      'test(\'Reset password\', function () {',
+      '  // Given Page "/login" is opened',
+      '  this.actionwords.pageUrlIsOpened(\'/login\');',
+      '  // When I click on "Reset password"',
+      '  this.actionwords.iClickOnLink(\'Reset password\');',
+      '  // Then Page "/reset-password" should be opened',
+      '  this.actionwords.pageUrlShouldBeOpened(\'/reset-password\');',
+      '});',
+    ].join("\n")
+
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
@@ -516,6 +533,23 @@ describe 'Render as Javascript' do
         "  }",
         "  throw 'Not implemented';",
         "});"].join("\n")
+
+      # In hiptest
+      # scenario 'reset password' do
+      #   call given 'Page "url" is opened'(url='/login')
+      #   call when 'I click on "link"'(link='Reset password')
+      #   call then 'page "url" should be opened'(url='/reset-password')
+      # end
+      @bdd_scenario_rendered = [
+        'it(\'Reset password\', function () {',
+        '  // Given Page "/login" is opened',
+        '  this.actionwords.pageUrlIsOpened(\'/login\');',
+        '  // When I click on "Reset password"',
+        '  this.actionwords.iClickOnLink(\'Reset password\');',
+        '  // Then Page "/reset-password" should be opened',
+        '  this.actionwords.pageUrlShouldBeOpened(\'/reset-password\');',
+        '});',
+      ].join("\n")
 
       # Same than previous scenario, except that is is rendered
       # so it can be used in a single file (using the --split-scenarios option)

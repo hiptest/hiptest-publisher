@@ -261,12 +261,44 @@ shared_context "shared render" do
           Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('/login')
         )])
       ])
-    @second_test
 
     @tests = Hiptest::Nodes::Tests.new([@first_test, @second_test])
     @first_test.parent = @tests
     @second_test.parent = @tests
     @tests.parent = Hiptest::Nodes::Project.new('My test project')
+
+
+    # In hiptest
+    # scenario 'reset password' do
+    #   call given 'Page "url" is opened'(url='/login')
+    #   call when 'I click on "link"'(link='Reset password')
+    #   call then 'page "url" should be opened'(url='/reset-password')
+    # end
+    @bdd_scenario = Hiptest::Nodes::Scenario.new(
+      'Reset password',
+      '',
+      [],
+      [],
+      [
+        Hiptest::Nodes::Call.new('Page "url" is opened', [
+          Hiptest::Nodes::Argument.new('url', Hiptest::Nodes::StringLiteral.new('/login'))
+        ], "given"),
+        Hiptest::Nodes::Call.new('I click on "link"', [
+          Hiptest::Nodes::Argument.new('link', Hiptest::Nodes::StringLiteral.new('Reset password'))
+        ], "when"),
+        Hiptest::Nodes::Call.new('Page "url" should be opened', [
+          Hiptest::Nodes::Argument.new('url', Hiptest::Nodes::StringLiteral.new('/reset-password'))
+        ], 'then')
+      ])
+    @bdd_project = Hiptest::Nodes::Project.new('My BDD project')
+    @bdd_project.children[:actionwords] = Hiptest::Nodes::Actionwords.new([
+      Hiptest::Nodes::Actionword.new('Page "url" is opened', [], [Hiptest::Nodes::Parameter.new('url')], []),
+      Hiptest::Nodes::Actionword.new('I click on "link"', [], [Hiptest::Nodes::Parameter.new('link')], []),
+      Hiptest::Nodes::Actionword.new('Page "url" should be opened', [], [Hiptest::Nodes::Parameter.new('url')], [])
+    ])
+    @bdd_project.children[:scenarios] = Hiptest::Nodes::Scenarios.new([@bdd_scenario])
+    Hiptest::Nodes::ParentAdder.add(@bdd_project)
+    Hiptest::GherkinAdder.add(@bdd_project)
 
     @context = context_for(
       # only to select the right config group: we render [actionwords], [tests] and others differently
@@ -443,6 +475,10 @@ shared_examples "a renderer" do
 
         expect(@scenario_with_datatable.render(@context)).to eq(
           @scenario_with_datatable_rendered_with_uids)
+      end
+
+      it 'shows BDD annotations when present' do
+        expect(@bdd_scenario.render(@context)).to eq(@bdd_scenario_rendered)
       end
     end
 

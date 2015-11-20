@@ -53,7 +53,8 @@ module Hiptest
 
     def walk_call(c)
       {
-        :has_arguments? => !c.children[:arguments].empty?
+        :has_arguments? => !c.children[:arguments].empty?,
+        :has_annotation? => !c.children[:annotation].nil?
       }
     end
 

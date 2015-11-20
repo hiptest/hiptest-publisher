@@ -104,12 +104,20 @@ describe Hiptest::RenderContextMaker do
       node = Hiptest::Nodes::Call.new('my_action_word')
 
       expect(subject.walk_call(node)).to eq({
-        :has_arguments? => false
+        :has_arguments? => false,
+        :has_annotation? => false
       })
 
       node.children[:arguments] << 'x'
       expect(subject.walk_call(node)).to eq({
-        :has_arguments? => true
+        :has_arguments? => true,
+        :has_annotation? => false
+      })
+
+      node.children[:annotation] = 'Given'
+      expect(subject.walk_call(node)).to eq({
+        :has_arguments? => true,
+        :has_annotation? => true
       })
     end
   end

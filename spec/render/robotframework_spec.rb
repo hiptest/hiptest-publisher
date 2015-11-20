@@ -236,6 +236,26 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
+    # In hiptest
+    # scenario 'reset password' do
+    #   call given 'Page "url" is opened'(url='/login')
+    #   call when 'I click on "link"'(link='Reset password')
+    #   call then 'page "url" should be opened'(url='/reset-password')
+    # end
+    @bdd_scenario_rendered = [
+      "",
+      "*** Test Cases ***",
+      "",
+      "reset_password",
+      "\t# Given Page \"/login\" is opened",
+      "\tpage_url_is_opened\t/login",
+      "\t# When I click on \"Reset password\"",
+      "\ti_click_on_link\tReset password",
+      "\t# Then Page \"/reset-password\" should be opened",
+      "\tpage_url_should_be_opened\t/reset-password",
+      ""
+    ].join("\n")
+
     @full_scenario_with_uid_rendered = [
       "",
       "*** Test Cases ***",

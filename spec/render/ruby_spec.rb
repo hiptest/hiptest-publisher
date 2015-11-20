@@ -186,6 +186,23 @@ describe 'Render as Ruby' do
         "  raise NotImplementedError",
         "end"].join("\n")
 
+      # In hiptest
+      # scenario 'reset password' do
+      #   call given 'Page "url" is opened'(url='/login')
+      #   call when 'I click on "link"'(link='Reset password')
+      #   call then 'page "url" should be opened'(url='/reset-password')
+      # end
+      @bdd_scenario_rendered = [
+        'it "Reset password" do',
+        '  # Given Page "/login" is opened',
+        '  page_url_is_opened(\'/login\')',
+        '  # When I click on "Reset password"',
+        '  i_click_on_link(\'Reset password\')',
+        '  # Then Page "/reset-password" should be opened',
+        '  page_url_should_be_opened(\'/reset-password\')',
+        'end'
+      ].join("\n")
+
       @full_scenario_rendered_for_single_file = [
         "# encoding: UTF-8",
         "require 'spec_helper'",
@@ -411,6 +428,23 @@ describe 'Render as Ruby' do
         "  end",
         "  raise NotImplementedError",
         "end"].join("\n")
+
+      # In hiptest
+      # scenario 'reset password' do
+      #   call given 'Page "url" is opened'(url='/login')
+      #   call when 'I click on "link"'(link='Reset password')
+      #   call then 'page "url" should be opened'(url='/reset-password')
+      # end
+      @bdd_scenario_rendered = [
+        'def test_Reset_password',
+        '  # Given Page "/login" is opened',
+        '  page_url_is_opened(\'/login\')',
+        '  # When I click on "Reset password"',
+        '  i_click_on_link(\'Reset password\')',
+        '  # Then Page "/reset-password" should be opened',
+        '  page_url_should_be_opened(\'/reset-password\')',
+        'end',
+      ].join("\n")
 
       @full_scenario_with_uid_rendered = [
         "def test_compare_to_pi_uidabcd1234",

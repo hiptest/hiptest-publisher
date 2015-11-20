@@ -258,6 +258,23 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
+    # In hiptest
+    # scenario 'reset password' do
+    #   call given 'Page "url" is opened'(url='/login')
+    #   call when 'I click on "link"'(link='Reset password')
+    #   call then 'page "url" should be opened'(url='/reset-password')
+    # end
+    @bdd_scenario_rendered = [
+      'def test_Reset_password(self):',
+      '    # Given Page "/login" is opened',
+      '    self.actionwords.page_url_is_opened(url = \'/login\')',
+      '    # When I click on "Reset password"',
+      '    self.actionwords.i_click_on_link(link = \'Reset password\')',
+      '    # Then Page "/reset-password" should be opened',
+      '    self.actionwords.page_url_should_be_opened(url = \'/reset-password\')',
+      ''
+    ].join("\n")
+
     @full_scenario_with_uid_rendered = [
       "def test_compare_to_pi_uidabcd1234(self, x):",
       "    # This is a scenario which description ",
