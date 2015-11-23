@@ -49,12 +49,12 @@ GEM
     json (1.8.2)
     jwt (1.2.1)
     method_source (0.8.2)
-    mini_portile (0.7.0.rc4)
+    mini_portile2 (2.0.0.rc2)
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    nokogiri (1.6.7.rc3)
-      mini_portile (~> 0.7.0.rc4)
+    nokogiri (1.6.7.rc4)
+      mini_portile2 (~> 2.0.0.rc2)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -115,7 +115,7 @@ DEPENDENCIES
   i18n (~> 0.7, >= 0.7.0)
   jeweler (~> 2.0, >= 2.0.1)
   multipart-post (~> 2.0, >= 2.0.0)
-  nokogiri (= 1.6.7.rc3)
+  nokogiri (= 1.6.7.rc4)
   parseconfig (~> 1.0, >= 1.0.4)
   pry (~> 0)
   pry-byebug (~> 3)
@@ -124,3 +124,6 @@ DEPENDENCIES
   rspec-mocks (~> 3.3)
   ruby-handlebars (~> 0.0.2)
   webmock
+
+BUNDLED WITH
+   1.10.6
