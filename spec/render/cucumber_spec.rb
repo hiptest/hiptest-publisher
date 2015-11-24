@@ -35,23 +35,23 @@ describe 'Cucumber/Java rendering' do
 
     let(:rendered_actionwords) {
       [
-        'package ;',
+        'package com.example;',
         '',
         'public class MyStepdefs {',
-        '  @Given("^the color \"(.*)\"$")',
-        '  public void theColorColor(String color) {',
-        '    theColorColor(color);',
-        '  }',
+        '    @Given("^the color \"(.*)\"$")',
+        '    public void theColorColor(String color) {',
+        '        theColorColor(color);',
+        '    }',
         '',
-        '  @Given("^you mix colors$")',
-        '  public void youMixColors() {',
-        '    youMixColors();',
-        '  }',
+        '    @Given("^you mix colors$")',
+        '    public void youMixColors() {',
+        '        youMixColors();',
+        '    }',
         '',
-        '  @Given("^you obtain \"(.*)\"$")',
-        '  public void youObtainColor(String color) {',
-        '    youObtainColor(color);',
-        '  }',
+        '    @Given("^you obtain \"(.*)\"$")',
+        '    public void youObtainColor(String color) {',
+        '        youObtainColor(color);',
+        '    }',
         '}'
       ].join("\n")
     }
