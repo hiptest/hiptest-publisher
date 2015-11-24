@@ -7,7 +7,7 @@ describe 'Specflow rendering' do
 
     let(:rendered_actionwords) {
       [
-        'namespace  {',
+        'namespace Example {',
         '',
         '    [Binding]',
         '    public class StepDefinitions {',
