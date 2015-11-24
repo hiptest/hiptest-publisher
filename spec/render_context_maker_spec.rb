@@ -14,7 +14,8 @@ describe Hiptest::RenderContextMaker do
         :has_tags?,
         :has_step?,
         :is_empty?,
-        :declared_variables
+        :declared_variables,
+        :raw_parameter_names
       ])
     end
 
@@ -55,6 +56,16 @@ describe Hiptest::RenderContextMaker do
       node.children[:body] << 'x'
       expect(subject.walk_item(node)[:is_empty?]).to be false
     end
+
+    it ':raw_parameter_names gives the raw names of the parameters' do
+      expect(subject.walk_item(node)[:raw_parameter_names]).to eq([])
+
+      node.children[:parameters] << Hiptest::Nodes::Parameter.new('bli')
+      node.children[:parameters] << Hiptest::Nodes::Parameter.new('bla')
+      node.children[:parameters] << Hiptest::Nodes::Parameter.new('blu blu')
+
+      expect(subject.walk_item(node)[:raw_parameter_names]).to eq(['bli', 'bla', 'blu blu'])
+    end
   end
 
   context 'walk_scenario' do
@@ -72,6 +83,7 @@ describe Hiptest::RenderContextMaker do
         :has_step?,
         :is_empty?,
         :declared_variables,
+        :raw_parameter_names,
         :project_name,
         :has_datasets?
       ])

@@ -526,6 +526,9 @@ shared_examples "a BDD renderer" do
 
   # Note: we do not want to test everything as we'll only render
   # tests and calls.
+  # You have to define language and framework.
+  let(:language) {nil}
+  let(:framework) {nil}
 
   let(:root_folder) { make_folder("Colors") }
   let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
@@ -633,6 +636,7 @@ shared_examples "a BDD renderer" do
     context_for(
       only: "features",
       language: language,
+      framework: framework
     )
   }
 
@@ -759,6 +763,7 @@ shared_examples "a BDD renderer" do
       context_for(
         only: "features",
         language: language,
+        framework: framework
       )
     }
 
@@ -776,44 +781,13 @@ shared_examples "a BDD renderer" do
       context_for(
         only: "step_definitions",
         language: language,
+        framework: framework
       )
     }
     let(:node_to_render) { project.children[:actionwords] }
 
     it 'generates a steps definitions mapping' do
       expect(rendered).to eq(rendered_actionwords)
-    end
-  end
-
-  context 'Folders as feature files' do
-    let(:node_to_render) { cool_colors_folder }
-    let(:options) {
-      context_for(
-        only: "features",
-        language: language,
-        framework: "folders_as_features",  # hack
-      )
-    }
-
-    it 'generates Feature from the folder, and Scenarios from folder scenarios' do
-      expect(rendered).to eq([
-        "Feature: Cool colors",
-        "    Cool colors calm and relax.",
-        "    They are the hues from blue green through blue violet, most grays included.",
-        "",
-        "  Scenario: Create green",
-        "    Given the color \"blue\"",
-        "    And the color \"yellow\"",
-        "    When you mix colors",
-        "    Then you obtain \"green\"",
-        "",
-        "  Scenario: Create purple",
-        "    Given the color \"blue\"",
-        "    And the color \"red\"",
-        "    When you mix colors",
-        "    Then you obtain \"purple\"",
-        "",
-      ].join("\n"))
     end
   end
 end

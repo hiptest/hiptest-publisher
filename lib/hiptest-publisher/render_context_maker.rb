@@ -6,7 +6,8 @@ module Hiptest
         :has_tags? => !item.children[:tags].empty?,
         :has_step? => has_step?(item),
         :is_empty? => item.children[:body].empty?,
-        :declared_variables => item.declared_variables_names
+        :declared_variables => item.declared_variables_names,
+        :raw_parameter_names => item.children[:parameters].map {|p| p.children[:name] }
       }
     end
 
