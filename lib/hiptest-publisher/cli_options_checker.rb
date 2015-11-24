@@ -85,6 +85,15 @@ module Hiptest
       if present?(cli_options.test_run_id) && !numeric?(cli_options.test_run_id)
         raise CliOptionError, "Invalid format --test-run-id=\"#{@cli_options.test_run_id}\": the test run id must be numeric"
       end
+
+      # language
+      if present?(cli_options.language)
+        begin
+          LanguageConfigParser.config_path_for(cli_options)
+        rescue ArgumentError => err
+          raise CliOptionError, err.message
+        end
+      end
     end
 
     private

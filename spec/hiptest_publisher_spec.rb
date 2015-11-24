@@ -339,6 +339,22 @@ describe Hiptest::Publisher do
       end
     end
 
+    context 'with unknown language ONLY' do
+      it 'outputs an error message indicating that language is unknown' do
+        expect {
+          run_publisher_expecting_exit("--language", "hello", "--token", "123")
+        }.to output("cannot find configuration file in \"./config\" for language \"hello\"\n").to_stdout
+      end
+    end
+
+    context 'with unknown language and framework' do
+      it 'outputs an error message indicating that language and framework are unknown' do
+        expect {
+          run_publisher_expecting_exit("--language", "hello", "--framework", "world", "--token", "123")
+        }.to output("cannot find configuration file in \"./config\" for language \"hello\" and framework \"world\"\n").to_stdout
+      end
+    end
+
     context "with missing token" do
       it "outputs an error message inviting to add --token argument" do
         expect {

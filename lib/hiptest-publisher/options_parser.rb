@@ -444,7 +444,7 @@ class LanguageConfigParser
     end.compact.first
     if config_path.nil?
       message = "cannot find configuration file in \"#{hiptest_publisher_path}/config\" for language #{cli_options.language.inspect}"
-      message << " and framework #{cli_options.framework.inspect}" if cli_options.framework
+      message << " and framework #{cli_options.framework.inspect}" unless cli_options.framework.to_s.empty?
       raise ArgumentError.new(message)
     end
     config_path
