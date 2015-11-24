@@ -1,6 +1,6 @@
 {{#if rendered_children.gherkin_annotation }}@Given("{{{escape_quotes rendered_children.gherkin_pattern }}}")
 public void {{{camelize_lower rendered_children.name}}}({{{ join rendered_children.parameters ', '}}}) {{#curly}}{{#indent}}
-{{{camelize_lower rendered_children.name}}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{camelize_lower this}}}{{/join}}{{/if}});
+{{{ context.call_prefix }}}.{{{camelize_lower rendered_children.name}}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{camelize_lower this}}}{{/join}}{{/if}});
 {{/indent}}
 {{/curly}}
 {{/if}}
