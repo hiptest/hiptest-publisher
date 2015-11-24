@@ -37,7 +37,7 @@ describe 'Cucumber/Java rendering' do
       [
         'package com.example;',
         '',
-        'public class MyStepdefs {',
+        'public class StepDefinitions {',
         '    @Given("^the color \"(.*)\"$")',
         '    public void theColorColor(String color) {',
         '        theColorColor(color);',
