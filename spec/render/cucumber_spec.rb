@@ -4,7 +4,6 @@ require_relative '../render_shared'
 describe 'Cucumber rendering' do
   it_behaves_like 'a BDD renderer' do
     let(:language) {'cucumber'}
-
     let(:rendered_actionwords) {
       [
         "# encoding: UTF-8",
@@ -24,6 +23,36 @@ describe 'Cucumber rendering' do
         "  you_obtain_color(color)",
         "end",
         "",
+      ].join("\n")
+    }
+  end
+end
+
+describe 'Cucumber/Java rendering' do
+  it_behaves_like 'a BDD renderer' do
+    let(:language) {'cucumber'}
+    let(:framework) {'java'}
+
+    let(:rendered_actionwords) {
+      [
+        'package ;',
+        '',
+        'public class MyStepdefs {',
+        '  @Given("^the color \"(.*)\"$")',
+        '  public void theColorColor(String color) {',
+        '    theColorColor(color);',
+        '  }',
+        '',
+        '  @Given("^you mix colors$")',
+        '  public void youMixColors() {',
+        '    youMixColors();',
+        '  }',
+        '',
+        '  @Given("^you obtain \"(.*)\"$")',
+        '  public void youObtainColor(String color) {',
+        '    youObtainColor(color);',
+        '  }',
+        '}'
       ].join("\n")
     }
   end
