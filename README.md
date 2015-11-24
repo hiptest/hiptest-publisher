@@ -139,6 +139,24 @@ The tests must then generate a test report that is supported by Hiptest. Current
 
 You can specify the type of export when pushing by using the option "--push-format=[tap|junit|robot]" or specifying it in the config file.
 
+
+Development
+-----------
+
+While developing, you can install the gem locally by issuing
+
+```
+rake install
+```
+
+You can also run the command directly with `bundle exec ruby -I lib bin/hiptest-publisher`. It is handy to define an alias so you can test your code easily:
+
+```
+# this alias will only work when run from the root of the project
+alias hiptest-publisher='bundle exec ruby -I lib bin/hiptest-publisher'
+```
+
+
 Adding support for other languages and framework
 ------------------------------------------------
 
