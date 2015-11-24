@@ -39,7 +39,7 @@ describe TemplateFinder do
     context 'when option[:fallback_template] is set' do
       it 'uses the given fallback template if no template is found' do
         template_finder = context_for(only: 'features', language: 'cucumber', fallback_template: "empty").template_finder
-        expect(template_finder.get_template_path('assign')).to eq('./lib/templates/gherkin/empty.hbs')
+        expect(template_finder.get_template_path('assign')).to eq('./lib/templates/common/empty.hbs')
       end
 
       it 'still uses the template if found' do
