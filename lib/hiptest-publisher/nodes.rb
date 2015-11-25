@@ -335,6 +335,11 @@ module Hiptest
         super()
         @children = {:actionwords => actionwords}
         mark_actionwords_for_implementation
+        index_actionwords
+      end
+
+      def find_actionword(name)
+        return @actionwords_index[name]
       end
 
       private
@@ -348,6 +353,14 @@ module Hiptest
           else
             @no_implement << aw
           end
+        end
+      end
+
+      def index_actionwords
+        @actionwords_index = {}
+
+        @children[:actionwords].each do |aw|
+          @actionwords_index[aw.children[:name]] = aw
         end
       end
     end

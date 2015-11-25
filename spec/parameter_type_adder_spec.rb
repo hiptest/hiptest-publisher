@@ -231,8 +231,53 @@ describe Hiptest::Nodes do
       end
     end
 
+    context 'when action word and scenario have the same name' do
+      let(:scenario) {
+        Hiptest::Nodes::Scenario.new('plopidou', '', [],
+          [
+            Hiptest::Nodes::Parameter.new('x')
+          ],
+          [
+            Hiptest::Nodes::Call.new('plopidou', [
+              Hiptest::Nodes::Argument.new('x',
+                Hiptest::Nodes::NumericLiteral.new('16')
+              )
+            ])
+          ],
+          nil,
+          Hiptest::Nodes::Datatable.new([
+            Hiptest::Nodes::Dataset.new('First row', [
+              Hiptest::Nodes::Argument.new('x',
+                Hiptest::Nodes::BooleanLiteral.new('true')
+              )
+            ])
+          ])
+        )
+      }
+
+      let(:actionword) {
+        Hiptest::Nodes::Actionword.new('plopidou', [],
+          [
+            Hiptest::Nodes::Parameter.new('x')
+          ],
+          [])
+      }
+
+      let(:project) {
+        Hiptest::Nodes::Project.new('My project', '', nil,
+          Hiptest::Nodes::Scenarios.new([scenario]),
+          Hiptest::Nodes::Actionwords.new([actionword]))
+      }
+
+      it 'works as expected' do
+        Hiptest::Nodes::ParameterTypeAdder.add(project)
+
+        expect(scenario.children[:parameters].map {|p| p.type}).to eq(['bool'])
+        expect(actionword.children[:parameters].map {|p| p.type}).to eq(['int'])
+      end
+    end
+
     # context 'Call imbrication' do
-    # To be done later, now focus on scenario parameters typing
     #   let(:scenario) {
     #     # In Hiptest:
     #     # scenario 'My scenario' (x) do

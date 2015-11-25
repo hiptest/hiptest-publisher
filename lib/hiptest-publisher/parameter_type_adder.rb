@@ -21,22 +21,28 @@ module Hiptest
 
       def gather_scenarios_argument_types(project)
         project.children[:scenarios].children[:scenarios].each do |scenario|
-          @call_types.add_callable_item(scenario.children[:name])
+          @call_types.add_callable_item("sc-#{scenario.children[:name]}")
           add_arguments_from(scenario.children[:datatable])
         end
       end
 
       def gather_call_argument_types(project)
-        project.each_sub_nodes(Call) do |call|
-          @call_types.add_callable_item(call.children[:actionword])
+        order_calls(project).each do |call|
+          @call_types.add_callable_item("aw-#{call.children[:actionword]}")
           add_arguments_from(call)
         end
       end
 
       def write_parameter_types(project)
-        project.each_sub_nodes(Actionword, Scenario) do |callable_item|
+        project.each_sub_nodes(Scenario) do |callable_item|
           callable_item.each_sub_nodes(Parameter) do |parameter|
-            parameter.children[:type] = @call_types.type_of(callable_item.children[:name], parameter.children[:name])
+            parameter.children[:type] = @call_types.type_of("sc-#{callable_item.children[:name]}", parameter.children[:name])
+          end
+        end
+
+        project.each_sub_nodes(Actionword) do |callable_item|
+          callable_item.each_sub_nodes(Parameter) do |parameter|
+            parameter.children[:type] = @call_types.type_of("aw-#{callable_item.children[:name]}", parameter.children[:name])
           end
         end
       end
@@ -57,6 +63,30 @@ module Hiptest
           when BooleanLiteral then :bool
           else :null
         end
+      end
+
+      def order_calls(project)
+        items = project.children[:scenarios].children[:scenarios].dup
+        known_aws = []
+        calls = []
+
+        until items.empty?
+          current = items.shift
+
+          current.each_sub_nodes(Call) do |call|
+            calls << call
+
+            aw_name = call.children[:actionword]
+            aw = project.children[:actionwords].find_actionword(aw_name)
+
+            next if aw.nil? || known_aws.include?(aw_name)
+
+            known_aws << aw_name
+            items << aw
+          end
+        end
+
+        return calls
       end
     end
 
