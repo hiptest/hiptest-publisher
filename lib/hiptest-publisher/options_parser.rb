@@ -66,7 +66,8 @@ class OptionsParser
       'Robot Framework' => [''],
       'Selenium IDE' => [''],
       'Javascript' => ['qUnit', 'Jasmine'],
-      'CSharp' => ['NUnit']
+      'CSharp' => ['NUnit'],
+      'SpecFlow' => ['']
     }
   end
 
