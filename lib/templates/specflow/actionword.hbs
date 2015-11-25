@@ -1,4 +1,4 @@
-[Given(@"{{{escape_quotes rendered_children.gherkin_pattern }}}")]
+[Given("{{{escape_quotes rendered_children.gherkin_pattern }}}"), When("{{{escape_quotes rendered_children.gherkin_pattern }}}"), Then("{{{escape_quotes rendered_children.gherkin_pattern }}}")]
 public void {{{ camelize_upper rendered_children.name }}}({{#if has_parameters?}}{{{join rendered_children.parameters ', '}}}{{/if}}) {{#curly}}{{#indent}}
 {{{ context.call_prefix }}}.{{ camelize_upper rendered_children.name }}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{camelize_lower this}}}{{/join}}{{/if}});
 {{/indent}}
