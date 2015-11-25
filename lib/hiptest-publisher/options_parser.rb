@@ -60,12 +60,13 @@ class OptionsParser
 
     {
       'Ruby' => ['Rspec', 'MiniTest'],
-      'Cucumber' => ['Ruby'],
+      'Cucumber' => ['Ruby', 'Java'],
       'Java' => ['JUnit', 'Test NG'],
       'Python' => ['Unittest'],
       'Robot Framework' => [''],
       'Selenium IDE' => [''],
-      'Javascript' => ['qUnit', 'Jasmine']
+      'Javascript' => ['qUnit', 'Jasmine'],
+      'CSharp' => ['NUnit']
     }
   end
 
