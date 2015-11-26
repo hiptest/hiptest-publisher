@@ -274,103 +274,103 @@ describe Hiptest::Nodes do
       end
     end
 
-    # context 'Call imbrication' do
-    #   let(:scenario) {
-    #     # In Hiptest:
-    #     # scenario 'My scenario' (x) do
-    #     #   call 'aw1' (p1 = 16)
-    #     #   call 'aw2' (p1 = x)
-    #     # end
-    #     # With a single dataset where x = false
-    #     # aw1 forwards the parameter to aw3
-    #     # aw2 forwards the parameter to aw4
+    context 'Call imbrication' do
+      let(:scenario) {
+        # In Hiptest:
+        # scenario 'My scenario' (x) do
+        #   call 'aw1' (p1 = 16)
+        #   call 'aw2' (p1 = x)
+        # end
+        # With a single dataset where x = false
+        # aw1 forwards the parameter to aw3
+        # aw2 forwards the parameter to aw4
 
-    #     Hiptest::Nodes::Scenario.new('My scenario', '', [],
-    #       [Hiptest::Nodes::Parameter.new('x')],
-    #       [
-    #         Hiptest::Nodes::Call.new('aw1', [
-    #           Hiptest::Nodes::Argument.new('p1',
-    #             Hiptest::Nodes::NumericLiteral.new('16')
-    #           )
-    #         ]),
-    #         Hiptest::Nodes::Call.new('aw2', [
-    #           Hiptest::Nodes::Argument.new('p1',
-    #             Hiptest::Nodes::Variable.new('x')
-    #           )
-    #         ]),
-    #       ], nil,
-    #       Hiptest::Nodes::Datatable.new([
-    #         Hiptest::Nodes::Dataset.new('First row', [
-    #           Hiptest::Nodes::Argument.new('x',
-    #             Hiptest::Nodes::BooleanLiteral.new('true')
-    #           )
-    #         ])
-    #       ])
-    #     )
-    #   }
+        Hiptest::Nodes::Scenario.new('My scenario', '', [],
+          [Hiptest::Nodes::Parameter.new('x')],
+          [
+            Hiptest::Nodes::Call.new('aw1', [
+              Hiptest::Nodes::Argument.new('p1',
+                Hiptest::Nodes::NumericLiteral.new('16')
+              )
+            ]),
+            Hiptest::Nodes::Call.new('aw2', [
+              Hiptest::Nodes::Argument.new('p2',
+                Hiptest::Nodes::Variable.new('x')
+              )
+            ]),
+          ], nil,
+          Hiptest::Nodes::Datatable.new([
+            Hiptest::Nodes::Dataset.new('First row', [
+              Hiptest::Nodes::Argument.new('x',
+                Hiptest::Nodes::BooleanLiteral.new('true')
+              )
+            ])
+          ])
+        )
+      }
 
-    #   let(:aw4) {
-    #     Hiptest::Nodes::Actionword.new('aw4', [],
-    #       [Hiptest::Nodes::Parameter.new('p4')]
-    #     )
-    #   }
+      let(:aw4) {
+        Hiptest::Nodes::Actionword.new('aw4', [],
+          [Hiptest::Nodes::Parameter.new('p4')]
+        )
+      }
 
-    #   let(:aw3) {
-    #     Hiptest::Nodes::Actionword.new('aw3', [],
-    #       [Hiptest::Nodes::Parameter.new('p3')]
-    #     )
-    #   }
+      let(:aw3) {
+        Hiptest::Nodes::Actionword.new('aw3', [],
+          [Hiptest::Nodes::Parameter.new('p3')]
+        )
+      }
 
-    #   let(:aw2) {
-    #     Hiptest::Nodes::Actionword.new('aw2', [],
-    #       [Hiptest::Nodes::Parameter.new('p2')],
-    #       [Hiptest::Nodes::Call.new('aw4', [
-    #         Hiptest::Nodes::Argument.new('p4',
-    #           Hiptest::Nodes::Variable.new('p2')
-    #         )
-    #       ])]
-    #     )
-    #   }
+      let(:aw2) {
+        Hiptest::Nodes::Actionword.new('aw2', [],
+          [Hiptest::Nodes::Parameter.new('p2')],
+          [Hiptest::Nodes::Call.new('aw4', [
+            Hiptest::Nodes::Argument.new('p4',
+              Hiptest::Nodes::Variable.new('p2')
+            )
+          ])]
+        )
+      }
 
-    #   let(:aw1) {
-    #     Hiptest::Nodes::Actionword.new('aw1', [],
-    #       [Hiptest::Nodes::Parameter.new('p1')],
-    #       [Hiptest::Nodes::Call.new('aw3', [
-    #         Hiptest::Nodes::Argument.new('p3',
-    #           Hiptest::Nodes::Variable.new('p1')
-    #         )
-    #       ])]
-    #     )
-    #   }
+      let(:aw1) {
+        Hiptest::Nodes::Actionword.new('aw1', [],
+          [Hiptest::Nodes::Parameter.new('p1')],
+          [Hiptest::Nodes::Call.new('aw3', [
+            Hiptest::Nodes::Argument.new('p3',
+              Hiptest::Nodes::Variable.new('p1')
+            )
+          ])]
+        )
+      }
 
-    #   let(:project) {
-    #     Hiptest::Nodes::Project.new('My project', '', nil,
-    #       Hiptest::Nodes::Scenarios.new([scenario]),
-    #       Hiptest::Nodes::Actionwords.new([aw1, aw2, aw3, aw4]))
-    #   }
+      let(:project) {
+        Hiptest::Nodes::Project.new('My project', '', nil,
+          Hiptest::Nodes::Scenarios.new([scenario]),
+          Hiptest::Nodes::Actionwords.new([aw1, aw2, aw3, aw4]))
+      }
 
-    #   let(:parameters_mapping) {
-    #     project.children[:actionwords].children[:actionwords].map do |aw|
-    #       {
-    #         name: aw.children[:name],
-    #         parameters: aw.children[:parameters].map {|param|
-    #           {name: param.children[:name], type: param.children[:type]}
-    #         }
-    #       }
-    #     end
-    #   }
+      let(:parameters_mapping) {
+        project.children[:actionwords].children[:actionwords].map do |aw|
+          {
+            name: aw.children[:name],
+            parameters: aw.children[:parameters].map {|param|
+              {name: param.children[:name], type: param.children[:type]}
+            }
+          }
+        end
+      }
 
-    #   it 'forwards correctly the parameter values' do
-    #     Hiptest::Nodes::ParameterTypeAdder.add(project)
+      it 'forwards correctly the parameter values' do
+        Hiptest::Nodes::ParameterTypeAdder.add(project)
 
-    #     expect(parameters_mapping).to eq([
-    #       {:name=>"aw1", :parameters=>[{:name => 'p1', :type => :int}]},
-    #       {:name=>"aw2", :parameters=>[{:name => 'p2', :type => :bool}]},
-    #       {:name=>"aw3", :parameters=>[{:name => 'p3', :type => :int}]},
-    #       {:name=>"aw4", :parameters=>[{:name => 'p4', :type => :bool}]}])
+        expect(parameters_mapping).to eq([
+          {:name=>"aw1", :parameters=>[{:name => 'p1', :type => :int}]},
+          {:name=>"aw2", :parameters=>[{:name => 'p2', :type => :bool}]},
+          {:name=>"aw3", :parameters=>[{:name => 'p3', :type => :int}]},
+          {:name=>"aw4", :parameters=>[{:name => 'p4', :type => :bool}]}])
 
-    #   end
-    # end
+      end
+    end
   end
 end
 

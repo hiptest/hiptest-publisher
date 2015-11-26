@@ -7,6 +7,15 @@ module Hiptest
   class ProjectGrapher
     attr_reader :graph, :distance_index
 
+    def self.distances_index(project)
+      instance = ProjectGrapher.new(project)
+      instance.compute_graph
+      instance.add_distances
+      instance.index_by_distances
+
+      return instance.distance_index
+    end
+
     def initialize(project)
       @project = project
       @graph = {}

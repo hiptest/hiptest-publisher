@@ -1,4 +1,6 @@
 require 'hiptest-publisher/nodes_walker'
+require 'hiptest-publisher/project_grapher'
+
 
 module Hiptest
   module Nodes
@@ -13,11 +15,27 @@ module Hiptest
         @call_types = CallTypes.new
       end
 
-      def process(project)
+      def process1(project)
         gather_scenarios_argument_types(project)
         gather_call_argument_types(project)
         write_parameter_types(project)
       end
+
+      def process2(project)
+        distances_index = Hiptest::ProjectGrapher.distances_index(project)
+        gather_scenarios_argument_types(project)
+
+        distances_index.keys.sort.each do |index|
+          items = distances_index[index]
+          items.map do |item|
+            write_parameter_types_to_item(item)
+            gather_call_argument_types(item)
+          end
+        end
+      end
+
+      alias :process :process2
+
 
       def gather_scenarios_argument_types(project)
         project.children[:scenarios].children[:scenarios].each do |scenario|
@@ -26,37 +44,55 @@ module Hiptest
         end
       end
 
-      def gather_call_argument_types(project)
-        project.each_sub_nodes(Call) do |call|
+      def gather_call_argument_types(node)
+        node.each_sub_nodes(Call) do |call|
           @call_types.add_callable_item(call.children[:actionword], Actionword)
-          add_arguments_from(call)
+          add_arguments_from(call, node)
         end
       end
 
       def write_parameter_types(project)
         project.each_sub_nodes(Actionword, Scenario) do |callable_item|
-          callable_item.each_sub_nodes(Parameter) do |parameter|
-            parameter.children[:type] = @call_types.type_of(callable_item.children[:name], parameter.children[:name], callable_item.class)
-          end
+          write_parameter_types_to_item(callable_item)
         end
       end
 
-      def add_arguments_from(node)
+      def write_parameter_types_to_item(callable_item)
+        callable_item.each_sub_nodes(Parameter) do |parameter|
+          parameter.children[:type] = @call_types.type_of(callable_item.children[:name], parameter.children[:name], callable_item.class)
+        end
+      end
+
+      def add_arguments_from(node, context = nil)
         node.each_sub_nodes(Argument) do |argument|
-          @call_types.add_argument_type(argument.children[:name], get_type(argument))
+          @call_types.add_argument_type(argument.children[:name], get_type(argument, context))
         end
       end
 
       private
 
-      def get_type(node)
+      def get_type(node, context = nil)
         value = node.children[:value]
+
         case value
           when StringLiteral, Template then :String
           when NumericLiteral then value.children[:value].include?(".") ? :float : :int
           when BooleanLiteral then :bool
+          when Variable then get_var_value(value.children[:name], context)
           else :null
         end
+      end
+
+      def get_var_value(name, context)
+        return :null if context.nil?
+
+        context.children[:parameters].each do |param|
+          if param.children[:name] == name
+            return param.children[:type] || :null
+          end
+        end
+
+        return :null
       end
     end
 
@@ -81,6 +117,7 @@ module Hiptest
         name = "#{item_type}-#{item_name}"
         callable_item =  @callable_items[name]
         return :String if callable_item.nil?
+
         parameter = callable_item[parameter_name]
 
         return :String if parameter.nil?
