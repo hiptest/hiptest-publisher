@@ -25,7 +25,6 @@ module Hiptest
     end
 
     def run
-      @cli_options.normalize!
       puts "URL: #{make_url(@cli_options)}".white if @cli_options.verbose
       begin
         CliOptionsChecker.new(@cli_options, reporter).check!

@@ -17,9 +17,10 @@ class ConsoleFormatter
     puts line.yellow
   end
 
-  def show_options(options)
+  def show_options(options, message = nil)
     return unless verbose
-    puts "Running Hiptest-publisher #{hiptest_publisher_version} with:".yellow
+    message ||= "Running Hiptest-publisher #{hiptest_publisher_version} with:"
+    puts message.yellow
     options.each { |k, v| puts " - #{k}: #{v.inspect}".white }
   end
 end

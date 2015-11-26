@@ -32,41 +32,112 @@ describe OptionParser do
 end
 
 
+describe CliOptions do
+  describe "#normalize!" do
+    it "replaces --actionwords-only by --only=actionwords" do
+      options = CliOptions.new(actionwords_only: true)
+
+      options.normalize!
+
+      expect(options.only).to eq("actionwords")
+    end
+
+    it "replaces --tests-only by --only=tests" do
+      options = CliOptions.new(tests_only: true)
+
+      options.normalize!
+
+      expect(options.only).to eq("tests")
+    end
+
+    it "adds the framework of the language when framework is missing" do
+      options = CliOptions.new(language: "cucumber")
+
+      options.normalize!
+
+      expect(options.framework).to eq("ruby")
+    end
+
+    it "sets the framework to '' if cannot find the language when framework is missing" do
+      options = CliOptions.new(language: "gloubiboulga")
+
+      options.normalize!
+
+      expect(options.framework).to eq("")
+    end
+
+    it "splits <language>-<framework> into language and framework values" do
+      options = CliOptions.new(language: "ruby-rspec")
+
+      options.normalize!
+
+      expect(options.language).to eq("ruby")
+      expect(options.framework).to eq("rspec")
+    end
+
+    it "returns the modified keys" do
+      options = CliOptions.new(language: "ruby-rspec")
+
+      expect(options.normalize!).to eq({
+        language: "ruby",
+        framework: "rspec",
+      })
+    end
+
+    it "returns falsy if nothing modified" do
+      options = CliOptions.new
+
+      expect(options.normalize!).to be_nil
+    end
+  end
+end
+
+
 describe LanguageConfigParser do
 
-  let(:options) { CliOptions.new(language: "ruby") }
+  let(:options) { CliOptions.new(language: "ruby").tap {|options| options.normalize! } }
 
   describe "#filtered_group_names" do
     it "rejects groups not specified in --only clip option" do
       options = CliOptions.new(language: "ruby", only: "actionwords")
+      options.normalize!
       expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords"])
 
       options = CliOptions.new(language: "ruby", only: "actionwords,tests")
+      options.normalize!
       expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords", "tests"])
     end
 
     it "keeps all groups if --only option is not specified" do
       options = CliOptions.new(language: "ruby")
+      options.normalize!
       expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords", "tests"])
     end
   end
 
   describe ".config_path_for" do
     context "given a language" do
-      it "searches an language configuration file in config/<language>.conf" do
-        expect(LanguageConfigParser.config_path_for(options)).to end_with("config/ruby.conf")
+      it "searches an language configuration file in lib/config/<language>-<first framework>.conf" do
+        expect(LanguageConfigParser.config_path_for(options)).to end_with("lib/config/ruby-rspec.conf")
+      end
+
+      it "searches an language configuration file in lib/config/<language>.conf if no frameworks for the language" do
+        options = CliOptions.new(language: "robotframework")
+        options.normalize!
+        expect(LanguageConfigParser.config_path_for(options)).to end_with("lib/config/robotframework.conf")
       end
     end
 
     context "given a language and a framework" do
-      it "searches an language configuration file in lib/templates/config<language>/<framework>" do
+      it "searches an language configuration file in lib/config/<language>-<framework>" do
         options.framework = "minitest"
-        expect(LanguageConfigParser.config_path_for(options)).to end_with("config/ruby-minitest.conf")
+        expect(LanguageConfigParser.config_path_for(options)).to end_with("lib/config/ruby-minitest.conf")
       end
 
-      it "fallbacks to lib/templates/<language> if framework does not no match anything" do
+      it "fails if framework does not no match anything" do
         options.framework = "youplala"
-        expect(LanguageConfigParser.config_path_for(options)).to end_with("config/ruby.conf")
+        expect{LanguageConfigParser.config_path_for(options)}.
+          to raise_error('cannot find configuration file in "./lib/config" for language "ruby" and framework "youplala"')
       end
     end
 
@@ -74,7 +145,7 @@ describe LanguageConfigParser do
       options.language = "carakoko"
       options.framework = "lalakoko"
       expect{LanguageConfigParser.config_path_for(options)}.
-        to raise_error('cannot find configuration file in "./config" for language "carakoko" and framework "lalakoko"')
+        to raise_error('cannot find configuration file in "./lib/config" for language "carakoko" and framework "lalakoko"')
     end
   end
 
@@ -84,9 +155,10 @@ describe LanguageConfigParser do
     end
 
     it "raises an error if language config file cannot be found" do
-      options.language = "carakoko"
+      options = CliOptions.new(language: "carakoko")
+      options.normalize!
       expect{LanguageConfigParser.new(options)}.
-        to raise_error('cannot find configuration file in "./config" for language "carakoko"')
+        to raise_error('cannot find configuration file in "./lib/config" for language "carakoko"')
     end
   end
 end

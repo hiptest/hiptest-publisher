@@ -13,8 +13,8 @@ class Reporter
     notify(:dump_error, error, message)
   end
 
-  def show_options(options)
-    notify(:show_options, options)
+  def show_options(options, message = nil)
+    notify(:show_options, options, message)
   end
 
   def notify(message, *args)

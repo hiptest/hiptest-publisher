@@ -343,7 +343,7 @@ describe Hiptest::Publisher do
       it 'outputs an error message indicating that language is unknown' do
         expect {
           run_publisher_expecting_exit("--language", "hello", "--token", "123")
-        }.to output("cannot find configuration file in \"./config\" for language \"hello\"\n").to_stdout
+        }.to output("cannot find configuration file in \"./lib/config\" for language \"hello\"\n").to_stdout
       end
     end
 
@@ -351,7 +351,15 @@ describe Hiptest::Publisher do
       it 'outputs an error message indicating that language and framework are unknown' do
         expect {
           run_publisher_expecting_exit("--language", "hello", "--framework", "world", "--token", "123")
-        }.to output("cannot find configuration file in \"./config\" for language \"hello\" and framework \"world\"\n").to_stdout
+        }.to output("cannot find configuration file in \"./lib/config\" for language \"hello\" and framework \"world\"\n").to_stdout
+      end
+    end
+
+    context 'with known language and unknown framework' do
+      it 'outputs an error message indicating that language is known but not the framework' do
+        expect {
+          run_publisher_expecting_exit("--language", "ruby", "--framework", "world", "--token", "123")
+        }.to output("cannot find configuration file in \"./lib/config\" for language \"ruby\" and framework \"world\"\n").to_stdout
       end
     end
 

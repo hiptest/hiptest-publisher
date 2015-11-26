@@ -419,7 +419,7 @@ describe 'Render as Robot framework' do
   context 'Robot framework' do
     it_behaves_like "a renderer" do
       let(:language) {'robotframework'}
-      let(:framework) {'robotframework'}
+      let(:framework) {''}
     end
   end
 end

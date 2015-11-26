@@ -57,18 +57,40 @@ end
 class CliOptions < OpenStruct
   def initialize(hash=nil)
     hash ||= {}
+    hash[:language] ||= ""
+    hash[:framework] ||= ""
     super(__cli_args: Set.new, __config_args: Set.new, **hash)
   end
 
-  def normalize!
-    modified_cli_options = self.clone
+  def normalize!(reporter = nil)
+    modified_options = self.clone
     if actionwords_only
-      modified_cli_options.only = 'actionwords'
+      modified_options.only = 'actionwords'
     elsif tests_only
-      modified_cli_options.only = 'tests'
+      modified_options.only = 'tests'
     end
-    if self != modified_cli_options
-      marshal_load(modified_cli_options.marshal_dump)
+
+    if language.include?('-')
+      modified_options.language, modified_options.framework = language.split("-", 2)
+    elsif framework.empty?
+      # pick first framework for the language
+      _, frameworks = OptionsParser.languages.find do |language, frameworks|
+        language.downcase.gsub(' ', '') == self.language.downcase.gsub(' ', '')
+      end
+      if frameworks
+        modified_options.framework = frameworks.first.downcase
+      end
+    end
+
+    if self != modified_options
+      delta = modified_options.table.select do |key, value|
+        modified_options[key] != self[key]
+      end
+      marshal_load(modified_options.marshal_dump)
+      if reporter
+        reporter.show_options(delta, 'Options have been normalized. Values updated:')
+      end
+      return delta
     end
   end
 end
@@ -166,6 +188,7 @@ class OptionsParser
     FileConfigParser.update_options(options, reporter)
 
     reporter.show_options(options.marshal_dump)
+    options.normalize!(reporter)
     options
   end
 
@@ -457,18 +480,19 @@ class LanguageConfigParser
   end
 
   def self.config_path_for(cli_options)
-    config_path = [
-      "#{hiptest_publisher_path}/lib/config/#{cli_options.language}-#{cli_options.framework}.conf",
-      "#{hiptest_publisher_path}/lib/config/#{cli_options.language}.conf",
-    ].map do |path|
-      File.expand_path(path) if File.file?(path)
-    end.compact.first
-    if config_path.nil?
-      message = "cannot find configuration file in \"#{hiptest_publisher_path}/config\" for language #{cli_options.language.inspect}"
+    config_name = if cli_options.framework.empty?
+      "#{cli_options.language}.conf"
+    else
+      "#{cli_options.language}-#{cli_options.framework}.conf"
+    end
+    config_path = File.expand_path("#{hiptest_publisher_path}/lib/config/#{config_name.downcase}")
+    if !File.file?(config_path)
+      message = "cannot find configuration file in \"#{hiptest_publisher_path}/lib/config\""
+      message << " for language #{cli_options.language.inspect}"
       message << " and framework #{cli_options.framework.inspect}" unless cli_options.framework.to_s.empty?
       raise ArgumentError.new(message)
     end
-    config_path
+    File.expand_path(config_path)
   end
 
   def group_names
