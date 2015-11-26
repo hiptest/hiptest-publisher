@@ -257,10 +257,7 @@ describe Hiptest::Nodes do
 
       let(:actionword) {
         Hiptest::Nodes::Actionword.new('plopidou', [],
-          [
-            Hiptest::Nodes::Parameter.new('x')
-          ],
-          [])
+          [Hiptest::Nodes::Parameter.new('x')], [])
       }
 
       let(:project) {

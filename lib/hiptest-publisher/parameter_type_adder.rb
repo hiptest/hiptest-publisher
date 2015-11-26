@@ -21,28 +21,22 @@ module Hiptest
 
       def gather_scenarios_argument_types(project)
         project.children[:scenarios].children[:scenarios].each do |scenario|
-          @call_types.add_callable_item("sc-#{scenario.children[:name]}")
+          @call_types.add_callable_item(scenario.children[:name], Scenario)
           add_arguments_from(scenario.children[:datatable])
         end
       end
 
       def gather_call_argument_types(project)
         order_calls(project).each do |call|
-          @call_types.add_callable_item("aw-#{call.children[:actionword]}")
+          @call_types.add_callable_item(call.children[:actionword], Actionword)
           add_arguments_from(call)
         end
       end
 
       def write_parameter_types(project)
-        project.each_sub_nodes(Scenario) do |callable_item|
+        project.each_sub_nodes(Actionword, Scenario) do |callable_item|
           callable_item.each_sub_nodes(Parameter) do |parameter|
-            parameter.children[:type] = @call_types.type_of("sc-#{callable_item.children[:name]}", parameter.children[:name])
-          end
-        end
-
-        project.each_sub_nodes(Actionword) do |callable_item|
-          callable_item.each_sub_nodes(Parameter) do |parameter|
-            parameter.children[:type] = @call_types.type_of("aw-#{callable_item.children[:name]}", parameter.children[:name])
+            parameter.children[:type] = @call_types.type_of(callable_item.children[:name], parameter.children[:name], callable_item.class)
           end
         end
       end
@@ -96,7 +90,8 @@ module Hiptest
         @current_callable_item = nil
       end
 
-      def add_callable_item(name)
+      def add_callable_item(item_name, item_type)
+        name = "#{item_type}-#{item_name}"
         @callable_items[name] ||= {}
         @current_callable_item = @callable_items[name]
       end
@@ -106,8 +101,9 @@ module Hiptest
         @current_callable_item[name][:types] << type
       end
 
-      def type_of(item_name, parameter_name)
-        callable_item =  @callable_items[item_name]
+      def type_of(item_name, parameter_name, item_type)
+        name = "#{item_type}-#{item_name}"
+        callable_item =  @callable_items[name]
         return :String if callable_item.nil?
         parameter = callable_item[parameter_name]
 
