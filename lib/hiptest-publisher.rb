@@ -31,9 +31,6 @@ module Hiptest
       elsif @cli_options.tests_only
         modified_cli_options.only = 'tests'
       end
-      if @cli_options.with_folders && @cli_options.language == 'cucumber'
-        modified_cli_options.framework = 'folders_as_features'
-      end
       @cli_options = modified_cli_options
     end
 
