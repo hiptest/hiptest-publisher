@@ -27,7 +27,7 @@ module Hiptest
       end
 
       def gather_call_argument_types(project)
-        order_calls(project).each do |call|
+        project.each_sub_nodes(Call) do |call|
           @call_types.add_callable_item(call.children[:actionword], Actionword)
           add_arguments_from(call)
         end
@@ -57,30 +57,6 @@ module Hiptest
           when BooleanLiteral then :bool
           else :null
         end
-      end
-
-      def order_calls(project)
-        items = project.children[:scenarios].children[:scenarios].dup
-        known_aws = []
-        calls = []
-
-        until items.empty?
-          current = items.shift
-
-          current.each_sub_nodes(Call) do |call|
-            calls << call
-
-            aw_name = call.children[:actionword]
-            aw = project.children[:actionwords].find_actionword(aw_name)
-
-            next if aw.nil? || known_aws.include?(aw_name)
-
-            known_aws << aw_name
-            items << aw
-          end
-        end
-
-        return calls
       end
     end
 
