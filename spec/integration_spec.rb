@@ -38,18 +38,22 @@ describe Hiptest::Publisher do
       context extra_args.join(" ") do
         [
           %w"cucumber",
-          %w"cucumber folders_as_features",
+          %w"cucumber ruby",
+          %w"cucumber java",
           %w"java",
           %w"java junit",
           %w"java testng",
           %w"javascript",
           %w"javascript jasmine",
           %w"python",
+          %w"csharp",
+          %w"csharp nunit",
           %w"robotframework",
           %w"ruby",
           %w"ruby minitest",
           %w"ruby rspec",
           %w"seleniumide",
+          %w"specflow",
         ].each do |language, framework|
           assertion_text = "--language=#{language}"
           assertion_text <<  " --framework=#{framework}" if framework
