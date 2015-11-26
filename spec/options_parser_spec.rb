@@ -24,7 +24,7 @@ describe OptionParser do
     end
 
     it "works if config file is nil" do
-      options = OpenStruct.new
+      options = CliOptions.new
       options.config = nil
       expect { FileConfigParser.update_options(options, NullReporter.new) }.not_to raise_error
     end
@@ -34,19 +34,19 @@ end
 
 describe LanguageConfigParser do
 
-  let(:options) { OpenStruct.new(language: "ruby") }
+  let(:options) { CliOptions.new(language: "ruby") }
 
   describe "#filtered_group_names" do
     it "rejects groups not specified in --only clip option" do
-      options = OpenStruct.new(language: "ruby", only: "actionwords")
+      options = CliOptions.new(language: "ruby", only: "actionwords")
       expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords"])
 
-      options = OpenStruct.new(language: "ruby", only: "actionwords,tests")
+      options = CliOptions.new(language: "ruby", only: "actionwords,tests")
       expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords", "tests"])
     end
 
     it "keeps all groups if --only option is not specified" do
-      options = OpenStruct.new(language: "ruby")
+      options = CliOptions.new(language: "ruby")
       expect(LanguageConfigParser.new(options).filtered_group_names).to match_array(["actionwords", "tests"])
     end
   end

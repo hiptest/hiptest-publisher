@@ -24,18 +24,8 @@ module Hiptest
       @exit_on_bad_arguments = exit_on_bad_arguments
     end
 
-    def normalize_cli_options!
-      modified_cli_options = @cli_options.clone
-      if @cli_options.actionwords_only
-        modified_cli_options.only = 'actionwords'
-      elsif @cli_options.tests_only
-        modified_cli_options.only = 'tests'
-      end
-      @cli_options = modified_cli_options
-    end
-
     def run
-      normalize_cli_options!
+      @cli_options.normalize!
       puts "URL: #{make_url(@cli_options)}".white if @cli_options.verbose
       begin
         CliOptionsChecker.new(@cli_options, reporter).check!

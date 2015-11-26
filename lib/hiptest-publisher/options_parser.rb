@@ -54,6 +54,25 @@ class Option
   end
 end
 
+class CliOptions < OpenStruct
+  def initialize(hash=nil)
+    hash ||= {}
+    super(__cli_args: Set.new, __config_args: Set.new, **hash)
+  end
+
+  def normalize!
+    modified_cli_options = self.clone
+    if actionwords_only
+      modified_cli_options.only = 'actionwords'
+    elsif tests_only
+      modified_cli_options.only = 'tests'
+    end
+    if self != modified_cli_options
+      marshal_load(modified_cli_options.marshal_dump)
+    end
+  end
+end
+
 class OptionsParser
   def self.languages
     # First framework is default framework
@@ -103,7 +122,7 @@ class OptionsParser
   end
 
   def self.parse(args, reporter)
-    options = OpenStruct.new(__cli_args: Set.new, __config_args: Set.new)
+    options = CliOptions.new
     opt_parser = OptionParser.new do |opts|
       opts.version = hiptest_publisher_version if hiptest_publisher_version
       opts.banner = "Usage: ruby publisher.rb [options]"

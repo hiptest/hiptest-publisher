@@ -91,7 +91,7 @@ module HelperFactories
 end
 
 def language_group_config_for(properties)
-  cli_options = OpenStruct.new(properties)
+  cli_options = CliOptions.new(properties)
   language_config = LanguageConfigParser.new(cli_options)
   language_config.language_group_configs.first or fail("no language group defined for --only=#{cli_options.only}")
 end
