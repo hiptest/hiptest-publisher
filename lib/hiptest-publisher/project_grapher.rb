@@ -5,7 +5,7 @@ module Hiptest
   # longest path from the root.
 
   class ProjectGrapher
-    attr_reader :graph
+    attr_reader :graph, :distance_index
 
     def initialize(project)
       @project = project
@@ -15,7 +15,17 @@ module Hiptest
     def compute_graph
       add_nodes
       add_root
-      add_weights
+    end
+
+    def add_distances
+      add_node_weight(@graph[:root], [:root])
+    end
+
+    def index_by_distances
+      @distance_index = Hash.new { |hash, key| hash[key] = [] }
+      @graph.values.each do |value|
+        @distance_index[value[:from_root]] << value[:item] unless value[:item].nil?
+      end
     end
 
     private
@@ -46,10 +56,6 @@ module Hiptest
       @project.each_sub_nodes(Hiptest::Nodes::Scenario) do |scenario|
         @graph[:root][:calls] << node_name(scenario)
       end
-    end
-
-    def add_weights
-      add_node_weight(@graph[:root], [:root])
     end
 
     def add_node_weight(node, path)
