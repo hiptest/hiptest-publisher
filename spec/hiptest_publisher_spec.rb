@@ -397,6 +397,26 @@ describe Hiptest::Publisher do
       end
     end
 
+    context "with unknown category" do
+      it "outputs an error message that this category does not exist" do
+        expect {
+          run_publisher_expecting_exit("--token", "123", "--language", "cucumber", "--only", "tests")
+        }.to output(a_string_including("Error with --only: the category \"tests\" does not exist for language cucumber-ruby.")).to_stdout
+      end
+
+      it "outputs an error message that some categories do not exist" do
+        expect {
+          run_publisher_expecting_exit("--token", "123", "--language", "cucumber", "--only", "tests,features,toto,tata")
+        }.to output(a_string_including("Error with --only: the categories \"tests\", \"toto\" and \"tata\" do not exist for language cucumber-ruby.")).to_stdout
+      end
+
+      it "outputs available categories" do
+        expect {
+          run_publisher_expecting_exit("--token", "123", "--language", "cucumber", "--only", "tests")
+        }.to output(a_string_including("Available categories are \"features\", \"step_definitions\" and \"actionwords\".")).to_stdout
+      end
+    end
+
     context "--output-directory" do
       before(:each) {
         stub_request(:get, "https://hiptest.net/publication/123/project").

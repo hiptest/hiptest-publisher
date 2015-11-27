@@ -62,6 +62,18 @@ class CliOptions < OpenStruct
     super(__cli_args: Set.new, __config_args: Set.new, **hash)
   end
 
+  def language_framework
+    if framework.empty?
+      language
+    else
+      "#{language}-#{framework}"
+    end
+  end
+
+  def groups_to_keep
+    only.split(",") if only
+  end
+
   def normalize!(reporter = nil)
     modified_options = self.clone
     if actionwords_only
@@ -502,9 +514,8 @@ class LanguageConfigParser
   end
 
   def filtered_group_names
-    if @cli_options.only
-      groups_to_keep = @cli_options.only.split(",")
-      group_names.select {|group_name| groups_to_keep.include?(group_name)}
+    if @cli_options.groups_to_keep
+      group_names.select {|group_name| @cli_options.groups_to_keep.include?(group_name)}
     else
       group_names
     end

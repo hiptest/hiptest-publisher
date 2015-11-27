@@ -86,12 +86,25 @@ module Hiptest
         raise CliOptionError, "Invalid format --test-run-id=\"#{@cli_options.test_run_id}\": the test run id must be numeric"
       end
 
-      # language
+      # language and --only
       if present?(cli_options.language)
         begin
-          LanguageConfigParser.config_path_for(cli_options)
+          language_config_parser = LanguageConfigParser.new(cli_options)
         rescue ArgumentError => err
           raise CliOptionError, err.message
+        end
+
+        if present?(cli_options.only)
+          if language_config_parser.filtered_group_names != cli_options.groups_to_keep
+            unknown_categories = cli_options.groups_to_keep - language_config_parser.group_names
+            if unknown_categories.length == 1
+              message = "the category #{formatted_categories(unknown_categories)} does not exist"
+            else
+              message = "the categories #{formatted_categories(unknown_categories)} do not exist"
+            end
+            raise CliOptionError, "Error with --only: #{message} for language #{cli_options.language_framework}. " +
+              "Available categories are #{formatted_categories(language_config_parser.group_names)}."
+          end
         end
       end
     end
@@ -116,6 +129,15 @@ module Hiptest
 
     def present?(arg)
       !absent?(arg)
+    end
+
+    def formatted_categories(categories)
+      formatted_categories = categories.map(&:inspect)
+      if formatted_categories.length == 1
+        formatted_categories.first
+      else
+        formatted_categories[0...-1].join(", ") + " and " + formatted_categories.last
+      end
     end
 
     def first_existing_parent(path)

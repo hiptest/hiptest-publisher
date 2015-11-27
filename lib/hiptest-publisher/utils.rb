@@ -15,12 +15,16 @@ rescue
   File.read("#{hiptest_publisher_path}/VERSION").strip if File.exists?("#{hiptest_publisher_path}/VERSION")
 end
 
-def pluralize(count, singular)
+def pluralize_word(count, singular, plural=nil)
   word = if count == 1
     singular
   else
     "#{singular}s"
   end
+end
+
+def pluralize(count, singular, plural=nil)
+  word = pluralize_word(count, singular, plural)
   "#{count} #{word}"
 end
 
