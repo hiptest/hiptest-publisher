@@ -15,13 +15,7 @@ module Hiptest
         @call_types = CallTypes.new
       end
 
-      def process1(project)
-        gather_scenarios_argument_types(project)
-        gather_call_argument_types(project)
-        write_parameter_types(project)
-      end
-
-      def process2(project)
+      def process(project)
         distances_index = Hiptest::ProjectGrapher.distances_index(project)
         gather_scenarios_argument_types(project)
 
@@ -34,9 +28,6 @@ module Hiptest
         end
       end
 
-      alias :process :process2
-
-
       def gather_scenarios_argument_types(project)
         project.children[:scenarios].children[:scenarios].each do |scenario|
           @call_types.add_callable_item(scenario.children[:name], Scenario)
@@ -48,12 +39,6 @@ module Hiptest
         node.each_sub_nodes(Call) do |call|
           @call_types.add_callable_item(call.children[:actionword], Actionword)
           add_arguments_from(call, node)
-        end
-      end
-
-      def write_parameter_types(project)
-        project.each_sub_nodes(Actionword, Scenario) do |callable_item|
-          write_parameter_types_to_item(callable_item)
         end
       end
 
@@ -84,7 +69,7 @@ module Hiptest
       end
 
       def get_var_value(name, context)
-        return :null if context.nil?
+        return :null if context.nil? || context.children[:parameters].nil?
 
         context.children[:parameters].each do |param|
           if param.children[:name] == name
