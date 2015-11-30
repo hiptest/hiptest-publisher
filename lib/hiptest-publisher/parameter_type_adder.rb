@@ -16,12 +16,14 @@ module Hiptest
       end
 
       def process(project)
-        distances_index = Hiptest::ProjectGrapher.distances_index(project)
         gather_scenarios_argument_types(project)
 
-        distances_index.keys.sort.each do |index|
-          items = distances_index[index]
-          items.map do |item|
+        # To have the most accurate type, the closest calls must be computed
+        # first, and deepest calls must be computed last (because they  depend
+        # on previous calls types).
+        distances_index = Hiptest::ProjectGrapher.distances_index(project)
+        distances_index.each_value do |items|  # distances_index items are sorted by distance, from closest to deepest
+          items.each do |item|
             write_parameter_types_to_item(item)
             gather_call_argument_types(item)
           end

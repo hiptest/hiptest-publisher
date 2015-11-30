@@ -32,8 +32,8 @@ module Hiptest
 
     def index_by_distances
       @distance_index = Hash.new { |hash, key| hash[key] = [] }
-      @graph.values.each do |value|
-        @distance_index[value[:from_root]] << value[:item] unless value[:item].nil?
+      @graph.each_value do |value|
+        @distance_index[value[:distance_from_root]] << value[:item] if value[:item]
       end
     end
 
@@ -46,7 +46,7 @@ module Hiptest
           name: name,
           item: item,
           calls: [],
-          from_root: -1
+          distance_from_root: -1
         }
 
         item.each_sub_nodes(Hiptest::Nodes::Call) do |call|
@@ -59,7 +59,7 @@ module Hiptest
     def add_root
       @graph[:root] = {
         calls: [],
-        from_root: 0
+        distance_from_root: 0
       }
 
       @project.each_sub_nodes(Hiptest::Nodes::Scenario) do |scenario|
@@ -70,14 +70,14 @@ module Hiptest
     def add_node_weight(node, path)
       path << node[:name]
 
-      node[:calls].map do |item_name|
+      node[:calls].each do |item_name|
         next if path.include?(item_name)
 
         called = @graph[item_name]
         next if called.nil?
 
-        if called[:from_root] <= node[:from_root]
-          called[:from_root] = node[:from_root] + 1
+        if called[:distance_from_root] <= node[:distance_from_root]
+          called[:distance_from_root] = node[:distance_from_root] + 1
           add_node_weight(called, path)
         end
       end

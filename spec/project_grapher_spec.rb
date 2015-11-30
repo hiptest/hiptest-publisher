@@ -23,7 +23,7 @@ describe Hiptest::ProjectGrapher do
   let(:first_level) {
     Hiptest::Nodes::Actionword.new('first level', [], [Hiptest::Nodes::Call.new('second level')])
   }
-  
+
   let(:second_level) {
     Hiptest::Nodes::Actionword.new('second level', [], [Hiptest::Nodes::Call.new('My leaf actionword')])
   }
@@ -41,7 +41,7 @@ describe Hiptest::ProjectGrapher do
     end
   end
 
-  context 'add_distances' do
+  context '#add_distances' do
     let(:graph) {
       grapher = Hiptest::ProjectGrapher.new(project)
       grapher.compute_graph
@@ -53,7 +53,7 @@ describe Hiptest::ProjectGrapher do
       expect(graph).to eq({
         :root => {
           :calls => [],
-          :from_root => 0
+          :distance_from_root => 0
         }
       })
     end
@@ -66,20 +66,20 @@ describe Hiptest::ProjectGrapher do
           :name => "Hiptest::Nodes::Scenario-My first scenario",
           :item => first_scenario,
           :calls => [],
-          :from_root => 1
+          :distance_from_root => 1
         },
         "Hiptest::Nodes::Scenario-My second scenario" => {
           :name => "Hiptest::Nodes::Scenario-My second scenario",
           :item => second_scenario,
           :calls => [],
-          :from_root => 1
+          :distance_from_root => 1
         },
         :root => {
           :calls => [
             "Hiptest::Nodes::Scenario-My first scenario",
             "Hiptest::Nodes::Scenario-My second scenario"
           ],
-          :from_root => 0
+          :distance_from_root => 0
         }
       })
     end
@@ -95,29 +95,29 @@ describe Hiptest::ProjectGrapher do
           :name => "Hiptest::Nodes::Scenario-My first scenario",
           :item => first_scenario,
           :calls => ['Hiptest::Nodes::Actionword-first level'],
-          :from_root => 1
+          :distance_from_root => 1
         },
         "Hiptest::Nodes::Actionword-first level" => {
           :name => "Hiptest::Nodes::Actionword-first level",
           :item => first_level,
           :calls => ['Hiptest::Nodes::Actionword-second level'],
-          :from_root => 2
+          :distance_from_root => 2
         },
         "Hiptest::Nodes::Actionword-second level" => {
           :name => "Hiptest::Nodes::Actionword-second level",
           :item => second_level,
           :calls => ['Hiptest::Nodes::Actionword-My leaf actionword'],
-          :from_root => 3
+          :distance_from_root => 3
         },
         "Hiptest::Nodes::Actionword-My leaf actionword" => {
           :name => "Hiptest::Nodes::Actionword-My leaf actionword",
           :item => leaf,
           :calls => [],
-          :from_root => 4
+          :distance_from_root => 4
         },
         :root => {
           :calls => ["Hiptest::Nodes::Scenario-My first scenario"],
-          :from_root => 0
+          :distance_from_root => 0
         }
       })
     end
@@ -135,38 +135,38 @@ describe Hiptest::ProjectGrapher do
           :name => "Hiptest::Nodes::Scenario-My first scenario",
           :item => first_scenario,
           :calls => ['Hiptest::Nodes::Actionword-first level'],
-          :from_root => 1
+          :distance_from_root => 1
         },
         "Hiptest::Nodes::Scenario-My second scenario" => {
           :name => "Hiptest::Nodes::Scenario-My second scenario",
           :item => second_scenario,
           :calls => ['Hiptest::Nodes::Actionword-My leaf actionword'],
-          :from_root => 1
+          :distance_from_root => 1
         },
         "Hiptest::Nodes::Actionword-first level" => {
           :name => "Hiptest::Nodes::Actionword-first level",
           :item => first_level,
           :calls => ['Hiptest::Nodes::Actionword-second level'],
-          :from_root => 2
+          :distance_from_root => 2
         },
         "Hiptest::Nodes::Actionword-second level" => {
           :name => "Hiptest::Nodes::Actionword-second level",
           :item => second_level,
           :calls => ['Hiptest::Nodes::Actionword-My leaf actionword'],
-          :from_root => 3
+          :distance_from_root => 3
         },
         "Hiptest::Nodes::Actionword-My leaf actionword" => {
           :name => "Hiptest::Nodes::Actionword-My leaf actionword",
           :item => leaf,
           :calls => [],
-          :from_root => 4
+          :distance_from_root => 4
         },
         :root => {
           :calls => [
             "Hiptest::Nodes::Scenario-My first scenario",
             "Hiptest::Nodes::Scenario-My second scenario"
           ],
-          :from_root => 0
+          :distance_from_root => 0
         }
       })
     end
@@ -183,13 +183,13 @@ describe Hiptest::ProjectGrapher do
           :name => "Hiptest::Nodes::Scenario-My first scenario",
           :item => first_scenario,
           :calls => ['Hiptest::Nodes::Actionword-first level'],
-          :from_root => 1
+          :distance_from_root => 1
         },
         "Hiptest::Nodes::Actionword-first level" => {
           :name => "Hiptest::Nodes::Actionword-first level",
           :item => first_level,
           :calls => ['Hiptest::Nodes::Actionword-second level'],
-          :from_root => 2
+          :distance_from_root => 2
         },
         "Hiptest::Nodes::Actionword-second level" => {
           :name => "Hiptest::Nodes::Actionword-second level",
@@ -198,19 +198,19 @@ describe Hiptest::ProjectGrapher do
             'Hiptest::Nodes::Actionword-My leaf actionword',
             'Hiptest::Nodes::Actionword-first level'
           ],
-          :from_root => 3
+          :distance_from_root => 3
         },
         "Hiptest::Nodes::Actionword-My leaf actionword" => {
           :name => "Hiptest::Nodes::Actionword-My leaf actionword",
           :item => leaf,
           :calls => [],
-          :from_root => 4
+          :distance_from_root => 4
         },
         :root => {
           :calls => [
             "Hiptest::Nodes::Scenario-My first scenario"
           ],
-          :from_root => 0
+          :distance_from_root => 0
         }
       })
     end
@@ -224,13 +224,13 @@ describe Hiptest::ProjectGrapher do
           :name => "Hiptest::Nodes::Scenario-My first scenario",
           :item => first_scenario,
           :calls => ['Hiptest::Nodes::Actionword-first level'],
-          :from_root => 1
+          :distance_from_root => 1
         },
         :root => {
           :calls => [
             "Hiptest::Nodes::Scenario-My first scenario"
           ],
-          :from_root => 0
+          :distance_from_root => 0
         }
       })
     end
@@ -242,14 +242,14 @@ describe Hiptest::ProjectGrapher do
           :name => "Hiptest::Nodes::Actionword-My leaf actionword",
           :item => leaf,
           :calls => [],
-          :from_root => -1
+          :distance_from_root => -1
         },
-        :root => {:calls=>[], :from_root=>0}
+        :root => {:calls=>[], :distance_from_root=>0}
       })
     end
   end
 
-  context 'index_by_distances' do
+  context '#index_by_distances' do
     it 'stores elements based on the distance from the root' do
       first_scenario.children[:body] << Hiptest::Nodes::Call.new('first level')
       second_scenario.children[:body] << Hiptest::Nodes::Call.new('My leaf actionword')
@@ -269,6 +269,19 @@ describe Hiptest::ProjectGrapher do
         3 => [second_level],
         4 => [leaf]
       })
+    end
+  end
+
+  context '.distances_index' do
+    it 'returns hash of elements sorted and keyed by the distance from the root' do
+      first_scenario.children[:body] << Hiptest::Nodes::Call.new('first level')
+      second_scenario.children[:body] << Hiptest::Nodes::Call.new('My leaf actionword')
+      add_aws([first_level, second_level, leaf])
+      add_scenarios([first_scenario, second_scenario])
+
+      distance_index = Hiptest::ProjectGrapher.distances_index(project)
+
+      expect(distance_index.keys).to eq([1, 2, 3, 4])
     end
   end
 end
