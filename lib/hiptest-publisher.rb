@@ -58,7 +58,7 @@ module Hiptest
         return
       end
 
-      if @cli_options.actionwords_diff || @cli_options.aw_deleted|| @cli_options.aw_created|| @cli_options.aw_renamed|| @cli_options.aw_signature_changed
+      if @cli_options.actionwords_diff?
         show_actionwords_diff
         return
       end

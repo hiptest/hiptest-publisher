@@ -62,6 +62,10 @@ class CliOptions < OpenStruct
     super(__cli_args: Set.new, __config_args: Set.new, **hash)
   end
 
+  def actionwords_diff?
+    actionwords_diff || aw_deleted || aw_created || aw_renamed || aw_signature_changed
+  end
+
   def language_framework
     if framework.empty?
       language

@@ -59,7 +59,7 @@ module Hiptest
       end
 
       # actionwords signature file
-      if cli_options.actionwords_diff || cli_options.aw_deleted || cli_options.aw_created || cli_options.aw_renamed || cli_options.aw_signature_changed
+      if cli_options.actionwords_diff?
         actionwords_signature_file = Pathname.new(cli_options.output_directory).join("actionwords_signature.yaml")
         if actionwords_signature_file.directory?
           raise CliOptionError, "Bad Action Words signature file: the file \"#{actionwords_signature_file.realpath}\" is a directory"
