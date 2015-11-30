@@ -21,91 +21,131 @@ describe LanguageGroupConfig do
   )}
 
   context "outputing scenarios" do
+    {
+      "java" => {
+        []                                       => [ "/ProjectTest.java",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/BuyPontarlierTest.java",
+                                                      "/SellMontDOrTest.java"
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/GlobalTrades/BuyGoods/BuyPontarlierTest.java",
+                                                      "/GlobalTrades/SellGoods/SellMontDOrTest.java",
+                                                    ],
+      },
 
-    context "without --split-scenarios" do
-      let(:split_scenarios) { false }
+      "java-testng" => {
+        []                                       => [ "/ProjectTest.java",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/BuyPontarlierTest.java",
+                                                      "/SellMontDOrTest.java",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/GlobalTrades/BuyGoods/BuyPontarlierTest.java",
+                                                      "/GlobalTrades/SellGoods/SellMontDOrTest.java",
+                                                    ],
+      },
 
-      {
-        "java"                => "/ProjectTest.java",
-        "java-testng"         => "/ProjectTest.java",
-        "javascript"          => "/project_test.js",
-        "javascript-jasmine"  => "/project_test.js",
-        "python"              => "/test_project.py",
-        "robotframework"      => "/project.txt",
-        "ruby"                => "/project_spec.rb",
-        "ruby-minitest"       => "/project_test.rb",
-        "seleniumide"         => "/project.html",
-        "csharp"              => "/ProjectTest.cs"
-      }.each do |dialect, output_file|
-        it "for #{dialect} language, it outputs scenarios in file #{output_file}" do
-          language, framework = dialect.split("-", 2)
-          language_group_config = language_group_config_for(
-            only: "tests",
-            language: language,
-            framework: framework,
-            split_scenarios: split_scenarios,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq([output_file])
-        end
-      end
-    end
+      "javascript" => {
+        []                                       => [ "/project_test.js",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/Buy_Pontarlier_test.js",
+                                                      "/Sell_Mont_dOr_test.js",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/Buy_Pontarlier_test.js",
+                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js",
+                                                    ],
+      },
 
-    context "with --split-scenarios" do
-      let(:split_scenarios) { true }
+      "javascript-jasmine" => {
+        []                                       => [ "/project_test.js",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/Buy_Pontarlier_test.js",
+                                                      "/Sell_Mont_dOr_test.js",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/Buy_Pontarlier_test.js",
+                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js",
+                                                    ],
+      },
 
-      {
-        "java"                => ["/BuyPontarlierTest.java", "/SellMontDOrTest.java"],
-        "java-testng"         => ["/BuyPontarlierTest.java", "/SellMontDOrTest.java"],
-        "javascript"          => ["/Buy_Pontarlier_test.js", "/Sell_Mont_dOr_test.js"],
-        "javascript-jasmine"  => ["/Buy_Pontarlier_test.js", "/Sell_Mont_dOr_test.js"],
-        "python"              => ["/test_Buy_Pontarlier.py", "/test_Sell_Mont_dOr.py"],
-        "robotframework"      => ["/test_Buy_Pontarlier.txt", "/test_Sell_Mont_dOr.txt"],
-        "ruby"                => ["/Buy_Pontarlier_spec.rb", "/Sell_Mont_dOr_spec.rb"],
-        "ruby-minitest"       => ["/Buy_Pontarlier_test.rb", "/Sell_Mont_dOr_test.rb"],
-        "seleniumide"         => ["/Buy_Pontarlier.html", "/Sell_Mont_dOr.html"],
-        "csharp"              => ["/BuyPontarlierTest.cs", "/SellMontDOrTest.cs"],
-      }.each do |dialect, output_files|
-        it "for #{dialect} language, it outputs scenarios in files #{output_files.join(', ')}" do
-          language, framework = dialect.split("-", 2)
-          language_group_config = language_group_config_for(
-            only: "tests",
-            language: language,
-            framework: framework,
-            split_scenarios: split_scenarios,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
-        end
-      end
-    end
+      "python" => {
+        []                                       => [ "/test_project.py",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/test_Buy_Pontarlier.py",
+                                                      "/test_Sell_Mont_dOr.py",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/test_Buy_Pontarlier.py",
+                                                      "/Global_trades/Sell_goods/test_Sell_Mont_dOr.py",
+                                                    ],
+      },
 
-    context "with --split-scenarios --with-folders" do
-      let(:split_scenarios) { true }
+      "robotframework" => {
+        []                                       => [ "/project.txt",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/test_Buy_Pontarlier.txt",
+                                                      "/test_Sell_Mont_dOr.txt",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/test_Buy_Pontarlier.txt",
+                                                      "/Global_trades/Sell_goods/test_Sell_Mont_dOr.txt",
+                                                    ],
+      },
 
-      {
-        "java"                => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.java", "/GlobalTrades/SellGoods/SellMontDOrTest.java"],
-        "java-testng"         => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.java", "/GlobalTrades/SellGoods/SellMontDOrTest.java"],
-        "javascript"          => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.js", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js"],
-        "javascript-jasmine"  => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.js", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js"],
-        "python"              => ["/Global_trades/Buy_goods/test_Buy_Pontarlier.py", "/Global_trades/Sell_goods/test_Sell_Mont_dOr.py"],
-        "robotframework"      => ["/Global_trades/Buy_goods/test_Buy_Pontarlier.txt", "/Global_trades/Sell_goods/test_Sell_Mont_dOr.txt"],
-        "ruby"                => ["/Global_trades/Buy_goods/Buy_Pontarlier_spec.rb", "/Global_trades/Sell_goods/Sell_Mont_dOr_spec.rb"],
-        "ruby-minitest"       => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.rb", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.rb"],
-        "seleniumide"         => ["/Global_trades/Buy_goods/Buy_Pontarlier.html", "/Global_trades/Sell_goods/Sell_Mont_dOr.html"],
-        "csharp"              => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.cs", "/GlobalTrades/SellGoods/SellMontDOrTest.cs"],
-      }.each do |dialect, output_files|
-        it "for #{dialect} language, it outputs scenarios in files #{output_files.join(', ')}" do
-          language, framework = dialect.split("-", 2)
-          language_group_config = language_group_config_for(
-            only: "tests",
-            language: language,
-            framework: framework,
-            split_scenarios: split_scenarios,
-            with_folders: true,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
+      "ruby" => {
+        []                                       => [ "/project_spec.rb",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/Buy_Pontarlier_spec.rb",
+                                                      "/Sell_Mont_dOr_spec.rb",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/Buy_Pontarlier_spec.rb",
+                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_spec.rb",
+                                                    ],
+      },
+
+      "ruby-minitest" => {
+        []                                       => [ "/project_test.rb",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/Buy_Pontarlier_test.rb",
+                                                      "/Sell_Mont_dOr_test.rb",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/Buy_Pontarlier_test.rb",
+                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_test.rb",
+                                                    ],
+      },
+
+      "seleniumide" => {
+        []                                       => [ "/project.html",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/Buy_Pontarlier.html",
+                                                      "/Sell_Mont_dOr.html",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/Global_trades/Buy_goods/Buy_Pontarlier.html",
+                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr.html",
+                                                    ],
+      },
+
+      "csharp" => {
+        []                                       => [ "/ProjectTest.cs",
+                                                    ],
+        ["--split-scenarios"]                    => [ "/BuyPontarlierTest.cs",
+                                                      "/SellMontDOrTest.cs",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "/GlobalTrades/BuyGoods/BuyPontarlierTest.cs",
+                                                      "/GlobalTrades/SellGoods/SellMontDOrTest.cs",
+                                                    ],
+      },
+    }.each do |dialect, output_files_for_options|
+      context dialect do
+        output_files_for_options.each do |options, output_files|
+          it "with #{options.join(' ')}: outputs scenarios in files #{output_files}" do
+            language, framework = dialect.split("-", 2)
+            args = options
+            args += ["--only", "tests"]
+            args += ["--output-directory", "/"]
+            args += ["--language", language]
+            args += ["--framework", framework] if framework
+            language_group_config = language_group_config_for(args)
+
+            filenames = language_group_config.each_node_rendering_context(project).map(&:path)
+            expect(filenames).to eq(output_files)
+          end
         end
       end
     end
