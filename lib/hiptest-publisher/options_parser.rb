@@ -356,17 +356,20 @@ class LanguageGroupConfig
   end
 
   def splitted_files?
-    if self[:scenario_filename].nil?
+    if self[:named_filename].nil?
+      # if we can't give a different name for each file, we can't split them
       false
     elsif self[:filename].nil?
+      # if we can't give a name to a single file, we must split them
       true
     else
+      # both options are possible, do as user specified
       @split_scenarios
     end
   end
 
   def can_name_files?
-    if self[:scenario_filename]
+    if self[:named_filename]
       splitted_files? || with_folders?
     else
       false
@@ -466,7 +469,7 @@ class LanguageGroupConfig
   def output_filename(node)
     if can_name_files?
       name = normalized_filename(node.children[:name])
-      self[:scenario_filename].gsub('%s', name)
+      self[:named_filename].gsub('%s', name)
     else
       self[:filename]
     end

@@ -22,6 +22,61 @@ describe LanguageGroupConfig do
 
   context "outputing files" do
     {
+      "cucumber" => {
+        []                                       => [ "[features]",
+                                                      "/buy_goods.feature",
+                                                      "/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/buy_goods.feature",
+                                                      "/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/global_trades/buy_goods.feature",
+                                                      "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/global_trades/buy_goods.feature",
+                                                      "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+      },
+
+      "csharp" => {
+        []                                       => [ "[tests]",
+                                                      "/ProjectTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/BuyPontarlierTest.cs",
+                                                      "/SellMontDOrTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/GlobalTrades/BuyGoods/BuyPontarlierTest.cs",
+                                                      "/GlobalTrades/SellGoods/SellMontDOrTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+      },
+
       "java" => {
         []                                       => [ "[tests]",
                                                       "/ProjectTest.java",
@@ -69,14 +124,14 @@ describe LanguageGroupConfig do
                                                       "/actionwords.js",
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/Buy_Pontarlier_test.js",
-                                                      "/Sell_Mont_dOr_test.js",
+                                                      "/buy_pontarlier_test.js",
+                                                      "/sell_mont_d_or_test.js",
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/Global_trades/Buy_goods/Buy_Pontarlier_test.js",
-                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.js",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.js",
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
@@ -89,14 +144,14 @@ describe LanguageGroupConfig do
                                                       "/actionwords.js",
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/Buy_Pontarlier_test.js",
-                                                      "/Sell_Mont_dOr_test.js",
+                                                      "/buy_pontarlier_test.js",
+                                                      "/sell_mont_d_or_test.js",
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/Global_trades/Buy_goods/Buy_Pontarlier_test.js",
-                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.js",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.js",
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
@@ -109,14 +164,14 @@ describe LanguageGroupConfig do
                                                       "/actionwords.py",
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/test_Buy_Pontarlier.py",
-                                                      "/test_Sell_Mont_dOr.py",
+                                                      "/test_buy_pontarlier.py",
+                                                      "/test_sell_mont_d_or.py",
                                                       "[actionwords]",
                                                       "/actionwords.py",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/Global_trades/Buy_goods/test_Buy_Pontarlier.py",
-                                                      "/Global_trades/Sell_goods/test_Sell_Mont_dOr.py",
+                                                      "/global_trades/buy_goods/test_buy_pontarlier.py",
+                                                      "/global_trades/sell_goods/test_sell_mont_d_or.py",
                                                       "[actionwords]",
                                                       "/actionwords.py",
                                                     ],
@@ -129,14 +184,14 @@ describe LanguageGroupConfig do
                                                       "/keywords.txt",
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/test_Buy_Pontarlier.txt",
-                                                      "/test_Sell_Mont_dOr.txt",
+                                                      "/test_buy_pontarlier.txt",
+                                                      "/test_sell_mont_d_or.txt",
                                                       "[actionwords]",
                                                       "/keywords.txt",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/Global_trades/Buy_goods/test_Buy_Pontarlier.txt",
-                                                      "/Global_trades/Sell_goods/test_Sell_Mont_dOr.txt",
+                                                      "/global_trades/buy_goods/test_buy_pontarlier.txt",
+                                                      "/global_trades/sell_goods/test_sell_mont_d_or.txt",
                                                       "[actionwords]",
                                                       "/keywords.txt",
                                                     ],
@@ -149,20 +204,20 @@ describe LanguageGroupConfig do
                                                       "/actionwords.rb",
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/Buy_Pontarlier_spec.rb",
-                                                      "/Sell_Mont_dOr_spec.rb",
+                                                      "/buy_pontarlier_spec.rb",
+                                                      "/sell_mont_d_or_spec.rb",
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
         ["--with-folders"]                       => [ "[tests]",
-                                                      "/Global_trades/Buy_goods_spec.rb",
-                                                      "/Global_trades/Sell_goods_spec.rb",
+                                                      "/global_trades/buy_goods_spec.rb",
+                                                      "/global_trades/sell_goods_spec.rb",
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/Global_trades/Buy_goods/Buy_Pontarlier_spec.rb",
-                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_spec.rb",
+                                                      "/global_trades/buy_goods/buy_pontarlier_spec.rb",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_spec.rb",
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
@@ -175,14 +230,14 @@ describe LanguageGroupConfig do
                                                       "/actionwords.rb",
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/Buy_Pontarlier_test.rb",
-                                                      "/Sell_Mont_dOr_test.rb",
+                                                      "/buy_pontarlier_test.rb",
+                                                      "/sell_mont_d_or_test.rb",
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/Global_trades/Buy_goods/Buy_Pontarlier_test.rb",
-                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr_test.rb",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.rb",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.rb",
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
@@ -208,21 +263,36 @@ describe LanguageGroupConfig do
                                                     ],
       },
 
-      "csharp" => {
-        []                                       => [ "[tests]",
-                                                      "/ProjectTest.cs",
+      "specflow" => {
+        []                                       => [ "[features]",
+                                                      "/BuyGoods.feature",
+                                                      "/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
                                                       "[actionwords]",
                                                       "/Actionwords.cs",
                                                     ],
-        ["--split-scenarios"]                    => [ "[tests]",
-                                                      "/BuyPontarlierTest.cs",
-                                                      "/SellMontDOrTest.cs",
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/BuyGoods.feature",
+                                                      "/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
                                                       "[actionwords]",
                                                       "/Actionwords.cs",
                                                     ],
-        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
-                                                      "/GlobalTrades/BuyGoods/BuyPontarlierTest.cs",
-                                                      "/GlobalTrades/SellGoods/SellMontDOrTest.cs",
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/GlobalTrades/BuyGoods.feature",
+                                                      "/GlobalTrades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/GlobalTrades/BuyGoods.feature",
+                                                      "/GlobalTrades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
                                                       "[actionwords]",
                                                       "/Actionwords.cs",
                                                     ],
@@ -285,41 +355,6 @@ describe LanguageGroupConfig do
         filenames_not_splitted = language_group_config_not_splitted.each_node_rendering_context(project).map(&:path)
 
         expect(filenames_not_splitted).to eq(filenames_splitted)
-      end
-    end
-
-    context "without --with-folders" do
-      let(:with_folders) { false }
-      let(:output_files) { ["/Buy_goods.feature", "/Sell_goods.feature"] }
-
-      ['cucumber', 'specflow'].each do |language|
-        it "for #{language} language, it outputs scenarios in feature files based on the folder" do
-          language_group_config = language_group_config_for(
-            only: "features",
-            language: language,
-            with_folders: with_folders,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
-        end
-      end
-    end
-
-    context "with --with-folders" do
-      let(:with_folders) { true }
-      let(:output_files) { ["/Global_trades/Buy_goods.feature", "/Global_trades/Sell_goods.feature"] }
-
-
-      ['cucumber', 'specflow'].each do |language|
-        it "for #{language} language, it outputs scenarios in feature files based on the folder" do
-          language_group_config = language_group_config_for(
-            only: "features",
-            language: language,
-            with_folders: with_folders,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
-        end
       end
     end
   end

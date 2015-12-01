@@ -49,12 +49,7 @@ class String
   end
 
   def camelize_upper
-    camelized = self.camelize
-    if camelized.empty?
-      ""
-    else
-      "#{camelized[0].upcase}#{camelized[1..-1]}"
-    end
+    self.camelize
   end
 
   def clear_extension
