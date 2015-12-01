@@ -318,7 +318,7 @@ describe 'Render as Java' do
         "",
         "import junit.framework.TestCase;",
         "",
-        "public class MyScenarioTest extends TestCase {",
+        "public class CompareToPiTest extends TestCase {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -404,7 +404,7 @@ describe 'Render as Java' do
         "",
         "import junit.framework.TestCase;",
         "",
-        "public class MyScenarioTest extends TestCase {",
+        "public class CheckLoginTest extends TestCase {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -500,7 +500,7 @@ describe 'Render as Java' do
         '',
         'import junit.framework.TestCase;',
         '',
-        'public class MyScenarioTest extends TestCase {',
+        'public class LoginTest extends TestCase {',
         '',
         '    public Actionwords actionwords = new Actionwords();',
         '',
@@ -521,7 +521,6 @@ describe 'Render as Java' do
     it_behaves_like "a renderer" do
       let(:language) { 'java' }
       let(:framework) { 'JUnit' }
-      let(:test_name) { 'my scenario' }
       let(:package) { 'com.example' }
     end
   end
@@ -586,7 +585,7 @@ describe 'Render as Java' do
         "",
         "import org.testng.annotations.*;",
         "",
-        "public class MyScenarioTest {",
+        "public class CompareToPiTest {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -678,7 +677,7 @@ describe 'Render as Java' do
         "",
         "import org.testng.annotations.*;",
         "",
-        "public class MyScenarioTest {",
+        "public class CheckLoginTest {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -786,7 +785,7 @@ describe 'Render as Java' do
          '',
          'import org.testng.annotations.*;',
          '',
-         'public class MyScenarioTest {',
+         'public class LoginTest {',
          '',
          '    public Actionwords actionwords = new Actionwords();',
          '',
@@ -808,7 +807,6 @@ describe 'Render as Java' do
     it_behaves_like "a renderer" do
       let(:language) { 'java' }
       let(:framework) { 'testng' }
-      let(:test_name) { 'my scenario' }
       let(:package) { 'com.example' }
     end
   end

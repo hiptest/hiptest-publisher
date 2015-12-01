@@ -108,8 +108,7 @@ def language_group_config_for(properties)
 end
 
 def context_for(properties)
-  test_name = properties.delete(:test_name) || 'dummy'
+  node = properties.delete(:node) || OpenStruct.new(children: {name: 'dummy'})
   language_group_config = language_group_config_for(properties)
-  dummy_node = OpenStruct.new(children: {name: test_name})
-  language_group_config.build_node_rendering_context(dummy_node)
+  language_group_config.build_node_rendering_context(node)
 end

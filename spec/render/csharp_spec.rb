@@ -312,7 +312,7 @@ describe 'Render as C#' do
       "    using NUnit.Framework;",
       "",
       "    [TestFixture]",
-      "    public class MyScenarioTest {",
+      "    public class CompareToPiTest {",
       "",
       "        public Actionwords Actionwords = new Actionwords();",
       "",
@@ -408,7 +408,7 @@ describe 'Render as C#' do
       "    using NUnit.Framework;",
       "",
       "    [TestFixture]",
-      "    public class MyScenarioTest {",
+      "    public class CheckLoginTest {",
       "",
       "        public Actionwords Actionwords = new Actionwords();",
       "",
@@ -522,7 +522,7 @@ describe 'Render as C#' do
       "    using NUnit.Framework;",
       "",
       "    [TestFixture]",
-      "    public class MyScenarioTest {",
+      "    public class LoginTest {",
       "",
       '        public Actionwords Actionwords = new Actionwords();',
       '',
@@ -546,7 +546,6 @@ describe 'Render as C#' do
     it_behaves_like "a renderer" do
       let(:language) {'csharp'}
       let(:framework) {'nunit'}
-      let(:test_name) { 'my scenario' }
       let(:namespace) { 'MyProject' }
     end
   end
