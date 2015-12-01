@@ -10,7 +10,7 @@ class String
 
   def normalize
     literated = self.literate
-    literated.strip.gsub(/\s+/, '_').gsub(/\W/, '')
+    literated.strip.gsub(/\s\W*/, '_').gsub(/\W/, '')
   end
 
   def normalize_lower
