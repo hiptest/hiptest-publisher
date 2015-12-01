@@ -10,26 +10,33 @@ class String
 
   def normalize
     literated = self.literate
-    literated.strip.gsub(/\s\W*/, '_').gsub(/\W/, '')
+    literated.strip!
+    literated.gsub!(/\s\W*/, '_')
+    literated.gsub!(/\W/, '')
+    literated
   end
 
   def normalize_lower
-    self.normalize.downcase
+    normalized = self.normalize
+    normalized.downcase!
+    normalized
   end
 
   def underscore
     # based on:
     # http://stackoverflow.com/questions/1509915/converting-camel-case-to-underscore-case-in-ruby
     normalized = self.normalize
-    normalized.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
-      tr("-", "_").
-      downcase
+    normalized.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
+    normalized.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+    normalized.tr!("-", "_")
+    normalized.downcase!
+    normalized
   end
 
   def camelize
-    normalized = self.normalize
-    normalized.split('_').map {|w| w.empty? ? "" : "#{w[0].upcase}#{w[1..-1]}"}.join
+    normalized = self.normalize.split('_')
+    normalized.map! {|w| w.empty? ? "" : "#{w[0].upcase}#{w[1..-1]}"}
+    normalized.join
   end
 
   def camelize_lower
