@@ -20,7 +20,7 @@ describe LanguageGroupConfig do
     folders: [root_folder, trade_folder, buy_folder, sell_folder, loan_folder],
   )}
 
-  context "outputing scenarios" do
+  context "outputing files" do
     {
       "java" => {
         []                                       => [ "[tests]",
@@ -320,34 +320,6 @@ describe LanguageGroupConfig do
           filenames = language_group_config.each_node_rendering_context(project).map(&:path)
           expect(filenames).to eq(output_files)
         end
-      end
-    end
-  end
-
-  context "outputing actionwords" do
-    {
-      "cucumber"            => "/actionwords.rb",
-      "java"                => "/Actionwords.java",
-      "java-testng"         => "/Actionwords.java",
-      "javascript"          => "/actionwords.js",
-      "javascript-jasmine"  => "/actionwords.js",
-      "python"              => "/actionwords.py",
-      "robotframework"      => "/keywords.txt",
-      "ruby"                => "/actionwords.rb",
-      "ruby-minitest"       => "/actionwords.rb",
-      "seleniumide"         => "/actionwords.html",
-      "csharp"              => "/Actionwords.cs",
-      "specflow"            => "/Actionwords.cs",
-    }.each do |dialect, output_file|
-      it "for #{dialect} language, it outputs actionwords in file #{output_file}" do
-        language, framework = dialect.split("-", 2)
-        language_group_config = language_group_config_for(
-          only: "actionwords",
-          language: language,
-          framework: framework,
-        )
-        filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-        expect(filenames).to eq([output_file])
       end
     end
   end
