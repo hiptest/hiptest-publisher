@@ -112,6 +112,11 @@ module Hiptest
       "\t"
     end
 
+    def hh_relative_path(context, filename, block)
+      levels_count = context.get('context.relative_path').count('/')
+      "../" * levels_count + filename
+    end
+
     def hh_debug(context, block)
       require 'pry'
       binding.pry

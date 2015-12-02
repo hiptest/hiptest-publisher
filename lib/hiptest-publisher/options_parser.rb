@@ -435,7 +435,9 @@ class LanguageGroupConfig
   end
 
   def build_node_rendering_context(node)
-    path = File.join(@output_directory, output_dirname(node), output_filename(node))
+    relative_path = File.join(output_dirname(node), output_filename(node))
+    relative_path = relative_path[1..-1] if relative_path[0] == '/'
+    path = File.join(@output_directory, relative_path)
 
     if splitted_files?
       description = "#{singularize(node_name)} \"#{node.children[:name]}\""
@@ -445,6 +447,7 @@ class LanguageGroupConfig
 
     NodeRenderingContext.new(
       path: path,
+      relative_path: relative_path,
       indentation: indentation,
       template_finder: template_finder,
       description: description,
@@ -460,7 +463,7 @@ class LanguageGroupConfig
     folder = node.folder
     hierarchy = []
     while folder && !folder.root?
-      hierarchy << normalized_filename(folder.children[:name])
+      hierarchy << normalized_dirname(folder.children[:name])
       folder = folder.parent
     end
     File.join(*hierarchy.reverse)
@@ -491,6 +494,11 @@ class LanguageGroupConfig
 
   def get_folder_nodes(project)
     project.children[:test_plan].children[:folders].select {|folder| folder.children[:scenarios].length > 0}
+  end
+
+  def normalized_dirname(name)
+    dirname_convention = @language_group_params[:dirname_convention] || @language_group_params[:filename_convention] || :normalize
+    name.send(dirname_convention)
   end
 
   def normalized_filename(name)

@@ -404,6 +404,35 @@ describe 'Render as Ruby' do
        "  end",
        "end"
       ].join("\n")
+
+      @root_folder_rendered = [
+        "# encoding: UTF-8",
+        "require 'spec_helper'",
+        "require_relative 'actionwords'",
+        "",
+        "describe 'My root folder' do",
+        "  include Actionwords",
+        "",
+        "  it \"One root scenario\" do",
+        "",
+        "  end",
+        "",
+        "  it \"Another root scenario\" do",
+        "",
+        "  end",
+        "end",
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        "# encoding: UTF-8",
+        "require 'spec_helper'",
+        "require_relative '../actionwords'",
+        "",
+        "describe 'A grand-child folder' do",
+        "  include Actionwords",
+        "",
+        "end",
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
@@ -644,6 +673,37 @@ describe 'Render as Ruby' do
        "    check_url('/welcome')",
        "  end",
        "end"
+      ].join("\n")
+
+      @root_folder_rendered = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative 'actionwords'",
+        "",
+        "class TestMyRootFolder < MiniTest::Unit::TestCase",
+        "  include Actionwords",
+        "",
+        "  def test_One_root_scenario",
+        "",
+        "  end",
+        "",
+        "  def test_Another_root_scenario",
+        "",
+        "  end",
+        "end",
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative '../actionwords'",
+        "",
+        "class TestAGrandchildFolder < MiniTest::Unit::TestCase",
+        "  include Actionwords",
+        "",
+        "end",
       ].join("\n")
     end
 

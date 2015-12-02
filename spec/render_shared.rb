@@ -9,6 +9,8 @@ require_relative '../lib/hiptest-publisher/options_parser'
 
 shared_context "shared render" do
 
+  include HelperFactories
+
   before(:each) do
     @null = Hiptest::Nodes::NullLiteral.new
     @what_is_your_quest = Hiptest::Nodes::StringLiteral.new("What is your quest ?")
@@ -268,6 +270,14 @@ shared_context "shared render" do
     @tests.parent = Hiptest::Nodes::Project.new('My test project')
 
 
+    @root_folder = make_folder("My root folder")
+    @first_root_scenario = make_scenario("One root scenario", folder: @root_folder)
+    @first_root_scenario.parent = @scenarios
+    @second_root_scenario = make_scenario("Another root scenario", folder: @root_folder)
+    @second_root_scenario.parent = @scenarios
+    @child_folder = make_folder("child folder", parent: @root_folder)
+    @grand_child_folder = make_folder("A grand-child folder", parent: @child_folder)
+
     # In hiptest
     # scenario 'reset password' do
     #   call given 'Page "url" is opened'(url='/login')
@@ -306,10 +316,12 @@ shared_context "shared render" do
       node: node,
       # only to select the right config group: we render [actionwords], [tests] and others differently
       only: only,
-      # in tests, simulate user options like --language, --framework, --split_scenarios, package= or namespace= (in config file)
+      # in tests, simulate user options like --language, --framework,
+      # --split-scenarios, --with-folders, package= or namespace= (in config file)
       language: language,
       framework: framework,
       split_scenarios: split_scenarios,
+      with_folders: with_folders,
       namespace: namespace,
       package: package)
     node.render(@context)
@@ -319,6 +331,7 @@ end
 shared_examples "a renderer" do
 
   let(:split_scenarios) { nil }
+  let(:with_folders) { nil }
   let(:package) { nil } # only used for Java
   let(:namespace) { nil } # only used for C#
 
@@ -504,6 +517,21 @@ shared_examples "a renderer" do
 
     it 'Tests' do
       expect(rendering(@tests)).to eq(@tests_rendered)
+    end
+
+    context 'Folders' do
+      let(:with_folders) { true }
+      let(:split_scenarios) { false }
+
+      it 'renders all scenarios in a single file' do
+        pending if @root_folder_rendered.nil?
+        expect(rendering(@root_folder)).to eq(@root_folder_rendered)
+      end
+
+      it 'adapts path to load actionword file correctly' do
+        pending if @grand_child_folder_rendered.nil?
+        expect(rendering(@grand_child_folder)).to eq(@grand_child_folder_rendered)
+      end
     end
   end
 

@@ -13,6 +13,15 @@ module Hiptest
 
     alias :walk_actionword :walk_item
 
+    def walk_folder(folder)
+      relative_package = @context.relative_path.split('/')[0...-1].join('.')
+      relative_package = ".#{relative_package}" unless relative_package.empty?
+      {
+        :needs_to_import_actionwords? => @context.relative_path.count('/') > 0,
+        :relative_package => relative_package,
+      }
+    end
+
     def walk_scenario(scenario)
       base = walk_item(scenario)
       base[:project_name] = scenario.parent.parent.children[:name]
