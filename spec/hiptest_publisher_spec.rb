@@ -187,7 +187,7 @@ describe Hiptest::Publisher do
       end
 
       def list_files(path)
-        Dir.entries(path).reject { |f| [".", ".."].include?(f) }
+        Dir.entries(path).reject { |f| [".", ".."].include?(f) }.sort
       end
 
       let(:custom_output_dir) {
