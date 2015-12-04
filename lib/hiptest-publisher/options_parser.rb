@@ -441,7 +441,7 @@ class LanguageGroupConfig
   end
 
   def language_group_output_directory
-    @user_params["#{@language_group_params[:group_name]}_output_dir"] || @output_directory
+    @user_params["#{@language_group_params[:group_name]}_output_directory"] || @output_directory
   end
 
   def output_directory(node)

@@ -194,16 +194,16 @@ describe Hiptest::Publisher do
         Dir.mktmpdir
       }
 
-      it 'test output dir can be overriden by setting "tests_ouput_dir"' do
-        path = create_config_file('plop.config', "tests_output_dir = '#{custom_output_dir}'\n")
+      it 'test output dir can be overriden by setting "tests_output_directory"' do
+        path = create_config_file('plop.config', "tests_output_directory = '#{custom_output_dir}'\n")
         run_publisher_command("--config=#{path}")
 
         expect(list_files(output_dir)).to eq(['actionwords.rb', 'actionwords_signature.yaml', 'plop.config'])
         expect(list_files(custom_output_dir)).to eq(['project_spec.rb'])
       end
 
-      it 'test output dir can be overriden by setting "tests_ouput_dir"' do
-        path = create_config_file('plop.config', "actionwords_output_dir = '#{custom_output_dir}'\n")
+      it 'test output dir can be overriden by setting "tests_output_directory"' do
+        path = create_config_file('plop.config', "actionwords_output_directory = '#{custom_output_dir}'\n")
         run_publisher_command("--config=#{path}")
 
         expect(list_files(output_dir)).to eq(['actionwords_signature.yaml', 'plop.config', 'project_spec.rb'])
