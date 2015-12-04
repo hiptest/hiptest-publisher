@@ -177,6 +177,40 @@ describe Hiptest::Publisher do
       end
     end
 
+    describe 'custom output directories' do
+      def create_config_file(name, content)
+        path = File.join(output_dir, name)
+        File.open(path, 'w') do |file|
+          file.write(content)
+        end
+        path
+      end
+
+      def list_files(path)
+        Dir.entries(path).reject { |f| [".", ".."].include?(f) }
+      end
+
+      let(:custom_output_dir) {
+        Dir.mktmpdir
+      }
+
+      it 'test output dir can be overriden by setting "tests_ouput_dir"' do
+        path = create_config_file('plop.config', "tests_output_dir = '#{custom_output_dir}'\n")
+        run_publisher_command("--config=#{path}")
+
+        expect(list_files(output_dir)).to eq(['actionwords.rb', 'actionwords_signature.yaml', 'plop.config'])
+        expect(list_files(custom_output_dir)).to eq(['project_spec.rb'])
+      end
+
+      it 'test output dir can be overriden by setting "tests_ouput_dir"' do
+        path = create_config_file('plop.config', "actionwords_output_dir = '#{custom_output_dir}'\n")
+        run_publisher_command("--config=#{path}")
+
+        expect(list_files(output_dir)).to eq(['actionwords_signature.yaml', 'plop.config', 'project_spec.rb'])
+        expect(list_files(custom_output_dir)).to eq(['actionwords.rb'])
+      end
+    end
+
     def have_printed(message)
       have_received(:print).at_least(1).with(a_string_including(message))
     end
