@@ -124,6 +124,7 @@ class OptionsParser
       'Selenium IDE' => [''],
       'Javascript' => ['qUnit', 'Jasmine'],
       'CSharp' => ['NUnit'],
+      'PHP' => ['PHPUnit'],
       'SpecFlow' => ['']
     }
   end
