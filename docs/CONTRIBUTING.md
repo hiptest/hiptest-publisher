@@ -10,7 +10,7 @@ Adding support for a new language
 
 Let's say we want to add support for Scala export.
 
-The first step is to write the tests. Copy the file ``spec/render_template_spec.rb.sample``  to ``spec/render_scala_spec.rb`` and edit it with your favorite editor. Replace ``<My language>`` by ``scala`` and ``<The test framework>`` by test framework that will be considered as default for all Scala exports (well, you added support for Scala, you can at least have the right to chose what the tests framework will be ;) ).
+The first step is to write the tests. Copy the file ``spec/render_template_spec.rb.sample``  to ``spec/render/scala_spec.rb`` and edit it with your favorite editor. Replace ``<My language>`` by ``scala`` and ``<The test framework>`` by test framework that will be considered as default for all Scala exports (well, you added support for Scala, you can at least have the right to chose what the tests framework will be ;) ).
 
 Run the following command line:
 
