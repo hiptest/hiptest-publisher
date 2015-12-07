@@ -1,0 +1,4 @@
+{{#if has_datasets?}}{{> item_as_function}}
+{{{ rendered_children.datatable }}}{{else}}public function test{{{ camelize_upper rendered_children.name }}}{{#if rendered_children.uid}}Uid{{{camelize_upper rendered_children.uid}}}{{/if}}() {{#curly}}
+{{> body}}
+{{/curly}}{{/if}}

@@ -1,0 +1,12 @@
+<?php
+require_once('Actionwords.php')
+
+class {{{ camelize_upper project_name }}}Test extends PHPUnit_Framework_TestCase {{#curly}}{{#indent}}
+public $actionWords = new Actionwords();
+
+{{#each rendered_children.tests}}{{{this}}}
+
+{{/each}}
+{{/indent}}
+{{/curly}}
+?>
