@@ -1,5 +1,12 @@
 <?php
-class Actionwords {{#curly}}{{#indent}}{{#each rendered_children.actionwords}}
+class Actionwords {{#curly}}{{#indent}}
+var $tests;
+
+function __construct($tests) {{#curly}}{{#indent}}
+$this->tests = $tests;
+{{/indent}}
+{{/curly}}
+{{#each rendered_children.actionwords}}
 {{{this}}}
 {{/each}}
 {{/indent}}

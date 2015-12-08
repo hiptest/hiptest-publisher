@@ -54,14 +54,14 @@ describe 'Render as PHP' do
     @assign_fighters_to_foo_rendered = "$foo = 'fighters';"
 
     # In Hiptest: call 'foo'
-    @call_foo_rendered = "$actionwords->foo();"
+    @call_foo_rendered = "$this->actionwords->foo();"
     # In Hiptest: call 'foo bar'
-    @call_foo_bar_rendered = "$actionwords->fooBar();"
+    @call_foo_bar_rendered = "$this->actionwords->fooBar();"
 
     # In Hiptest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = "$actionwords->foo('fighters');"
+    @call_foo_with_fighters_rendered = "$this->actionwords->foo('fighters');"
     # In Hiptest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = "$actionwords->fooBar('fighters');"
+    @call_foo_bar_with_fighters_rendered = "$this->actionwords->fooBar('fighters');"
 
     # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '// TODO: Implement action: "{$foo}fighters"'
@@ -98,7 +98,7 @@ describe 'Render as PHP' do
     @while_loop_rendered = [
         "while ($foo) {",
         "  $fighters = 'foo';",
-        "  $actionwords->foo('fighters');",
+        "  $this->actionwords->foo('fighters');",
         "}\n"
       ].join("\n")
 
@@ -179,6 +179,12 @@ describe 'Render as PHP' do
     @actionwords_rendered = [
       "<?php",
       "class Actionwords {",
+      "  var $tests;",
+      "",
+      "  function __construct($tests) {",
+      "    $this->tests = $tests;",
+      "  }",
+      "",
       "  public function firstActionWord() {",
       "",
       "  }",
@@ -207,6 +213,12 @@ describe 'Render as PHP' do
     @actionwords_with_params_rendered = [
       "<?php",
       "class Actionwords {",
+      "  var $tests;",
+      "",
+      "  function __construct($tests) {",
+      "    $this->tests = $tests;",
+      "  }",
+      "",
       "  public function awWithIntParam($x) {",
       "",
       "  }",
@@ -285,11 +297,11 @@ describe 'Render as PHP' do
     @bdd_scenario_rendered = [
       "public function testResetPassword() {",
       "  // Given Page \"/login\" is opened",
-      "  $actionwords->pageUrlIsOpened('/login');",
+      "  $this->actionwords->pageUrlIsOpened('/login');",
       "  // When I click on \"Reset password\"",
-      "  $actionwords->iClickOnLink('Reset password');",
+      "  $this->actionwords->iClickOnLink('Reset password');",
       "  // Then Page \"/reset-password\" should be opened",
-      "  $actionwords->pageUrlShouldBeOpened('/reset-password');",
+      "  $this->actionwords->pageUrlShouldBeOpened('/reset-password');",
       "}",
     ].join("\n")
 
@@ -297,10 +309,13 @@ describe 'Render as PHP' do
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
       "<?php",
-      "require_once('Actionwords.php')",
+      "require_once('Actionwords.php');",
       "",
       "class MyProjectTest extends PHPUnit_Framework_TestCase {",
-      "  public $actionWords = new Actionwords();",
+      "  public $actionWords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords($this);",
+      "  }",
       "",
       "  public function testCompareToPi() {",
       "    // This is a scenario which description ",
@@ -334,10 +349,10 @@ describe 'Render as PHP' do
     @scenario_with_datatable_rendered = [
       "public function checkLogin($login, $password, $expected) {",
       "  // Ensure the login process",
-      "  $actionwords->fillLogin($login);",
-      "  $actionwords->fillPassword($password);",
-      "  $actionwords->pressEnter();",
-      "  $actionwords->assertErrorIsDisplayed($expected);",
+      "  $this->actionwords->fillLogin($login);",
+      "  $this->actionwords->fillPassword($password);",
+      "  $this->actionwords->pressEnter();",
+      "  $this->actionwords->assertErrorIsDisplayed($expected);",
       "}",
       "",
       "public function testCheckLoginWrongLogin() {",
@@ -357,10 +372,10 @@ describe 'Render as PHP' do
     @scenario_with_datatable_rendered_with_uids = [
       "public function checkLogin($login, $password, $expected) {",
       "  // Ensure the login process",
-      "  $actionwords->fillLogin($login);",
-      "  $actionwords->fillPassword($password);",
-      "  $actionwords->pressEnter();",
-      "  $actionwords->assertErrorIsDisplayed($expected);",
+      "  $this->actionwords->fillLogin($login);",
+      "  $this->actionwords->fillPassword($password);",
+      "  $this->actionwords->pressEnter();",
+      "  $this->actionwords->assertErrorIsDisplayed($expected);",
       "}",
       "",
       "public function testCheckLoginWrongLoginUidA123() {",
@@ -380,17 +395,20 @@ describe 'Render as PHP' do
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
       "<?php",
-      "require_once('Actionwords.php')",
+      "require_once('Actionwords.php');",
       "",
       "class AProjectWithDatatablesTest extends PHPUnit_Framework_TestCase {",
-      "  public $actionWords = new Actionwords();",
+      "  public $actionWords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords($this);",
+      "  }",
       "",
       "  public function checkLogin($login, $password, $expected) {",
       "    // Ensure the login process",
-      "    $actionwords->fillLogin($login);",
-      "    $actionwords->fillPassword($password);",
-      "    $actionwords->pressEnter();",
-      "    $actionwords->assertErrorIsDisplayed($expected);",
+      "    $this->actionwords->fillLogin($login);",
+      "    $this->actionwords->fillPassword($password);",
+      "    $this->actionwords->pressEnter();",
+      "    $this->actionwords->assertErrorIsDisplayed($expected);",
       "  }",
       "",
       "  public function testCheckLoginWrongLogin() {",
@@ -416,84 +434,93 @@ describe 'Render as PHP' do
     # end
     @scenarios_rendered = [
       "<?php",
-      "require_once('Actionwords.php')",
+      "require_once('Actionwords.php');",
       "",
       "class MyProjectTest extends PHPUnit_Framework_TestCase {",
-      "  public $actionWords = new Actionwords();",
+      "  public $actionWords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords($this);",
+      "  }",
       "",
       "  public function testFirstScenario() {",
       "",
       "  }",
       "",
       "  public function testSecondScenario() {",
-      "    $actionwords->myActionWord();",
+      "    $this->actionwords->myActionWord();",
       "  }",
       "}",
       "?>"].join("\n")
 
     @tests_rendered = [
        "<?php",
-       "require_once('Actionwords.php')",
+       "require_once('Actionwords.php');",
        "",
        "class MyTestProjectTest extends PHPUnit_Framework_TestCase {",
-       "  public $actionWords = new Actionwords();",
+      "  public $actionWords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords($this);",
+      "  }",
        "",
        "  public function testLogin() {",
        "    // The description is on ",
        "    // two lines",
        "    // Tags: myTag myTag:somevalue",
-       "    $actionwords->visit('/login');",
-       "    $actionwords->fill('user@example.com');",
-       "    $actionwords->fill('s3cret');",
-       "    $actionwords->click('.login-form input[type=submit]');",
-       "    $actionwords->checkUrl('/welcome');",
+       "    $this->actionwords->visit('/login');",
+       "    $this->actionwords->fill('user@example.com');",
+       "    $this->actionwords->fill('s3cret');",
+       "    $this->actionwords->click('.login-form input[type=submit]');",
+       "    $this->actionwords->checkUrl('/welcome');",
        "  }",
        "",
        "  public function testFailedLogin() {",
        "    // Tags: myTag:somevalue",
-       "    $actionwords->visit('/login');",
-       "    $actionwords->fill('user@example.com');",
-       "    $actionwords->fill('notTh4tS3cret');",
-       "    $actionwords->click('.login-form input[type=submit]');",
-       "    $actionwords->checkUrl('/login');",
+       "    $this->actionwords->visit('/login');",
+       "    $this->actionwords->fill('user@example.com');",
+       "    $this->actionwords->fill('notTh4tS3cret');",
+       "    $this->actionwords->click('.login-form input[type=submit]');",
+       "    $this->actionwords->checkUrl('/login');",
        "  }",
        "}",
        "?>"
       ].join("\n")
 
     @first_test_rendered = [
-        "public function testLogin() {",
-        "  // The description is on ",
-        "  // two lines",
-        "  // Tags: myTag myTag:somevalue",
-        "  $actionwords->visit('/login');",
-        "  $actionwords->fill('user@example.com');",
-        "  $actionwords->fill('s3cret');",
-        "  $actionwords->click('.login-form input[type=submit]');",
-        "  $actionwords->checkUrl('/welcome');",
-        "}"
-      ].join("\n")
+      "public function testLogin() {",
+      "  // The description is on ",
+      "  // two lines",
+      "  // Tags: myTag myTag:somevalue",
+      "  $this->actionwords->visit('/login');",
+      "  $this->actionwords->fill('user@example.com');",
+      "  $this->actionwords->fill('s3cret');",
+      "  $this->actionwords->click('.login-form input[type=submit]');",
+      "  $this->actionwords->checkUrl('/welcome');",
+      "}"
+    ].join("\n")
 
     @first_test_rendered_for_single_file = [
-       "<?php",
-       "require_once('Actionwords.php')",
-       "",
-       "class MyTestProjectTest extends PHPUnit_Framework_TestCase {",
-       "  public $actionWords = new Actionwords();",
-       "",
-       "  public function testLogin() {",
-       "    // The description is on ",
-       "    // two lines",
-       "    // Tags: myTag myTag:somevalue",
-       "    $actionwords->visit('/login');",
-       "    $actionwords->fill('user@example.com');",
-       "    $actionwords->fill('s3cret');",
-       "    $actionwords->click('.login-form input[type=submit]');",
-       "    $actionwords->checkUrl('/welcome');",
-       "  }",
-       "}",
-       "?>"
-      ].join("\n")
+      "<?php",
+      "require_once('Actionwords.php');",
+      "",
+      "class MyTestProjectTest extends PHPUnit_Framework_TestCase {",
+      "  public $actionWords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords($this);",
+      "  }",
+      "",
+      "  public function testLogin() {",
+      "    // The description is on ",
+      "    // two lines",
+      "    // Tags: myTag myTag:somevalue",
+      "    $this->actionwords->visit('/login');",
+      "    $this->actionwords->fill('user@example.com');",
+      "    $this->actionwords->fill('s3cret');",
+      "    $this->actionwords->click('.login-form input[type=submit]');",
+      "    $this->actionwords->checkUrl('/welcome');",
+      "  }",
+      "}",
+      "?>"
+    ].join("\n")
   end
 
   context 'PHPUnit' do
