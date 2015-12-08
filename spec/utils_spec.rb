@@ -8,21 +8,21 @@ describe 'Hiptest publisher utils' do
       allow(STDOUT).to receive(:print)
 
       show_status_message('My message')
-      expect(STDOUT).to have_received(:print).with("[ ] My message\r").once
+      expect(STDOUT).to have_received(:print).with("[ ] My message\r\e[1A\n").once
     end
 
     it 'if status is :success, it also adds a green checkbox and goes to the next line' do
       allow(STDOUT).to receive(:print)
 
       show_status_message('My message', :success)
-      expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\r\n").once
+      expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
     end
 
     it 'if status is :failure, it adds a red checkbox and sends to STDERR with a new line character' do
       allow(STDERR).to receive(:print)
 
       show_status_message('My message', :failure)
-      expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\r\n").once
+      expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\n").once
     end
   end
 

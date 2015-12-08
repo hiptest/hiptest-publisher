@@ -76,7 +76,7 @@ def show_status_message(message, status=nil)
     return unless $stdout.tty?
     rows, columns = IO.console.winsize
     vertical_offset = (4 + message.length) / columns
-    cursor_offset = "\r\033[#{vertical_offset + 1}A"
+    cursor_offset = "\r\e[#{vertical_offset + 1}A"
   end
 
   output.print "[#{status_icon}] #{message}#{cursor_offset}\n"
