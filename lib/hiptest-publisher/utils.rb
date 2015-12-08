@@ -1,6 +1,7 @@
+require 'colorize'
+require 'io/console'
 require 'open-uri'
 require 'openssl'
-require 'colorize'
 require 'net/http/post/multipart'
 
 def hiptest_publisher_path
@@ -16,7 +17,7 @@ rescue
 end
 
 def pluralize_word(count, singular, plural=nil)
-  word = if count == 1
+  if count == 1
     singular
   else
     "#{singular}s"
@@ -61,7 +62,6 @@ end
 
 def show_status_message(message, status=nil)
   status_icon = " "
-  line_end = status.nil? ? "" : "\n"
   output = STDOUT
 
   if status == :success
@@ -70,8 +70,16 @@ def show_status_message(message, status=nil)
     status_icon = "x".red
     output = STDERR
   end
+  if status
+    cursor_offset = ""
+  else
+    return unless $stdout.tty?
+    rows, columns = IO.console.winsize
+    vertical_offset = (4 + message.length) / columns
+    cursor_offset = "\r\033[#{vertical_offset + 1}A"
+  end
 
-  output.print "[#{status_icon}] #{message}\r#{line_end}"
+  output.print "[#{status_icon}] #{message}#{cursor_offset}\n"
 end
 
 def with_status_message(message, &blk)
