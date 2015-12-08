@@ -35,7 +35,8 @@ describe LanguageGroupConfig do
         "ruby"                => "/project_spec.rb",
         "ruby-minitest"       => "/project_test.rb",
         "seleniumide"         => "/project.html",
-        "csharp"              => "/ProjectTest.cs"
+        "csharp"              => "/ProjectTest.cs",
+        "php"                 => "/TestProject.php"
       }.each do |dialect, output_file|
         it "for #{dialect} language, it outputs scenarios in file #{output_file}" do
           language, framework = dialect.split("-", 2)
@@ -65,6 +66,7 @@ describe LanguageGroupConfig do
         "ruby-minitest"       => ["/Buy_Pontarlier_test.rb", "/Sell_Mont_dOr_test.rb"],
         "seleniumide"         => ["/Buy_Pontarlier.html", "/Sell_Mont_dOr.html"],
         "csharp"              => ["/BuyPontarlierTest.cs", "/SellMontDOrTest.cs"],
+        "php"                 => ["/Test_Buy_Pontarlier.php", "/Test_Sell_Mont_dOr.php"],
       }.each do |dialect, output_files|
         it "for #{dialect} language, it outputs scenarios in files #{output_files.join(', ')}" do
           language, framework = dialect.split("-", 2)
@@ -94,6 +96,7 @@ describe LanguageGroupConfig do
         "ruby-minitest"       => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.rb", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.rb"],
         "seleniumide"         => ["/Global_trades/Buy_goods/Buy_Pontarlier.html", "/Global_trades/Sell_goods/Sell_Mont_dOr.html"],
         "csharp"              => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.cs", "/GlobalTrades/SellGoods/SellMontDOrTest.cs"],
+        "php"              => ["/Global_trades/Buy_goods/Test_Buy_Pontarlier.php", "/Global_trades/Sell_goods/Test_Sell_Mont_dOr.php"],
       }.each do |dialect, output_files|
         it "for #{dialect} language, it outputs scenarios in files #{output_files.join(', ')}" do
           language, framework = dialect.split("-", 2)
@@ -196,6 +199,7 @@ describe LanguageGroupConfig do
       "seleniumide"         => "/actionwords.html",
       "csharp"              => "/Actionwords.cs",
       "specflow"            => "/Actionwords.cs",
+      "php"                 => "/Actionwords.php",
     }.each do |dialect, output_file|
       it "for #{dialect} language, it outputs actionwords in file #{output_file}" do
         language, framework = dialect.split("-", 2)
