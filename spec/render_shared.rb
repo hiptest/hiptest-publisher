@@ -757,6 +757,76 @@ shared_examples "a BDD renderer" do
     end
   end
 
+  context 'Tags are exported' do
+    let(:simple_tag) {
+      Hiptest::Nodes::Tag.new('myTag')
+    }
+
+    let(:valued_tag) {
+      Hiptest::Nodes::Tag.new('myTag', 'somevalue')
+    }
+
+    let(:options) {
+      context_for(
+        only: "features",
+        language: language,
+        framework: framework
+      )
+    }
+
+    context 'at feature level for' do
+      let(:node_to_render) {
+        cool_colors_folder
+      }
+
+      it 'Folder nodes' do
+        node_to_render.children[:tags] = [simple_tag, valued_tag]
+
+        expect(rendered).to eq([
+          '@myTag @myTag:somevalue',
+          'Feature: Cool colors',
+          '    Cool colors calm and relax.',
+          '    They are the hues from blue green through blue violet, most grays included.',
+          '',
+          '  Scenario: Create green',
+          '    Given the color "blue"',
+          '    And the color "yellow"',
+          '    When you mix colors',
+          '    Then you obtain "green"',
+          '',
+          '  Scenario: Create purple',
+          '    Given the color "blue"',
+          '    And the color "red"',
+          '    When you mix colors',
+          '    Then you obtain "purple"',
+          ''
+        ].join("\n"))
+
+      end
+    end
+
+    context 'at scenario level for' do
+      let(:node_to_render) {
+        cool_colors_folder.children[:scenarios].last
+      }
+
+      it 'Scenario tag' do
+        node_to_render.children[:tags] = [simple_tag, valued_tag]
+
+        expect(rendered).to eq([
+          '',
+          '@myTag @myTag:somevalue',
+          'Scenario: Create purple',
+          '  Given the color "blue"',
+          '  And the color "red"',
+          '  When you mix colors',
+          '  Then you obtain "purple"',
+          ''
+        ].join("\n"))
+      end
+    end
+  end
+
   context 'Scenarios with split_scenarios = false' do
     let(:node_to_render) { project.children[:scenarios] }
     let(:options) {

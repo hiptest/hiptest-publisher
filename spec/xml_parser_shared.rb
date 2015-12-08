@@ -175,8 +175,25 @@ shared_examples 'folder structure' do
       name: "My folder",
       description: nil,
       subfolders: [],
-      scenarios: []
+      scenarios: [],
+      tags: []
     })
+  end
+
+  it 'reads the tags' do
+    node = build_node(
+      "<#{folder_node_type}>" \
+      "  <name>My folder</name>" \
+      "  <description>This is a description</description>" \
+      "  <tags>" \
+      "    <tag>" \
+      "      <key>plic</key>" \
+      "    </tag>" \
+      "  </tags>" \
+      "</#{folder_node_type}>")
+    expect(node.children[:tags].length).to eq(1)
+    expect(node.children[:tags].first).to be_a(Hiptest::Nodes::Tag)
+    expect(node.children[:tags].first.children[:key]).to eq('plic')
   end
 
   it 'reads description tag' do

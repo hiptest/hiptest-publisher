@@ -384,7 +384,7 @@ module Hiptest
     class Folder < Node
       attr_reader :uid, :parent_uid
 
-      def initialize(uid, parent_uid, name, description)
+      def initialize(uid, parent_uid, name, description, tags = [])
         super()
 
         @uid = uid
@@ -394,7 +394,8 @@ module Hiptest
           :name => name,
           :description => description,
           :subfolders => [],
-          :scenarios => []
+          :scenarios => [],
+          :tags => tags
         }
       end
 

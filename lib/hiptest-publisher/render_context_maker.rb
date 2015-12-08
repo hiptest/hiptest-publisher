@@ -1,5 +1,11 @@
 module Hiptest
   module RenderContextMaker
+    def walk_folder(folder)
+      {
+        :has_tags? => !folder.children[:tags].empty?
+      }
+    end
+
     def walk_item(item)
       {
         :has_parameters? => !item.children[:parameters].empty?,

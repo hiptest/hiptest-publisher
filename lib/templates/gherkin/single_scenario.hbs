@@ -1,5 +1,6 @@
 {{#if has_datasets?}}
-Scenario Outline: {{{ rendered_children.name }}}{{#indent}}
+{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{/if}}Scenario Outline: {{{ rendered_children.name }}}{{#indent}}
 {{#each rendered_children.body}}{{{ this }}}
 {{/each}}
 Examples:{{#indent}}
@@ -7,7 +8,8 @@ Examples:{{#indent}}
 {{{rendered_children.datatable}}}
 {{/indent}}{{/indent}}
 {{else}}
-Scenario: {{{ rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{#indent}}
+{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{/if}}Scenario: {{{ rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{#indent}}
 {{#each rendered_children.body}}{{{ this }}}
 {{/each}}
 {{/indent}}

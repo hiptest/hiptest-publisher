@@ -1,4 +1,5 @@
-Feature: {{{ rendered_children.name }}}{{#indent}}
+{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{/if}}Feature: {{{ rendered_children.name }}}{{#indent}}
 {{#if rendered_children.description}}{{#indent}}{{rendered_children.description}}{{/indent}}{{/if}}
 {{#each rendered_children.scenarios}}{{{this}}}{{/each}}
 {{/indent}}
