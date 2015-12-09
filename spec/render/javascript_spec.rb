@@ -274,7 +274,7 @@ describe 'Render as Javascript' do
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
       "(function () {",
-      "  module('My project', {",
+      "  module('compare to pi', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -377,7 +377,7 @@ describe 'Render as Javascript' do
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
       "(function () {",
-      "  module('A project with datatables', {",
+      "  module('check login', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -477,7 +477,7 @@ describe 'Render as Javascript' do
 
     @first_test_rendered_for_single_file = [
       "(function () {",
-      "  module('My test project', {",
+      "  module('Login', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -499,6 +499,38 @@ describe 'Render as Javascript' do
   end
 
   context 'qUnit' do
+    before(:each) do
+      @root_folder_rendered = [
+        "(function () {",
+        "  module('My root folder', {",
+        "    setup: function () {",
+        "      this.actionwords = Object.create(Actionwords);",
+        "    }",
+        "  });",
+        "",
+        "  test('One root scenario', function () {",
+        "",
+        "  });",
+        "",
+        "  test('Another root scenario', function () {",
+        "",
+        "  });",
+        "})();",
+        "",
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        "(function () {",
+        "  module('A grand-child folder', {",
+        "    setup: function () {",
+        "      this.actionwords = Object.create(Actionwords);",
+        "    }",
+        "  });",
+        "})();",
+        "",
+      ].join("\n")
+    end
+
     it_behaves_like "a renderer" do
       let(:language) {'javascript'}
       let(:framework) {'qUnit'}
@@ -554,7 +586,7 @@ describe 'Render as Javascript' do
       # Same than previous scenario, except that is is rendered
       # so it can be used in a single file (using the --split-scenarios option)
       @full_scenario_rendered_for_single_file = [
-        "describe('My project', function () {",
+        "describe('compare to pi', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -659,7 +691,7 @@ describe 'Render as Javascript' do
 
       # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
       @scenario_with_datatable_rendered_in_single_file = [
-        "describe('A project with datatables', function () {",
+        "describe('check login', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -755,7 +787,7 @@ describe 'Render as Javascript' do
       ].join("\n")
 
       @first_test_rendered_for_single_file = [
-        "describe('My test project', function () {",
+        "describe('Login', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -774,6 +806,31 @@ describe 'Render as Javascript' do
         ""
       ].join("\n")
 
+      @root_folder_rendered = [
+        "describe('My root folder', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  it('One root scenario', function () {",
+        "",
+        "  });",
+        "",
+        "  it('Another root scenario', function () {",
+        "",
+        "  });",
+        "});",
+        "",
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        "describe('A grand-child folder', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "});",
+        "",
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do

@@ -7,7 +7,8 @@ module Hiptest
         :has_step? => has_step?(item),
         :is_empty? => item.children[:body].empty?,
         :declared_variables => item.declared_variables_names,
-        :raw_parameter_names => item.children[:parameters].map {|p| p.children[:name] }
+        :raw_parameter_names => item.children[:parameters].map {|p| p.children[:name] },
+        :self_name => item.children[:name],
       }
     end
 
@@ -19,6 +20,7 @@ module Hiptest
       {
         :needs_to_import_actionwords? => @context.relative_path.count('/') > 0,
         :relative_package => relative_package,
+        :self_name => folder.children[:name],
       }
     end
 
@@ -39,8 +41,10 @@ module Hiptest
     end
 
     def walk_scenarios(scenarios)
+      project = scenarios.parent
       {
-        :project_name => scenarios.parent.children[:name]
+        :project_name => project.children[:name],
+        :self_name => project.children[:name],
       }
     end
 
@@ -52,12 +56,15 @@ module Hiptest
         :is_empty? => test.children[:body].empty?,
         :has_datasets? => false,
         :project_name => test.parent.parent.children[:name],
+        :self_name => test.children[:name],
       }
     end
 
     def walk_tests(tests)
+      project = tests.parent
       {
-        :project_name => tests.parent.children[:name]
+        :project_name => project.children[:name],
+        :self_name => project.children[:name],
       }
     end
 

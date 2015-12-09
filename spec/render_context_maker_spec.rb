@@ -15,7 +15,8 @@ describe Hiptest::RenderContextMaker do
         :has_step?,
         :is_empty?,
         :declared_variables,
-        :raw_parameter_names
+        :raw_parameter_names,
+        :self_name,
       ])
     end
 
@@ -84,6 +85,7 @@ describe Hiptest::RenderContextMaker do
         :is_empty?,
         :declared_variables,
         :raw_parameter_names,
+        :self_name,
         :project_name,
         :has_datasets?
       ])
@@ -107,7 +109,10 @@ describe Hiptest::RenderContextMaker do
     }
 
     it 'gives the project name' do
-      expect(subject.walk_scenarios(node)).to eq({:project_name => 'Another project'})
+      expect(subject.walk_scenarios(node)).to eq({
+        project_name: 'Another project',
+        self_name: 'Another project',
+      })
     end
   end
 
