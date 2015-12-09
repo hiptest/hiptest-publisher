@@ -45,6 +45,7 @@ describe Hiptest::Publisher do
           %w"java testng",
           %w"javascript",
           %w"javascript jasmine",
+          %w"javascript mocha",
           %w"python",
           %w"csharp",
           %w"csharp nunit",
