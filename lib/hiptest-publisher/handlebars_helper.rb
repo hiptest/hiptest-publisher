@@ -82,12 +82,31 @@ module Hiptest
       end.compact.join("\n")
     end
 
+    # kept for backward compatibility of customized templates
     def hh_remove_quotes (context, s, block)
+      hh_remove_double_quotes(context, s, block)
+    end
+
+    def hh_remove_double_quotes (context, s, block)
       s ? s.gsub('"', '') : ""
     end
 
+    def hh_remove_single_quotes (context, s, block)
+      s ? s.gsub('\'', '') : ""
+    end
+
+    # kept for backward compatibility of customized templates
     def hh_escape_quotes (context, s, block)
-      s ? s.gsub(/"/, '\\"') : ""
+      hh_escape_double_quotes(context, s, block)
+    end
+
+    def hh_escape_double_quotes (context, s, block)
+      s ? s.gsub('"', '\\"') : ""
+    end
+
+    def hh_escape_single_quotes (context, s, block)
+      # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
+      s ? s.gsub('\'', "\\\\'") : ""
     end
 
     def hh_comment (context, commenter, block)

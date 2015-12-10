@@ -118,22 +118,22 @@ shared_context "shared render" do
       [@x_param],
       full_body)
     @full_scenario.parent = Hiptest::Nodes::Scenarios.new([])
-    @full_scenario.parent.parent = Hiptest::Nodes::Project.new('My project')
+    @full_scenario.parent.parent = Hiptest::Nodes::Project.new("Mike's project")
 
 
-    @dataset1 = Hiptest::Nodes::Dataset.new('Wrong login', [
+    @dataset1 = Hiptest::Nodes::Dataset.new('Wrong \'login\'', [
       Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('invalid')),
       Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('invalid')),
       Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::StringLiteral.new('Invalid username or password'))
     ])
 
-    @dataset2 = Hiptest::Nodes::Dataset.new('Wrong password', [
+    @dataset2 = Hiptest::Nodes::Dataset.new('Wrong "password"', [
       Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('valid')),
       Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('invalid')),
       Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::StringLiteral.new('Invalid username or password'))
     ])
 
-    @dataset3 = Hiptest::Nodes::Dataset.new('Valid login/password', [
+    @dataset3 = Hiptest::Nodes::Dataset.new('Valid \'login\'/"password"', [
       Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('valid')),
       Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('valid')),
       Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::NullLiteral.new())
@@ -183,7 +183,7 @@ shared_context "shared render" do
           Hiptest::Nodes::Call.new('my action word')
         ])
     ])
-    @scenarios.parent = Hiptest::Nodes::Project.new('My project')
+    @scenarios.parent = Hiptest::Nodes::Project.new("Mike's project")
 
     @actionwords_with_parameters = Hiptest::Nodes::Actionwords.new([
       Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
@@ -216,7 +216,7 @@ shared_context "shared render" do
           Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::Template.new(Hiptest::Nodes::StringLiteral.new('toto')))])
       ])])
 
-    @project = Hiptest::Nodes::Project.new('My project', "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
+    @project = Hiptest::Nodes::Project.new("Mike's project", "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
 
     @first_test = Hiptest::Nodes::Test.new(
       'Login',
@@ -265,7 +265,7 @@ shared_context "shared render" do
     @tests = Hiptest::Nodes::Tests.new([@first_test, @second_test])
     @first_test.parent = @tests
     @second_test.parent = @tests
-    @tests.parent = Hiptest::Nodes::Project.new('My test project')
+    @tests.parent = Hiptest::Nodes::Project.new("Mike's test project")
 
 
     # In hiptest

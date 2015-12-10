@@ -295,20 +295,20 @@ describe 'Render as Robot framework' do
     # call 'assert "error" is displayed' (error = expected)
 
     # Scenario datatable is:
-    # Dataset name         | login   | password | expected
-    # -------------------------------------------------------------------------
-    # Wrong login          | invalid | invalid  | 'Invalid username or password
-    # Wrong password       | valid   | invalid  | 'Invalid username or password
-    # Valid login/password | valid   | valid    | nil
+    # Dataset name             | login   | password | expected
+    # -----------------------------------------------------------------------------
+    # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+    # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+    # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
       "",
       "Test Template     check_login",
       "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
-      "Wrong login\tinvalid\tinvalid\tInvalid username or password",
-      "Wrong password\tvalid\tinvalid\tInvalid username or password",
-      "Valid login/password\tvalid\tvalid\tNone",
+      "Wrong 'login'\tinvalid\tinvalid\tInvalid username or password",
+      "Wrong \"password\"\tvalid\tinvalid\tInvalid username or password",
+      "Valid 'login'/\"password\"\tvalid\tvalid\tNone",
       "",
       "",
       "*** Keywords ***",
@@ -327,9 +327,9 @@ describe 'Render as Robot framework' do
       "Test Template     check_login",
       "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
-      "Wrong login (uid:a-123)\tinvalid\tinvalid\tInvalid username or password",
-      "Wrong password (uid:b-456)\tvalid\tinvalid\tInvalid username or password",
-      "Valid login/password (uid:c-789)\tvalid\tvalid\tNone",
+      "Wrong 'login' (uid:a-123)\tinvalid\tinvalid\tInvalid username or password",
+      "Wrong \"password\" (uid:b-456)\tvalid\tinvalid\tInvalid username or password",
+      "Valid 'login'/\"password\" (uid:c-789)\tvalid\tvalid\tNone",
       "",
       "",
       "*** Keywords ***",
@@ -355,9 +355,9 @@ describe 'Render as Robot framework' do
       "Test Template     check_login",
       "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
-      "Wrong login\tinvalid\tinvalid\tInvalid username or password",
-      "Wrong password\tvalid\tinvalid\tInvalid username or password",
-      "Valid login/password\tvalid\tvalid\tNone",
+      "Wrong 'login'\tinvalid\tinvalid\tInvalid username or password",
+      "Wrong \"password\"\tvalid\tinvalid\tInvalid username or password",
+      "Valid 'login'/\"password\"\tvalid\tvalid\tNone",
       "",
       "",
       "*** Keywords ***",

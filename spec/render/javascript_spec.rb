@@ -274,7 +274,7 @@ describe 'Render as Javascript' do
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
       "(function () {",
-      "  module('My project', {",
+      "  module('Mike\\'s project', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -322,11 +322,11 @@ describe 'Render as Javascript' do
     # call 'assert "error" is displayed' (error = expected)
 
     # Scenario datatable is:
-    # Dataset name         | login   | password | expected
-    # -------------------------------------------------------------------------
-    # Wrong login          | invalid | invalid  | 'Invalid username or password
-    # Wrong password       | valid   | invalid  | 'Invalid username or password
-    # Valid login/password | valid   | valid    | nil
+    # Dataset name             | login   | password | expected
+    # -----------------------------------------------------------------------------
+    # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+    # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+    # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
       "function checkLogin (login, password, expected) {",
@@ -337,15 +337,15 @@ describe 'Render as Javascript' do
       "  this.actionwords.assertErrorIsDisplayed(expected);",
       "}",
       "",
-      "test('check login: Wrong login', function () {",
+      "test('check login: Wrong \\'login\\'', function () {",
       "  checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
       "});",
       "",
-      "test('check login: Wrong password', function () {",
+      "test('check login: Wrong \"password\"', function () {",
       "  checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
       "});",
       "",
-      "test('check login: Valid login/password', function () {",
+      "test('check login: Valid \\'login\\'/\"password\"', function () {",
       "  checkLogin.apply(this, ['valid', 'valid', null]);",
       "});",
       ""
@@ -360,15 +360,15 @@ describe 'Render as Javascript' do
       "  this.actionwords.assertErrorIsDisplayed(expected);",
       "}",
       "",
-      "test('check login: Wrong login (uid:a-123)', function () {",
+      "test('check login: Wrong \\'login\\' (uid:a-123)', function () {",
       "  checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
       "});",
       "",
-      "test('check login: Wrong password (uid:b-456)', function () {",
+      "test('check login: Wrong \"password\" (uid:b-456)', function () {",
       "  checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
       "});",
       "",
-      "test('check login: Valid login/password (uid:c-789)', function () {",
+      "test('check login: Valid \\'login\\'/\"password\" (uid:c-789)', function () {",
       "  checkLogin.apply(this, ['valid', 'valid', null]);",
       "});",
       ""
@@ -391,22 +391,22 @@ describe 'Render as Javascript' do
       "    this.actionwords.assertErrorIsDisplayed(expected);",
       "  }",
       "",
-      "  test('check login: Wrong login', function () {",
+      "  test('check login: Wrong \\'login\\'', function () {",
       "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
       "  });",
       "",
-      "  test('check login: Wrong password', function () {",
+      "  test('check login: Wrong \"password\"', function () {",
       "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
       "  });",
       "",
-      "  test('check login: Valid login/password', function () {",
+      "  test('check login: Valid \\'login\\'/\"password\"', function () {",
       "    checkLogin.apply(this, ['valid', 'valid', null]);",
       "  });",
       "})();",
       ""
     ].join("\n")
 
-    # In Hiptest, correspond to two scenarios in a project called 'My project'
+    # In Hiptest, correspond to two scenarios in a project called "Miles' project"
     # scenario 'first scenario' do
     # end
     # scenario 'second scenario' do
@@ -414,7 +414,7 @@ describe 'Render as Javascript' do
     # end
     @scenarios_rendered = [
       "(function () {",
-      "  module('My project', {",
+      "  module('Mike\\'s project', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -433,7 +433,7 @@ describe 'Render as Javascript' do
 
     @tests_rendered = [
       "(function () {",
-      "  module('My test project', {",
+      "  module('Mike\\'s test project', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -477,7 +477,7 @@ describe 'Render as Javascript' do
 
     @first_test_rendered_for_single_file = [
       "(function () {",
-      "  module('My test project', {",
+      "  module('Mike\\'s test project', {",
       "    setup: function () {",
       "      this.actionwords = Object.create(Actionwords);",
       "    }",
@@ -554,7 +554,7 @@ describe 'Render as Javascript' do
       # Same than previous scenario, except that is is rendered
       # so it can be used in a single file (using the --split-scenarios option)
       @full_scenario_rendered_for_single_file = [
-        "describe('My project', function () {",
+        "describe('Mike\\'s project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -601,11 +601,11 @@ describe 'Render as Javascript' do
       # call 'assert "error" is displayed' (error = expected)
 
       # Scenario datatable is:
-      # Dataset name         | login   | password | expected
-      # -------------------------------------------------------------------------
-      # Wrong login          | invalid | invalid  | 'Invalid username or password
-      # Wrong password       | valid   | invalid  | 'Invalid username or password
-      # Valid login/password | valid   | valid    | nil
+      # Dataset name             | login   | password | expected
+      # -----------------------------------------------------------------------------
+      # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+      # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+      # Valid 'login'/"password" | valid   | valid    | nil
 
       @scenario_with_datatable_rendered = [
         "describe('check login', function () {",
@@ -617,15 +617,15 @@ describe 'Render as Javascript' do
         "    this.actionwords.assertErrorIsDisplayed(expected);",
         "  }",
         "",
-        "  it('Wrong login', function () {",
+        "  it('Wrong \\'login\\'', function () {",
         "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Wrong password', function () {",
+        "  it('Wrong \"password\"', function () {",
         "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Valid login/password', function () {",
+        "  it('Valid \\'login\\'/\"password\"', function () {",
         "    checkLogin.apply(this, ['valid', 'valid', null]);",
         "  });",
         "});",
@@ -642,15 +642,15 @@ describe 'Render as Javascript' do
         "    this.actionwords.assertErrorIsDisplayed(expected);",
         "  }",
         "",
-        "  it('Wrong login (uid:a-123)', function () {",
+        "  it('Wrong \\'login\\' (uid:a-123)', function () {",
         "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Wrong password (uid:b-456)', function () {",
+        "  it('Wrong \"password\" (uid:b-456)', function () {",
         "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Valid login/password (uid:c-789)', function () {",
+        "  it('Valid \\'login\\'/\"password\" (uid:c-789)', function () {",
         "    checkLogin.apply(this, ['valid', 'valid', null]);",
         "  });",
         "});",
@@ -673,15 +673,15 @@ describe 'Render as Javascript' do
         "      this.actionwords.assertErrorIsDisplayed(expected);",
         "    }",
         "",
-        "    it('Wrong login', function () {",
+        "    it('Wrong \\'login\\'', function () {",
         "      checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
         "    });",
         "",
-        "    it('Wrong password', function () {",
+        "    it('Wrong \"password\"', function () {",
         "      checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
         "    });",
         "",
-        "    it('Valid login/password', function () {",
+        "    it('Valid \\'login\\'/\"password\"', function () {",
         "      checkLogin.apply(this, ['valid', 'valid', null]);",
         "    });",
         "  });",
@@ -689,14 +689,14 @@ describe 'Render as Javascript' do
         ""
       ].join("\n")
 
-      # In Hiptest, correspond to two scenarios in a project called 'My project'
+      # In Hiptest, correspond to two scenarios in a project called "Miles' project"
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do
       #   call 'my action word'
       # end
       @scenarios_rendered = [
-        "describe('My project', function () {",
+        "describe('Mike\\'s project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -713,7 +713,7 @@ describe 'Render as Javascript' do
       ].join("\n")
 
       @tests_rendered = [
-        "describe('My test project', function () {",
+        "describe('Mike\\'s test project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -755,7 +755,7 @@ describe 'Render as Javascript' do
       ].join("\n")
 
       @first_test_rendered_for_single_file = [
-        "describe('My test project', function () {",
+        "describe('Mike\\'s test project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(Actionwords);",
         "  });",
@@ -884,7 +884,7 @@ describe 'Render as Javascript' do
       # Same than previous scenario, except that is is rendered
       # so it can be used in a single file (using the --split-scenarios option)
       @full_scenario_rendered_for_single_file = [
-        "describe('My project', function () {",
+        "describe('Mike\\'s project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(require('./actionwords.js').Actionwords);",
         "  });",
@@ -931,11 +931,11 @@ describe 'Render as Javascript' do
       # call 'assert "error" is displayed' (error = expected)
 
       # Scenario datatable is:
-      # Dataset name         | login   | password | expected
-      # -------------------------------------------------------------------------
-      # Wrong login          | invalid | invalid  | 'Invalid username or password
-      # Wrong password       | valid   | invalid  | 'Invalid username or password
-      # Valid login/password | valid   | valid    | nil
+      # Dataset name             | login   | password | expected
+      # -----------------------------------------------------------------------------
+      # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+      # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+      # Valid 'login'/"password" | valid   | valid    | nil
 
       @scenario_with_datatable_rendered = [
         "describe('check login', function () {",
@@ -947,15 +947,15 @@ describe 'Render as Javascript' do
         "    this.actionwords.assertErrorIsDisplayed(expected);",
         "  }",
         "",
-        "  it('Wrong login', function () {",
+        "  it('Wrong \\'login\\'', function () {",
         "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Wrong password', function () {",
+        "  it('Wrong \"password\"', function () {",
         "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Valid login/password', function () {",
+        "  it('Valid \\'login\\'/\"password\"', function () {",
         "    checkLogin.apply(this, ['valid', 'valid', null]);",
         "  });",
         "});",
@@ -972,15 +972,15 @@ describe 'Render as Javascript' do
         "    this.actionwords.assertErrorIsDisplayed(expected);",
         "  }",
         "",
-        "  it('Wrong login (uid:a-123)', function () {",
+        "  it('Wrong \\'login\\' (uid:a-123)', function () {",
         "    checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Wrong password (uid:b-456)', function () {",
+        "  it('Wrong \"password\" (uid:b-456)', function () {",
         "    checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
         "  });",
         "",
-        "  it('Valid login/password (uid:c-789)', function () {",
+        "  it('Valid \\'login\\'/\"password\" (uid:c-789)', function () {",
         "    checkLogin.apply(this, ['valid', 'valid', null]);",
         "  });",
         "});",
@@ -1003,15 +1003,15 @@ describe 'Render as Javascript' do
         "      this.actionwords.assertErrorIsDisplayed(expected);",
         "    }",
         "",
-        "    it('Wrong login', function () {",
+        "    it('Wrong \\'login\\'', function () {",
         "      checkLogin.apply(this, ['invalid', 'invalid', 'Invalid username or password']);",
         "    });",
         "",
-        "    it('Wrong password', function () {",
+        "    it('Wrong \"password\"', function () {",
         "      checkLogin.apply(this, ['valid', 'invalid', 'Invalid username or password']);",
         "    });",
         "",
-        "    it('Valid login/password', function () {",
+        "    it('Valid \\'login\\'/\"password\"', function () {",
         "      checkLogin.apply(this, ['valid', 'valid', null]);",
         "    });",
         "  });",
@@ -1019,14 +1019,14 @@ describe 'Render as Javascript' do
         ""
       ].join("\n")
 
-      # In Hiptest, correspond to two scenarios in a project called 'My project'
+      # In Hiptest, correspond to two scenarios in a project called "Miles' project"
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do
       #   call 'my action word'
       # end
       @scenarios_rendered = [
-        "describe('My project', function () {",
+        "describe('Mike\\'s project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(require('./actionwords.js').Actionwords);",
         "  });",
@@ -1043,7 +1043,7 @@ describe 'Render as Javascript' do
       ].join("\n")
 
       @tests_rendered = [
-        "describe('My test project', function () {",
+        "describe('Mike\\'s test project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(require('./actionwords.js').Actionwords);",
         "  });",
@@ -1085,7 +1085,7 @@ describe 'Render as Javascript' do
       ].join("\n")
 
       @first_test_rendered_for_single_file = [
-        "describe('My test project', function () {",
+        "describe('Mike\\'s test project', function () {",
         "  beforeEach(function () {",
         "    this.actionwords = Object.create(require('./actionwords.js').Actionwords);",
         "  });",

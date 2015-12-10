@@ -341,11 +341,11 @@ describe 'Render as C#' do
     # call 'assert "error" is displayed' (error = expected)
 
     # Scenario datatable is:
-    # Dataset name         | login   | password | expected
-    # -------------------------------------------------------------------------
-    # Wrong login          | invalid | invalid  | 'Invalid username or password
-    # Wrong password       | valid   | invalid  | 'Invalid username or password
-    # Valid login/password | valid   | valid    | nil
+    # Dataset name             | login   | password | expected
+    # -----------------------------------------------------------------------------
+    # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+    # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+    # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
       "public void CheckLogin(string login, string password, string expected) {",

@@ -297,11 +297,11 @@ describe 'Render as <My language>' do
     # call 'assert "error" is displayed' (error = expected)
 
     # Scenario datatable is:
-    # Dataset name         | login   | password | expected
-    # -------------------------------------------------------------------------
-    # Wrong login          | invalid | invalid  | 'Invalid username or password
-    # Wrong password       | valid   | invalid  | 'Invalid username or password
-    # Valid login/password | valid   | valid    | nil
+    # Dataset name             | login   | password | expected
+    # -----------------------------------------------------------------------------
+    # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+    # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+    # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
       "context \"check login\" do",
@@ -317,7 +317,7 @@ describe 'Render as <My language>' do
       "    check_login('invalid', 'invalid', 'Invalid username or password')",
       "  end",
       "",
-      "  it \"Wrong password\" do",
+      "  it \"Wrong \\\"password\\\"\" do",
       "    check_login('valid', 'invalid', 'Invalid username or password')",
       "  end",
       "",

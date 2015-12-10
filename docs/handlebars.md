@@ -223,9 +223,9 @@ true
 
 Transforms a value to a string (mainly needed for boolean values)
 
-### remove_quotes
+### remove_double_quotes
 ```handlebars
-{{ remove_quotes 'This is "my" string' }}
+{{ remove_double_quotes 'This is "my" string' }}
 ```
 
 ```
@@ -234,9 +234,9 @@ This is my string
 
 Removes double quotes from a string.
 
-### escape_quotes
+### escape_double_quotes
 ```handlebars
-{{ escape_quotes 'This is "my" string' }}
+{{ escape_double_quotes 'This is "my" string' }}
 ```
 
 ```
@@ -244,6 +244,28 @@ This is \"my\" string
 ```
 
 Escapes double quotes from a string.
+
+### remove_single_quotes
+```handlebars
+{{ remove_single_quotes "This is 'my' string" }}
+```
+
+```
+This is my string
+```
+
+Removes single quotes from a string.
+
+### escape_single_quotes
+```handlebars
+{{ escape_single_quotes "This is 'my' string" }}
+```
+
+```
+This is \'my\' string
+```
+
+Escapes single quotes from a string.
 
 ### join
 ```handlebars

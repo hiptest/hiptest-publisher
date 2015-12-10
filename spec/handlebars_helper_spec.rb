@@ -46,13 +46,13 @@ describe Hiptest::HandlebarsHelper do
   }
 
   let(:block) {
-    block = MockHbBlock.new(txt_block)
+    MockHbBlock.new(txt_block)
   }
 
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Hiptest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(21)
+      expect(handlebars.helpers.length).to eq(25)
     end
   end
 
@@ -79,8 +79,10 @@ describe Hiptest::HandlebarsHelper do
         "join",
         "indent",
         "clear_empty_lines",
-        "remove_quotes",
-        "escape_quotes",
+        "remove_double_quotes",
+        "remove_single_quotes",
+        "escape_double_quotes",
+        "escape_single_quotes",
         "comment",
         "curly",
         "open_curly",
@@ -216,6 +218,34 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context 'hh_remove_double_quotes' do
+    it 'removes double quotes from a string' do
+      expect(instance.hh_remove_double_quotes(nil, 'My "string"', nil)).to eq('My string')
+    end
+
+    it 'leaves single quotes' do
+      expect(instance.hh_remove_double_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+    end
+
+    it 'returns empty string when nil' do
+      expect(instance.hh_remove_double_quotes(nil, nil, nil)).to eq("")
+    end
+  end
+
+  context 'hh_remove_single_quotes' do
+    it 'removes single quotes from a string' do
+      expect(instance.hh_remove_single_quotes(nil, "My 'string'", nil)).to eq('My string')
+    end
+
+    it 'leaves double quotes' do
+      expect(instance.hh_remove_single_quotes(nil, 'My "string"', nil)).to eq('My "string"')
+    end
+
+    it 'returns empty string when nil' do
+      expect(instance.hh_remove_single_quotes(nil, nil, nil)).to eq("")
+    end
+  end
+
   context 'hh_escape_quotes' do
     it 'escapes double quotes' do
       expect(instance.hh_escape_quotes(nil, 'My "string"', nil)).to eq('My \"string\"')
@@ -227,6 +257,34 @@ describe Hiptest::HandlebarsHelper do
 
     it 'returns empty string when nil' do
       expect(instance.hh_escape_quotes(nil, nil, nil)).to eq("")
+    end
+  end
+
+  context 'hh_escape_double_quotes' do
+    it 'escapes double quotes' do
+      expect(instance.hh_escape_double_quotes(nil, 'My "string"', nil)).to eq('My \"string\"')
+    end
+
+    it 'leaves single quotes' do
+      expect(instance.hh_escape_double_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+    end
+
+    it 'returns empty string when nil' do
+      expect(instance.hh_escape_double_quotes(nil, nil, nil)).to eq("")
+    end
+  end
+
+  context 'hh_escape_single_quotes' do
+    it 'escapes single quotes' do
+      expect(instance.hh_escape_single_quotes(nil, "My 'string'", nil)).to eq("My \\'string\\'")
+    end
+
+    it 'leaves double quotes' do
+      expect(instance.hh_escape_single_quotes(nil, 'My "string"', nil)).to eq('My "string"')
+    end
+
+    it 'returns empty string when nil' do
+      expect(instance.hh_escape_single_quotes(nil, nil, nil)).to eq("")
     end
   end
 

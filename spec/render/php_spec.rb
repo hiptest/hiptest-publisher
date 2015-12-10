@@ -299,7 +299,7 @@ describe 'Render as PHP' do
       "<?php",
       "require_once('Actionwords.php');",
       "",
-      "class MyProjectTest extends PHPUnit_Framework_TestCase {",
+      "class MikesProjectTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
       "  public function setUp() {",
       "    $this->actionwords = new Actionwords();",
@@ -328,11 +328,11 @@ describe 'Render as PHP' do
     # call 'assert "error" is displayed' (error = expected)
 
     # Scenario datatable is:
-    # Dataset name         | login   | password | expected
-    # -------------------------------------------------------------------------
-    # Wrong login          | invalid | invalid  | 'Invalid username or password
-    # Wrong password       | valid   | invalid  | 'Invalid username or password
-    # Valid login/password | valid   | valid    | NULL
+    # Dataset name             | login   | password | expected
+    # -----------------------------------------------------------------------------
+    # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+    # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+    # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
       "public function checkLogin($login, $password, $expected) {",
@@ -414,7 +414,7 @@ describe 'Render as PHP' do
       "?>"
     ].join("\n")
 
-    # In Hiptest, correspond to two scenarios in a project called 'My project'
+    # In Hiptest, correspond to two scenarios in a project called "Mike's project"
     # scenario 'first scenario' do
     # end
     # scenario 'second scenario' do
@@ -424,7 +424,7 @@ describe 'Render as PHP' do
       "<?php",
       "require_once('Actionwords.php');",
       "",
-      "class MyProjectTest extends PHPUnit_Framework_TestCase {",
+      "class MikesProjectTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
       "  public function setUp() {",
       "    $this->actionwords = new Actionwords();",
@@ -444,7 +444,7 @@ describe 'Render as PHP' do
        "<?php",
        "require_once('Actionwords.php');",
        "",
-       "class MyTestProjectTest extends PHPUnit_Framework_TestCase {",
+       "class MikesTestProjectTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
       "  public function setUp() {",
       "    $this->actionwords = new Actionwords();",
@@ -490,7 +490,7 @@ describe 'Render as PHP' do
       "<?php",
       "require_once('Actionwords.php');",
       "",
-      "class MyTestProjectTest extends PHPUnit_Framework_TestCase {",
+      "class MikesTestProjectTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
       "  public function setUp() {",
       "    $this->actionwords = new Actionwords();",
