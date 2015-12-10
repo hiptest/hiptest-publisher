@@ -5,7 +5,7 @@ ruby '2.2.2'
 gem 'colorize', '~> 0.7', '>= 0.7.5'
 gem 'parseconfig', '~> 1.0', '>= 1.0.4'
 gem 'i18n', '~> 0.7', '>= 0.7.0'
-gem 'nokogiri', '1.6.7.rc4'
+gem 'nokogiri', '~> 1.6.7'
 gem 'multipart-post', '~> 2.0', '>= 2.0.0'
 gem 'ruby-handlebars', '~> 0.0.2'
 
