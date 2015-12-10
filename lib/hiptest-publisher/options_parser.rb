@@ -471,7 +471,7 @@ class LanguageGroupConfig
 
   def output_filename(node)
     if can_name_files?
-      name = normalized_filename(node.children[:name])
+      name = normalized_filename(node.children[:name] || '')
       self[:named_filename].gsub('%s', name)
     else
       self[:filename]

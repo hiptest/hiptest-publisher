@@ -226,6 +226,14 @@ describe 'Render as Robot framework' do
     #   end
     # end
     @full_scenario_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "...  This is a scenario which description ",
+      "...  is on two lines",
+      "...  Tags: myTag",
+      "",
+      "Resource          keywords.txt",
+      "",
       "",
       "*** Test Cases ***",
       "",
@@ -243,6 +251,12 @@ describe 'Render as Robot framework' do
     #   call then 'page "url" should be opened'(url='/reset-password')
     # end
     @bdd_scenario_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "",
+      "",
+      "Resource          keywords.txt",
+      "",
       "",
       "*** Test Cases ***",
       "",
@@ -257,6 +271,14 @@ describe 'Render as Robot framework' do
     ].join("\n")
 
     @full_scenario_with_uid_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "...  This is a scenario which description ",
+      "...  is on two lines",
+      "...  Tags: myTag",
+      "",
+      "Resource          keywords.txt",
+      "",
       "",
       "*** Test Cases ***",
       "",
@@ -302,6 +324,12 @@ describe 'Render as Robot framework' do
     # Valid login/password | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "...  Ensure the login process",
+      "",
+      "Resource          keywords.txt",
+      "",
       "",
       "Test Template     check_login",
       "",
@@ -323,6 +351,12 @@ describe 'Render as Robot framework' do
     ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
+      "*** Settings ***",
+      "Documentation",
+      "...  Ensure the login process",
+      "",
+      "Resource          keywords.txt",
+      "",
       "",
       "Test Template     check_login",
       "",
@@ -382,6 +416,14 @@ describe 'Render as Robot framework' do
     @tests_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
 
     @first_test_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "...  The description is on ",
+      "...  two lines",
+      "...  Tags: myTag myTag:somevalue",
+      "",
+      "Resource          keywords.txt",
+      "",
       "",
       "*** Test Cases ***",
       "",
@@ -414,6 +456,9 @@ describe 'Render as Robot framework' do
       "\tcheck_url\t/welcome",
       ""
     ].join("\n")
+
+    @root_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
+    @grand_child_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
   end
 
   context 'Robot framework' do
