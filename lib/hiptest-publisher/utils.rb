@@ -101,12 +101,14 @@ def push_results(options)
   # Code from: https://github.com/nicksieger/multipart-post
   url = URI.parse(make_url(options))
   use_ssl = (url.scheme == 'https')
+  uploaded = {}
 
-  File.open(options.push) do |results|
-    req = Net::HTTP::Post::Multipart.new(url.path, "file" => UploadIO.new(results, "text", "results.tap"))
+  Dir.glob(options.push).each_with_index do |filename, index|
+    uploaded["file-#{filename.normalize}"] = UploadIO.new(File.new(filename), "text", filename)
+  end
 
-    response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
-      http.request(req)
-    end
+  req = Net::HTTP::Post::Multipart.new(url.path, uploaded)
+  response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+    http.request(req)
   end
 end

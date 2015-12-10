@@ -139,6 +139,9 @@ The tests must then generate a test report that is supported by Hiptest. Current
 
 You can specify the type of export when pushing by using the option "--push-format=[tap|junit|robot]" or specifying it in the config file.
 
+You can push multiple files at once (using wildcard) but in that case, do not forget to add quotes. For examples:
+
+    hiptest-publisher --config-file=<path to your config file> --push="reports/*.xml"
 
 Development
 -----------
