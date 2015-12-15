@@ -270,13 +270,15 @@ shared_context "shared render" do
     @tests.parent = Hiptest::Nodes::Project.new("Mike's test project")
 
 
-    @root_folder = make_folder("My root folder")
+    @folders_project = Hiptest::Nodes::Project.new("Folder's project")
+    @root_folder = make_folder("My root folder", parent: @folders_project.children[:test_plan])
     @first_root_scenario = make_scenario("One root scenario", folder: @root_folder)
-    @first_root_scenario.parent = @scenarios
     @second_root_scenario = make_scenario("Another root scenario", folder: @root_folder)
-    @second_root_scenario.parent = @scenarios
     @child_folder = make_folder("child folder", parent: @root_folder)
     @grand_child_folder = make_folder("A grand-child folder", parent: @child_folder)
+    @second_grand_child_folder = make_folder("A second grand-child folder", parent: @child_folder)
+    @grand_child_scenario = make_scenario("One grand'child scenario", folder: @second_grand_child_folder)
+    @folders_project.children[:test_plan].organize_folders
 
     # In hiptest
     # scenario 'reset password' do
@@ -519,16 +521,29 @@ shared_examples "a renderer" do
       expect(rendering(@tests)).to eq(@tests_rendered)
     end
 
-    context 'Folders' do
+    context 'with folders' do
       let(:with_folders) { true }
-      let(:split_scenarios) { false }
 
-      it 'renders all scenarios in a single file' do
-        expect(rendering(@root_folder)).to eq(@root_folder_rendered)
+      context 'Scenarios' do
+        context 'with splitted files' do
+          let(:split_scenarios) { true }
+
+          it 'is rendered in a single file' do
+            expect(rendering(@grand_child_scenario)).to eq(@grand_child_scenario_rendered_for_single_file)
+          end
+        end
       end
 
-      it 'adapts path to load actionword file correctly' do
-        expect(rendering(@grand_child_folder)).to eq(@grand_child_folder_rendered)
+      context 'Folders' do
+        let(:split_scenarios) { false }
+
+        it 'renders all scenarios in a single file' do
+          expect(rendering(@root_folder)).to eq(@root_folder_rendered)
+        end
+
+        it 'adapts path to load actionword file correctly' do
+          expect(rendering(@grand_child_folder)).to eq(@grand_child_folder_rendered)
+        end
       end
     end
   end

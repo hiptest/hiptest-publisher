@@ -12,26 +12,30 @@ module Hiptest
       }
     end
 
-    alias :walk_actionword :walk_item
-
-    def walk_folder(folder)
+    def walk_relative_item(item)
       relative_package = @context.relative_path.split('/')[0...-1].join('.')
       relative_package = ".#{relative_package}" unless relative_package.empty?
       {
         :needs_to_import_actionwords? => @context.relative_path.count('/') > 0,
         :relative_package => relative_package,
-        :self_name => folder.children[:name],
-        :has_tags? => !folder.children[:tags].empty?,
       }
     end
 
-    def walk_scenario(scenario)
-      base = walk_item(scenario)
-      base[:project_name] = scenario.parent.parent.children[:name]
+    alias :walk_actionword :walk_item
 
+    def walk_folder(folder)
+      walk_relative_item(folder).merge(
+        :self_name => folder.children[:name],
+        :has_tags? => !folder.children[:tags].empty?,
+      )
+    end
+
+    def walk_scenario(scenario)
       datatable = scenario.children[:datatable]
-      base[:has_datasets?] = datatable ? !datatable.children[:datasets].empty? : false
-      return base
+      walk_item(scenario).merge(walk_relative_item(scenario)).merge(
+        :project_name => scenario.parent.parent.children[:name],
+        :has_datasets? => datatable ? !datatable.children[:datasets].empty? : false
+      )
     end
 
     def walk_dataset(dataset)

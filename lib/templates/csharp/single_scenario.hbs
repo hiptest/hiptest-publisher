@@ -1,8 +1,9 @@
-namespace {{{ context.namespace }}} {{#curly}}{{#indent}}
+namespace {{{ context.namespace }}}{{{ relative_package }}} {{#curly}}{{#indent}}
 
 using System;
 using NUnit.Framework;
-
+{{#if needs_to_import_actionwords? }}using {{{ context.namespace }}};
+{{/if}}
 [TestFixture]
 public class {{{ clear_extension context.filename }}} {{#curly}}
 {{#indent}}

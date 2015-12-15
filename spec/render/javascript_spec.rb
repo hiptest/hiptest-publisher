@@ -500,6 +500,21 @@ describe 'Render as Javascript' do
 
   context 'qUnit' do
     before(:each) do
+      @grand_child_scenario_rendered_for_single_file = [
+        "(function () {",
+        "  module('One grand\\'child scenario', {",
+        "    setup: function () {",
+        "      this.actionwords = Object.create(Actionwords);",
+        "    }",
+        "  });",
+        "",
+        "  test('One grand\\'child scenario', function () {",
+        "",
+        "  });",
+        "})();",
+        "",
+      ].join("\n")
+
       @root_folder_rendered = [
         "(function () {",
         "  module('My root folder', {",
@@ -804,6 +819,19 @@ describe 'Render as Javascript' do
         "  });",
         "});",
         ""
+      ].join("\n")
+
+      @grand_child_scenario_rendered_for_single_file = [
+        "describe('One grand\\'child scenario', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "  });",
+        "",
+        "  it('One grand\\'child scenario', function () {",
+        "",
+        "  });",
+        "});",
+        "",
       ].join("\n")
 
       @root_folder_rendered = [
@@ -1160,6 +1188,19 @@ describe 'Render as Javascript' do
         "  });",
         "});",
         ""
+      ].join("\n")
+
+      @grand_child_scenario_rendered_for_single_file = [
+        "describe('One grand\\'child scenario', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(require('../../actionwords.js').Actionwords);",
+        "  });",
+        "",
+        "  it('One grand\\'child scenario', function () {",
+        "",
+        "  });",
+        "});",
+        "",
       ].join("\n")
 
       @root_folder_rendered = [

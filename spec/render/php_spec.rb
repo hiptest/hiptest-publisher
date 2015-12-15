@@ -297,7 +297,7 @@ describe 'Render as PHP' do
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
       "<?php",
-      "require_once('Actionwords.php');",
+      "require_once(__DIR__.'/Actionwords.php');",
       "",
       "class CompareToPiTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
@@ -383,7 +383,7 @@ describe 'Render as PHP' do
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
       "<?php",
-      "require_once('Actionwords.php');",
+      "require_once(__DIR__.'/Actionwords.php');",
       "",
       "class CheckLoginTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
@@ -444,7 +444,7 @@ describe 'Render as PHP' do
        "<?php",
        "require_once('Actionwords.php');",
        "",
-       "class MikesTestProjectTest extends PHPUnit_Framework_TestCase {",
+       "class ProjectTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
       "  public function setUp() {",
       "    $this->actionwords = new Actionwords();",
@@ -510,9 +510,26 @@ describe 'Render as PHP' do
       "?>"
     ].join("\n")
 
+    @grand_child_scenario_rendered_for_single_file = [
+      "<?php",
+      "require_once(__DIR__.'/../../Actionwords.php');",
+      "",
+      "class OneGrandchildScenarioTest extends PHPUnit_Framework_TestCase {",
+      "  public $actionwords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords();",
+      "  }",
+      "",
+      "  public function testOneGrandchildScenario() {",
+      "",
+      "  }",
+      "}",
+      "?>"
+    ].join("\n")
+
     @root_folder_rendered = [
       "<?php",
-      "require_once(__DIR__.'/'.'Actionwords.php');",
+      "require_once(__DIR__.'/Actionwords.php');",
       "",
       "class MyRootFolderTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
@@ -533,7 +550,7 @@ describe 'Render as PHP' do
 
     @grand_child_folder_rendered = [
       "<?php",
-      "require_once(__DIR__.'/'.'../Actionwords.php');",
+      "require_once(__DIR__.'/../Actionwords.php');",
       "",
       "class AGrandchildFolderTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",

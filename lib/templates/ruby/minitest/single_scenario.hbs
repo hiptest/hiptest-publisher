@@ -1,9 +1,9 @@
 # encoding: UTF-8
 
 require 'minitest/autorun'
-require_relative 'actionwords'
+require_relative '{{{ relative_path 'actionwords' }}}'
 
-class Test{{{ camelize project_name }}} < MiniTest::Unit::TestCase
+class Test{{{ camelize self_name }}} < MiniTest::Unit::TestCase
   include Actionwords
 {{#indent}}
 {{> scenario}}

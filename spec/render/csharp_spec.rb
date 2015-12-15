@@ -546,6 +546,26 @@ describe 'Render as C#' do
       '}',
     ].join("\n")
 
+    @grand_child_scenario_rendered_for_single_file = [
+      "namespace MyProject.ChildFolder.ASecondGrandchildFolder {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "    using MyProject;",
+      "",
+      "    [TestFixture]",
+      "    public class OneGrandchildScenarioTest {",
+      "",
+      "        public Actionwords Actionwords = new Actionwords();",
+      "",
+      "",
+      "        [Test]",
+      "        public void OneGrandchildScenario() {",
+      "        }",
+      "    }",
+      "}",
+    ].join("\n")
+
     @root_folder_rendered = [
       "namespace MyProject {",
       "",

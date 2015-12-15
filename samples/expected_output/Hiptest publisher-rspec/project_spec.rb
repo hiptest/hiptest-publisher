@@ -2,7 +2,7 @@
 require 'spec_helper'
 require_relative 'actionwords'
 
-describe 'HiptestPublisher' do
+describe 'Hiptest publisher' do
   include Actionwords
 
   it "A scenario in a subfolder" do

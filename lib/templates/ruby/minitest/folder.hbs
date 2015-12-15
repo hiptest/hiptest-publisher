@@ -3,7 +3,7 @@
 require 'minitest/autorun'
 require_relative '{{{ relative_path 'actionwords' }}}'
 
-class Test{{{ camelize rendered_children.name }}} < MiniTest::Unit::TestCase
+class Test{{{ camelize self_name }}} < MiniTest::Unit::TestCase
   include Actionwords
 {{#indent}}
 {{#each rendered_children.scenarios}}{{{this}}}

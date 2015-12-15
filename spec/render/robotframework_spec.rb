@@ -457,6 +457,21 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
+    # cbl: I am not sure about this one...
+    @grand_child_scenario_rendered_for_single_file = [
+      "*** Settings ***",
+      "Documentation",
+      "",
+      "",
+      "Resource          keywords.txt",
+      "",
+      "",
+      "*** Test Cases ***",
+      "",
+      "one_grandchild_scenario",
+      "",
+    ].join("\n")
+
     @root_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
     @grand_child_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
   end

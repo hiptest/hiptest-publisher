@@ -294,7 +294,7 @@ describe 'Render as Python' do
       "import unittest",
       "from actionwords import Actionwords",
       "",
-      "class TestMikesProject(unittest.TestCase):",
+      "class TestCompareToPi(unittest.TestCase):",
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
@@ -359,7 +359,7 @@ describe 'Render as Python' do
       "import unittest",
       "from actionwords import Actionwords",
       "",
-      "class TestAProjectWithDatatables(unittest.TestCase):",
+      "class TestCheckLogin(unittest.TestCase):",
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
@@ -446,6 +446,41 @@ describe 'Render as Python' do
       ""
     ].join("\n")
 
+    @first_test_rendered_for_single_file = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
+      "",
+      "class TestLogin(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "",
+      "    def test_Login(self):",
+      "        # The description is on ",
+      "        # two lines",
+      "        # Tags: myTag myTag:somevalue",
+      "        self.actionwords.visit(url = '/login')",
+      "        self.actionwords.fill(login = 'user@example.com')",
+      "        self.actionwords.fill(password = 's3cret')",
+      "        self.actionwords.click(path = '.login-form input[type=submit]')",
+      "        self.actionwords.check_url(path = '/welcome')",
+      ""
+    ].join("\n")
+
+    @grand_child_scenario_rendered_for_single_file = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
+      "",
+      "class TestOneGrandchildScenario(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "",
+      "    def test_One_grandchild_scenario(self):",
+      "        pass",
+      "",
+    ].join("\n")
+
     @root_folder_rendered = [
       "# encoding: UTF-8",
       "import unittest",
@@ -473,27 +508,6 @@ describe 'Render as Python' do
       "        self.actionwords = Actionwords(self)",
       "",
       "",
-    ].join("\n")
-
-    @first_test_rendered_for_single_file = [
-      "# encoding: UTF-8",
-      "import unittest",
-      "from actionwords import Actionwords",
-      "",
-      "class TestMikesTestProject(unittest.TestCase):",
-      "    def setUp(self):",
-      "        self.actionwords = Actionwords(self)",
-      "",
-      "    def test_Login(self):",
-      "        # The description is on ",
-      "        # two lines",
-      "        # Tags: myTag myTag:somevalue",
-      "        self.actionwords.visit(url = '/login')",
-      "        self.actionwords.fill(login = 'user@example.com')",
-      "        self.actionwords.fill(password = 's3cret')",
-      "        self.actionwords.click(path = '.login-form input[type=submit]')",
-      "        self.actionwords.check_url(path = '/welcome')",
-      ""
     ].join("\n")
   end
 

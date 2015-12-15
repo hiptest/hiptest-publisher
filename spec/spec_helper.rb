@@ -66,7 +66,14 @@ module HelperFactories
   def make_scenario(name, tags: [], parameters: [], body: [], folder: nil, datatable: Hiptest::Nodes::Datatable.new)
     folder_uid = folder ? folder.uid : nil
     Hiptest::Nodes::Scenario.new(name, '', tags, parameters, body, folder_uid, datatable).tap do |scenario|
-      folder.children[:scenarios] << scenario if folder
+      if folder
+        folder.children[:scenarios] << scenario
+        project = folder.project
+        if project
+          project.children[:scenarios].children[:scenarios] << scenario
+          scenario.parent = project.children[:scenarios]
+        end
+      end
     end
   end
 
@@ -76,13 +83,20 @@ module HelperFactories
 
   def make_folder(name, description: nil, parent: nil)
     uid = SecureRandom.uuid
-    parent_uid = parent.uid if parent
-    Hiptest::Nodes::Folder.new(uid, parent_uid, name, description).tap do |folder|
-      if parent
-        folder.parent = parent
+    if parent.respond_to?(:uid)
+      parent_uid = parent.uid
+    end
+    folder = Hiptest::Nodes::Folder.new(uid, parent_uid, name, description)
+    if parent
+      folder.parent = parent
+      if parent.is_a?(Hiptest::Nodes::TestPlan)
+        parent.children[:folders] << folder
+      else
         parent.children[:subfolders] << folder
+        parent.project && parent.project.children[:test_plan].children[:folders] << folder
       end
     end
+    folder
   end
 
   def make_project(name, scenarios: [], tests: [], actionwords: [], folders: [])

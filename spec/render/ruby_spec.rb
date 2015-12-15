@@ -208,7 +208,7 @@ describe 'Render as Ruby' do
         "require 'spec_helper'",
         "require_relative 'actionwords'",
         "",
-        "describe 'MikesProject' do",
+        "describe 'compare to pi' do",
         "  include Actionwords",
         "",
         "",
@@ -295,7 +295,7 @@ describe 'Render as Ruby' do
         "require 'spec_helper'",
         "require_relative 'actionwords'",
         "",
-        "describe 'AProjectWithDatatables' do",
+        "describe 'check login' do",
         "  include Actionwords",
         "",
         "",
@@ -328,7 +328,7 @@ describe 'Render as Ruby' do
         "require 'spec_helper'",
         "require_relative 'actionwords'",
         "",
-        "describe 'MikesProject' do",
+        "describe 'Mike\\'s project' do",
         "  include Actionwords",
         "",
         "  it \"first scenario\" do",
@@ -338,14 +338,16 @@ describe 'Render as Ruby' do
         "  it \"second scenario\" do",
         "    my_action_word",
         "  end",
-        "end"].join("\n")
+        "end",
+        "",
+      ].join("\n")
 
       @tests_rendered = [
        "# encoding: UTF-8",
        "require 'spec_helper'",
        "require_relative 'actionwords'",
        "",
-       "describe 'MikesTestProject' do",
+       "describe 'Mike\\'s test project' do",
        "  include Actionwords",
        "",
        "  it \"Login\" do",
@@ -388,7 +390,7 @@ describe 'Render as Ruby' do
        "require 'spec_helper'",
        "require_relative 'actionwords'",
        "",
-       "describe 'MikesTestProject' do",
+       "describe 'Mike\\'s test project' do",
        "  include Actionwords",
        "",
        "",
@@ -403,6 +405,21 @@ describe 'Render as Ruby' do
        "    check_url('/welcome')",
        "  end",
        "end"
+      ].join("\n")
+
+      @grand_child_scenario_rendered_for_single_file = [
+        "# encoding: UTF-8",
+        "require 'spec_helper'",
+        "require_relative '../../actionwords'",
+        "",
+        "describe 'One grand\\'child scenario' do",
+        "  include Actionwords",
+        "",
+        "",
+        "  it \"One grand'child scenario\" do",
+        "",
+        "  end",
+        "end",
       ].join("\n")
 
       @root_folder_rendered = [
@@ -496,7 +513,7 @@ describe 'Render as Ruby' do
         "require 'minitest/autorun'",
         "require_relative 'actionwords'",
         "",
-        "class TestMikesProject < MiniTest::Unit::TestCase",
+        "class TestCompareToPi < MiniTest::Unit::TestCase",
         "  include Actionwords",
         "",
         "  def test_compare_to_pi",
@@ -566,7 +583,7 @@ describe 'Render as Ruby' do
         "require 'minitest/autorun'",
         "require_relative 'actionwords'",
         "",
-        "class TestAProjectWithDatatables < MiniTest::Unit::TestCase",
+        "class TestCheckLogin < MiniTest::Unit::TestCase",
         "  include Actionwords",
         "",
         "  def check_login(login, password, expected)",
@@ -607,7 +624,9 @@ describe 'Render as Ruby' do
         "  def test_second_scenario",
         "    my_action_word",
         "  end",
-        "end"].join("\n")
+        "end",
+        "",
+      ].join("\n")
 
       @tests_rendered = [
        "# encoding: UTF-8",
@@ -659,7 +678,7 @@ describe 'Render as Ruby' do
        "require 'minitest/autorun'",
        "require_relative 'actionwords'",
        "",
-       "class TestMikesTestProject < MiniTest::Unit::TestCase",
+       "class TestLogin < MiniTest::Unit::TestCase",
        "  include Actionwords",
        "",
        "  def test_Login",
@@ -673,6 +692,21 @@ describe 'Render as Ruby' do
        "    check_url('/welcome')",
        "  end",
        "end"
+      ].join("\n")
+
+      @grand_child_scenario_rendered_for_single_file = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative '../../actionwords'",
+        "",
+        "class TestOneGrandchildScenario < MiniTest::Unit::TestCase",
+        "  include Actionwords",
+        "",
+        "  def test_One_grandchild_scenario",
+        "",
+        "  end",
+        "end",
       ].join("\n")
 
       @root_folder_rendered = [

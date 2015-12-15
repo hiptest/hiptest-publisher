@@ -2,7 +2,7 @@
 require 'spec_helper'
 require_relative '{{{ relative_path 'actionwords' }}}'
 
-describe '{{{ rendered_children.name }}}' do
+describe '{{{ escape_single_quotes rendered_children.name }}}' do
   include Actionwords
 {{#indent}}
 {{#each rendered_children.scenarios}}{{{this}}}

@@ -3,7 +3,12 @@ require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/render_context_maker'
 
 describe Hiptest::RenderContextMaker do
-  subject { Object.new.extend(Hiptest::RenderContextMaker) }
+  let(:node_rendering_context) { double('NodeRenderingContext') }
+  subject {
+    obj = Object.new.extend(Hiptest::RenderContextMaker)
+    obj.instance_variable_set(:@context, node_rendering_context)
+    obj
+  }
 
   context 'walk_item' do
     let(:node) {Hiptest::Nodes::Scenario.new('My scenario')}
@@ -78,6 +83,8 @@ describe Hiptest::RenderContextMaker do
     }
 
     it 'adds the project name and has_datasets? to walk_item result' do
+      allow(node_rendering_context).to receive(:relative_path).and_return("")
+
       expect(subject.walk_scenario(node).keys).to eq([
         :has_parameters?,
         :has_tags?,
@@ -86,6 +93,8 @@ describe Hiptest::RenderContextMaker do
         :declared_variables,
         :raw_parameter_names,
         :self_name,
+        :needs_to_import_actionwords?,
+        :relative_package,
         :project_name,
         :has_datasets?
       ])
@@ -98,6 +107,26 @@ describe Hiptest::RenderContextMaker do
 
       node.children[:datatable].children[:datasets] << 'Anything'
       expect(subject.walk_scenario(node)[:has_datasets?]).to be true
+    end
+
+    it 'adds the relative_package and needs_to_import_actionwords? to walk_scenario result' do
+      allow(node_rendering_context).to receive(:relative_path).and_return("my/deep/path")
+
+      expect(subject.walk_scenario(node).keys).to include(
+        :needs_to_import_actionwords?,
+        :relative_package,
+      )
+
+      expect(subject.walk_scenario(node)[:needs_to_import_actionwords?]).to be true
+      expect(subject.walk_scenario(node)[:relative_package]).to eq(".my.deep")
+
+      allow(node_rendering_context).to receive(:relative_path).and_return("my")
+      expect(subject.walk_scenario(node)[:needs_to_import_actionwords?]).to be false
+      expect(subject.walk_scenario(node)[:relative_package]).to eq("")
+
+      allow(node_rendering_context).to receive(:relative_path).and_return("")
+      expect(subject.walk_scenario(node)[:needs_to_import_actionwords?]).to be false
+      expect(subject.walk_scenario(node)[:relative_package]).to eq("")
     end
   end
 
