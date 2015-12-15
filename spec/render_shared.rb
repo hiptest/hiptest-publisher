@@ -9,6 +9,8 @@ require_relative '../lib/hiptest-publisher/options_parser'
 
 shared_context "shared render" do
 
+  include HelperFactories
+
   before(:each) do
     @null = Hiptest::Nodes::NullLiteral.new
     @what_is_your_quest = Hiptest::Nodes::StringLiteral.new("What is your quest ?")
@@ -268,6 +270,14 @@ shared_context "shared render" do
     @tests.parent = Hiptest::Nodes::Project.new("Mike's test project")
 
 
+    @root_folder = make_folder("My root folder")
+    @first_root_scenario = make_scenario("One root scenario", folder: @root_folder)
+    @first_root_scenario.parent = @scenarios
+    @second_root_scenario = make_scenario("Another root scenario", folder: @root_folder)
+    @second_root_scenario.parent = @scenarios
+    @child_folder = make_folder("child folder", parent: @root_folder)
+    @grand_child_folder = make_folder("A grand-child folder", parent: @child_folder)
+
     # In hiptest
     # scenario 'reset password' do
     #   call given 'Page "url" is opened'(url='/login')
@@ -299,25 +309,29 @@ shared_context "shared render" do
     @bdd_project.children[:scenarios] = Hiptest::Nodes::Scenarios.new([@bdd_scenario])
     Hiptest::Nodes::ParentAdder.add(@bdd_project)
     Hiptest::GherkinAdder.add(@bdd_project)
+  end
 
+  def rendering(node)
     @context = context_for(
+      node: node,
       # only to select the right config group: we render [actionwords], [tests] and others differently
       only: only,
-      # test_name to customize the resulting file name (used by java for the class name)
-      test_name: test_name,
-      # in tests, simulate user options like --language, --framework, --split_scenarios, package= or namespace= (in config file)
+      # in tests, simulate user options like --language, --framework,
+      # --split-scenarios, --with-folders, package= or namespace= (in config file)
       language: language,
       framework: framework,
       split_scenarios: split_scenarios,
+      with_folders: with_folders,
       namespace: namespace,
       package: package)
+    node.render(@context)
   end
 end
 
 shared_examples "a renderer" do
 
   let(:split_scenarios) { nil }
-  let(:test_name) { nil }
+  let(:with_folders) { nil }
   let(:package) { nil } # only used for Java
   let(:namespace) { nil } # only used for C#
 
@@ -325,146 +339,146 @@ shared_examples "a renderer" do
     let(:only) { 'tests' }
 
     it 'NullLiteral' do
-      expect(@null.render(@context)).to eq(@null_rendered)
+      expect(rendering(@null)).to eq(@null_rendered)
     end
 
     it 'StringLiteral' do
-      expect(@what_is_your_quest.render(@context)).to eq(@what_is_your_quest_rendered)
+      expect(rendering(@what_is_your_quest)).to eq(@what_is_your_quest_rendered)
     end
 
     it 'NumericLiteral' do
-      expect(@pi.render(@context)).to eq(@pi_rendered)
+      expect(rendering(@pi)).to eq(@pi_rendered)
     end
 
     it 'BooleanLiteral' do
-      expect(@false.render(@context)).to eq(@false_rendered)
+      expect(rendering(@false)).to eq(@false_rendered)
     end
 
     it 'Variable' do
-      expect(@foo_variable.render(@context)).to eq(@foo_variable_rendered)
+      expect(rendering(@foo_variable)).to eq(@foo_variable_rendered)
     end
 
     it 'Property' do
-      expect(@foo_fighters_prop.render(@context)).to eq(@foo_fighters_prop_rendered)
+      expect(rendering(@foo_fighters_prop)).to eq(@foo_fighters_prop_rendered)
     end
 
     it 'Field' do
-      expect(@foo_dot_fighters.render(@context)).to eq(@foo_dot_fighters_rendered)
+      expect(rendering(@foo_dot_fighters)).to eq(@foo_dot_fighters_rendered)
     end
 
     it 'Index' do
-      expect(@foo_brackets_fighters.render(@context)).to eq(@foo_brackets_fighters_rendered)
+      expect(rendering(@foo_brackets_fighters)).to eq(@foo_brackets_fighters_rendered)
     end
 
     it 'BinaryExpression' do
-      expect(@foo_minus_fighters.render(@context)).to eq(@foo_minus_fighters_rendered)
+      expect(rendering(@foo_minus_fighters)).to eq(@foo_minus_fighters_rendered)
     end
 
     it 'UnaryExpression' do
-      expect(@minus_foo.render(@context)).to eq(@minus_foo_rendered)
+      expect(rendering(@minus_foo)).to eq(@minus_foo_rendered)
     end
 
     it 'Parenthesis' do
-      expect(@parenthesis_foo.render(@context)).to eq(@parenthesis_foo_rendered)
+      expect(rendering(@parenthesis_foo)).to eq(@parenthesis_foo_rendered)
     end
 
     it 'List' do
-      expect(@foo_list.render(@context)).to eq(@foo_list_rendered)
+      expect(rendering(@foo_list)).to eq(@foo_list_rendered)
     end
 
     it 'Dict' do
-      expect(@foo_dict.render(@context)).to eq(@foo_dict_rendered)
+      expect(rendering(@foo_dict)).to eq(@foo_dict_rendered)
     end
 
     it 'Template' do
-      expect(@foo_template.render(@context)).to eq(@foo_template_rendered)
-      expect(@double_quotes_template.render(@context)).to eq(@double_quotes_template_rendered)
+      expect(rendering(@foo_template)).to eq(@foo_template_rendered)
+      expect(rendering(@double_quotes_template)).to eq(@double_quotes_template_rendered)
     end
 
     it 'Assign' do
-      expect(@assign_fighters_to_foo.render(@context)).to eq(@assign_fighters_to_foo_rendered)
+      expect(rendering(@assign_fighters_to_foo)).to eq(@assign_fighters_to_foo_rendered)
     end
 
     it 'Call' do
-      expect(@call_foo.render(@context)).to eq(@call_foo_rendered)
-      expect(@call_foo_bar.render(@context)).to eq(@call_foo_bar_rendered)
-      expect(@call_foo_with_fighters.render(@context)).to eq(@call_foo_with_fighters_rendered)
-      expect(@call_foo_bar_with_fighters.render(@context)).to eq(@call_foo_bar_with_fighters_rendered)
+      expect(rendering(@call_foo)).to eq(@call_foo_rendered)
+      expect(rendering(@call_foo_bar)).to eq(@call_foo_bar_rendered)
+      expect(rendering(@call_foo_with_fighters)).to eq(@call_foo_with_fighters_rendered)
+      expect(rendering(@call_foo_bar_with_fighters)).to eq(@call_foo_bar_with_fighters_rendered)
     end
 
     it 'IfThen' do
-      expect(@if_then.render(@context)).to eq(@if_then_rendered)
-      expect(@if_then_else.render(@context)).to eq(@if_then_else_rendered)
+      expect(rendering(@if_then)).to eq(@if_then_rendered)
+      expect(rendering(@if_then_else)).to eq(@if_then_else_rendered)
     end
 
     it "Step" do
-      expect(@action_foo_fighters.render(@context)).to eq(@action_foo_fighters_rendered)
+      expect(rendering(@action_foo_fighters)).to eq(@action_foo_fighters_rendered)
     end
 
     it 'While' do
-      expect(@while_loop.render(@context)).to eq(@while_loop_rendered)
+      expect(rendering(@while_loop)).to eq(@while_loop_rendered)
     end
 
     it 'Tag' do
-      expect(@simple_tag.render(@context)).to eq(@simple_tag_rendered)
-      expect(@valued_tag.render(@context)).to eq(@valued_tag_rendered)
+      expect(rendering(@simple_tag)).to eq(@simple_tag_rendered)
+      expect(rendering(@valued_tag)).to eq(@valued_tag_rendered)
     end
 
     it 'Parameter' do
-      expect(@plic_param.render(@context)).to eq(@plic_param_rendered)
-      expect(@plic_param_default_ploc.render(@context)).to eq(@plic_param_default_ploc_rendered)
+      expect(rendering(@plic_param)).to eq(@plic_param_rendered)
+      expect(rendering(@plic_param_default_ploc)).to eq(@plic_param_default_ploc_rendered)
     end
 
     context 'Actionword' do
       it 'empty' do
-        expect(@empty_action_word.render(@context)).to eq(@empty_action_word_rendered)
+        expect(rendering(@empty_action_word)).to eq(@empty_action_word_rendered)
       end
 
       it 'with tags' do
-        expect(@tagged_action_word.render(@context)).to eq(@tagged_action_word_rendered)
+        expect(rendering(@tagged_action_word)).to eq(@tagged_action_word_rendered)
       end
 
       it 'with parameters' do
-        expect(@parameterized_action_word.render(@context)).to eq(@parameterized_action_word_rendered)
+        expect(rendering(@parameterized_action_word)).to eq(@parameterized_action_word_rendered)
       end
 
       it 'with body' do
-        expect(@full_actionword.render(@context)).to eq(@full_actionword_rendered)
+        expect(rendering(@full_actionword)).to eq(@full_actionword_rendered)
       end
 
       it 'with body that contains only step' do
-        expect(@step_action_word.render(@context)).to eq(@step_action_word_rendered)
+        expect(rendering(@step_action_word)).to eq(@step_action_word_rendered)
       end
     end
 
     context 'Scenario' do
       it 'can be rendered to be inserted in the scenarios list' do
-        expect(@full_scenario.render(@context)).to eq(@full_scenario_rendered)
+        expect(rendering(@full_scenario)).to eq(@full_scenario_rendered)
       end
 
       context 'with splitted files' do
         let(:split_scenarios) { true }
 
         it 'can also be rendered so it will be in a single file' do
-          expect(@full_scenario.render(@context)).to eq(@full_scenario_rendered_for_single_file)
+          expect(rendering(@full_scenario)).to eq(@full_scenario_rendered_for_single_file)
         end
       end
 
       it 'can be rendered with its datatable' do
-        expect(@scenario_with_datatable.render(@context)).to eq(@scenario_with_datatable_rendered)
+        expect(rendering(@scenario_with_datatable)).to eq(@scenario_with_datatable_rendered)
       end
 
       context 'with splitted files' do
         let(:split_scenarios) { true }
 
         it 'can be rendered with its datatable in a single file' do
-          expect(@scenario_with_datatable.render(@context)).to eq(@scenario_with_datatable_rendered_in_single_file)
+          expect(rendering(@scenario_with_datatable)).to eq(@scenario_with_datatable_rendered_in_single_file)
         end
       end
 
       it 'the UID is displayed in the name if set' do
         @full_scenario.set_uid('abcd-1234')
-        expect(@full_scenario.render(@context)).to eq(@full_scenario_with_uid_rendered)
+        expect(rendering(@full_scenario)).to eq(@full_scenario_with_uid_rendered)
       end
 
       it 'when the uid is set at the dataset level, it is rendered in the dataset export name' do
@@ -473,36 +487,51 @@ shared_examples "a renderer" do
           dataset.set_uid(uids[index])
         end
 
-        expect(@scenario_with_datatable.render(@context)).to eq(
+        expect(rendering(@scenario_with_datatable)).to eq(
           @scenario_with_datatable_rendered_with_uids)
       end
 
       it 'shows BDD annotations when present' do
-        expect(@bdd_scenario.render(@context)).to eq(@bdd_scenario_rendered)
+        expect(rendering(@bdd_scenario)).to eq(@bdd_scenario_rendered)
       end
     end
 
 
     it 'Scenarios' do
-      expect(@scenarios.render(@context)).to eq(@scenarios_rendered)
+      expect(rendering(@scenarios)).to eq(@scenarios_rendered)
     end
 
     context 'Test' do
       it 'can be rendered to be inserted in the tests list' do
-        expect(@first_test.render(@context)).to eq(@first_test_rendered)
+        expect(rendering(@first_test)).to eq(@first_test_rendered)
       end
 
       context 'with splitted files' do
         let(:split_scenarios) { true }
 
         it 'can also be rendered so it will be in a single file' do
-          expect(@first_test.render(@context)).to eq(@first_test_rendered_for_single_file)
+          expect(rendering(@first_test)).to eq(@first_test_rendered_for_single_file)
         end
       end
     end
 
     it 'Tests' do
-      expect(@tests.render(@context)).to eq(@tests_rendered)
+      expect(rendering(@tests)).to eq(@tests_rendered)
+    end
+
+    context 'Folders' do
+      let(:with_folders) { true }
+      let(:split_scenarios) { false }
+
+      it 'renders all scenarios in a single file' do
+        pending if @root_folder_rendered.nil?
+        expect(rendering(@root_folder)).to eq(@root_folder_rendered)
+      end
+
+      it 'adapts path to load actionword file correctly' do
+        pending if @grand_child_folder_rendered.nil?
+        expect(rendering(@grand_child_folder)).to eq(@grand_child_folder_rendered)
+      end
     end
   end
 
@@ -510,12 +539,12 @@ shared_examples "a renderer" do
     let(:only) { "actionwords" }
 
     it 'Actionwords' do
-      expect(@actionwords.render(@context)).to eq(@actionwords_rendered)
+      expect(rendering(@actionwords)).to eq(@actionwords_rendered)
     end
 
     it 'Actionwords with parameters of different types' do
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
-      expect(@project.children[:actionwords].render(@context)).to eq(@actionwords_with_params_rendered)
+      expect(rendering(@project.children[:actionwords])).to eq(@actionwords_with_params_rendered)
     end
   end
 end

@@ -2,6 +2,7 @@ require 'webmock'
 require 'codeclimate-test-reporter'
 require 'pry'
 require 'securerandom'
+require_relative '../lib/hiptest-publisher/formatters/reporter'
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
 
@@ -18,6 +19,10 @@ class ErrorListener
 
   def method_missing(*args)
   end
+end
+
+def error_reporter
+  Reporter.new([ErrorListener.new])
 end
 
 
@@ -91,15 +96,19 @@ module HelperFactories
 end
 
 def language_group_config_for(properties)
-  cli_options = CliOptions.new(properties)
+  if properties.is_a?(Array)
+    args = properties
+    cli_options = OptionsParser.parse(args, error_reporter)
+  else
+    cli_options = CliOptions.new(properties)
+  end
   cli_options.normalize!
   language_config = LanguageConfigParser.new(cli_options)
   language_config.language_group_configs.first or fail("no language group defined for --only=#{cli_options.only}")
 end
 
 def context_for(properties)
-  test_name = properties.delete(:test_name) || 'dummy'
+  node = properties.delete(:node) || OpenStruct.new(children: {name: 'dummy'})
   language_group_config = language_group_config_for(properties)
-  dummy_node = OpenStruct.new(children: {name: test_name})
-  language_group_config.build_node_rendering_context(dummy_node)
+  language_group_config.build_node_rendering_context(node)
 end

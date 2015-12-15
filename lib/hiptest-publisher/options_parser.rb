@@ -355,25 +355,42 @@ class LanguageGroupConfig
   end
 
   def with_folders?
-    @with_folders
+    @with_folders && (node_name == :scenarios || node_name == :folders)
   end
 
   def splitted_files?
-    if self[:scenario_filename].nil?
+    if self[:named_filename].nil?
+      # if we can't give a different name for each file, we can't split them
       false
     elsif self[:filename].nil?
+      # if we can't give a name to a single file, we must split them
       true
     else
+      # both options are possible, do as user specified
       @split_scenarios
+    end
+  end
+
+  def can_name_files?
+    if self[:named_filename]
+      splitted_files? || with_folders?
+    else
+      false
     end
   end
 
   def nodes(project)
     case node_name
     when :tests, :scenarios, :actionwords
-      get_children(project, node_name)
+      if splitted_files?
+        project.children[node_name].children[node_name]
+      elsif with_folders?
+        get_folder_nodes(project)
+      else
+        [project.children[node_name]]
+      end
     when :folders
-      project.children[:test_plan].children[:folders].select {|folder| folder.children[:scenarios].length > 0}
+      get_folder_nodes(project)
     end
   end
 
@@ -421,7 +438,9 @@ class LanguageGroupConfig
   end
 
   def build_node_rendering_context(node)
-    path = File.join(language_group_output_directory, output_file(node))
+    relative_path = File.join(output_dirname(node), output_filename(node))
+    relative_path = relative_path[1..-1] if relative_path[0] == '/'
+    path = File.join(language_group_output_directory, relative_path)
 
     if splitted_files?
       description = "#{singularize(node_name)} \"#{node.children[:name]}\""
@@ -431,6 +450,7 @@ class LanguageGroupConfig
 
     NodeRenderingContext.new(
       path: path,
+      relative_path: relative_path,
       indentation: indentation,
       template_finder: template_finder,
       description: description,
@@ -445,22 +465,21 @@ class LanguageGroupConfig
     @user_params["#{@language_group_params[:group_name]}_output_directory"] || @output_directory
   end
 
-  def output_directory(node)
+  def output_dirname(node)
+    return "" unless with_folders?
     folder = node.folder
     hierarchy = []
     while folder && !folder.root?
-      hierarchy << normalized_filename(folder.children[:name])
+      hierarchy << normalized_dirname(folder.children[:name])
       folder = folder.parent
     end
     File.join(*hierarchy.reverse)
   end
 
-  def output_file(node)
-    if splitted_files?
-      name = normalized_filename(node.children[:name])
-      filename = self[:scenario_filename].gsub('%s', name)
-      directory = with_folders? ? output_directory(node) : ""
-      File.join(directory, filename)
+  def output_filename(node)
+    if can_name_files?
+      name = normalized_filename(node.children[:name] || '')
+      self[:named_filename].gsub('%s', name)
     else
       self[:filename]
     end
@@ -480,12 +499,13 @@ class LanguageGroupConfig
     end
   end
 
-  def get_children(project, node_key)
-    if splitted_files?
-      project.children[node_key].children[node_key]
-    else
-      [project.children[node_key]]
-    end
+  def get_folder_nodes(project)
+    project.children[:test_plan].children[:folders].select {|folder| folder.children[:scenarios].length > 0}
+  end
+
+  def normalized_dirname(name)
+    dirname_convention = @language_group_params[:dirname_convention] || @language_group_params[:filename_convention] || :normalize
+    name.send(dirname_convention)
   end
 
   def normalized_filename(name)

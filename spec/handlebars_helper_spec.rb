@@ -52,7 +52,7 @@ describe Hiptest::HandlebarsHelper do
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       Hiptest::HandlebarsHelper.register_helpers(handlebars, {})
-      expect(handlebars.helpers.length).to eq(25)
+      expect(handlebars.helpers.length).to eq(26)
     end
   end
 

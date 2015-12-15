@@ -312,7 +312,7 @@ describe 'Render as C#' do
       "    using NUnit.Framework;",
       "",
       "    [TestFixture]",
-      "    public class MyScenarioTest {",
+      "    public class CompareToPiTest {",
       "",
       "        public Actionwords Actionwords = new Actionwords();",
       "",
@@ -408,7 +408,7 @@ describe 'Render as C#' do
       "    using NUnit.Framework;",
       "",
       "    [TestFixture]",
-      "    public class MyScenarioTest {",
+      "    public class CheckLoginTest {",
       "",
       "        public Actionwords Actionwords = new Actionwords();",
       "",
@@ -452,7 +452,12 @@ describe 'Render as C#' do
       "    [TestFixture]",
       "    public class ProjectTest {",
       "",
-      "        public Actionwords Actionwords = new Actionwords();",
+      "        public Actionwords Actionwords;",
+      "",
+      "        [SetUp]",
+      "        protected void SetUp() {",
+      "            Actionwords = new Actionwords();",
+      "        }",
       "",
       "        [Test]",
       "        public void FirstScenario() {",
@@ -522,9 +527,9 @@ describe 'Render as C#' do
       "    using NUnit.Framework;",
       "",
       "    [TestFixture]",
-      "    public class MyScenarioTest {",
+      "    public class LoginTest {",
       "",
-      '        public Actionwords Actionwords = new Actionwords();',
+      "        public Actionwords Actionwords = new Actionwords();",
       '',
       '        // The description is on ',
       '        // two lines',
@@ -538,7 +543,54 @@ describe 'Render as C#' do
       '            Actionwords.CheckUrl("/welcome");',
       '        }',
       '    }',
-      '}'
+      '}',
+    ].join("\n")
+
+    @root_folder_rendered = [
+      "namespace MyProject {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "",
+      "    [TestFixture]",
+      "    public class MyRootFolderTest {",
+      "",
+      "        public Actionwords Actionwords;",
+      "",
+      "        [SetUp]",
+      "        protected void SetUp() {",
+      "            Actionwords = new Actionwords();",
+      "        }",
+      "",
+      "        [Test]",
+      "        public void OneRootScenario() {",
+      "        }",
+      "",
+      "        [Test]",
+      "        public void AnotherRootScenario() {",
+      "        }",
+      "    }",
+      "}",
+    ].join("\n")
+
+    @grand_child_folder_rendered = [
+      "namespace MyProject.ChildFolder {",
+      "",
+      "    using System;",
+      "    using NUnit.Framework;",
+      "    using MyProject;",
+      "",
+      "    [TestFixture]",
+      "    public class AGrandchildFolderTest {",
+      "",
+      "        public Actionwords Actionwords;",
+      "",
+      "        [SetUp]",
+      "        protected void SetUp() {",
+      "            Actionwords = new Actionwords();",
+      "        }",
+      "    }",
+      "}",
     ].join("\n")
   end
 
@@ -546,7 +598,6 @@ describe 'Render as C#' do
     it_behaves_like "a renderer" do
       let(:language) {'csharp'}
       let(:framework) {'nunit'}
-      let(:test_name) { 'my scenario' }
       let(:namespace) { 'MyProject' }
     end
   end

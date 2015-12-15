@@ -20,98 +20,407 @@ describe LanguageGroupConfig do
     folders: [root_folder, trade_folder, buy_folder, sell_folder, loan_folder],
   )}
 
-  context "outputing scenarios" do
+  context "outputing files" do
+    {
+      "cucumber" => {
+        []                                       => [ "[features]",
+                                                      "/buy_goods.feature",
+                                                      "/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/buy_goods.feature",
+                                                      "/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/global_trades/buy_goods.feature",
+                                                      "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/global_trades/buy_goods.feature",
+                                                      "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+      },
 
-    context "without --split-scenarios" do
-      let(:split_scenarios) { false }
+      "csharp" => {
+        []                                       => [ "[tests]",
+                                                      "/ProjectTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/BuyPontarlierTest.cs",
+                                                      "/SellMontDOrTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/GlobalTrades/BuyGoodsTest.cs",
+                                                      "/GlobalTrades/SellGoodsTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/GlobalTrades/BuyGoods/BuyPontarlierTest.cs",
+                                                      "/GlobalTrades/SellGoods/SellMontDOrTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+      },
 
-      {
-        "java"                => "/ProjectTest.java",
-        "java-testng"         => "/ProjectTest.java",
-        "javascript"          => "/project_test.js",
-        "javascript-jasmine"  => "/project_test.js",
-        "javascript-mocha"    => "/project_test.js",
-        "python"              => "/test_project.py",
-        "robotframework"      => "/project.txt",
-        "ruby"                => "/project_spec.rb",
-        "ruby-minitest"       => "/project_test.rb",
-        "seleniumide"         => "/project.html",
-        "csharp"              => "/ProjectTest.cs",
-        "php"                 => "/TestProject.php"
-      }.each do |dialect, output_file|
-        it "for #{dialect} language, it outputs scenarios in file #{output_file}" do
-          language, framework = dialect.split("-", 2)
-          language_group_config = language_group_config_for(
-            only: "tests",
-            language: language,
-            framework: framework,
-            split_scenarios: split_scenarios,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq([output_file])
-        end
-      end
-    end
+      "java" => {
+        []                                       => [ "[tests]",
+                                                      "/ProjectTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/BuyPontarlierTest.java",
+                                                      "/SellMontDOrTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/BuyGoodsTest.java",
+                                                      "/global_trades/SellGoodsTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/BuyPontarlierTest.java",
+                                                      "/global_trades/sell_goods/SellMontDOrTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+      },
 
-    context "with --split-scenarios" do
-      let(:split_scenarios) { true }
+      "java-testng" => {
+        []                                       => [ "[tests]",
+                                                      "/ProjectTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/BuyPontarlierTest.java",
+                                                      "/SellMontDOrTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/BuyGoodsTest.java",
+                                                      "/global_trades/SellGoodsTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/BuyPontarlierTest.java",
+                                                      "/global_trades/sell_goods/SellMontDOrTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java",
+                                                    ],
+      },
 
-      {
-        "java"                => ["/BuyPontarlierTest.java", "/SellMontDOrTest.java"],
-        "java-testng"         => ["/BuyPontarlierTest.java", "/SellMontDOrTest.java"],
-        "javascript"          => ["/Buy_Pontarlier_test.js", "/Sell_Mont_dOr_test.js"],
-        "javascript-jasmine"  => ["/Buy_Pontarlier_test.js", "/Sell_Mont_dOr_test.js"],
-        "javascript-mocha"    => ["/Buy_Pontarlier_test.js", "/Sell_Mont_dOr_test.js"],
-        "python"              => ["/test_Buy_Pontarlier.py", "/test_Sell_Mont_dOr.py"],
-        "robotframework"      => ["/test_Buy_Pontarlier.txt", "/test_Sell_Mont_dOr.txt"],
-        "ruby"                => ["/Buy_Pontarlier_spec.rb", "/Sell_Mont_dOr_spec.rb"],
-        "ruby-minitest"       => ["/Buy_Pontarlier_test.rb", "/Sell_Mont_dOr_test.rb"],
-        "seleniumide"         => ["/Buy_Pontarlier.html", "/Sell_Mont_dOr.html"],
-        "csharp"              => ["/BuyPontarlierTest.cs", "/SellMontDOrTest.cs"],
-        "php"                 => ["/Test_Buy_Pontarlier.php", "/Test_Sell_Mont_dOr.php"],
-      }.each do |dialect, output_files|
-        it "for #{dialect} language, it outputs scenarios in files #{output_files.join(', ')}" do
-          language, framework = dialect.split("-", 2)
-          language_group_config = language_group_config_for(
-            only: "tests",
-            language: language,
-            framework: framework,
-            split_scenarios: split_scenarios,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
-        end
-      end
-    end
+      "javascript" => {
+        []                                       => [ "[tests]",
+                                                      "/project_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/buy_pontarlier_test.js",
+                                                      "/sell_mont_d_or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/buy_goods_test.js",
+                                                      "/global_trades/sell_goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.js",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+      },
 
-    context "with --split-scenarios --with-folders" do
-      let(:split_scenarios) { true }
+      "javascript-jasmine" => {
+        []                                       => [ "[tests]",
+                                                      "/project_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/buy_pontarlier_test.js",
+                                                      "/sell_mont_d_or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/buy_goods_test.js",
+                                                      "/global_trades/sell_goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.js",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+      },
 
-      {
-        "java"                => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.java", "/GlobalTrades/SellGoods/SellMontDOrTest.java"],
-        "java-testng"         => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.java", "/GlobalTrades/SellGoods/SellMontDOrTest.java"],
-        "javascript"          => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.js", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js"],
-        "javascript-jasmine"  => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.js", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js"],
-        "javascript-mocha"    => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.js", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.js"],
-        "python"              => ["/Global_trades/Buy_goods/test_Buy_Pontarlier.py", "/Global_trades/Sell_goods/test_Sell_Mont_dOr.py"],
-        "robotframework"      => ["/Global_trades/Buy_goods/test_Buy_Pontarlier.txt", "/Global_trades/Sell_goods/test_Sell_Mont_dOr.txt"],
-        "ruby"                => ["/Global_trades/Buy_goods/Buy_Pontarlier_spec.rb", "/Global_trades/Sell_goods/Sell_Mont_dOr_spec.rb"],
-        "ruby-minitest"       => ["/Global_trades/Buy_goods/Buy_Pontarlier_test.rb", "/Global_trades/Sell_goods/Sell_Mont_dOr_test.rb"],
-        "seleniumide"         => ["/Global_trades/Buy_goods/Buy_Pontarlier.html", "/Global_trades/Sell_goods/Sell_Mont_dOr.html"],
-        "csharp"              => ["/GlobalTrades/BuyGoods/BuyPontarlierTest.cs", "/GlobalTrades/SellGoods/SellMontDOrTest.cs"],
-        "php"              => ["/Global_trades/Buy_goods/Test_Buy_Pontarlier.php", "/Global_trades/Sell_goods/Test_Sell_Mont_dOr.php"],
-      }.each do |dialect, output_files|
-        it "for #{dialect} language, it outputs scenarios in files #{output_files.join(', ')}" do
-          language, framework = dialect.split("-", 2)
-          language_group_config = language_group_config_for(
-            only: "tests",
-            language: language,
-            framework: framework,
-            split_scenarios: split_scenarios,
-            with_folders: true,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
+      "javascript-mocha" => {
+        []                                       => [ "[tests]",
+                                                      "/project_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/buy_pontarlier_test.js",
+                                                      "/sell_mont_d_or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/buy_goods_test.js",
+                                                      "/global_trades/sell_goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.js",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js",
+                                                    ],
+      },
+
+      "php" => {
+        []                                       => [ "[tests]",
+                                                      "/TestProject.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/Test_Buy_Pontarlier.php",
+                                                      "/Test_Sell_Mont_dOr.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/Global_trades/Test_Buy_goods.php",
+                                                      "/Global_trades/Test_Sell_goods.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/Global_trades/Buy_goods/Test_Buy_Pontarlier.php",
+                                                      "/Global_trades/Sell_goods/Test_Sell_Mont_dOr.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php",
+                                                    ],
+      },
+
+      "python" => {
+        []                                       => [ "[tests]",
+                                                      "/test_project.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/test_buy_pontarlier.py",
+                                                      "/test_sell_mont_d_or.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/test_buy_goods.py",
+                                                      "/global_trades/test_sell_goods.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/test_buy_pontarlier.py",
+                                                      "/global_trades/sell_goods/test_sell_mont_d_or.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py",
+                                                    ],
+      },
+
+      "robotframework" => {
+        # --split-scenarios is forced
+        []                                       => [ "[tests]",
+                                                      "/test_buy_pontarlier.txt",
+                                                      "/test_sell_mont_d_or.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/test_buy_pontarlier.txt",
+                                                      "/test_sell_mont_d_or.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt",
+                                                    ],
+        # --split-scenarios is forced
+        ["--with-folders"]                        => [ "[tests]",
+                                                      "/global_trades/buy_goods/test_buy_pontarlier.txt",
+                                                      "/global_trades/sell_goods/test_sell_mont_d_or.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/test_buy_pontarlier.txt",
+                                                      "/global_trades/sell_goods/test_sell_mont_d_or.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt",
+                                                    ],
+      },
+
+      "ruby" => {
+        []                                       => [ "[tests]",
+                                                      "/project_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/buy_pontarlier_spec.rb",
+                                                      "/sell_mont_d_or_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/buy_goods_spec.rb",
+                                                      "/global_trades/sell_goods_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/buy_pontarlier_spec.rb",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+      },
+
+      "ruby-minitest" => {
+        []                                       => [ "[tests]",
+                                                      "/project_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/buy_pontarlier_test.rb",
+                                                      "/sell_mont_d_or_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--with-folders"]                       => [ "[tests]",
+                                                      "/global_trades/buy_goods_test.rb",
+                                                      "/global_trades/sell_goods_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/global_trades/buy_goods/buy_pontarlier_test.rb",
+                                                      "/global_trades/sell_goods/sell_mont_d_or_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb",
+                                                    ],
+      },
+
+      "seleniumide" => {
+        []                                       => [ "[tests]",
+                                                      "/project.html",
+                                                      "[actionwords]",
+                                                      "/actionwords.html",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[tests]",
+                                                      "/Buy_Pontarlier.html",
+                                                      "/Sell_Mont_dOr.html",
+                                                      "[actionwords]",
+                                                      "/actionwords.html",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[tests]",
+                                                      "/Global_trades/Buy_goods/Buy_Pontarlier.html",
+                                                      "/Global_trades/Sell_goods/Sell_Mont_dOr.html",
+                                                      "[actionwords]",
+                                                      "/actionwords.html",
+                                                    ],
+      },
+
+      "specflow" => {
+        []                                       => [ "[features]",
+                                                      "/BuyGoods.feature",
+                                                      "/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/BuyGoods.feature",
+                                                      "/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/GlobalTrades/BuyGoods.feature",
+                                                      "/GlobalTrades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/GlobalTrades/BuyGoods.feature",
+                                                      "/GlobalTrades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs",
+                                                    ],
+      },
+    }.each do |dialect, output_files_for_options|
+      context dialect do
+        output_files_for_options.each do |options, output_files|
+          it "with #{options.join(' ')}: outputs in files #{output_files}" do
+            language, framework = dialect.split("-", 2)
+            args = options
+            args += ["--output-directory", "/"]
+            args += ["--language", language]
+            args += ["--framework", framework] if framework
+            cli_options = OptionsParser.parse(args, error_reporter)
+            cli_options.normalize!
+            language_config = LanguageConfigParser.new(cli_options)
+            filenames = []
+            language_config.language_group_configs.each do |language_group_config|
+              filenames << "[#{language_group_config[:group_name]}]"
+              filenames << language_group_config.each_node_rendering_context(project).map(&:path)
+            end
+            filenames.flatten!
+
+            expect(filenames).to eq(output_files)
+          end
         end
       end
     end
@@ -149,71 +458,6 @@ describe LanguageGroupConfig do
         filenames_not_splitted = language_group_config_not_splitted.each_node_rendering_context(project).map(&:path)
 
         expect(filenames_not_splitted).to eq(filenames_splitted)
-      end
-    end
-
-    context "without --with-folders" do
-      let(:with_folders) { false }
-      let(:output_files) { ["/Buy_goods.feature", "/Sell_goods.feature"] }
-
-      ['cucumber', 'specflow'].each do |language|
-        it "for #{language} language, it outputs scenarios in feature files based on the folder" do
-          language_group_config = language_group_config_for(
-            only: "features",
-            language: language,
-            with_folders: with_folders,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
-        end
-      end
-    end
-
-    context "with --with-folders" do
-      let(:with_folders) { true }
-      let(:output_files) { ["/Global_trades/Buy_goods.feature", "/Global_trades/Sell_goods.feature"] }
-
-
-      ['cucumber', 'specflow'].each do |language|
-        it "for #{language} language, it outputs scenarios in feature files based on the folder" do
-          language_group_config = language_group_config_for(
-            only: "features",
-            language: language,
-            with_folders: with_folders,
-          )
-          filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-          expect(filenames).to eq(output_files)
-        end
-      end
-    end
-  end
-
-  context "outputing actionwords" do
-    {
-      "cucumber"            => "/actionwords.rb",
-      "java"                => "/Actionwords.java",
-      "java-testng"         => "/Actionwords.java",
-      "javascript"          => "/actionwords.js",
-      "javascript-jasmine"  => "/actionwords.js",
-      "javascript-mocha"    => "/actionwords.js",
-      "python"              => "/actionwords.py",
-      "robotframework"      => "/keywords.txt",
-      "ruby"                => "/actionwords.rb",
-      "ruby-minitest"       => "/actionwords.rb",
-      "seleniumide"         => "/actionwords.html",
-      "csharp"              => "/Actionwords.cs",
-      "specflow"            => "/Actionwords.cs",
-      "php"                 => "/Actionwords.php",
-    }.each do |dialect, output_file|
-      it "for #{dialect} language, it outputs actionwords in file #{output_file}" do
-        language, framework = dialect.split("-", 2)
-        language_group_config = language_group_config_for(
-          only: "actionwords",
-          language: language,
-          framework: framework,
-        )
-        filenames = language_group_config.each_node_rendering_context(project).map(&:path)
-        expect(filenames).to eq([output_file])
       end
     end
   end

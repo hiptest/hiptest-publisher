@@ -318,7 +318,7 @@ describe 'Render as Java' do
         "",
         "import junit.framework.TestCase;",
         "",
-        "public class MyScenarioTest extends TestCase {",
+        "public class CompareToPiTest extends TestCase {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -404,7 +404,7 @@ describe 'Render as Java' do
         "",
         "import junit.framework.TestCase;",
         "",
-        "public class MyScenarioTest extends TestCase {",
+        "public class CheckLoginTest extends TestCase {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -500,7 +500,7 @@ describe 'Render as Java' do
         '',
         'import junit.framework.TestCase;',
         '',
-        'public class MyScenarioTest extends TestCase {',
+        'public class LoginTest extends TestCase {',
         '',
         '    public Actionwords actionwords = new Actionwords();',
         '',
@@ -516,12 +516,40 @@ describe 'Render as Java' do
         '    }',
         '}'
       ].join("\n")
+
+      @root_folder_rendered = [
+        "package com.example;",
+        "",
+        "import junit.framework.TestCase;",
+        "",
+        "public class MyRootFolderTest extends TestCase {",
+        "",
+        "    public Actionwords actionwords = new Actionwords();",
+        "",
+        "    public void testOneRootScenario() {",
+        "    }",
+        "",
+        "    public void testAnotherRootScenario() {",
+        "    }",
+        "}",
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        "package com.example.child_folder;",
+        "",
+        "import junit.framework.TestCase;",
+        "import com.example.Actionwords;",
+        "",
+        "public class AGrandchildFolderTest extends TestCase {",
+        "",
+        "    public Actionwords actionwords = new Actionwords();",
+        "}",
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
       let(:language) { 'java' }
       let(:framework) { 'JUnit' }
-      let(:test_name) { 'my scenario' }
       let(:package) { 'com.example' }
     end
   end
@@ -586,7 +614,7 @@ describe 'Render as Java' do
         "",
         "import org.testng.annotations.*;",
         "",
-        "public class MyScenarioTest {",
+        "public class CompareToPiTest {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -678,7 +706,7 @@ describe 'Render as Java' do
         "",
         "import org.testng.annotations.*;",
         "",
-        "public class MyScenarioTest {",
+        "public class CheckLoginTest {",
         "",
         "    public Actionwords actionwords = new Actionwords();",
         "",
@@ -786,7 +814,7 @@ describe 'Render as Java' do
          '',
          'import org.testng.annotations.*;',
          '',
-         'public class MyScenarioTest {',
+         'public class LoginTest {',
          '',
          '    public Actionwords actionwords = new Actionwords();',
          '',
@@ -803,12 +831,53 @@ describe 'Render as Java' do
          '    }',
          '}',
         ].join("\n")
+
+      @root_folder_rendered = [
+        "package com.example;",
+        "",
+        "import org.testng.annotations.*;",
+        "",
+        "public class MyRootFolderTest {",
+        "",
+        "    public Actionwords actionwords;",
+        "",
+        "    @BeforeMethod",
+        "    public void setUp() {",
+        "        actionwords = new Actionwords();",
+        "    }",
+        "",
+        "    @Test",
+        "    public void oneRootScenario() {",
+        "    }",
+        "",
+        "    @Test",
+        "    public void anotherRootScenario() {",
+        "    }",
+        "}",
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        "package com.example.child_folder;",
+        "",
+        "import org.testng.annotations.*;",
+        "import com.example.Actionwords;",
+        "",
+        "public class AGrandchildFolderTest {",
+        "",
+        "    public Actionwords actionwords;",
+        "",
+        "    @BeforeMethod",
+        "    public void setUp() {",
+        "        actionwords = new Actionwords();",
+        "    }",
+        "",
+        "}",
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
       let(:language) { 'java' }
       let(:framework) { 'testng' }
-      let(:test_name) { 'my scenario' }
       let(:package) { 'com.example' }
     end
   end

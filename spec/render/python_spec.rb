@@ -446,6 +446,35 @@ describe 'Render as Python' do
       ""
     ].join("\n")
 
+    @root_folder_rendered = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
+      "",
+      "class TestMyRootFolder(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "",
+      "    def test_One_root_scenario(self):",
+      "        pass",
+      "",
+      "    def test_Another_root_scenario(self):",
+      "        pass",
+      "",
+    ].join("\n")
+
+    @grand_child_folder_rendered = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
+      "",
+      "class TestAGrandchildFolder(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "",
+      "",
+    ].join("\n")
+
     @first_test_rendered_for_single_file = [
       "# encoding: UTF-8",
       "import unittest",

@@ -1,11 +1,5 @@
 module Hiptest
   module RenderContextMaker
-    def walk_folder(folder)
-      {
-        :has_tags? => !folder.children[:tags].empty?
-      }
-    end
-
     def walk_item(item)
       {
         :has_parameters? => !item.children[:parameters].empty?,
@@ -13,11 +7,23 @@ module Hiptest
         :has_step? => has_step?(item),
         :is_empty? => item.children[:body].empty?,
         :declared_variables => item.declared_variables_names,
-        :raw_parameter_names => item.children[:parameters].map {|p| p.children[:name] }
+        :raw_parameter_names => item.children[:parameters].map {|p| p.children[:name] },
+        :self_name => item.children[:name],
       }
     end
 
     alias :walk_actionword :walk_item
+
+    def walk_folder(folder)
+      relative_package = @context.relative_path.split('/')[0...-1].join('.')
+      relative_package = ".#{relative_package}" unless relative_package.empty?
+      {
+        :needs_to_import_actionwords? => @context.relative_path.count('/') > 0,
+        :relative_package => relative_package,
+        :self_name => folder.children[:name],
+        :has_tags? => !folder.children[:tags].empty?,
+      }
+    end
 
     def walk_scenario(scenario)
       base = walk_item(scenario)
@@ -36,8 +42,10 @@ module Hiptest
     end
 
     def walk_scenarios(scenarios)
+      project = scenarios.parent
       {
-        :project_name => scenarios.parent.children[:name]
+        :project_name => project.children[:name],
+        :self_name => project.children[:name],
       }
     end
 
@@ -49,12 +57,15 @@ module Hiptest
         :is_empty? => test.children[:body].empty?,
         :has_datasets? => false,
         :project_name => test.parent.parent.children[:name],
+        :self_name => test.children[:name],
       }
     end
 
     def walk_tests(tests)
+      project = tests.parent
       {
-        :project_name => tests.parent.children[:name]
+        :project_name => project.children[:name],
+        :self_name => project.children[:name],
       }
     end
 

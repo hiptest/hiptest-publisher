@@ -131,6 +131,16 @@ module Hiptest
       "\t"
     end
 
+    def hh_relative_path(context, filename, block)
+      levels_count = context.get('context.relative_path').count('/')
+      if levels_count == 0
+        filename
+      else
+        base_name = filename.to_s.gsub(/\A\.\//, '')
+        "../" * levels_count + base_name
+      end
+    end
+
     def hh_debug(context, block)
       require 'pry'
       binding.pry
