@@ -524,12 +524,10 @@ shared_examples "a renderer" do
       let(:split_scenarios) { false }
 
       it 'renders all scenarios in a single file' do
-        pending if @root_folder_rendered.nil?
         expect(rendering(@root_folder)).to eq(@root_folder_rendered)
       end
 
       it 'adapts path to load actionword file correctly' do
-        pending if @grand_child_folder_rendered.nil?
         expect(rendering(@grand_child_folder)).to eq(@grand_child_folder_rendered)
       end
     end
