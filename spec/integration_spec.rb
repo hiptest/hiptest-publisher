@@ -25,6 +25,7 @@ describe Hiptest::Publisher do
       [],
       ["--test-run-id=987"],
       ["--split-scenarios"],
+      ["--with-folders"],
       ["--leafless-export"],
       ["--test-run-id=987", "--split-scenarios"],
       ["--test-run-id=987", "--leafless-export"], # leafless-export is ignored for test-run, TODO? print an error and exit?
@@ -37,25 +38,21 @@ describe Hiptest::Publisher do
     ].each do |extra_args|
       context extra_args.join(" ") do
         [
-          %w"cucumber",
           %w"cucumber ruby",
           %w"cucumber java",
-          %w"java",
           %w"java junit",
           %w"java testng",
-          %w"javascript",
+          %w"javascript qunit",
           %w"javascript jasmine",
           %w"javascript mocha",
-          %w"python",
-          %w"csharp",
+          %w"python unittest",
           %w"csharp nunit",
           %w"robotframework",
-          %w"ruby",
           %w"ruby minitest",
           %w"ruby rspec",
           %w"seleniumide",
           %w"specflow",
-          %w"php"
+          %w"php phpunit",
         ].each do |language, framework|
           assertion_text = "--language=#{language}"
           assertion_text <<  " --framework=#{framework}" if framework
