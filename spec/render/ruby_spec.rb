@@ -390,7 +390,7 @@ describe 'Render as Ruby' do
        "require 'spec_helper'",
        "require_relative 'actionwords'",
        "",
-       "describe 'Mike\\'s test project' do",
+       "describe 'Login' do",
        "  include Actionwords",
        "",
        "",
