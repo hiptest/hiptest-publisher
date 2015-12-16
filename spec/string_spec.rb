@@ -32,14 +32,14 @@ describe String do
 
     it 'does all at once, hurray <o/' do
       expect(%|  it's : the Støry of\n\n"Pouin Pouin le Marsouin"\n  |.normalize).to eq(
-        'its_the_Story_of_Pouin_Pouin_le_Marsouin')
+        'its__the_Story_of_Pouin_Pouin_le_Marsouin')
     end
   end
 
   context 'normalize_lower' do
     it 'does like normalize but returns the string lowercased' do
       expect(%|  it's : the Støry of\n\n"Pouin Pouin le Marsouin"\n  |.normalize_lower).to eq(
-        'its_the_story_of_pouin_pouin_le_marsouin')
+        'its__the_story_of_pouin_pouin_le_marsouin')
     end
   end
 

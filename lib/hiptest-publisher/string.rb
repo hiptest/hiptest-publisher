@@ -11,7 +11,7 @@ class String
   def normalize
     literated = self.literate
     literated.strip!
-    literated.gsub!(/\s\W*/, '_')
+    literated.gsub!(/\s+/, '_')
     literated.gsub!(/\W/, '')
     literated
   end
