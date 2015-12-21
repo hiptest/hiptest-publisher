@@ -21,6 +21,6 @@ class ConsoleFormatter
     return unless verbose
     message ||= "Running Hiptest-publisher #{hiptest_publisher_version} with:"
     puts message.yellow
-    options.each { |k, v| puts " - #{k}: #{v.inspect}".white }
+    options.each { |k, v| puts " - #{k}: #{v.inspect}" }
   end
 end
