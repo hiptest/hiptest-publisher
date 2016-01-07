@@ -37,7 +37,7 @@ describe 'Cucumber/Java rendering' do
       [
         'package com.example;',
         '',
-        'import cucumber.api.java.en.Given;',
+        'import cucumber.api.java.en.*;',
         '',
         'public class StepDefinitions {',
         '    public Actionwords actionwords = new Actionwords();',
