@@ -10,15 +10,23 @@ module Hiptest
     def initialize(project)
       @project = project
       @indexer = ActionwordIndexer.new(project)
+      @annotations_counter = AnnotationsCounter.new
     end
 
     def update_calls
-      @project.each_sub_nodes(Hiptest::Nodes::Call) do |call|
-        call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
-        if actionword = get_actionword(call)
-          actionword.children[:gherkin_annotation] ||= code_annotation(call)
-          actionword.children[:gherkin_pattern] ||= pattern(actionword)
+      @project.each_sub_nodes(Hiptest::Nodes::Scenario, Hiptest::Nodes::Actionword, Hiptest::Nodes::Test) do |item|
+        @last_annotation = nil
+        item.each_sub_nodes(Hiptest::Nodes::Call) do |call|
+          call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
+          if actionword = get_actionword(call)
+            @annotations_counter.increment(actionword, code_annotation(call))
+            actionword.children[:gherkin_pattern] ||= pattern(actionword)
+          end
         end
+      end
+
+      @annotations_counter.actionwords.each do |actionword|
+        actionword.children[:gherkin_annotation] = @annotations_counter.most_used_annotation(actionword) || "Given"
       end
     end
 
@@ -31,7 +39,13 @@ module Hiptest
     end
 
     def code_annotation(call)
-      annotation(call) || "Given"
+      call_annotation = annotation(call)
+      if call_annotation
+        if call_annotation == "And"
+          call_annotation = @last_annotation || "Given"
+        end
+        @last_annotation = call_annotation
+      end
     end
 
     def prettified(call)
@@ -124,6 +138,26 @@ module Hiptest
       else
         nil
       end
+    end
+  end
+
+  class AnnotationsCounter
+    def initialize
+      @counts_by_actionword = Hash.new {|counts, actionword| counts[actionword] = Hash.new(0) }
+    end
+
+    def actionwords
+      @counts_by_actionword.keys
+    end
+
+    def increment(actionword, annotation)
+      counts = @counts_by_actionword[actionword]
+      counts[annotation] += 1 if annotation
+    end
+
+    def most_used_annotation(actionword)
+      max = @counts_by_actionword[actionword].values.max
+      @counts_by_actionword[actionword].key(max)
     end
   end
 end

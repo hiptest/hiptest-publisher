@@ -370,6 +370,81 @@ describe Hiptest::GherkinAdder do
     end
   end
 
+  context "annotation picking with multiple calls" do
+    let(:project) {
+      make_project("My project", scenarios: [scenario, other_scenario], actionwords: [actionword_hello, actionword_bonjour])
+    }
+    let(:scenario) { make_scenario("My scenario") }
+    let(:other_scenario) { make_scenario("Other scenario") }
+    let(:actionword_hello) { make_actionword("Hello") }
+    let(:actionword_bonjour) { make_actionword("Bonjour") }
+
+
+    context "with And annotation" do
+      let(:scenario) {
+        make_scenario("My scenario", body: [
+          make_call(actionword_hello.children[:name], annotation: "when"),
+          make_call(actionword_bonjour.children[:name], annotation: "and"),
+        ])
+      }
+
+      it "picks the last meaningful annotation" do
+        expect(actionword_bonjour.children[:gherkin_annotation]).to eq("When")
+      end
+    end
+
+    context "with And annotation as first step" do
+      let(:other_scenario) {
+        make_scenario("My scenario", body: [
+          make_call(actionword_bonjour.children[:name], annotation: "and"),
+        ])
+      }
+
+      it "uses 'Given' by default" do
+        expect(actionword_bonjour.children[:gherkin_annotation]).to eq("Given")
+      end
+
+      context "with another scenario using Then defined before" do
+        let(:scenario) {
+          make_scenario("My scenario", body: [
+            make_call(actionword_hello.children[:name], annotation: "then"),
+          ])
+        }
+
+        it "uses 'Given' by default" do
+          expect(actionword_bonjour.children[:gherkin_annotation]).to eq("Given")
+        end
+      end
+    end
+
+    context "with multiple annotations used for the same actionword" do
+      let(:scenario) {
+        make_scenario("My scenario", body: [
+          make_call(actionword_bonjour.children[:name], annotation: "given"),
+          make_call(actionword_bonjour.children[:name], annotation: "when"),
+          make_call(actionword_bonjour.children[:name], annotation: "then"),
+        ])
+      }
+      let(:other_scenario) {
+        make_scenario("Other scenario", body: [
+          make_call(actionword_bonjour.children[:name], annotation: "given"),
+          make_call(actionword_bonjour.children[:name], annotation: "then"),
+          make_call(actionword_bonjour.children[:name], annotation: "and"),
+        ])
+      }
+
+      it "uses the one used the most" do
+        # in this case, it's then, used three times
+        expect(actionword_bonjour.children[:gherkin_annotation]).to eq("Then")
+      end
+    end
+
+    context "with unused actionword" do
+      it "has no annotation (nil)" do
+        expect(actionword_bonjour.children[:gherkin_annotation]).to be_nil
+      end
+    end
+  end
 
   context "call to unknown actionword" do
     let(:call) { make_call("Hi \"name\"", annotation: "given") }
