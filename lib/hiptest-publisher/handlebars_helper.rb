@@ -104,6 +104,15 @@ module Hiptest
       s ? s.gsub('"', '\\"') : ""
     end
 
+    def hh_escape_backslashes_and_double_quotes (context, s, block)
+      if s
+        s.gsub('\\') { |c| c*2 }.
+          gsub('"', '\\"')
+      else
+        ""
+      end
+    end
+
     def hh_escape_single_quotes (context, s, block)
       # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
       s ? s.gsub('\'', "\\\\'") : ""
