@@ -268,7 +268,7 @@ module Hiptest
     end
 
     class Scenario < Item
-      attr_reader :folder_uid
+      attr_reader :folder_uid, :order_in_parent
 
       def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil, datatable = Datatable.new, order_in_parent = 0)
         super(name, tags, parameters, body)
@@ -383,7 +383,7 @@ module Hiptest
     end
 
     class Folder < Node
-      attr_reader :uid, :parent_uid
+      attr_reader :uid, :parent_uid, :order_in_parent
 
       def initialize(uid, parent_uid, name, description, tags = [], order_in_parent = 0)
         super()

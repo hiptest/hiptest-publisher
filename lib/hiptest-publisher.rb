@@ -12,6 +12,8 @@ require 'hiptest-publisher/parameter_type_adder'
 require 'hiptest-publisher/call_arguments_adder'
 require 'hiptest-publisher/signature_exporter'
 require 'hiptest-publisher/signature_differ'
+require 'hiptest-publisher/items_orderer'
+
 
 module Hiptest
   class Publisher
@@ -235,6 +237,7 @@ module Hiptest
         Hiptest::Nodes::ParameterTypeAdder.add(@project)
         Hiptest::DefaultArgumentAdder.add(@project)
         Hiptest::GherkinAdder.add(@project)
+        Hiptest::ItemsOrderer.add(@project, @cli_options.sort)
       end
 
       export_files
