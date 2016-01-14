@@ -208,7 +208,8 @@ module Hiptest
         build_parameters(scenario),
         build_steps(scenario),
         css_first_content(scenario, '> folderUid'),
-        build_node(css_first(scenario, '> datatable'), Hiptest::Nodes::Datatable))
+        build_node(css_first(scenario, '> datatable'), Hiptest::Nodes::Datatable),
+        css_first_content(scenario, 'order_in_parent').to_i)
     end
 
     def build_scenarioSnapshot(scs)
@@ -273,7 +274,8 @@ module Hiptest
         css_first_content(folder, 'parentUid'),
         css_first_content(folder, 'name'),
         css_first_content(folder, 'description'),
-        build_tags(folder))
+        build_tags(folder),
+        css_first_content(folder, 'order_in_parent').to_i)
     end
     alias :build_folderSnapshot :build_folder
 

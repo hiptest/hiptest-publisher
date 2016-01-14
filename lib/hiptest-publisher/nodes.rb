@@ -270,12 +270,13 @@ module Hiptest
     class Scenario < Item
       attr_reader :folder_uid
 
-      def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil, datatable = Datatable.new)
+      def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil, datatable = Datatable.new, order_in_parent = 0)
         super(name, tags, parameters, body)
         @children[:description] = description
         @children[:datatable] = datatable
 
         @folder_uid = folder_uid
+        @order_in_parent = order_in_parent
       end
 
       def set_uid(uid)
@@ -384,11 +385,12 @@ module Hiptest
     class Folder < Node
       attr_reader :uid, :parent_uid
 
-      def initialize(uid, parent_uid, name, description, tags = [])
+      def initialize(uid, parent_uid, name, description, tags = [], order_in_parent = 0)
         super()
 
         @uid = uid
         @parent_uid = parent_uid
+        @order_in_parent = order_in_parent
 
         @children = {
           :name => name,
