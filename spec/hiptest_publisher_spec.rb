@@ -8,6 +8,7 @@ describe Hiptest::Publisher do
     @output_dir_created = true
     Dir.mktmpdir
   }
+  let(:listeners) { [ErrorListener.new] }
 
   before(:each) {
     # partially prevent printing on stdout during rspec run (hacky! comment to use pry correctly)
@@ -332,6 +333,27 @@ describe Hiptest::Publisher do
     end
   end
 
+  describe "--push" do
+    def create_file(name, content = "")
+      path = File.join(output_dir, name)
+      File.write(path, content)
+      path
+    end
+
+    it "pushes the given files" do
+      stub_request(:post, "https://hiptest.net/import_test_results/123/tap").
+          to_return(:status => 200, :body => "", :headers => {})
+      result1 = create_file('result1.tap')
+      result2 = create_file('result2.tap')
+
+      glob = File.join(output_dir, '*.tap')
+      publisher = Hiptest::Publisher.new(["--token", "123", "--push", glob], listeners: listeners)
+      publisher.run
+
+
+    end
+  end
+
   describe "--help" do
     it 'displays help and exists' do
       expect {
@@ -357,8 +379,6 @@ describe Hiptest::Publisher do
   end
 
   describe "with invalid arguments" do
-    let(:listeners) { [ErrorListener.new] }
-
     def run_publisher_command(*args)
       publisher = Hiptest::Publisher.new(args, listeners: listeners)
       publisher.run
@@ -448,6 +468,43 @@ describe Hiptest::Publisher do
         expect {
           run_publisher_expecting_exit("--token", "123", "--language", "cucumber", "--only", "tests")
         }.to output(a_string_including("Available categories are \"features\", \"step_definitions\" and \"actionwords\".")).to_stdout
+      end
+    end
+
+    context "--push" do
+      context "with missing token" do
+        it "outputs an error message inviting to add --token argument" do
+          expect {
+            run_publisher_expecting_exit("--push", "file")
+          }.to output(a_string_including("Missing argument --token: you must specify project secret token with --token=<project-token>")).to_stdout
+        end
+      end
+
+      context "with bad token format" do
+        it "outputs an error message that it must be numeric" do
+          expect {
+            run_publisher_expecting_exit("--token", "abc")
+          }.to output(a_string_including("Invalid format --token=\"abc\": the project secret token must be numeric")).to_stdout
+        end
+      end
+
+      context "with unexisting result file" do
+        it "output an error message and stops" do
+          unexisting_file = "result_file.tap"
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--push", unexisting_file)
+          }.to output(a_string_including("Error with --push: the file \"result_file.tap\" does not exist or is not readable")).to_stdout
+        end
+      end
+
+      context "with result file being a directory" do
+        it "output an error message and stops" do
+          file = output_dir + "/result_file.tap"
+          Dir.mkdir(file)
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--push", file)
+          }.to output(a_string_including("Error with --push: the file \"#{file}\" is not a regular file")).to_stdout
+        end
       end
     end
 

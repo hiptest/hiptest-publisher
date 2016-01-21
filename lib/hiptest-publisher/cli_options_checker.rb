@@ -12,22 +12,34 @@ module Hiptest
     end
 
     def check!
-      # ensure config file was readable if specified
-      begin
-        ParseConfig.new(cli_options.config) if present?(cli_options.config)
-      rescue Errno::EACCES => err
-        raise CliOptionError, "Error with --config: the file \"#{cli_options.config}\" does not exist or is not readable"
-      end
+      check_config_file
 
       if cli_options.only == 'list'
         return
       end
 
-      if push?(cli_options)
-        return
-      end
+      check_secret_token
 
-      # secret token
+      if push?(cli_options)
+        check_push_file
+      else
+        check_output_directory
+        check_actionwords_signature_file
+        check_xml_file
+        check_test_run_id
+        check_language_and_only
+      end
+    end
+
+    def check_config_file
+      begin
+        ParseConfig.new(cli_options.config) if present?(cli_options.config)
+      rescue Errno::EACCES => err
+        raise CliOptionError, "Error with --config: the file \"#{cli_options.config}\" does not exist or is not readable"
+      end
+    end
+
+    def check_secret_token
       if absent?(cli_options.xml_file)
         if absent?(cli_options.token)
           raise CliOptionError, [
@@ -45,8 +57,24 @@ module Hiptest
           raise CliOptionError, "Invalid format --token=\"#{@cli_options.token}\": the project secret token must be numeric"
         end
       end
+    end
 
-      # output directory
+    def check_push_file
+      if cli_options.push
+        globbed_files = Dir.glob(cli_options.push)
+        if globbed_files.length == 0
+          raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" does not exist or is not readable"
+        elsif globbed_files.length == 1 && globbed_files == [cli_options.push]
+          if !File.readable?(cli_options.push)
+            raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" does not exist or is not readable"
+          elsif !File.file?(cli_options.push)
+            raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" is not a regular file"
+          end
+        end
+      end
+    end
+
+    def check_output_directory
       parent = first_existing_parent(cli_options.output_directory)
       if !parent.writable?
         if parent.realpath === Pathname.new(cli_options.output_directory).cleanpath
@@ -57,8 +85,10 @@ module Hiptest
       elsif !parent.directory?
         raise CliOptionError, "Error with --output-directory: the file \"#{@cli_options.output_directory}\" is not a directory"
       end
+    end
 
-      # actionwords signature file
+
+    def check_actionwords_signature_file
       if cli_options.actionwords_diff?
         actionwords_signature_file = Pathname.new(cli_options.output_directory).join("actionwords_signature.yaml")
         if actionwords_signature_file.directory?
@@ -71,8 +101,9 @@ module Hiptest
           ].join("\n")
         end
       end
+    end
 
-      # xml file
+    def check_xml_file
       if cli_options.xml_file
         if !File.readable?(cli_options.xml_file)
           raise CliOptionError, "Error with --xml-file: the file \"#{cli_options.xml_file}\" does not exist or is not readable"
@@ -80,13 +111,15 @@ module Hiptest
           raise CliOptionError, "Error with --xml-file: the file \"#{cli_options.xml_file}\" is not a regular file"
         end
       end
+    end
 
-      # test run id
+    def check_test_run_id
       if present?(cli_options.test_run_id) && !numeric?(cli_options.test_run_id)
         raise CliOptionError, "Invalid format --test-run-id=\"#{@cli_options.test_run_id}\": the test run id must be numeric"
       end
+    end
 
-      # language and --only
+    def check_language_and_only
       if present?(cli_options.language)
         begin
           language_config_parser = LanguageConfigParser.new(cli_options)
