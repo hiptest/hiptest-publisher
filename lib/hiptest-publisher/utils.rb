@@ -75,6 +75,7 @@ def show_status_message(message, status=nil)
   else
     return unless $stdout.tty?
     rows, columns = IO.console.winsize
+    return if columns == 0
     vertical_offset = (4 + message.length) / columns
     cursor_offset = "\r\e[#{vertical_offset + 1}A"
   end
