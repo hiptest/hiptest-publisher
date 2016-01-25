@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-ruby '2.2.4'
-
 gem 'colorize', '~> 0.7', '>= 0.7.5'
 gem 'parseconfig', '~> 1.0', '>= 1.0.4'
 gem 'i18n', '~> 0.7', '>= 0.7.0'
