@@ -1,5 +1,7 @@
 require 'pathname'
 
+require 'hiptest-publisher/utils'
+
 module Hiptest
   class CliOptionError < StandardError
   end
@@ -61,7 +63,7 @@ module Hiptest
 
     def check_push_file
       if cli_options.push
-        agnostic_path = cli_options.push.gsub('\\', '/')
+        agnostic_path = clean_path(cli_options.push)
         globbed_files = Dir.glob(agnostic_path)
 
         if globbed_files.length == 0
@@ -77,7 +79,9 @@ module Hiptest
     end
 
     def check_output_directory
-      parent = first_existing_parent(cli_options.output_directory)
+      output_directory = clean_path(cli_options.output_directory)
+
+      parent = first_existing_parent(output_directory)
       if !parent.writable?
         if parent.realpath === Pathname.new(cli_options.output_directory).cleanpath
           raise CliOptionError, "Error with --output-directory: the directory \"#{@cli_options.output_directory}\" is not writable"
@@ -107,9 +111,11 @@ module Hiptest
 
     def check_xml_file
       if cli_options.xml_file
-        if !File.readable?(cli_options.xml_file)
+        xml_path = clean_path(cli_options.xml_file)
+
+        if !File.readable?(xml_path)
           raise CliOptionError, "Error with --xml-file: the file \"#{cli_options.xml_file}\" does not exist or is not readable"
-        elsif !File.file?(cli_options.xml_file)
+        elsif !File.file?(xml_path)
           raise CliOptionError, "Error with --xml-file: the file \"#{cli_options.xml_file}\" is not a regular file"
         end
       end

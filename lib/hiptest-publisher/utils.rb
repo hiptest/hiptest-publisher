@@ -3,6 +3,8 @@ require 'io/console'
 require 'open-uri'
 require 'openssl'
 require 'net/http/post/multipart'
+require 'pathname'
+
 
 def hiptest_publisher_path
   Gem.loaded_specs['hiptest-publisher'].full_gem_path
@@ -112,4 +114,8 @@ def push_results(options)
   response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
     http.request(req)
   end
+end
+
+def clean_path(path)
+  Pathname.new(path).cleanpath.to_s
 end
