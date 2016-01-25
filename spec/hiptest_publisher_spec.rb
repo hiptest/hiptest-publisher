@@ -541,7 +541,7 @@ describe Hiptest::Publisher do
             FileUtils.mkdir(unwritable_dir)
             FileUtils.chmod("a=rx", unwritable_dir)
             unexisting_dir = unwritable_dir + '\some\dir'
-            expected_message = "Error with --output-directory: the directory \"#{unexisting_dir}\" can not be created because \"#{unwritable_dir}\" is not writable"
+            expected_message = "Error with --output-directory: the directory \"#{unexisting_dir}\" can not be created because \"#{unwritable_dir.gsub('\\', '/')}\" is not writable"
           else
             unexisting_dir = '/usr/lib/some/dir'
             expected_message = 'Error with --output-directory: the directory "/usr/lib/some/dir" can not be created because "/usr/lib" is not writable'
@@ -559,7 +559,7 @@ describe Hiptest::Publisher do
             unwritable_dir = output_dir + '\unwritable'
             FileUtils.mkdir(unwritable_dir)
             FileUtils.chmod("a=rx", unwritable_dir)
-            expected_message = 'Error with --output-directory: the directory "C:\" is not writable'
+            expected_message = "Error with --output-directory: the directory \"#{unwritable_dir}\" is not writable"
           else
             unwritable_dir = "/usr/lib"
             expected_message = 'Error with --output-directory: the directory "/usr/lib" is not writable'
