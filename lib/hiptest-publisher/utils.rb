@@ -104,7 +104,7 @@ def push_results(options)
   use_ssl = (url.scheme == 'https')
   uploaded = {}
 
-  Dir.glob(options.push).each_with_index do |filename, index|
+  Dir.glob(options.push.gsub('\\', '/')).each_with_index do |filename, index|
     uploaded["file-#{filename.normalize}"] = UploadIO.new(File.new(filename), "text", filename)
   end
 

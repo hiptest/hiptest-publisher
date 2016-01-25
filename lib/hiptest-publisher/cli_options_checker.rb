@@ -61,13 +61,15 @@ module Hiptest
 
     def check_push_file
       if cli_options.push
-        globbed_files = Dir.glob(cli_options.push)
+        agnostic_path = cli_options.push.gsub('\\', '/')
+        globbed_files = Dir.glob(agnostic_path)
+
         if globbed_files.length == 0
           raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" does not exist or is not readable"
         elsif globbed_files.length == 1 && globbed_files == [cli_options.push]
-          if !File.readable?(cli_options.push)
+          if !File.readable?(agnostic_path)
             raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" does not exist or is not readable"
-          elsif !File.file?(cli_options.push)
+          elsif !File.file?(agnostic_path)
             raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" is not a regular file"
           end
         end
