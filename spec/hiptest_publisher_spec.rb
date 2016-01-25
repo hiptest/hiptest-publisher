@@ -537,8 +537,11 @@ describe Hiptest::Publisher do
       context "with unexisting directory with UNwritable parent" do
         it "output an error message and stops" do
           if Gem.win_platform?
-            unexisting_dir = 'C:\some\dir'
-            expected_message = 'Error with --output-directory: the directory "C:\some\dir" can not be created because "C:\" is not writable'
+            unwritable_dir = output_dir + '\unwritable'
+            FileUtils.mkdir(unwritable_dir)
+            FileUtils.chmod("a=rx", unwritable_dir)
+            unexisting_dir = unwritable_dir + '\some\dir'
+            expected_message = "Error with --output-directory: the directory \"#{unexisting_dir}\" can not be created because \"#{unwritable_dir}\" is not writable"
           else
             unexisting_dir = '/usr/lib/some/dir'
             expected_message = 'Error with --output-directory: the directory "/usr/lib/some/dir" can not be created because "/usr/lib" is not writable'
@@ -553,7 +556,9 @@ describe Hiptest::Publisher do
       context "with existing but unwritable directory" do
         it "output an error message and stops" do
           if Gem.win_platform?
-            unwritable_dir = "C:\\"
+            unwritable_dir = output_dir + '\unwritable'
+            FileUtils.mkdir(unwritable_dir)
+            FileUtils.chmod("a=rx", unwritable_dir)
             expected_message = 'Error with --output-directory: the directory "C:\" is not writable'
           else
             unwritable_dir = "/usr/lib"
