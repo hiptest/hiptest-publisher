@@ -9,19 +9,25 @@ describe 'Hiptest publisher utils' do
       allow(STDERR).to receive(:print)
     end
 
-    it 'sends a message on STDOUT with brackets before' do
-      show_status_message('My message')
-      expect(STDOUT).to have_received(:print).with("[ ] My message\r\e[1A\n").once
-    end
+    context "is a tty" do
+      before do
+        allow($stdout).to receive(:tty?).and_return(true)
+      end
 
-    it 'if status is :success, it also adds a green checkbox and goes to the next line' do
-      show_status_message('My message', :success)
-      expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
-    end
+      it 'sends a message on STDOUT with brackets before' do
+        show_status_message('My message')
+        expect(STDOUT).to have_received(:print).with("[ ] My message\r\e[1A\n").once
+      end
 
-    it 'if status is :failure, it adds a red checkbox and sends to STDERR with a new line character' do
-      show_status_message('My message', :failure)
-      expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\n").once
+      it 'if status is :success, it also adds a green checkbox and goes to the next line' do
+        show_status_message('My message', :success)
+        expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
+      end
+
+      it 'if status is :failure, it adds a red checkbox and sends to STDERR with a new line character' do
+        show_status_message('My message', :failure)
+        expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\n").once
+      end
     end
 
     context "not a tty" do

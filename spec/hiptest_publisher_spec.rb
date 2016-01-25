@@ -536,19 +536,33 @@ describe Hiptest::Publisher do
 
       context "with unexisting directory with UNwritable parent" do
         it "output an error message and stops" do
-          unexisting_dir = "/usr/lib/some/dir"
+          if Gem.win_platform?
+            unexisting_dir = 'C:\some\dir'
+            expected_message = 'Error with --output-directory: the directory "C:\some\dir" can not be created because "C:\" is not writable'
+          else
+            unexisting_dir = '/usr/lib/some/dir'
+            expected_message = 'Error with --output-directory: the directory "/usr/lib/some/dir" can not be created because "/usr/lib" is not writable'
+          end
+
           expect {
             run_publisher_expecting_exit("--token", "123", "--output-directory", unexisting_dir)
-          }.to output(a_string_including("Error with --output-directory: the directory \"/usr/lib/some/dir\" can not be created because \"/usr/lib\" is not writable")).to_stdout
+          }.to output(a_string_including(expected_message)).to_stdout
         end
       end
 
       context "with existing but unwritable directory" do
         it "output an error message and stops" do
-          unwritable_dir = "/usr/lib"
+          if Gem.win_platform?
+            unwritable_dir = "C:\\"
+            expected_message = 'Error with --output-directory: the directory "C:\" is not writable'
+          else
+            unwritable_dir = "/usr/lib"
+            expected_message = 'Error with --output-directory: the directory "/usr/lib" is not writable'
+          end
+
           expect {
             run_publisher_expecting_exit("--token", "123", "--output-directory", unwritable_dir)
-          }.to output(a_string_including("Error with --output-directory: the directory \"/usr/lib\" is not writable")).to_stdout
+          }.to output(a_string_including(expected_message)).to_stdout
         end
       end
 
