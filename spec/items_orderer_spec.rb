@@ -53,5 +53,16 @@ describe Hiptest::ItemsOrderer do
       expect(root_folder_subfolders_names).to eq(['Second folder', 'First folder', 'Ah ah third folder'])
       expect(root_folder_scenarios_names).to eq(['Das scenario', 'Another scenario', 'First scenario', 'My scenario'])
     end
+
+    it 'updates scenarios order if order is alpha' do
+      expect(project.children[:scenarios].children[:scenarios].map {|sc| sc.children[:name]}).to eq([
+        "First scenario", "Das scenario", "My scenario", "Another scenario"
+      ])
+      Hiptest::ItemsOrderer.add(project, 'alpha')
+
+      expect(project.children[:scenarios].children[:scenarios].map {|sc| sc.children[:name]}).to eq([
+        "Another scenario", "Das scenario", "First scenario", "My scenario"
+      ])
+    end
   end
 end

@@ -23,6 +23,8 @@ module Hiptest
           folder.children[:scenarios].sort_by! {|sc| sc.children[:name] }
           folder.children[:subfolders].sort_by! {|f| f.children[:name] }
         end
+
+        @project.children[:scenarios].children[:scenarios].sort_by! {|sc| sc.children[:name] }
       end
     end
   end
