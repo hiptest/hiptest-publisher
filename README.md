@@ -71,7 +71,6 @@ You could obtain for example:
 
 ```shell
 Exports tests from Hiptest for automation.
-
 Specific options:
     -t, --token=TOKEN                Secret token (available in your project settings)
     -l, --language=LANG              Target language (default: ruby)
@@ -83,6 +82,7 @@ Specific options:
         --scenario-ids=IDS           Filter scenarios by ids
         --scenario-tags=TAGS         Filter scenarios by tags
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
+    -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from Hiptest
         --tests-only                 (deprecated) alias for --only=tests (default: false)
         --actionwords-only           (deprecated) alias for --only=actionwords (default: false)
         --actionwords-signature      Export actionwords signature (default: false)
@@ -98,6 +98,7 @@ Specific options:
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
         --push-format=tap            Format of the test results (tap, junit, robot) (default: tap)
+        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest, alpha will sort them by name (default: order)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -F, --filters-help               Show help about scenario filtering
