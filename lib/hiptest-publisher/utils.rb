@@ -51,7 +51,7 @@ end
 def fetch_project_export(options)
   url = make_url(options)
 
-  open(url, "User-Agent" => 'Ruby/hiptest-publisher', :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
+  open(url, "User-Agent" => 'Ruby/hiptest-publisher', :ssl_verify_mode => OpenSSL::SSL::VERIFY_PEER)
 end
 
 def show_status_message(message, status=nil)
@@ -103,7 +103,7 @@ def push_results(options)
   end
 
   req = Net::HTTP::Post::Multipart.new(url.path, uploaded)
-  response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+  response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_PEER) do |http|
     http.request(req)
   end
 end
