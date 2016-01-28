@@ -84,12 +84,6 @@ describe 'Hiptest publisher utils' do
       expect(make_url(options)).to eq("https://hiptest.net/publication/1234/project")
     end
 
-    it 'creates url for tests generation with tags and scenario ids filter' do
-      args = ["--token", "1234", "--scenario-ids", "5,7,6", "--scenario-tags", "titi,toto"]
-      options = OptionsParser.parse(args, NullReporter.new)
-      expect(make_url(options)).to eq("https://hiptest.net/publication/1234/project?filter[]=id:5&filter[]=id:7&filter[]=id:6&filter[]=tag:titi&filter[]=tag:toto")
-    end
-
     it 'creates url for tests generation from a test run' do
       args = ["--token", "1234", "--test-run-id", "98"]
       options = OptionsParser.parse(args, NullReporter.new)

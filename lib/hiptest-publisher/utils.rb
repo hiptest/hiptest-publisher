@@ -35,21 +35,13 @@ def singularize(name)
   name.to_s.chomp("s")
 end
 
-def make_filter(options)
-  ids = options.filter_ids.split(',').map {|id| "filter[]=id:#{id}"}
-  tags = options.filter_tags.split(',').map {|tag| "filter[]=tag:#{tag}"}
-
-  filter = (ids + tags).join("&")
-  filter.empty? ? '' : "?#{filter}"
-end
-
 def make_url(options)
   if push?(options)
     "#{options.site}/import_test_results/#{options.token}/#{options.push_format}"
   else
     base_url = "#{options.site}/publication/#{options.token}"
     if options.test_run_id.nil? || options.test_run_id.empty?
-      "#{base_url}/#{options.leafless_export ? 'leafless_tests' : 'project'}#{make_filter(options)}"
+      "#{base_url}/#{options.leafless_export ? 'leafless_tests' : 'project'}"
     else
       "#{base_url}/test_run/#{options.test_run_id}"
     end
