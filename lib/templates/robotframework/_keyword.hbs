@@ -1,4 +1,1 @@
-{{{ underscore rendered_children.name }}}{{#if rendered_children.uid}}_uid{{{ normalize rendered_children.uid}}}{{/if}}{{#indent}}
-{{#if has_parameters?}}[Arguments]{{{ tab }}}{{{ join rendered_children.parameters "\t"}}}
-{{/if}}{{#each rendered_children.body}}{{{ this }}}
-{{/each}}{{/indent}}
+{{{ underscore rendered_children.name }}}{{#if rendered_children.uid}}_uid{{{ normalize rendered_children.uid}}}{{/if}}{{> keyword_body}}
