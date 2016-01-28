@@ -138,8 +138,6 @@ class OptionsParser
       Option.new('c', 'config-file=PATH', nil, String, "Configuration file", :config),
       Option.new(nil, 'overriden-templates=PATH', '', String, "Folder for overriden templates", :overriden_templates),
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
-      Option.new(nil, 'scenario-ids=IDS', '', String, "Filter scenarios by ids", :filter_ids),
-      Option.new(nil, 'scenario-tags=TAGS', '', String, "Filter scenarios by tags", :filter_tags),
       Option.new(nil, 'only=CATEGORIES', nil, String, "Restrict export to given file categories (--only=list to list them)", :only),
       Option.new('x', 'xml-file=PROJECT_XML', nil, String, "XML file to use instead of fetching it from Hiptest", :xml_file),
       Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --only=tests", :tests_only),
@@ -150,13 +148,13 @@ class OptionsParser
       Option.new(nil, 'show-actionwords-created', false, nil, "Output code for new action words", :aw_created),
       Option.new(nil, 'show-actionwords-renamed', false, nil, "Output signatures of renamed action words", :aw_renamed),
       Option.new(nil, 'show-actionwords-signature-changed', false, nil, "Output signatures of action words for which signature changed", :aw_signature_changed),
-      Option.new(nil, 'with-folders', false, nil, "Use folders hierarchy to export files in respective directories, to be used with --split-scenarios", :with_folders),
+      Option.new(nil, 'with-folders', false, nil, "Use folders hierarchy to export files in respective directories", :with_folders),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
       Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (tap, junit, robot)", :push_format),
-      Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest, alpha will sort them by name", :sort),
+      Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end

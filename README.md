@@ -79,8 +79,6 @@ Specific options:
     -c, --config-file=PATH           Configuration file
         --overriden-templates=PATH   Folder for overriden templates
         --test-run-id=ID             Export data from a test run
-        --scenario-ids=IDS           Filter scenarios by ids
-        --scenario-tags=TAGS         Filter scenarios by tags
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
     -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from Hiptest
         --tests-only                 (deprecated) alias for --only=tests (default: false)
@@ -92,13 +90,13 @@ Specific options:
         --show-actionwords-renamed   Output signatures of renamed action words (default: false)
         --show-actionwords-signature-changed
                                      Output signatures of action words for which signature changed (default: false)
-        --with-folders               Use folders hierarchy to export files in respective directories, to be used with --split-scenarios (default: false)
+        --with-folders               Use folders hierarchy to export files in respective directories (default: false)
         --split-scenarios            Export each scenario in a single file (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
         --push-format=tap            Format of the test results (tap, junit, robot) (default: tap)
-        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest, alpha will sort them by name (default: order)
+        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -F, --filters-help               Show help about scenario filtering
