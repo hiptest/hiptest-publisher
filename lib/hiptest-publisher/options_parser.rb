@@ -6,15 +6,25 @@ require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/utils'
 
 class FileConfigParser
+  FALSY_VALUE_PATTERN = /\A(false|no|0)\Z/i
+
   def self.update_options(options, reporter)
     config = ParseConfig.new(options.config)
     config.get_params.each do |param|
       next if options.__cli_args && options.__cli_args.include?(param.to_sym)
-      options[param] = config[param]
+      if falsy?(config[param])
+        options[param] = false
+      else
+        options[param] = config[param]
+      end
       options.__config_args << param.to_sym if options.__config_args
     end
   rescue => err
     reporter.dump_error(err)
+  end
+
+  def self.falsy?(value)
+    FALSY_VALUE_PATTERN.match(value)
   end
 end
 

@@ -23,6 +23,19 @@ describe OptionParser do
       expect(options.framework).to eq("tartanpion")
     end
 
+    it "understands 'false', 'no', '0', etc. as boolean false" do
+      f = Tempfile.new('config')
+      %w"false False FaLsE no 0 NO".each do |falsy_value|
+        File.write(f,
+          "with_folders = #{falsy_value}\n" +
+          "split_scenarios = plop#{falsy_value}plop")
+        options = OptionsParser.parse([
+          "--config-file", f.path], NullReporter.new)
+        expect(options.with_folders).to eq(false), "'#{falsy_value}' in config file should be interpreted as boolean false"
+        expect(options.split_scenarios).not_to eq(false), "value containing '#{falsy_value}' in config file should not be interpreted as boolean false"
+      end
+    end
+
     it "works if config file is nil" do
       options = CliOptions.new
       options.config = nil
