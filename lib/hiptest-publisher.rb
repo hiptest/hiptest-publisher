@@ -6,6 +6,7 @@ require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/options_parser'
+require 'hiptest-publisher/pruner'
 require 'hiptest-publisher/xml_parser'
 require 'hiptest-publisher/parent_adder'
 require 'hiptest-publisher/parameter_type_adder'
@@ -77,9 +78,15 @@ module Hiptest
       reporter.dump_error(err)
     end
 
+    def prune_xml(xml)
+      pruner = Hiptest::Pruner.new(xml, @cli_options)
+      return pruner.prune()
+    end
+
     def get_project(xml)
       with_status_message "Extracting data" do
         parser = Hiptest::XMLParser.new(xml, reporter)
+        prune_xml(parser.xml)
         return parser.build_project
       end
     rescue Exception => err

@@ -8,6 +8,7 @@ require_relative 'formatters/reporter'
 module Hiptest
   class XMLParser
     attr_reader :project
+    attr_reader :xml
 
     def initialize(source, reporter = nil)
       @source = source

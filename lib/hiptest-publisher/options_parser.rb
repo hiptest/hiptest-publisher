@@ -11,6 +11,7 @@ class FileConfigParser
   def self.update_options(options, reporter)
     config = ParseConfig.new(options.config)
     config.get_params.each do |param|
+      puts "param: #{param}" if options.verbose
       next if options.__cli_args && options.__cli_args.include?(param.to_sym)
       if falsy?(config[param])
         options[param] = false
