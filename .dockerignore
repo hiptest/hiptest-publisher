@@ -1,0 +1,7 @@
+Dockerfile
+.gitignore
+.travis.yml
+*~
+*/*~
+*/*/*~
+*/*/*/*~

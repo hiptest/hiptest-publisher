@@ -25,3 +25,6 @@
 
 # Ignore gem
 /*.gem
+
+# Ignore Emacs backup files
+*~
