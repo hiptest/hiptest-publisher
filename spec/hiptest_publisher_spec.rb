@@ -342,7 +342,7 @@ describe Hiptest::Publisher do
 
     it "pushes the given files" do
       stub_request(:post, "https://hiptest.net/import_test_results/123/tap").
-          to_return(:status => 200, :body => "", :headers => {})
+          to_return(:status => 200, :body => '{"test_import": [{"name": "my test", "status": "passed"}]}', :headers => {})
       result1 = create_file('result1.tap')
       result2 = create_file('result2.tap')
 

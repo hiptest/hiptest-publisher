@@ -124,6 +124,3 @@ DEPENDENCIES
   rspec-mocks (~> 3.3)
   ruby-handlebars (~> 0.0.2)
   webmock
-
-BUNDLED WITH
-   1.11.2

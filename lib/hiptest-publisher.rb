@@ -264,8 +264,16 @@ module Hiptest
     end
 
     def post_results
+      response = nil
       with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
-        push_results(@cli_options)
+        response = push_results(@cli_options)
+      end
+      with_status_message "#{JSON.parse(response.body)['test_import'].size} imported tests" do 
+        if @cli_options.verbose
+          JSON.parse(response.body)['test_import'].each do |imported_test|
+            with_status_message "Test '#{imported_test['name']}' imported" do end
+          end
+        end
       end
     rescue Exception => err
       reporter.dump_error(err)

@@ -1,4 +1,5 @@
 require 'colorize'
+require 'json'
 require 'io/console'
 require 'open-uri'
 require 'openssl'
