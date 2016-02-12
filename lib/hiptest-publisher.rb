@@ -1,4 +1,5 @@
 require 'colorize'
+require 'json'
 require 'yaml'
 
 require 'hiptest-publisher/formatters/reporter'
@@ -268,10 +269,11 @@ module Hiptest
       with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
         response = push_results(@cli_options)
       end
-      with_status_message "#{JSON.parse(response.body)['test_import'].size} imported tests" do 
+      passed_count = JSON.parse(response.body)['test_import'].size
+      with_status_message pluralize(passed_count, "imported test") do
         if @cli_options.verbose
           JSON.parse(response.body)['test_import'].each do |imported_test|
-            with_status_message "Test '#{imported_test['name']}' imported" do end
+            puts "Test '#{imported_test['name']}' imported"
           end
         end
       end

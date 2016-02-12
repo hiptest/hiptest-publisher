@@ -15,6 +15,14 @@ describe Hiptest::Publisher do
     allow(STDOUT).to receive(:print)
   }
 
+  def have_printed(message)
+    have_received(:print).at_least(1).with(a_string_including(message))
+  end
+
+  def have_not_printed(message)
+    have_received(:print).with(a_string_including(message)).at_most(0)
+  end
+
   after(:each) {
     if @output_dir_created
       FileUtils.rm_rf(output_dir)
@@ -212,14 +220,6 @@ describe Hiptest::Publisher do
       end
     end
 
-    def have_printed(message)
-      have_received(:print).at_least(1).with(a_string_including(message))
-    end
-
-    def have_not_printed(message)
-      have_received(:print).with(a_string_including(message)).at_most(0)
-    end
-
     describe "actionwords modifications" do
       before(:each) do
         aw_signatures = YAML.load_file("samples/expected_output/Hiptest publisher-rspec/actionwords_signature.yaml")
@@ -340,17 +340,82 @@ describe Hiptest::Publisher do
       path
     end
 
-    it "pushes the given files" do
+    before do
       stub_request(:post, "https://hiptest.net/import_test_results/123/tap").
-          to_return(:status => 200, :body => '{"test_import": [{"name": "my test", "status": "passed"}]}', :headers => {})
-      result1 = create_file('result1.tap')
-      result2 = create_file('result2.tap')
+          to_return(status: 200,
+                    body: '{"test_import": [{"name": "my test", "status": "passed"}]}')
+    end
 
-      glob = File.join(output_dir, '*.tap')
-      publisher = Hiptest::Publisher.new(["--token", "123", "--push", glob], listeners: listeners)
+    it "pushes the given file" do
+      result_file = create_file('result.tap')
+
+      publisher = Hiptest::Publisher.new(["--token", "123", "--push", result_file], listeners: listeners)
       publisher.run
 
+      expect(a_request(:post, "https://hiptest.net/import_test_results/123/tap").
+             with(:body => a_string_matching(/Content-Disposition: form-data;.+ filename="result.tap"/),
+                  :headers => {'Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost'})
+      ).to have_been_made
+      expect(STDOUT).to have_printed("Posting #{result_file} to https://hiptest.net")
+    end
 
+    it "support globbing to push multiple files" do
+      create_file('result1.tap')
+      create_file('result2.tap')
+      glob = File.join(output_dir, '*.tap')
+      publisher = Hiptest::Publisher.new(["--token", "123", "--push", glob], listeners: listeners)
+
+      publisher.run
+
+      expect(a_request(:post, "https://hiptest.net/import_test_results/123/tap").
+        with(:body => (a_string_matching(/Content-Disposition: form-data;.+ filename="result1.tap"/).
+                   and a_string_matching(/Content-Disposition: form-data;.+ filename="result2.tap"/)),
+            :headers => {'Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost'})
+        ).to have_been_made
+    end
+
+    it "displays number of passed tests" do
+      result_file = create_file('result.tap')
+      publisher = Hiptest::Publisher.new(["--token", "123", "--push", result_file], listeners: listeners)
+
+      publisher.run
+
+      expect(STDOUT).to have_printed("1 imported test\n")
+
+      # multiple passed
+      stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+          to_return(status: 200,
+                    body: '{"test_import": [{"name": "test1", "status": "passed"}, {"name": "test2", "status": "passed"}]}')
+      publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
+
+      publisher.run
+
+      expect(STDOUT).to have_printed("2 imported tests\n")
+    end
+
+    it "should display an error is no tests have been imported" do
+      result_file = create_file('result.tap')
+      stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+          to_return(status: 200,
+                    body: '{"test_import": []}')
+      publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
+
+      publisher.run
+
+      expect(STDOUT).to have_printed("0 imported tests\n")  # TODO: we should guide the user to help him push his tests
+    end
+
+    it "displays names of passed tests with --verbose" do
+      result_file = create_file('result.tap')
+      stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+          to_return(status: 200,
+                    body: '{"test_import": [{"name": "test1", "status": "passed"}, {"name": "test2", "status": "passed"}]}')
+
+      expect {
+        publisher = Hiptest::Publisher.new(["--verbose", "--token", "456", "--push", result_file], listeners: listeners)
+        publisher.run
+      }.to output(a_string_including("Test 'test1' imported").
+              and(a_string_including("Test 'test2' imported"))).to_stdout
     end
   end
 
