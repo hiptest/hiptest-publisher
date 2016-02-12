@@ -270,10 +270,10 @@ module Hiptest
         response = push_results(@cli_options)
       end
       passed_count = JSON.parse(response.body)['test_import'].size
-      with_status_message pluralize(passed_count, "imported test") do
+      with_status_message "#{pluralize(passed_count, "test")} imported" do
         if @cli_options.verbose
           JSON.parse(response.body)['test_import'].each do |imported_test|
-            puts "Test '#{imported_test['name']}' imported"
+            puts "  Test '#{imported_test['name']}' imported"
           end
         end
       end

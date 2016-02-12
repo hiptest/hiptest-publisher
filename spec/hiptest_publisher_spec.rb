@@ -380,7 +380,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(STDOUT).to have_printed("1 imported test\n")
+      expect(STDOUT).to have_printed("1 test imported\n")
 
       # multiple passed
       stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
@@ -390,7 +390,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(STDOUT).to have_printed("2 imported tests\n")
+      expect(STDOUT).to have_printed("2 tests imported\n")
     end
 
     it "should display an error is no tests have been imported" do
@@ -402,7 +402,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(STDOUT).to have_printed("0 imported tests\n")  # TODO: we should guide the user to help him push his tests
+      expect(STDOUT).to have_printed("0 tests imported\n")  # TODO: we should guide the user to help him push his tests
     end
 
     it "displays names of passed tests with --verbose" do
