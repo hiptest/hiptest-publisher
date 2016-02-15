@@ -143,6 +143,8 @@ You can push multiple files at once (using wildcard) but in that case, do not fo
 
     hiptest-publisher --config-file=<path to your config file> --push="reports/*.xml"
 
+The number of imported test results will be displayed. For debugging purposes, you can display imported tests individually with the `--verbose` option.
+
 Development
 -----------
 
