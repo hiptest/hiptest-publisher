@@ -321,9 +321,23 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
-  context 'hh_close_curly  ' do
+  context 'hh_close_curly' do
     it 'returns an closing curly brace' do
       expect(instance.hh_close_curly(nil, nil)).to eq('}')
+    end
+  end
+
+  context 'hh_strip_regexp_delimiters' do
+    it 'removes ^ at the beginning and $ at the end when present' do
+      expect(instance.hh_strip_regexp_delimiters(nil, 'Plic', nil)).to eq('Plic')
+      expect(instance.hh_strip_regexp_delimiters(nil, '^Plic', nil)).to eq('Plic')
+      expect(instance.hh_strip_regexp_delimiters(nil, 'Plic$', nil)).to eq('Plic')
+      expect(instance.hh_strip_regexp_delimiters(nil, '^Plic$', nil)).to eq('Plic')
+    end
+
+    it 'let them intact if they are not at the beginning of end' do
+      expect(instance.hh_strip_regexp_delimiters(nil, 'This cost 10$ more than expected', nil)).to eq('This cost 10$ more than expected')
+      expect(instance.hh_strip_regexp_delimiters(nil, 'Hey ^^', nil)).to eq('Hey ^^')
     end
   end
 end

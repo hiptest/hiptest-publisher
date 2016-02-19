@@ -153,6 +153,10 @@ module Hiptest
       name
     end
 
+    def hh_strip_regexp_delimiters(context, regexp, block)
+      return regexp.gsub(/(^\^)|(\$$)/, '')
+    end
+
     def hh_debug(context, block)
       require 'pry'
       binding.pry

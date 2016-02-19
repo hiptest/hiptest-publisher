@@ -1,0 +1,13 @@
+from behave import *
+
+# This should be added to environments.py
+# from steps.actionwords import Actionwords
+#
+# def before_scenario(context, scenario):
+#     context.actionwords = Actionwords.new(nil)
+
+use_step_matcher('re')
+
+{{#each rendered_children.actionwords}}
+{{{this}}}
+{{/each}}

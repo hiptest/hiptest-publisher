@@ -1,8 +1,8 @@
 # encoding: UTF-8
 
 class Actionwords:{{#indent}}
-def __init__(self):{{#indent}}
-pass{{/indent}}
+def __init__(self, test):{{#indent}}
+self.test = test{{/indent}}
 
 {{#each rendered_children.actionwords}}{{{this}}}
 {{/each}}

@@ -1,0 +1,5 @@
+{{#each rendered_children.gherkin_used_annotations}}@{{{downcase this }}}(r'{{{ strip_regexp_delimiters rendered_children.gherkin_pattern }}}')
+{{/each}}
+def impl(context{{#if has_parameters?}}, {{{ join rendered_children.parameters ', '}}}{{/if}}):{{#indent}}
+context.actionwords.{{{ underscore rendered_children.name }}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{underscore this}}}{{/join}}{{/if}})
+{{/indent}}

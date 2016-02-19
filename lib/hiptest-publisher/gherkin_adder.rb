@@ -27,6 +27,7 @@ module Hiptest
 
       @annotations_counter.actionwords.each do |actionword|
         actionword.children[:gherkin_annotation] = @annotations_counter.most_used_annotation(actionword) || "Given"
+        actionword.children[:gherkin_used_annotations] = @annotations_counter.all_used_annotations(actionword) || ['Given']
       end
     end
 
@@ -158,6 +159,10 @@ module Hiptest
     def most_used_annotation(actionword)
       max = @counts_by_actionword[actionword].values.max
       @counts_by_actionword[actionword].key(max)
+    end
+
+    def all_used_annotations(actionword)
+      @counts_by_actionword[actionword].keys
     end
   end
 end
