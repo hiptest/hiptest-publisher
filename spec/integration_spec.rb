@@ -53,6 +53,7 @@ describe Hiptest::Publisher do
           %w"seleniumide",
           %w"specflow",
           %w"php phpunit",
+          %w"behave"
         ].each do |language, framework|
           assertion_text = "--language=#{language}"
           assertion_text <<  " --framework=#{framework}" if framework

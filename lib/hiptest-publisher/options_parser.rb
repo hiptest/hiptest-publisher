@@ -135,7 +135,8 @@ class OptionsParser
       'Javascript' => ['qUnit', 'Jasmine', 'Mocha'],
       'CSharp' => ['NUnit'],
       'PHP' => ['PHPUnit'],
-      'SpecFlow' => ['']
+      'SpecFlow' => [''],
+      'Behave' => ['']
     }
   end
 
