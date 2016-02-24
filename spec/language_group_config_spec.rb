@@ -400,7 +400,6 @@ describe LanguageGroupConfig do
                                                       "/Actionwords.cs",
                                                     ],
       },
-
       "behave" => {
         []                                       => [ "[features]",
                                                       "/buy_goods.feature",
@@ -434,6 +433,40 @@ describe LanguageGroupConfig do
                                                       "/actionwords.py"
                                                     ],
       },
+      "behat" => {
+        []                                       => [ "[features]",
+                                                      "/buy_goods.feature",
+                                                      "/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/buy_goods.feature",
+                                                      "/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/global_trades/buy_goods.feature",
+                                                      "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/global_trades/buy_goods.feature",
+                                                      "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ]
+      },
     }.each do |dialect, output_files_for_options|
       context dialect do
         output_files_for_options.each do |options, output_files|
@@ -462,7 +495,7 @@ describe LanguageGroupConfig do
 
 
   context "outputing feature files" do
-    ['cucumber', 'specflow', 'behave'].each do |language|
+    ['cucumber', 'specflow', 'behave', 'behat'].each do |language|
       it "with Gherkin language, ignores folder nodes without any scenarios" do
         language_group_config = language_group_config_for(
           only: "features",
@@ -474,7 +507,7 @@ describe LanguageGroupConfig do
       end
     end
 
-    ['cucumber', 'specflow', 'behave'].each do |language|
+    ['cucumber', 'specflow', 'behave', 'behat'].each do |language|
       it "with #{language} language --split-scenarios is forced" do
 
         language_group_config_splitted = language_group_config_for(
