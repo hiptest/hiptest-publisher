@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 require_relative '../render_shared'
 
-describe 'Specflow rendering' do
+describe 'Behave rendering' do
   it_behaves_like 'a BDD renderer' do
     let(:language) {'behave'}
 
