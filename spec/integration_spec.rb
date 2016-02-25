@@ -40,6 +40,7 @@ describe Hiptest::Publisher do
         [
           %w"cucumber ruby",
           %w"cucumber java",
+          %w"cucumber javascript",
           %w"java junit",
           %w"java testng",
           %w"javascript qunit",

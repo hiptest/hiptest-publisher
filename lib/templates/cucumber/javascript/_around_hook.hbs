@@ -1,0 +1,8 @@
+this.Around(function (scenario, runScenario) {{#curly}}{{#indent}}
+this.actionwords = Object.create(require('{{{ relative_path './actionwords.js' }}}').Actionwords);
+runScenario(null, function () {{#curly}}{{#indent}}
+this.actionwords = null;
+{{/indent}}
+{{/curly}});
+{{/indent}}
+{{/curly}});

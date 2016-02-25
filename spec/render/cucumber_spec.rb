@@ -123,3 +123,40 @@ describe 'Cucumber/Java rendering' do
     end
   end
 end
+
+describe 'Cucumber/Javascript rendering' do
+  it_behaves_like 'a BDD renderer' do
+    let(:language) {'cucumber'}
+    let(:framework) {'javascript'}
+
+    let(:rendered_actionwords) {
+      [
+        'module.exports = function () {',
+        '    this.Around(function (scenario, runScenario) {',
+        '        this.actionwords = Object.create(require(\'./actionwords.js\').Actionwords);',
+        '        runScenario(null, function () {',
+        '            this.actionwords = null;',
+        '        });',
+        '    });',
+        '',
+        '',
+        '    this.Given(/^the color "(.*)"$/, function (color, callback) {',
+        '        this.actionwords.theColorColor(color);',
+        '        callback();',
+        '    });',
+        '',
+        '    this.When(/^you mix colors$/, function (callback) {',
+        '        this.actionwords.youMixColors();',
+        '        callback();',
+        '    });',
+        '',
+        '    this.Then(/^you obtain "(.*)"$/, function (color, callback) {',
+        '        this.actionwords.youObtainColor(color);',
+        '        callback();',
+        '    });',
+        '}',
+        ''
+      ].join("\n")
+    }
+  end
+end

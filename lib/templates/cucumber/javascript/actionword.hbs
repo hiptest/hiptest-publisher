@@ -1,0 +1,6 @@
+{{#if rendered_children.gherkin_annotation }}
+this.{{{ rendered_children.gherkin_annotation }}}(/{{{rendered_children.gherkin_pattern }}}/, function ({{#if rendered_children.parameters}}{{{ join rendered_children.parameters ', '}}}, {{/if}}callback) {{#curly}}{{#indent}}
+this.actionwords.{{{camelize_lower rendered_children.name}}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{underscore this}}}{{/join}}{{/if}});
+callback();
+{{/indent}}
+{{/curly}});{{/if}}

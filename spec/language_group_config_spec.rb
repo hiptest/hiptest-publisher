@@ -467,6 +467,38 @@ describe LanguageGroupConfig do
                                                       "/Actionwords.php"
                                                     ]
       },
+      "cucumber-javascript" => {
+        []                                       => [ "[features]",
+                                                      "/Buy_goods.feature",
+                                                      "/Sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]", "/actionwords.js"
+                                                    ],
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/Buy_goods.feature",
+                                                      "/Sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/Global_trades/Buy_goods.feature",
+                                                      "/Global_trades/Sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/Global_trades/Buy_goods.feature",
+                                                      "/Global_trades/Sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]", "/actionwords.js"
+                                                    ]
+      },
     }.each do |dialect, output_files_for_options|
       context dialect do
         output_files_for_options.each do |options, output_files|
