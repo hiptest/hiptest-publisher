@@ -127,7 +127,7 @@ class OptionsParser
 
     {
       'Ruby' => ['Rspec', 'MiniTest'],
-      'Cucumber' => ['Ruby', 'Java'],
+      'Cucumber' => ['Ruby', 'Java', 'Javascript'],
       'Java' => ['JUnit', 'Test NG'],
       'Python' => ['Unittest'],
       'Robot Framework' => [''],
@@ -136,7 +136,8 @@ class OptionsParser
       'CSharp' => ['NUnit'],
       'PHP' => ['PHPUnit'],
       'SpecFlow' => [''],
-      'Behave' => ['']
+      'Behave' => [''],
+      'Behat' => ['']
     }
   end
 
