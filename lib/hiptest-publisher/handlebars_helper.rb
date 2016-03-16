@@ -16,6 +16,7 @@ module Hiptest
         :literate,
         :normalize,
         :normalize_lower,
+        :normalize_with_dashes,
         :underscore,
         :camelize,
         :camelize_lower,

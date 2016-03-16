@@ -8,11 +8,15 @@ class String
     I18n.transliterate(self)
   end
 
-  def normalize
+  def normalize(keep_dashes=false)
     literated = self.literate
     literated.strip!
     literated.gsub!(/\s+/, '_')
-    literated.gsub!(/\W/, '')
+    if keep_dashes
+      literated.gsub!(/[^a-zA-Z0-9_\-]/, '')
+    else
+      literated.gsub!(/\W/, '')
+    end
     literated
   end
 
@@ -20,6 +24,10 @@ class String
     normalized = self.normalize
     normalized.downcase!
     normalized
+  end
+
+  def normalize_with_dashes
+    self.normalize(true)
   end
 
   def underscore

@@ -43,6 +43,13 @@ describe String do
     end
   end
 
+  context 'normalize_with_dashes' do
+    it 'works as normalize but keep dashes' do
+      expect(%|  it's : the Støry of\n\n"--Pouin Pouin-- le Marsouin"\n  |.normalize_with_dashes).to eq(
+        'its__the_Story_of_--Pouin_Pouin--_le_Marsouin')
+    end
+  end
+
   context 'underscore' do
     it 'returns the string in snake_case' do
       expect('SnakeCase'.underscore).to eq('snake_case')

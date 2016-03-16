@@ -808,6 +808,10 @@ shared_examples "a BDD renderer" do
       Hiptest::Nodes::Tag.new('myTag', 'some value')
     }
 
+    let(:jira_tag) {
+      Hiptest::Nodes::Tag.new('JIRA', 'CW-6')
+    }
+
     let(:options) {
       context_for(
         only: "features",
@@ -822,10 +826,10 @@ shared_examples "a BDD renderer" do
       }
 
       it 'Folder nodes' do
-        node_to_render.children[:tags] = [simple_tag, valued_tag]
+        node_to_render.children[:tags] = [simple_tag, valued_tag, jira_tag]
 
         expect(rendered).to eq([
-          '@myTag @myTag-some_value',
+          '@myTag @myTag-some_value @JIRA-CW-6',
           'Feature: Cool colors',
           '    Cool colors calm and relax.',
           '    They are the hues from blue green through blue violet, most grays included.',
