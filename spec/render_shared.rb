@@ -805,7 +805,7 @@ shared_examples "a BDD renderer" do
     }
 
     let(:valued_tag) {
-      Hiptest::Nodes::Tag.new('myTag', 'somevalue')
+      Hiptest::Nodes::Tag.new('myTag', 'some value')
     }
 
     let(:options) {
@@ -825,7 +825,7 @@ shared_examples "a BDD renderer" do
         node_to_render.children[:tags] = [simple_tag, valued_tag]
 
         expect(rendered).to eq([
-          '@myTag @myTag:somevalue',
+          '@myTag @myTag-some_value',
           'Feature: Cool colors',
           '    Cool colors calm and relax.',
           '    They are the hues from blue green through blue violet, most grays included.',
@@ -857,7 +857,7 @@ shared_examples "a BDD renderer" do
 
         expect(rendered).to eq([
           '',
-          '@myTag @myTag:somevalue',
+          '@myTag @myTag-some_value',
           'Scenario: Create purple',
           '  Given the color "blue"',
           '  And the color "red"',
