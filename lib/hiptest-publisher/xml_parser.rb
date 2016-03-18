@@ -275,7 +275,8 @@ module Hiptest
         css_first_content(folder, 'name'),
         css_first_content(folder, 'description'),
         build_tags(folder),
-        css_first_content(folder, 'order_in_parent').to_i)
+        css_first_content(folder, 'order_in_parent').to_i,
+        build_steps(folder))
     end
     alias :build_folderSnapshot :build_folder
 

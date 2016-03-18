@@ -14,7 +14,7 @@ module Hiptest
     end
 
     def update_calls
-      @project.each_sub_nodes(Hiptest::Nodes::Scenario, Hiptest::Nodes::Actionword, Hiptest::Nodes::Test) do |item|
+      @project.each_sub_nodes(Hiptest::Nodes::Scenario, Hiptest::Nodes::Actionword, Hiptest::Nodes::Test, Hiptest::Nodes::Folder) do |item|
         @last_annotation = nil
         item.each_sub_nodes(Hiptest::Nodes::Call) do |call|
           call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
