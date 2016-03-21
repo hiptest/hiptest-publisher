@@ -1,5 +1,9 @@
 {{#if has_tags?}}{{join rendered_children.tags ' '}}
 {{/if}}Feature: {{{ rendered_children.name }}}{{#indent}}
 {{#if rendered_children.description}}{{#indent}}{{rendered_children.description}}{{/indent}}{{/if}}
-{{#each rendered_children.scenarios}}{{{this}}}{{/each}}
+{{#unless is_empty?}}
+Background:{{#indent}}
+{{#each rendered_children.body}}{{{ this }}}
+{{/each}}{{/indent}}
+{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}{{/each}}
 {{/indent}}

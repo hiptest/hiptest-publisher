@@ -474,6 +474,7 @@ describe 'Render as Robot framework' do
 
     @root_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
     @grand_child_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
+    @second_grand_child_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
   end
 
   context 'Robot framework' do

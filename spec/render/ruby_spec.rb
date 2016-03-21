@@ -447,9 +447,28 @@ describe 'Render as Ruby' do
         "",
         "describe 'A grand-child folder' do",
         "  include Actionwords",
-        "",
         "end",
       ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+          "# encoding: UTF-8",
+          "require 'spec_helper'",
+          "require_relative '../actionwords'",
+          "",
+          "describe 'A second grand-child folder' do",
+          "  include Actionwords",
+          "",
+          "  before(:each) do",
+          "      visit('/login')",
+          "      fill('user@example.com')",
+          "      fill('notTh4tS3cret')",
+          "  end",
+          "",
+          "  it \"One grand'child scenario\" do",
+          "",
+          "  end",
+          "end"
+        ].join("\n")
     end
 
     it_behaves_like "a renderer" do
@@ -736,9 +755,30 @@ describe 'Render as Ruby' do
         "",
         "class TestAGrandchildFolder < MiniTest::Unit::TestCase",
         "  include Actionwords",
-        "",
         "end",
       ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        "# encoding: UTF-8",
+        "",
+        "require 'minitest/autorun'",
+        "require_relative '../actionwords'",
+        "",
+        "class TestASecondGrandchildFolder < MiniTest::Unit::TestCase",
+        "  include Actionwords",
+        "",
+        "  def setup",
+        "      visit('/login')",
+        "      fill('user@example.com')",
+        "      fill('notTh4tS3cret')",
+        "  end",
+        "",
+        "  def test_One_grandchild_scenario",
+        "",
+        "  end",
+        "end"
+      ].join("\n")
+
     end
 
     it_behaves_like "a renderer" do

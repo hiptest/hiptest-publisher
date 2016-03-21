@@ -276,7 +276,17 @@ shared_context "shared render" do
     @second_root_scenario = make_scenario("Another root scenario", folder: @root_folder)
     @child_folder = make_folder("child folder", parent: @root_folder)
     @grand_child_folder = make_folder("A grand-child folder", parent: @child_folder)
-    @second_grand_child_folder = make_folder("A second grand-child folder", parent: @child_folder)
+    @second_grand_child_folder = make_folder("A second grand-child folder", parent: @child_folder, body: [
+      Hiptest::Nodes::Call.new('visit', [
+        Hiptest::Nodes::Argument.new('url', Hiptest::Nodes::StringLiteral.new('/login'))
+      ]),
+      Hiptest::Nodes::Call.new('fill', [
+        Hiptest::Nodes::Argument.new('login', Hiptest::Nodes::StringLiteral.new('user@example.com'))
+      ]),
+      Hiptest::Nodes::Call.new('fill', [
+        Hiptest::Nodes::Argument.new('password', Hiptest::Nodes::StringLiteral.new('notTh4tS3cret'))
+      ])
+    ])
     @grand_child_scenario = make_scenario("One grand'child scenario", folder: @second_grand_child_folder)
     @folders_project.children[:test_plan].organize_folders
 
@@ -544,6 +554,10 @@ shared_examples "a renderer" do
         it 'adapts path to load actionword file correctly' do
           expect(rendering(@grand_child_folder)).to eq(@grand_child_folder_rendered)
         end
+
+        it 'exports the definition as a setup/before/whatever it is called' do
+          expect(rendering(@second_grand_child_folder)).to eq(@second_grand_child_folder_rendered)
+        end
       end
     end
   end
@@ -575,7 +589,12 @@ shared_examples "a BDD renderer" do
   let(:root_folder) { make_folder("Colors") }
   let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
   let(:cool_colors_folder) { make_folder("Cool colors", parent: root_folder, description: "Cool colors calm and relax.\nThey are the hues from blue green through blue violet, most grays included.") }
-  let(:other_colors_folder) { make_folder("Other colors", parent: root_folder) }
+  let(:other_colors_folder) {
+    make_folder("Other colors", parent: root_folder, body: [
+      make_call("I have colors to mix",  annotation: "given"),
+      make_call("I know the expected color",  annotation: "and"),
+    ])
+  }
 
   let(:actionwords) {
     [
@@ -796,6 +815,44 @@ shared_examples "a BDD renderer" do
           "",
         ].join("\n"))
       end
+    end
+  end
+
+  context 'Folders' do
+    let(:options) {
+      context_for(
+        only: "features",
+        language: language,
+        framework: framework
+      )
+    }
+
+    let(:node_to_render) {
+      other_colors_folder
+    }
+
+    it 'definition is exported as background' do
+      expect(rendered).to eq([
+        'Feature: Other colors',
+        '',
+        '',
+        '  Background:',
+        '    Given I have colors to mix',
+        '    And I know the expected color',
+        '',
+        '  Scenario Outline: Create secondary colors',
+        '    Given the color "<first_color>"',
+        '    And the color "<second_color>"',
+        '    When you mix colors',
+        '    Then you obtain "<got_color>"',
+        '',
+        '    Examples:',
+        '      | first_color | second_color | got_color | hiptest-uid |',
+        '      | blue | yellow | green |  |',
+        '      | yellow | red | orange |  |',
+        '      | red | blue | purple |  |',
+        ''
+      ].join("\n"))
     end
   end
 

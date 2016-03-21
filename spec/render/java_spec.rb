@@ -561,6 +561,29 @@ describe 'Render as Java' do
         "    public Actionwords actionwords = new Actionwords();",
         "}",
       ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        'package com.example.child_folder;',
+        '',
+        'import junit.framework.TestCase;',
+        'import com.example.Actionwords;',
+        '',
+        'public class ASecondGrandchildFolderTest extends TestCase {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '    protected void setUp() throws Exception {',
+        '        super.setUp();',
+        '',
+        '        actionwords.visit("/login");',
+        '        actionwords.fill("user@example.com");',
+        '        actionwords.fill("notTh4tS3cret");',
+        '    }',
+        '',
+        '',
+        '    public void testOneGrandchildScenario() {',
+        '    }',
+        '}'
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
@@ -904,9 +927,34 @@ describe 'Render as Java' do
         "    public void setUp() {",
         "        actionwords = new Actionwords();",
         "    }",
-        "",
         "}",
       ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        'package com.example.child_folder;',
+        '',
+        'import org.testng.annotations.*;',
+        'import com.example.Actionwords;',
+        '',
+        'public class ASecondGrandchildFolderTest {',
+        '',
+        '    public Actionwords actionwords;',
+        '',
+        '    @BeforeMethod',
+        '    public void setUp() {',
+        '        actionwords = new Actionwords();',
+        '',
+        '        actionwords.visit("/login");',
+        '        actionwords.fill("user@example.com");',
+        '        actionwords.fill("notTh4tS3cret");',
+        '    }',
+        '',
+        '    @Test',
+        '    public void oneGrandchildScenario() {',
+        '    }',
+        '}'
+      ].join("\n")
+
     end
 
     it_behaves_like "a renderer" do

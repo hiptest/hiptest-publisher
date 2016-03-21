@@ -397,7 +397,8 @@ module Hiptest
           :description => description,
           :subfolders => [],
           :scenarios => [],
-          :tags => tags
+          :tags => tags,
+          :body => body
         }
       end
 

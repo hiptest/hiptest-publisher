@@ -1,5 +1,11 @@
 (function () {{#curly}}{{#indent}}
-{{> module_declaration}}
+module('{{{ escape_single_quotes self_name }}}', {{#curly}}{{#indent}}
+setup: function () {{#curly}}{{#indent}}
+this.actionwords = Object.create(Actionwords);{{/indent}}
+{{#unless is_empty?}}{{> body}}
+{{/unless}}{{/curly}}
+{{/indent}}
+{{/curly}});
 
 {{#each rendered_children.scenarios}}{{{this}}}
 

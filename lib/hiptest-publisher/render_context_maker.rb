@@ -27,7 +27,8 @@ module Hiptest
       walk_relative_item(folder).merge(
         :self_name => folder.children[:name],
         :has_tags? => !folder.children[:tags].empty?,
-        :has_step? => has_step?(folder)
+        :has_step? => has_step?(folder),
+        :is_empty? => folder.children[:body].empty?
       )
     end
 

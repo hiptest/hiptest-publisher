@@ -176,7 +176,8 @@ shared_examples 'folder structure' do
       description: nil,
       subfolders: [],
       scenarios: [],
-      tags: []
+      tags: [],
+      body: []
     })
   end
 

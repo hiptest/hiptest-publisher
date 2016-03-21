@@ -6,7 +6,12 @@ import junit.framework.TestCase;
 public class {{{ clear_extension context.filename }}} extends TestCase {{#curly}}
 {{#indent}}
 public Actionwords {{{ context.call_prefix }}} = new Actionwords();
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#unless is_empty?}}protected void setUp() throws Exception {{#curly}}{{#indent}}
+super.setUp();{{/indent}}
+{{> body}}
+{{/curly}}
+
+{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

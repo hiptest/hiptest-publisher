@@ -560,6 +560,27 @@ describe 'Render as PHP' do
       "}",
       "?>"
     ].join("\n")
+
+    @second_grand_child_folder_rendered = [
+      "<?php",
+      "require_once(__DIR__.'/../Actionwords.php');",
+      "",
+      "class ASecondGrandchildFolderTest extends PHPUnit_Framework_TestCase {",
+      "  public $actionwords;",
+      "  public function setUp() {",
+      "    $this->actionwords = new Actionwords();",
+      "",
+      "    $this->actionwords->visit('/login');",
+      "    $this->actionwords->fill('user@example.com');",
+      "    $this->actionwords->fill('notTh4tS3cret');",
+      "  }",
+      "",
+      "  public function testOneGrandchildScenario() {",
+      "",
+      "  }",
+      "}",
+      "?>"
+    ].join("\n")
   end
 
   context 'PHPUnit' do

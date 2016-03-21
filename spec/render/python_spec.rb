@@ -507,7 +507,23 @@ describe 'Render as Python' do
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
+    ].join("\n")
+
+    @second_grand_child_folder_rendered = [
+      "# encoding: UTF-8",
+      "import unittest",
+      "from actionwords import Actionwords",
       "",
+      "class TestASecondGrandchildFolder(unittest.TestCase):",
+      "    def setUp(self):",
+      "        self.actionwords = Actionwords(self)",
+      "        self.actionwords.visit(url = '/login')",
+      "        self.actionwords.fill(login = 'user@example.com')",
+      "        self.actionwords.fill(password = 'notTh4tS3cret')",
+      "",
+      "    def test_One_grandchild_scenario(self):",
+      "        pass",
+      ""
     ].join("\n")
   end
 

@@ -612,6 +612,34 @@ describe 'Render as C#' do
       "    }",
       "}",
     ].join("\n")
+
+    @second_grand_child_folder_rendered = [
+      'namespace MyProject.ChildFolder {',
+      '',
+      '    using System;',
+      '    using NUnit.Framework;',
+      '    using MyProject;',
+      '',
+      '    [TestFixture]',
+      '    public class ASecondGrandchildFolderTest {',
+      '',
+      '        public Actionwords Actionwords;',
+      '',
+      '        [SetUp]',
+      '        protected void SetUp() {',
+      '            Actionwords = new Actionwords();',
+      '',
+      '            Actionwords.Visit("/login");',
+      '            Actionwords.Fill("user@example.com");',
+      '            Actionwords.Fill("notTh4tS3cret");',
+      '        }',
+      '',
+      '        [Test]',
+      '        public void OneGrandchildScenario() {',
+      '        }',
+      '    }',
+      '}'
+    ].join("\n")
   end
 
   context 'NUnit' do

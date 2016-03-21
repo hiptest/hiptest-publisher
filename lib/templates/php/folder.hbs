@@ -3,7 +3,11 @@ require_once(__DIR__.'{{{ relative_path 'Actionwords.php' '/'}}}');
 
 class {{{ clear_extension context.filename }}} extends PHPUnit_Framework_TestCase {{#curly}}{{#indent}}
 public $actionwords;
-{{> setup}}
+public function setUp() {{#curly}}{{#indent}}
+$this->actionwords = new Actionwords();{{/indent}}
+{{#unless is_empty?}}
+{{>body}}
+{{/unless}}{{/curly}}
 
 {{#each rendered_children.scenarios}}{{this}}
 

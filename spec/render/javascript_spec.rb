@@ -544,6 +544,24 @@ describe 'Render as Javascript' do
         "})();",
         "",
       ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        "(function () {",
+        "  module('A second grand-child folder', {",
+        "    setup: function () {",
+        "      this.actionwords = Object.create(Actionwords);",
+        "      this.actionwords.visit('/login');",
+        "      this.actionwords.fill('user@example.com');",
+        "      this.actionwords.fill('notTh4tS3cret');",
+        "    }",
+        "  });",
+        "",
+        "  test('One grand\\'child scenario', function () {",
+        "",
+        "  });",
+        "})();",
+        ""
+      ].join("\n")
     end
 
     it_behaves_like "a renderer" do
@@ -858,6 +876,22 @@ describe 'Render as Javascript' do
         "  });",
         "});",
         "",
+      ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        "describe('A second grand-child folder', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(Actionwords);",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('notTh4tS3cret');",
+        "  });",
+        "",
+        "  it('One grand\\'child scenario', function () {",
+        "",
+        "  });",
+        "});",
+        ""
       ].join("\n")
     end
 
@@ -1227,6 +1261,22 @@ describe 'Render as Javascript' do
         "  });",
         "});",
         "",
+      ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        "describe('A second grand-child folder', function () {",
+        "  beforeEach(function () {",
+        "    this.actionwords = Object.create(require('../actionwords.js').Actionwords);",
+        "    this.actionwords.visit('/login');",
+        "    this.actionwords.fill('user@example.com');",
+        "    this.actionwords.fill('notTh4tS3cret');",
+        "  });",
+        "",
+        "  it('One grand\\'child scenario', function () {",
+        "",
+        "  });",
+        "});",
+        ""
       ].join("\n")
     end
 

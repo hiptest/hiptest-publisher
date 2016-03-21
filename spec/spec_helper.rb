@@ -81,12 +81,12 @@ module HelperFactories
     Hiptest::Nodes::Test.new(name, '', tags, body)
   end
 
-  def make_folder(name, description: nil, parent: nil)
+  def make_folder(name, description: nil, parent: nil, body: [])
     uid = SecureRandom.uuid
     if parent.respond_to?(:uid)
       parent_uid = parent.uid
     end
-    folder = Hiptest::Nodes::Folder.new(uid, parent_uid, name, description)
+    folder = Hiptest::Nodes::Folder.new(uid, parent_uid, name, description, [], 0, body)
     if parent
       folder.parent = parent
       if parent.is_a?(Hiptest::Nodes::TestPlan)

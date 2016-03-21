@@ -66,6 +66,18 @@ module Hiptest
       end
     end
 
+    def hh_unless(context, condition, block, else_block = nil)
+      condition = !condition.empty? if condition.respond_to?(:empty?)
+
+      if !condition
+        block.fn(context)
+      elsif else_block
+        else_block.fn(context)
+      else
+        ""
+      end
+    end
+
     def hh_indent(context, block)
       indentation = @context[:indentation] || '  '
       indentation = "\t" if indentation == '\t'
