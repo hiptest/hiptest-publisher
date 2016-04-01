@@ -25,6 +25,25 @@ module Hiptest
     def call_node_walker(node)
       if node.is_a? Hiptest::Nodes::Node
         @rendered_children = {}
+
+        if node.is_a? Hiptest::Nodes::Folder
+          # For Robot framework, we need direct access to every scenario
+          # datatables and body rendered ....
+          datatables = []
+          scenarios = []
+
+          node.children[:scenarios].each {|sc| 
+            datatables << @rendered[sc.children[:datatable]]
+            scenarios << {
+              name: @rendered[sc.children[:name]],
+              body: @rendered[sc.children[:body]]
+            }
+          }
+
+          @rendered_children[:scenario_datatables] = datatables
+          @rendered_children[:scenarios_content] = scenarios
+        end
+
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
         @rendered[node] = render_node(node, super(node))
       elsif node.is_a? Array

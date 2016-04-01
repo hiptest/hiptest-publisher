@@ -46,7 +46,10 @@ module Hiptest
     end
 
     def hh_join(context, items, joiner, block, else_block = nil)
-      joiner = "\t" if joiner == '\t'
+      joiner = joiner.to_s
+      joiner.gsub!(/\\t/, "\t")
+      joiner.gsub!(/\\n/, "\n")
+
 
       if block.nil? || block.items.empty?
         "#{items.join(joiner)}"
@@ -78,15 +81,19 @@ module Hiptest
       end
     end
 
+    def hh_prepend(context, str, block)
+      block.fn(context).split("\n").map do |line|
+        indented = "#{str}#{line}"
+        indented = "" if indented.strip.empty?
+        indented
+      end.join("\n")
+    end
+
     def hh_indent(context, block)
       indentation = @context[:indentation] || '  '
       indentation = "\t" if indentation == '\t'
 
-      block.fn(context).split("\n").map do |line|
-        indented = "#{indentation}#{line}"
-        indented = "" if indented.strip.empty?
-        indented
-      end.join("\n")
+      hh_prepend(context, indentation, block)
     end
 
     def hh_clear_empty_lines(context, block)

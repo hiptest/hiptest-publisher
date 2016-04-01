@@ -482,5 +482,120 @@ describe 'Render as Robot framework' do
       let(:language) {'robotframework'}
       let(:framework) {''}
     end
+
+    context 'folder output' do
+      let!(:project) {
+        Hiptest::Nodes::Project.new('My project', '', Hiptest::Nodes::Scenarios.new([
+          sc1_no_datatable,
+          sc2_no_datatable,
+          sc1_with_datatable,
+          sc2_with_datatable,
+          sc1_with_incompatible_datatable
+        ]))
+      }
+
+      let(:folder) {
+        Hiptest::Nodes::Folder.new(1, 0, 'My folder', '')
+      }
+
+      let(:sc1_no_datatable) {
+        Hiptest::Nodes::Scenario.new(
+          'scenario without datatable', '', [], [], [], nil, Hiptest::Nodes::Datatable.new([])
+        )
+      }
+
+      let(:sc2_no_datatable) {
+        Hiptest::Nodes::Scenario.new(
+          'second scenario without datatable', '', [], [], [], nil, Hiptest::Nodes::Datatable.new([])
+        )
+      }
+
+      let(:sc1_with_datatable) {
+        Hiptest::Nodes::Scenario.new(
+          'scenario with datatable', '', [], [
+            Hiptest::Nodes::Parameter.new('x'),
+            Hiptest::Nodes::Parameter.new('y')
+          ], [Hiptest::Nodes::Step.new('result', "x is greater than Pi")], nil,
+          Hiptest::Nodes::Datatable.new([
+            Hiptest::Nodes::Dataset.new('First line', [
+              Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('plic')),
+              Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('ploc')),
+            ]),
+            Hiptest::Nodes::Dataset.new('Second line', [
+              Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('pluc')),
+              Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('plac')),
+            ])
+          ])
+        )
+      }
+
+      let(:sc2_with_datatable) {
+        Hiptest::Nodes::Scenario.new(
+          'second scenario with datatable', '', [], [
+            Hiptest::Nodes::Parameter.new('x'),
+            Hiptest::Nodes::Parameter.new('y')
+          ], [Hiptest::Nodes::Assign.new(@foo_variable, @pi)], nil,
+          Hiptest::Nodes::Datatable.new([
+            Hiptest::Nodes::Dataset.new('One line', [
+              Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('1')),
+              Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('2')),
+            ]),
+            Hiptest::Nodes::Dataset.new('Another line', [
+              Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('3')),
+              Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('4')),
+            ])
+          ])
+        )
+      }
+
+      let(:sc1_with_incompatible_datatable) {
+        Hiptest::Nodes::Scenario.new(
+          'scenario with datatable', '', [], [
+            Hiptest::Nodes::Parameter.new('y'),
+            Hiptest::Nodes::Parameter.new('z')
+          ], [], nil, 
+          Hiptest::Nodes::Datatable.new([
+            Hiptest::Nodes::Dataset.new('Will not be rendered anyway ....', [
+              Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('plic')),
+              Hiptest::Nodes::Argument.new('z', Hiptest::Nodes::StringLiteral.new('ploc')),
+            ])
+          ])
+        )
+      }
+
+      let(:render_context) {
+        context_for(
+          node: folder,
+          language: 'robotframework',
+          with_folders: true,
+        )
+      }
+
+      it 'does not render test cases if there is no datatables' do
+        folder.children[:scenarios] << sc1_no_datatable
+        folder.children[:scenarios] << sc2_no_datatable
+
+        Hiptest::Nodes::ParentAdder.add(project)
+        expect(folder.render(render_context)).to eq('')
+      end
+
+      it 'uses datatable for all scenarios in the folder' do
+        folder.children[:scenarios] << sc1_no_datatable
+        folder.children[:scenarios] << sc1_with_datatable
+        folder.children[:scenarios] << sc2_with_datatable
+
+        Hiptest::Nodes::ParentAdder.add(project)
+        expect(folder.render(render_context)).to eq('')
+      end
+
+      it 'outputs errors when the datatables are not compatible' do
+        folder.children[:scenarios] << sc1_no_datatable
+        folder.children[:scenarios] << sc1_with_datatable
+        folder.children[:scenarios] << sc1_with_incompatible_datatable
+
+        Hiptest::Nodes::ParentAdder.add(project)
+        expect(folder.render(render_context)).to eq('')
+      end
+    end
   end
 end

@@ -1,2 +1,1 @@
-{{#if has_annotation? }}{{#comment '#'}}{{{ rendered_children.gherkin_text }}}{{/comment}}
-{{/if}}{{{ underscore rendered_children.actionword }}}{{#if has_arguments?}}{{tab}}{{{ join rendered_children.arguments '\t'}}}{{/if}}
+{{{ underscore rendered_children.actionword }}}{{#if has_arguments?}}{{tab}}{{{ join rendered_children.arguments '\t'}}}{{/if}}

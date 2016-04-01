@@ -1,1 +1,31 @@
-PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING
+*** Settings ***
+Documentation
+{{#comment '... '}}{{#clear_empty_lines}}
+{{{ rendered_children.description}}}
+{{#if has_tags?}}
+Tags: {{{ join rendered_children.tags ' '}}}
+{{/if}}{{/clear_empty_lines}}{{/comment}}
+
+Resource          keywords.txt
+{{#unless is_empty?}}
+Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
+{{/unless}}
+
+{{#if datatables_present?}}
+{{#if datatables_compatible?}}
+*** Test Cases *** {{#each scenario_parameters}}{{{ tab }}}{{{ this}}}{{/each}}
+{{#each rendered_children.scenario_datatables}}{{this}}
+{{/each}}
+{{else}}
+Unable to generate samples as the scenarios do not have the same parameters
+{{/if}}
+
+*** Keywords ***
+{{else}}
+*** Test Cases ***
+{{/if}}
+
+{{#each rendered_children.scenarios_content}}
+{{this.name}}{{#indent}}
+{{join this.body '\n'}}{{/indent}}
+{{/each}}
