@@ -11,21 +11,31 @@ Resource          keywords.txt
 Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
 {{/unless}}
 
+*** Test Cases ***
 {{#if datatables_present?}}
-{{#if datatables_compatible?}}
-*** Test Cases *** {{#each scenario_parameters}}{{{ tab }}}{{{ this}}}{{/each}}
-{{#each rendered_children.scenario_datatables}}{{this}}
-{{/each}}
+{{#each rendered_children.splitted_scenarios}}
+{{#if this.datatable}}
+{{this.name}}{{#indent}}
+[Template]{{tab}}{{this.name}} keyword
+{{this.datatable}}{{/indent}}
 {{else}}
-Unable to generate samples as the scenarios do not have the same parameters
+{{this.name}}{{#indent}}
+{{join this.body '\n'}}{{/indent}}
 {{/if}}
+{{/each}}
 
 *** Keywords ***
-{{else}}
-*** Test Cases ***
+{{#each rendered_children.splitted_scenarios}}
+{{#if this.datatable}}
+{{this.name}} keyword{{#indent}}
+[Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
+{{join this.body '\n'}}{{/indent}}
 {{/if}}
+{{/each}}
 
-{{#each rendered_children.scenarios_content}}
+{{else}}
+{{#each rendered_children.splitted_scenarios}}
 {{this.name}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
 {{/each}}
+{{/if}}

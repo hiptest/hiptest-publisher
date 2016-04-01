@@ -29,19 +29,15 @@ module Hiptest
         if node.is_a? Hiptest::Nodes::Folder
           # For Robot framework, we need direct access to every scenario
           # datatables and body rendered ....
-          datatables = []
-          scenarios = []
 
-          node.children[:scenarios].each {|sc| 
-            datatables << @rendered[sc.children[:datatable]]
-            scenarios << {
+          @rendered_children[:splitted_scenarios] = node.children[:scenarios].map {|sc| 
+            {
               name: @rendered[sc.children[:name]],
+              datatable: @rendered[sc.children[:datatable]],
+              parameters:  @rendered[sc.children[:parameters]],
               body: @rendered[sc.children[:body]]
             }
           }
-
-          @rendered_children[:scenario_datatables] = datatables
-          @rendered_children[:scenarios_content] = scenarios
         end
 
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
