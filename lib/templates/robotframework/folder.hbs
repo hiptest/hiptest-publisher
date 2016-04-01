@@ -19,7 +19,7 @@ Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...        
 [Template]{{tab}}{{this.name}} keyword
 {{this.datatable}}{{/indent}}
 {{else}}
-{{this.name}}{{#indent}}
+{{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
 {{/if}}
 {{/each}}
@@ -35,7 +35,7 @@ Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...        
 
 {{else}}
 {{#each rendered_children.splitted_scenarios}}
-{{this.name}}{{#indent}}
+{{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
 {{/each}}
 {{/if}}
