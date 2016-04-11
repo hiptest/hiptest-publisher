@@ -11,16 +11,18 @@ Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...        
 {{/unless}}
 *** Test Cases ***{{#if datatables_present?}}
 {{#each rendered_children.splitted_scenarios}}
-{{#if this.datatable}}{{normalize_with_spaces this.name}}{{#indent}}
-[Template]{{tab}}{{normalize_with_spaces this.name}} keyword
-{{this.datatable}}{{/indent}}
+{{#if this.datatable}}{{#each this.datasets}}{{normalize_with_spaces this.scenario_name}} {{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}
+[Template]{{tab}}{{normalize_with_spaces this.scenario_name}} keyword
+{{join this.arguments '\t'}}{{/indent}}
+
+{{/each}}
 {{else}}{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
 {{/if}}{{/each}}
 *** Keywords ***
 
 {{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
-[Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
+[Arguments]{{tab}}{{join this.parameters '\t'}}
 {{join this.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}

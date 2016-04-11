@@ -35,6 +35,14 @@ module Hiptest
               name: @rendered[sc.children[:name]],
               uid: @rendered[sc.children[:uid]],
               datatable: @rendered[sc.children[:datatable]],
+              datasets: sc.children[:datatable].children[:datasets].map {|dataset|
+                {
+                  scenario_name: @rendered[sc.children[:name]],
+                  name: @rendered[dataset.children[:name]],
+                  uid: @rendered[dataset.children[:uid]],
+                  arguments: @rendered[dataset.children[:arguments]]
+                }
+              },
               parameters:  @rendered[sc.children[:parameters]],
               body: @rendered[sc.children[:body]]
             }
