@@ -5,37 +5,26 @@ Documentation
 {{#if has_tags?}}
 Tags: {{{ join rendered_children.tags ' '}}}
 {{/if}}{{/clear_empty_lines}}{{/comment}}
-
 Resource          keywords.txt
 {{#unless is_empty?}}
 Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
 {{/unless}}
-
-*** Test Cases ***
-{{#if datatables_present?}}
+*** Test Cases ***{{#if datatables_present?}}
 {{#each rendered_children.splitted_scenarios}}
-{{#if this.datatable}}
-{{this.name}}{{#indent}}
+{{#if this.datatable}}{{this.name}}{{#indent}}
 [Template]{{tab}}{{this.name}} keyword
 {{this.datatable}}{{/indent}}
-{{else}}
-{{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
+{{else}}{{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
-{{/if}}
-{{/each}}
-
+{{/if}}{{/each}}
 *** Keywords ***
-{{#each rendered_children.splitted_scenarios}}
-{{#if this.datatable}}
-{{this.name}} keyword{{#indent}}
+
+{{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{this.name}} keyword{{#indent}}
 [Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
 {{join this.body '\n'}}{{/indent}}
-{{/if}}
-{{/each}}
 
-{{else}}
+{{/if}}{{/each}}{{else}}
 {{#each rendered_children.splitted_scenarios}}
 {{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
-{{/each}}
-{{/if}}
+{{/each}}{{/if}}

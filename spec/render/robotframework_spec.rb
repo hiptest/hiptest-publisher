@@ -500,13 +500,17 @@ describe 'Render as Robot framework' do
 
       let(:sc1_no_datatable) {
         Hiptest::Nodes::Scenario.new(
-          'scenario without datatable', '', [], [], [], nil, Hiptest::Nodes::Datatable.new([])
+          'scenario without datatable', '', [], [], [
+            Hiptest::Nodes::Step.new('action', "Do something")
+          ], nil, Hiptest::Nodes::Datatable.new([])
         )
       }
 
       let(:sc2_no_datatable) {
         Hiptest::Nodes::Scenario.new(
-          'second scenario without datatable', '', [], [], [], nil, Hiptest::Nodes::Datatable.new([])
+          'second scenario without datatable', '', [], [], [
+            Hiptest::Nodes::Step.new('result', "Do something else here")
+          ], nil, Hiptest::Nodes::Datatable.new([])
         )
       }
 
@@ -553,7 +557,7 @@ describe 'Render as Robot framework' do
           'scenario with datatable', '', [], [
             Hiptest::Nodes::Parameter.new('y'),
             Hiptest::Nodes::Parameter.new('z')
-          ], [], nil, 
+          ], [Hiptest::Nodes::Step.new('result', "Observe some stuff here")], nil, 
           Hiptest::Nodes::Datatable.new([
             Hiptest::Nodes::Dataset.new('Will not be rendered anyway ....', [
               Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('plic')),
@@ -576,25 +580,71 @@ describe 'Render as Robot framework' do
         folder.children[:scenarios] << sc2_no_datatable
 
         Hiptest::Nodes::ParentAdder.add(project)
-        expect(folder.render(render_context)).to eq('')
+        expect(folder.render(render_context)).to eq([
+          "*** Settings ***",
+          "Documentation",
+          "",
+          "Resource          keywords.txt",
+          "",
+          "*** Test Cases ***",
+          "",
+          "scenario without datatable",
+          "\t# TODO: Implement action: Do something",
+          "",
+          "second scenario without datatable",
+          "\t# TODO: Implement result: Do something else here",
+          ""
+        ].join("\n"))
       end
 
       it 'uses datatable for all scenarios in the folder' do
         folder.children[:scenarios] << sc1_no_datatable
         folder.children[:scenarios] << sc1_with_datatable
         folder.children[:scenarios] << sc2_with_datatable
-
-        Hiptest::Nodes::ParentAdder.add(project)
-        expect(folder.render(render_context)).to eq('')
-      end
-
-      it 'outputs errors when the datatables are not compatible' do
-        folder.children[:scenarios] << sc1_no_datatable
-        folder.children[:scenarios] << sc1_with_datatable
         folder.children[:scenarios] << sc1_with_incompatible_datatable
 
         Hiptest::Nodes::ParentAdder.add(project)
-        expect(folder.render(render_context)).to eq('')
+        expect(folder.render(render_context)).to eq([
+          "*** Settings ***",
+          "Documentation",
+          "",
+          "Resource          keywords.txt",
+          "",
+          "*** Test Cases ***",
+          "",
+          "scenario without datatable",
+          "\t# TODO: Implement action: Do something",
+          "",
+          "scenario with datatable",
+          "\t[Template]\tscenario with datatable keyword",
+          "\tFirst line\tplic\tploc",
+          "\tSecond line\tpluc\tplac",
+          "",
+          "second scenario with datatable",
+          "\t[Template]\tsecond scenario with datatable keyword",
+          "\tOne line\t1\t2",
+          "\tAnother line\t3\t4",
+          "",
+          "scenario with datatable",
+          "\t[Template]\tscenario with datatable keyword",
+          "\tWill not be rendered anyway ....\tplic\tploc",
+          "",
+          "*** Keywords ***",
+          "",
+          "scenario with datatable keyword",
+          "\t[Arguments]\t${__test_name}\t${x}\t${y}",
+          "\t# TODO: Implement result: x is greater than Pi",
+          "",
+          "second scenario with datatable keyword",
+          "\t[Arguments]\t${__test_name}\t${x}\t${y}",
+          "\t${foo} = 3.14",
+          "",
+          "scenario with datatable keyword",
+          "\t[Arguments]\t${__test_name}\t${y}\t${z}",
+          "\t# TODO: Implement result: Observe some stuff here",
+          "",
+          ""
+        ].join("\n"))
       end
     end
   end

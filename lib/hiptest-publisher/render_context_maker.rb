@@ -24,15 +24,12 @@ module Hiptest
     alias :walk_actionword :walk_item
 
     def walk_folder(folder)
-      datatable_compatibility = compute_datatable_compatibilities(folder)
       walk_relative_item(folder).merge(
         :self_name => folder.children[:name],
         :has_tags? => !folder.children[:tags].empty?,
         :has_step? => has_step?(folder),
         :is_empty? => folder.children[:body].empty?,
-        :datatables_present? => datatable_compatibility[:datatables_present],
-        :datatables_compatible? => datatable_compatibility[:datatables_compatible],
-        :scenario_parameters => datatable_compatibility[:scenario_parameters]
+        :datatables_present? => datatable_present?(folder),
       )
     end
 
@@ -132,29 +129,17 @@ module Hiptest
       datatable ? !datatable.children[:datasets].empty? : false
     end
 
-    def compute_datatable_compatibilities(folder)
-      data = {
-        datatables_present: false,
-        datatables_compatible: true,
-        scenario_parameters: []
-      }
+    def datatable_present?(folder)
+      datatables_present = false
 
       folder.children[:scenarios].each do |scenario|
-        next unless has_datasets?(scenario)
-        parameter_names = scenario.children[:parameters].map {|p| p.children[:name]}
-        data[:datatables_present] = true
-
-        if data[:scenario_parameters].empty?
-          data[:scenario_parameters] = parameter_names
-          next
-        end
-
-        if data[:scenario_parameters] != parameter_names
-          data[:datatables_compatible] = false
+        if has_datasets?(scenario)
+          datatables_present = true
+          break
         end
       end
 
-      return data
+      return datatables_present
     end
   end
 end
