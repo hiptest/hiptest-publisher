@@ -26,7 +26,7 @@ module Hiptest
       if node.is_a? Hiptest::Nodes::Node
         @rendered_children = {}
 
-        if node.is_a? Hiptest::Nodes::Folder
+        if node.is_a?(Hiptest::Nodes::Folder) || node.is_a?(Hiptest::Nodes::Scenarios)
           # For Robot framework, we need direct access to every scenario
           # datatables and body rendered ....
 

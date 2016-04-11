@@ -91,7 +91,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    ruby-handlebars (0.0.3)
+    ruby-handlebars (0.0.5)
       colorize (~> 0.7, >= 0.7.5)
       parslet (~> 1.6, >= 1.6.2)
     safe_yaml (1.0.4)
@@ -124,3 +124,6 @@ DEPENDENCIES
   rspec-mocks (~> 3.3)
   ruby-handlebars (~> 0.0.2)
   webmock
+
+BUNDLED WITH
+   1.11.2

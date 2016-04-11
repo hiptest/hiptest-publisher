@@ -266,12 +266,10 @@ describe LanguageGroupConfig do
       },
 
       "robotframework" => {
-        # --split-scenarios is forced
-        []                                       => [ "[tests]",
-                                                      "/test_buy_pontarlier.txt",
-                                                      "/test_sell_mont_d_or.txt",
+        []                                       => ["[tests]",
+                                                      "/test_project.txt",
                                                       "[actionwords]",
-                                                      "/keywords.txt",
+                                                      "/keywords.txt"
                                                     ],
         ["--split-scenarios"]                    => [ "[tests]",
                                                       "/test_buy_pontarlier.txt",
@@ -279,12 +277,11 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/keywords.txt",
                                                     ],
-        # --split-scenarios is forced
-        ["--with-folders"]                        => [ "[tests]",
-                                                      "/global_trades/buy_goods/test_buy_pontarlier.txt",
-                                                      "/global_trades/sell_goods/test_sell_mont_d_or.txt",
+        ["--with-folders"]                        =>["[tests]",
+                                                      "/global_trades/test_buy_goods.txt",
+                                                      "/global_trades/test_sell_goods.txt",
                                                       "[actionwords]",
-                                                      "/keywords.txt",
+                                                      "/keywords.txt"
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[tests]",
                                                       "/global_trades/buy_goods/test_buy_pontarlier.txt",

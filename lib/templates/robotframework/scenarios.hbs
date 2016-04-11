@@ -1,1 +1,22 @@
-PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING
+*** Settings ***
+Resource          keywords.txt
+
+*** Test Cases ***{{#if datatables_present?}}
+{{#each rendered_children.splitted_scenarios}}
+{{#if this.datatable}}{{this.name}}{{#indent}}
+[Template]{{tab}}{{this.name}} keyword
+{{this.datatable}}{{/indent}}
+{{else}}{{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
+{{join this.body '\n'}}{{/indent}}
+{{/if}}{{/each}}
+*** Keywords ***
+
+{{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{this.name}} keyword{{#indent}}
+[Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
+{{join this.body '\n'}}{{/indent}}
+
+{{/if}}{{/each}}{{else}}
+{{#each rendered_children.splitted_scenarios}}
+{{this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
+{{join this.body '\n'}}{{/indent}}
+{{/each}}{{/if}}

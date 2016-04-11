@@ -226,14 +226,6 @@ describe 'Render as Robot framework' do
     #   end
     # end
     @full_scenario_rendered = [
-      "*** Settings ***",
-      "Documentation",
-      "...  This is a scenario which description ",
-      "...  is on two lines",
-      "...  Tags: myTag",
-      "",
-      "Resource          keywords.txt",
-      "",
       "",
       "*** Test Cases ***",
       "",
@@ -251,34 +243,17 @@ describe 'Render as Robot framework' do
     #   call then 'page "url" should be opened'(url='/reset-password')
     # end
     @bdd_scenario_rendered = [
-      "*** Settings ***",
-      "Documentation",
-      "",
-      "",
-      "Resource          keywords.txt",
-      "",
       "",
       "*** Test Cases ***",
       "",
       "reset_password",
-      "\t# Given Page \"/login\" is opened",
       "\tpage_url_is_opened\t/login",
-      "\t# When I click on \"Reset password\"",
       "\ti_click_on_link\tReset password",
-      "\t# Then Page \"/reset-password\" should be opened",
       "\tpage_url_should_be_opened\t/reset-password",
       ""
     ].join("\n")
 
     @full_scenario_with_uid_rendered = [
-      "*** Settings ***",
-      "Documentation",
-      "...  This is a scenario which description ",
-      "...  is on two lines",
-      "...  Tags: myTag",
-      "",
-      "Resource          keywords.txt",
-      "",
       "",
       "*** Test Cases ***",
       "",
@@ -324,12 +299,6 @@ describe 'Render as Robot framework' do
     # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
-      "*** Settings ***",
-      "Documentation",
-      "...  Ensure the login process",
-      "",
-      "Resource          keywords.txt",
-      "",
       "",
       "Test Template     check_login",
       "",
@@ -351,12 +320,6 @@ describe 'Render as Robot framework' do
     ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
-      "*** Settings ***",
-      "Documentation",
-      "...  Ensure the login process",
-      "",
-      "Resource          keywords.txt",
-      "",
       "",
       "Test Template     check_login",
       "",
@@ -411,22 +374,44 @@ describe 'Render as Robot framework' do
     # scenario 'second scenario' do
     #   call 'my action word'
     # end
-    @scenarios_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
-
-    @tests_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
-
-    @first_test_rendered = [
+    @scenarios_rendered = [
       "*** Settings ***",
-      "Documentation",
-      "...  The description is on ",
-      "...  two lines",
-      "...  Tags: myTag myTag:somevalue",
-      "",
       "Resource          keywords.txt",
-      "",
       "",
       "*** Test Cases ***",
       "",
+      "first scenario",
+      "",
+      "second scenario",
+      "\tmy_action_word",
+      ""
+    ].join("\n")
+
+    @tests_rendered = [
+      "*** Settings ***",
+      "Resource          keywords.txt",
+      "",
+      "*** Test Cases ***",
+      "",
+      "login",
+      "\tvisit\t/login",
+      "\tfill\tuser@example.com",
+      "\tfill\ts3cret",
+      "\tclick\t.login-form input[type=submit]",
+      "\tcheck_url\t/welcome",
+      "",
+      "",
+      "failed_login",
+      "\tvisit\t/login",
+      "\tfill\tuser@example.com",
+      "\tfill\tnotTh4tS3cret",
+      "\tclick\t.login-form input[type=submit]",
+      "\tcheck_url\t/login",
+      "",
+      ""
+    ].join("\n")
+
+    @first_test_rendered = [
       "login",
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
@@ -472,9 +457,45 @@ describe 'Render as Robot framework' do
       "",
     ].join("\n")
 
-    @root_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
-    @grand_child_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
-    @second_grand_child_folder_rendered = "PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING"
+    @root_folder_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "",
+      "Resource          keywords.txt",
+      "",
+      "*** Test Cases ***",
+      "",
+      "One root scenario",
+      "",
+      "Another root scenario",
+      ""
+    ].join("\n")
+
+    @grand_child_folder_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "",
+      "Resource          ../keywords.txt",
+      "",
+      "*** Test Cases ***",
+      ""
+    ].join("\n")
+
+    @second_grand_child_folder_rendered = [
+      "*** Settings ***",
+      "Documentation",
+      "",
+      "Resource          ../keywords.txt",
+      "",
+      "Test Setup\tRun Keywords\tvisit\t/login",
+      "...         AND      \tfill\tuser@example.com",
+      "...         AND      \tfill\tnotTh4tS3cret",
+      "",
+      "*** Test Cases ***",
+      "",
+      "One grand'child scenario",
+      ""
+    ].join("\n")
   end
 
   context 'Robot framework' do

@@ -1,1 +1,7 @@
-PLEASE USE THE --split-scenarios OPTION WHEN PUBLISHING
+*** Settings ***
+Resource          keywords.txt
+
+*** Test Cases ***
+{{#each rendered_children.tests}}
+{{this}}
+{{/each}}

@@ -52,6 +52,7 @@ module Hiptest
       {
         :project_name => project.children[:name],
         :self_name => project.children[:name],
+        :datatables_present? => datatable_present?(scenarios)
       }
     end
 
@@ -71,7 +72,7 @@ module Hiptest
       project = tests.parent
       {
         :project_name => project.children[:name],
-        :self_name => project.children[:name],
+        :self_name => project.children[:name]
       }
     end
 
@@ -129,10 +130,10 @@ module Hiptest
       datatable ? !datatable.children[:datasets].empty? : false
     end
 
-    def datatable_present?(folder)
+    def datatable_present?(container)
       datatables_present = false
 
-      folder.children[:scenarios].each do |scenario|
+      container.children[:scenarios].each do |scenario|
         if has_datasets?(scenario)
           datatables_present = true
           break

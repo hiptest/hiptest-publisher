@@ -139,6 +139,7 @@ describe Hiptest::RenderContextMaker do
 
     it 'gives the project name' do
       expect(subject.walk_scenarios(node)).to eq({
+        :datatables_present? => false,
         project_name: 'Another project',
         self_name: 'Another project',
       })
