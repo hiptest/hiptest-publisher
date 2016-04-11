@@ -53,7 +53,7 @@ describe String do
   context 'normalize_with_spaces' do
     it 'works as normalize but keep dashes and spaces' do
       expect(%|  it's : the Støry of\n\n"--Pouin Pouin-- le Marsouin"\n  |.normalize_with_spaces).to eq(
-        'its  the Story of --Pouin Pouin-- le Marsouin')
+        'it\'s  the Story of "--Pouin Pouin-- le Marsouin"')
     end
   end
 

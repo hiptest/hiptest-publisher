@@ -14,7 +14,7 @@ class String
 
     if keep_spaces
       literated.gsub!(/\s+/, ' ')
-      literated.gsub!(/[^a-zA-Z0-9_\- ]/, '')
+      literated.gsub!(/[^a-zA-Z0-9_\- "']/, '')
     else
       literated.gsub!(/\s+/, '_')
       if keep_dashes

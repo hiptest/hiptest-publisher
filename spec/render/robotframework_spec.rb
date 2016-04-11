@@ -453,7 +453,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "One grandchild scenario",
+      "One grand'child scenario",
       "",
     ].join("\n")
 
@@ -493,7 +493,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "One grandchild scenario",
+      "One grand'child scenario",
       ""
     ].join("\n")
   end
