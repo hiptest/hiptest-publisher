@@ -229,7 +229,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "compare_to_pi",
+      "compare to pi",
       "\t[Arguments]\t${x}",
       "\t${foo} = 3.14",
       "\t\# NOT SUPPORTED YET",
@@ -246,7 +246,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "reset_password",
+      "Reset password",
       "\tpage_url_is_opened\t/login",
       "\ti_click_on_link\tReset password",
       "\tpage_url_should_be_opened\t/reset-password",
@@ -257,7 +257,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "compare_to_pi_uidabcd1234",
+      "compare to pi (uid:abcd1234)",
       "\t[Arguments]\t${x}",
       "\t${foo} = 3.14",
       "\t\# NOT SUPPORTED YET",
@@ -278,7 +278,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "compare_to_pi",
+      "compare to pi",
       "\t[Arguments]\t${x}",
       "\t${foo} = 3.14",
       "\t\# NOT SUPPORTED YET",
@@ -300,7 +300,7 @@ describe 'Render as Robot framework' do
 
     @scenario_with_datatable_rendered = [
       "",
-      "Test Template     check_login",
+      "Test Template     check login",
       "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
       "Wrong 'login'\tinvalid\tinvalid\tInvalid username or password",
@@ -310,7 +310,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Keywords ***",
       "",
-      "check_login",
+      "check login",
       "\t[Arguments]\t${login}\t${password}\t${expected}",
       "\tfill_login\t${login}",
       "\tfill_password\t${password}",
@@ -321,7 +321,7 @@ describe 'Render as Robot framework' do
 
     @scenario_with_datatable_rendered_with_uids = [
       "",
-      "Test Template     check_login",
+      "Test Template     check login",
       "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
       "Wrong 'login' (uid:a-123)\tinvalid\tinvalid\tInvalid username or password",
@@ -331,7 +331,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Keywords ***",
       "",
-      "check_login",
+      "check login",
       "\t[Arguments]\t${login}\t${password}\t${expected}",
       "\tfill_login\t${login}",
       "\tfill_password\t${password}",
@@ -349,7 +349,7 @@ describe 'Render as Robot framework' do
       "Resource          keywords.txt",
       "",
       "",
-      "Test Template     check_login",
+      "Test Template     check login",
       "",
       "*** Test Cases ***\tlogin\tpassword\texpected",
       "Wrong 'login'\tinvalid\tinvalid\tInvalid username or password",
@@ -359,7 +359,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Keywords ***",
       "",
-      "check_login",
+      "check login",
       "\t[Arguments]\t${login}\t${password}\t${expected}",
       "\tfill_login\t${login}",
       "\tfill_password\t${password}",
@@ -393,7 +393,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "login",
+      "Login",
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
       "\tfill\ts3cret",
@@ -401,7 +401,7 @@ describe 'Render as Robot framework' do
       "\tcheck_url\t/welcome",
       "",
       "",
-      "failed_login",
+      "Failed login",
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
       "\tfill\tnotTh4tS3cret",
@@ -412,7 +412,7 @@ describe 'Render as Robot framework' do
     ].join("\n")
 
     @first_test_rendered = [
-      "login",
+      "Login",
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
       "\tfill\ts3cret",
@@ -433,7 +433,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "login",
+      "Login",
       "\tvisit\t/login",
       "\tfill\tuser@example.com",
       "\tfill\ts3cret",
@@ -453,7 +453,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "one_grandchild_scenario",
+      "One grandchild scenario",
       "",
     ].join("\n")
 
@@ -493,7 +493,7 @@ describe 'Render as Robot framework' do
       "",
       "*** Test Cases ***",
       "",
-      "One grand'child scenario",
+      "One grandchild scenario",
       ""
     ].join("\n")
   end
