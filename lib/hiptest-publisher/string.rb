@@ -8,14 +8,20 @@ class String
     I18n.transliterate(self)
   end
 
-  def normalize(keep_dashes=false)
+  def normalize(keep_dashes=false, keep_spaces=false)
     literated = self.literate
     literated.strip!
-    literated.gsub!(/\s+/, '_')
-    if keep_dashes
-      literated.gsub!(/[^a-zA-Z0-9_\-]/, '')
+
+    if keep_spaces
+      literated.gsub!(/\s+/, ' ')
+      literated.gsub!(/[^a-zA-Z0-9_\- ]/, '')
     else
-      literated.gsub!(/\W/, '')
+      literated.gsub!(/\s+/, '_')
+      if keep_dashes
+        literated.gsub!(/[^a-zA-Z0-9_\-]/, '')
+      else
+        literated.gsub!(/\W/, '')
+      end
     end
     literated
   end
@@ -28,6 +34,10 @@ class String
 
   def normalize_with_dashes
     self.normalize(true)
+  end
+
+  def normalize_with_spaces
+    self.normalize(false, true)
   end
 
   def underscore

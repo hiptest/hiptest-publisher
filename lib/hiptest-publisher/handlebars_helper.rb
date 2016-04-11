@@ -17,6 +17,7 @@ module Hiptest
         :normalize,
         :normalize_lower,
         :normalize_with_dashes,
+        :normalize_with_spaces,
         :underscore,
         :camelize,
         :camelize_lower,
