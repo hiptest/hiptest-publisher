@@ -475,7 +475,7 @@ describe 'Render as Robot framework' do
       "*** Settings ***",
       "Documentation",
       "",
-      "Resource          ../keywords.txt",
+      "Resource          keywords.txt",
       "",
       "*** Test Cases ***",
       ""
@@ -485,7 +485,7 @@ describe 'Render as Robot framework' do
       "*** Settings ***",
       "Documentation",
       "",
-      "Resource          ../keywords.txt",
+      "Resource          keywords.txt",
       "",
       "Test Setup\tRun Keywords\tvisit\t/login",
       "...         AND      \tfill\tuser@example.com",

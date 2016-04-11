@@ -5,7 +5,7 @@ Documentation
 {{#if has_tags?}}
 Tags: {{{ join rendered_children.tags ' '}}}
 {{/if}}{{/clear_empty_lines}}{{/comment}}
-Resource          {{{ relative_path 'keywords.txt'}}}
+Resource          keywords.txt
 {{#unless is_empty?}}
 Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
 {{/unless}}
