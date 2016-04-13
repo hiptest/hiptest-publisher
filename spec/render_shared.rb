@@ -602,6 +602,7 @@ shared_examples "a BDD renderer" do
       make_actionword("you mix colors"),
       make_actionword("you obtain \"color\"", parameters: [make_parameter("color")]),
       make_actionword("unused action word"),
+      make_actionword("you cannot play croquet")
     ]
   }
 
@@ -611,7 +612,7 @@ shared_examples "a BDD renderer" do
       make_call("the color \"color\"",  annotation:   "and", arguments: [make_argument("color", template_of_literals("red"))]),
       make_call("the color \"color\"",  annotation:   "and", arguments: [make_argument("color", template_of_literals("green"))]),
       make_call("you mix colors",       annotation:  "when"),
-      make_call("you obtain \"color\"", annotation:  "then", arguments: [make_argument("color", template_of_literals("white"))]),
+      make_call("you obtain \"color\"", annotation:  "then", arguments: [make_argument("color", template_of_literals("white"))])
     ])
   }
 
@@ -623,6 +624,7 @@ shared_examples "a BDD renderer" do
         make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
         make_call("you mix colors",       annotation: "when"),
         make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("green"))]),
+        make_call("you cannot play croquet", annotation:  "but", arguments: []),
       ])
   }
 
@@ -644,7 +646,7 @@ shared_examples "a BDD renderer" do
         make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("red"))]),
         make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("yellow"))]),
         make_call("you mix colors"),
-        make_call("you obtain \"color\"", arguments: [make_argument("color", template_of_literals("orange"))]),
+        make_call("you obtain \"color\"", arguments: [make_argument("color", template_of_literals("orange"))])
       ])
   }
 
@@ -739,6 +741,7 @@ shared_examples "a BDD renderer" do
         "  And the color \"yellow\"",
         "  When you mix colors",
         "  Then you obtain \"green\"",
+        "  But you cannot play croquet",
         "",
       ].join("\n"))
     end
@@ -753,6 +756,7 @@ shared_examples "a BDD renderer" do
         "  And the color \"yellow\"",
         "  When you mix colors",
         "  Then you obtain \"green\"",
+        "  But you cannot play croquet",
         "",
       ].join("\n"))
     end
@@ -896,6 +900,7 @@ shared_examples "a BDD renderer" do
           '    And the color "yellow"',
           '    When you mix colors',
           '    Then you obtain "green"',
+          '    But you cannot play croquet',
           '',
           '  Scenario: Create purple',
           '    Given the color "blue"',

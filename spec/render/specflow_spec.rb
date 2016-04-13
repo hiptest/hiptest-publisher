@@ -38,6 +38,12 @@ describe 'Specflow rendering' do
         '        public void UnusedActionWord() {',
         '            Actionwords.UnusedActionWord();',
         '        }',
+        '',
+        '',
+        '        [Given("^you cannot play croquet$"), When("^you cannot play croquet$"), Then("^you cannot play croquet$")]',
+        '        public void YouCannotPlayCroquet() {',
+        '            Actionwords.YouCannotPlayCroquet();',
+        '        }',
         '    }',
         '}'
       ].join("\n")

@@ -41,6 +41,14 @@ describe 'Behat rendering' do
         '  public function youObtainColor($color){',
         '    $this->actionwords->youObtainColor($color);',
         '  }',
+        '',
+        '',
+        '  /**',
+        '   * @But /^you cannot play croquet$/',
+        '   */',
+        '  public function youCannotPlayCroquet(){',
+        '    $this->actionwords->youCannotPlayCroquet();',
+        '  }',
         '}',
         '?>'
       ].join("\n")

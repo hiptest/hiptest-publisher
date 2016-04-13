@@ -23,6 +23,10 @@ describe 'Cucumber rendering' do
         "  you_obtain_color(color)",
         "end",
         "",
+        "But /^you cannot play croquet$/ do",
+        "  you_cannot_play_croquet",
+        "end",
+        "",
       ].join("\n")
     }
   end
@@ -55,6 +59,12 @@ describe 'Cucumber/Java rendering' do
         '    @Then("^you obtain \"(.*)\"$")',
         '    public void youObtainColor(String color) {',
         '        actionwords.youObtainColor(color);',
+        '    }',
+        '',
+        '',
+        '    @But("^you cannot play croquet$")',
+        '    public void youCannotPlayCroquet() {',
+        '        actionwords.youCannotPlayCroquet();',
         '    }',
         '}'
       ].join("\n")
@@ -152,6 +162,12 @@ describe 'Cucumber/Javascript rendering' do
         '',
         '    this.Then(/^you obtain "(.*)"$/, function (color, callback) {',
         '        this.actionwords.youObtainColor(color);',
+        '        callback();',
+        '    });',
+        '',
+        '',
+        '    this.But(/^you cannot play croquet$/, function (callback) {',
+        '        this.actionwords.youCannotPlayCroquet();',
         '        callback();',
         '    });',
         '}',

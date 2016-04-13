@@ -33,6 +33,11 @@ describe 'Behave rendering' do
         '    context.actionwords.you_obtain_color(color)',
         '',
         '',
+        '',
+        '',
+        '@but(r\'you cannot play croquet\')',
+        'def impl(context):',
+        '    context.actionwords.you_cannot_play_croquet()',
         ''
       ].join("\n")
     }
