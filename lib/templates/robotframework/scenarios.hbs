@@ -1,10 +1,10 @@
 *** Settings ***
-Resource          keywords.txt
+Resource          keywords.robot
 
 *** Test Cases ***{{#if datatables_present?}}
 {{#each rendered_children.splitted_scenarios}}
 {{#if this.datatable}}{{this.name}}{{#indent}}
-[Template]{{tab}}{{this.name}} keyword
+[Template]    {{this.name}} keyword
 {{this.datatable}}{{/indent}}
 {{else}}{{normalize_with_spaces this.name}}{{#if rendered_children.uid}} (uid:{{normalize rendered_children.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
@@ -12,7 +12,7 @@ Resource          keywords.txt
 *** Keywords ***
 
 {{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
-[Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
+[Arguments]    ${{#curly}}__test_name{{/curly}}    {{join this.parameters '    '}}
 {{join this.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}
