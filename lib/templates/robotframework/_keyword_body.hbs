@@ -1,4 +1,4 @@
 {{#indent}}
-{{#if has_parameters?}}[Arguments]{{{ tab }}}{{{ join rendered_children.parameters "\t"}}}
+{{#if has_parameters?}}[Arguments]{{{ tab }}}{{{ join rendered_children.parameters "    "}}}
 {{/if}}{{#each rendered_children.body}}{{{ this }}}
 {{/each}}{{/indent}}

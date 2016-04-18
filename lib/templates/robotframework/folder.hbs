@@ -5,15 +5,15 @@ Documentation
 {{#if has_tags?}}
 Tags: {{{ join rendered_children.tags ' '}}}
 {{/if}}{{/clear_empty_lines}}{{/comment}}
-Resource          keywords.txt
+Resource          keywords.robot
 {{#unless is_empty?}}
-Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
+Test Setup    Run Keywords    {{join rendered_children.body "\n...         AND          "}}
 {{/unless}}
 *** Test Cases ***{{#if datatables_present?}}
 {{#each rendered_children.splitted_scenarios}}
 {{#if this.datatable}}{{#each this.datasets}}{{normalize_with_spaces this.scenario_name}} {{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}
-[Template]{{tab}}{{normalize_with_spaces this.scenario_name}} keyword
-{{join this.arguments '\t'}}{{/indent}}
+[Template]    {{normalize_with_spaces this.scenario_name}} keyword
+{{join this.arguments '    '}}{{/indent}}
 
 {{/each}}
 {{else}}{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
@@ -22,7 +22,7 @@ Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...        
 *** Keywords ***
 
 {{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
-[Arguments]{{tab}}{{join this.parameters '\t'}}
+[Arguments]    {{join this.parameters '    '}}
 {{join this.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}
