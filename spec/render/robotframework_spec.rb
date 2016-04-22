@@ -521,7 +521,10 @@ describe 'Render as Robot framework' do
 
       let(:sc1_no_datatable) {
         Hiptest::Nodes::Scenario.new(
-          'scenario without datatable', '', [], [], [
+          'scenario without datatable', '', [
+            Hiptest::Nodes::Tag.new('firstTag'),
+            Hiptest::Nodes::Tag.new('priority', '1'),
+          ], [], [
             Hiptest::Nodes::Step.new('action', "Do something")
           ], nil, Hiptest::Nodes::Datatable.new([])
         )
@@ -537,7 +540,10 @@ describe 'Render as Robot framework' do
 
       let(:sc1_with_datatable) {
         Hiptest::Nodes::Scenario.new(
-          'scenario with datatable', '', [], [
+          'scenario with datatable', '', [
+            Hiptest::Nodes::Tag.new('anotherTag'),
+            Hiptest::Nodes::Tag.new('priority', '2'),
+          ], [
             Hiptest::Nodes::Parameter.new('x'),
             Hiptest::Nodes::Parameter.new('y')
           ], [Hiptest::Nodes::Step.new('result', "x is greater than Pi")], nil,
@@ -634,13 +640,16 @@ describe 'Render as Robot framework' do
           "*** Test Cases ***",
           "",
           "scenario without datatable",
+          "\t[Tags]\tfirstTag\tpriority:1",
           "\t# TODO: Implement action: Do something",
           "",
           "scenario with datatable First line",
+          "\t[Tags]\tanotherTag\tpriority:2",
           "\t[Template]\tscenario with datatable keyword",
           "\tplic\tploc",
           "",
           "scenario with datatable Second line",
+          "\t[Tags]\tanotherTag\tpriority:2",
           "\t[Template]\tscenario with datatable keyword",
           "\tpluc\tplac",
           "",

@@ -340,4 +340,45 @@ describe Hiptest::HandlebarsHelper do
       expect(instance.hh_strip_regexp_delimiters(nil, 'Hey ^^', nil)).to eq('Hey ^^')
     end
   end
+
+  context 'hh_with' do
+    it 'allows to keep name in the current context' do
+      data = {
+        items: [
+          {
+            name: 'Plic',
+            subItems: [
+              {name: 1},
+              {name: 2}
+            ]
+          },
+          {
+            name: 'Ploc',
+            subItems: [
+              {name: 3},
+              {name: 4}
+            ]
+          }
+        ]
+      }
+
+      template = [
+        '{{#clear_empty_lines}}{{#each items}}',
+        '  {{#with this.name "name"}}',
+        '    {{#each this.subItems}}',
+        ' - {{name}} {{this.name}}',
+        '    {{/each}}',
+        '  {{/with}}',
+        '{{/each}}{{/clear_empty_lines}}'
+      ].join("\n")
+
+      expect(evaluate(template, data)).to eq([
+        " - Plic 1",
+        " - Plic 2",
+        " - Ploc 3",
+        " - Ploc 4"
+      ].join("\n"))
+
+    end
+  end
 end

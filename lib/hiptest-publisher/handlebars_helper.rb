@@ -70,6 +70,15 @@ module Hiptest
       end
     end
 
+    def hh_with(context, var, name, block)
+      name = name.to_s
+      current_value = context.get(name)
+      context.add_item(name, var)
+      result = block.fn(context)
+      context.add_item(name, current_value)
+      result
+    end
+
     def hh_unless(context, condition, block, else_block = nil)
       condition = !condition.empty? if condition.respond_to?(:empty?)
 

@@ -33,6 +33,7 @@ module Hiptest
           @rendered_children[:splitted_scenarios] = node.children[:scenarios].map {|sc| 
             {
               name: @rendered[sc.children[:name]],
+              tags: sc.children[:tags].map {|tag| @rendered[tag]},
               uid: @rendered[sc.children[:uid]],
               datatable: @rendered[sc.children[:datatable]],
               datasets: sc.children[:datatable].children[:datasets].map {|dataset|

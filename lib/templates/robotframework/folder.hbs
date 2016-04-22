@@ -10,15 +10,17 @@ Resource          keywords.txt
 Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
 {{/unless}}
 *** Test Cases ***{{#if datatables_present?}}
-{{#each rendered_children.splitted_scenarios}}
+{{#each rendered_children.splitted_scenarios}}{{#with this.tags "tags"}}
 {{#if this.datatable}}{{#each this.datasets}}{{normalize_with_spaces this.scenario_name}} {{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}
-[Template]{{tab}}{{normalize_with_spaces this.scenario_name}} keyword
+{{#if tags}}[Tags]{{tab}}{{{join tags "\t"}}}
+{{/if}}[Template]{{tab}}{{normalize_with_spaces this.scenario_name}} keyword
 {{join this.arguments '\t'}}{{/indent}}
 
 {{/each}}
 {{else}}{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
-{{join this.body '\n'}}{{/indent}}
-{{/if}}{{/each}}
+{{#if this.tags}}[Tags]{{tab}}{{{join this.tags "\t"}}}
+{{/if}}{{join this.body '\n'}}{{/indent}}
+{{/if}}{{/with}}{{/each}}
 *** Keywords ***
 
 {{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
