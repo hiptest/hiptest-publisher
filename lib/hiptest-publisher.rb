@@ -159,17 +159,7 @@ module Hiptest
       end
 
       if @cli_options.aw_created
-        return if diff[:created].nil?
-
-        @language_config.language_group_configs.select { |language_group_config|
-          language_group_config[:group_name] == "actionwords"
-        }.each do |language_group_config|
-          diff[:created].each do |created|
-            node_rendering_context = language_group_config.build_node_rendering_context(created[:node])
-            puts node_rendering_context[:node].render(node_rendering_context)
-            puts ""
-          end
-        end
+        print_updated_aws(diff[:created])
         return
       end
 
@@ -183,17 +173,12 @@ module Hiptest
       end
 
       if @cli_options.aw_signature_changed
-        return if diff[:signature_changed].nil?
+        print_updated_aws(diff[:signature_changed])
+        return
+      end
 
-        @language_config.language_group_configs.select { |language_group_config|
-          language_group_config[:group_name] == "actionwords"
-        }.each do |language_group_config|
-          diff[:signature_changed].each do |signature_changed|
-            node_rendering_context = language_group_config.build_node_rendering_context(signature_changed[:node])
-            puts signature_changed[:node].render(node_rendering_context)
-            puts ""
-          end
-        end
+      if @cli_options.aw_definition_changed
+        print_updated_aws(diff[:definition_changed])
         return
       end
 
@@ -221,12 +206,33 @@ module Hiptest
         puts ""
       end
 
+      unless diff[:definition_changed].nil?
+        puts "#{pluralize(diff[:definition_changed].length, "action word")} which definition changed:"
+        puts diff[:definition_changed].map {|c| "- #{c[:name]}"}.join("\n")
+        puts ""
+      end
+
       if diff.empty?
         puts "No action words changed"
         puts ""
       end
     rescue Exception => err
       reporter.dump_error(err)
+    end
+
+    def print_updated_aws(actionwords)
+        return if actionwords.nil?
+
+        @language_config.language_group_configs.select { |language_group_config|
+          language_group_config[:group_name] == "actionwords"
+        }.each do |language_group_config|
+          actionwords.each do |actionword|
+            node_rendering_context = language_group_config.build_node_rendering_context(actionword[:node])
+            puts actionword[:node].render(node_rendering_context)
+            puts ""
+          end
+        end
+        return
     end
 
     def export

@@ -73,7 +73,7 @@ class CliOptions < OpenStruct
   end
 
   def actionwords_diff?
-    actionwords_diff || aw_deleted || aw_created || aw_renamed || aw_signature_changed
+    actionwords_diff || aw_deleted || aw_created || aw_renamed || aw_signature_changed || aw_definition_changed
   end
 
   def language_framework
@@ -160,6 +160,7 @@ class OptionsParser
       Option.new(nil, 'show-actionwords-created', false, nil, "Output code for new action words", :aw_created),
       Option.new(nil, 'show-actionwords-renamed', false, nil, "Output signatures of renamed action words", :aw_renamed),
       Option.new(nil, 'show-actionwords-signature-changed', false, nil, "Output signatures of action words for which signature changed", :aw_signature_changed),
+      Option.new(nil, 'show-actionwords-definition-changed', false, nil, "Output action words for which definition changed", :aw_definition_changed),
       Option.new(nil, 'with-folders', false, nil, "Use folders hierarchy to export files in respective directories", :with_folders),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
