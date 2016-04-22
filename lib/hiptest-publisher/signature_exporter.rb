@@ -1,4 +1,5 @@
 require 'yaml'
+require 'digest/md5'
 
 module Hiptest
   class SignatureExporter
@@ -15,7 +16,8 @@ module Hiptest
       hash = {
         'name' => item.children[:name],
         'uid' => item.children[:uid],
-        'parameters' => export_parameters(item)
+        'parameters' => export_parameters(item),
+        'body_hash' => make_body_hash(item.children[:body])
       }
       hash['node'] = item if export_node
       hash
@@ -31,6 +33,10 @@ module Hiptest
       {
         'name' => parameter.children[:name]
       }
+    end
+
+    def make_body_hash(body)
+      Digest::MD5.hexdigest(body.map(&:flat_string).join(''))
     end
   end
 end

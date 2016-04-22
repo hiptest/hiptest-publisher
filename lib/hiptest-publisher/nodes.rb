@@ -69,10 +69,25 @@ module Hiptest
         end
       end
 
+      def flat_string
+        flat_childs = children.map do |key, value|
+          "#{key}: #{flatten_child(value)}"
+        end.join(", ")
+        "<#{self.class.name} [#{flat_childs}]>"
+      end
+
       private
 
       def node_kinds
         @@node_kinds ||= {}
+      end
+
+      def flatten_child(child)
+        return child.flat_string if child.is_a?(Node)
+        if child.is_a?(Array)
+          return child.map {|item| flatten_child(item)}
+        end
+        child.to_s
       end
     end
 

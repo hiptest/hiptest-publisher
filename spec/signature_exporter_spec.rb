@@ -34,11 +34,14 @@ describe Hiptest::SignatureExporter do
           "parameters" => [
             {"name" => "x"},
             {"name" => "y"}
-          ]},
+          ],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e"
+        },
         {
           "name" => "plic",
           "uid" => nil,
-          "parameters" => []
+          "parameters" => [],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e"
         }
       ])
     end
@@ -52,11 +55,13 @@ describe Hiptest::SignatureExporter do
             {"name" => "x"},
             {"name" => "y"}
           ],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e",
           "node" => aw},
         {
           "name" => "plic",
           "uid" => nil,
           "parameters" => [],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e",
           "node" => aw2
         }
       ])
@@ -72,11 +77,14 @@ describe Hiptest::SignatureExporter do
           "parameters" => [
             {"name" => "x"},
             {"name" => "y"}
-          ]},
+          ],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e"
+        },
         {
           "name" => "plic",
           "uid" => nil,
-          "parameters" => []
+          "parameters" => [],
+          "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
         }
       ])
     end
@@ -87,6 +95,7 @@ describe Hiptest::SignatureExporter do
       expect(exporter.export_item(aw)).to eq({
         "name" => "my action word",
         "parameters" => [{"name"=>"x"}, {"name"=>"y"}],
+        "body_hash" => "d41d8cd98f00b204e9800998ecf8427e",
         "uid" => "1234-5678"
       })
     end
