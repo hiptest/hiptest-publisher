@@ -95,7 +95,7 @@ Specific options:
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
-        --push-format=tap            Format of the test results (tap, junit, robot) (default: tap)
+        --push-format=tap            Format of the test results (tap, junit, nunit, robot) (default: tap)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
@@ -132,12 +132,13 @@ Posting results to Hiptest
 --------------------------
 
 You can use the options --push to push the results back to Hiptest. For this, you first need to generate the test code from a Test run by specifying option ``--test-run-id=<xxx>`` during code generation (or add it to the configuration file).
-The tests must then generate a test report that is supported by Hiptest. Currently three types of test results are handled:
+The tests must then generate a test report that is supported by Hiptest. Currently four types of test results are handled:
  - tap (Test Anything Protocol)
- - jUnit XML style
+ - jUnit XML format
+ - NUnit XML format
  - Robot framework XML output
 
-You can specify the type of export when pushing by using the option "--push-format=[tap|junit|robot]" or specifying it in the config file.
+You can specify the type of export when pushing by using the option "--push-format=[tap|junit|nunit|robot]" or specifying it in the config file.
 
 You can push multiple files at once (using wildcard) but in that case, do not forget to add quotes. For examples:
 
