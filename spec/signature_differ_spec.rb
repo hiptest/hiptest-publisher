@@ -9,12 +9,17 @@ describe Hiptest::SignatureDiffer do
   let(:exporter) { Hiptest::SignatureExporter }
   let(:differ) { Hiptest::SignatureDiffer }
 
-  let(:aw1v1) { make_actionword('My actionword', uid: 'id1') }
+  let(:aw1v1) { make_actionword('My actionword', uid: 'id1', body: [
+      Hiptest::Nodes::Step.new('action', Hiptest::Nodes::StringLiteral.new('Do something'))
+    ])
+  }
 
   let(:aw1v2) {
     make_actionword('My actionzord', uid: 'id1', parameters: [
       make_parameter('x'),
       make_parameter('y', default: literal('Hi, I am a valued parameters'))
+    ], body: [
+      Hiptest::Nodes::Step.new('action', Hiptest::Nodes::StringLiteral.new('Do something'))
     ])
   }
 
@@ -22,12 +27,31 @@ describe Hiptest::SignatureDiffer do
     make_actionword('My actionzord', uid: 'id1', parameters: [
       make_parameter('y', default: literal('Hi, I am a valued parameter')),
       make_parameter('z'),
+    ], body: [
+      Hiptest::Nodes::Step.new('action', Hiptest::Nodes::StringLiteral.new('Do something'))
     ])
   }
 
-  let(:aw2v1) { make_actionword('My actionwurst', uid: 'id2') }
+  let(:aw1v4) {
+    make_actionword('My actionzord', uid: 'id1', parameters: [
+      make_parameter('y', default: literal('Hi, I am a valued parameter')),
+      make_parameter('z'),
+    ], body: [
+      Hiptest::Nodes::Step.new('action', Hiptest::Nodes::StringLiteral.new('Do something better'))
+    ])
+  }
 
-  let(:aw2v2) { make_actionword('My actionwürst', uid: 'id2') }
+  let(:aw2v1) {
+    make_actionword('My actionwurst', uid: 'id2')
+  }
+
+  let(:aw2v2) {
+    make_actionword('My actionwürst', uid: 'id2')
+  }
+
+  let(:aw2v2) {
+    make_actionword('My actionwürst', uid: 'id2')
+  }
 
   let(:v1) {
     exporter.export_actionwords(
@@ -59,6 +83,12 @@ describe Hiptest::SignatureDiffer do
     )
   }
 
+  let(:v6) {
+    exporter.export_actionwords(
+      make_project('My project', actionwords: [aw1v4]), true
+    )
+  }
+
   it 'finds newly created action words' do
     expect(differ.diff(v1, v2)).to eq({created: [{name: 'My actionwurst', node: aw2v1}]})
   end
@@ -75,11 +105,16 @@ describe Hiptest::SignatureDiffer do
     expect(differ.diff(v4, v5)).to eq({signature_changed: [{name: 'My actionzord', node: aw1v3}]})
   end
 
+  it 'finds definition changes' do
+    expect(differ.diff(v5, v6)).to eq({definition_changed: [{name: 'My actionzord', node: aw1v4}]})
+  end
+
   it 'can find lots of things at once' do
-    expect(differ.diff(v2, v5)).to eq({
+    expect(differ.diff(v2, v6)).to eq({
       deleted: [{name: "My actionwurst"}],
-      renamed: [{name: "My actionword", new_name: "My actionzord", node: aw1v3}],
-      signature_changed: [{name: "My actionzord", node: aw1v3}]
+      renamed: [{name: "My actionword", new_name: "My actionzord", node: aw1v4}],
+      signature_changed: [{name: "My actionzord", node: aw1v4}],
+      definition_changed: [{name: 'My actionzord', node: aw1v4}]
     })
   end
 end
