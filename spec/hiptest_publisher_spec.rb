@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'fileutils'
 require 'webmock/rspec'
 require_relative '../lib/hiptest-publisher'
 
