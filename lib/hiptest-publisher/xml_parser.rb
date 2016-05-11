@@ -219,6 +219,8 @@ module Hiptest
       if datasets.empty?
         scenario.set_uid(css_first_content(scs, 'testSnapshot > uid'))
       else
+        scenario.set_uid(css_first_content(scs, ' > uid'))
+
         scs.css('testSnapshot').each do |testSnapshot|
           uid = css_first_content(testSnapshot, '> uid')
           index = css_first_content(testSnapshot, '> index').to_i

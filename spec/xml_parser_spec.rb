@@ -654,7 +654,7 @@ describe Hiptest::XMLParser do
             '</scenarioSnapshot>'
           ].join("\n"))
 
-          expect(scenario.children[:uid]).to be_nil
+          expect(scenario.children[:uid]).to eq('1234')
           datasets = scenario.children[:datatable].children[:datasets]
 
           expect(datasets.first.children[:uid]).to eq('8765')
