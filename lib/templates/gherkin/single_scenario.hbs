@@ -1,6 +1,6 @@
 {{#if has_datasets?}}
 {{#if has_tags?}}{{join rendered_children.tags ' '}}
-{{/if}}Scenario Outline: {{{ rendered_children.name }}}{{#indent}}
+{{/if}}Scenario Outline: {{{ rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{#indent}}
 {{#each rendered_children.body}}{{{ this }}}
 {{/each}}
 Examples:{{#indent}}

@@ -799,13 +799,14 @@ shared_examples "a BDD renderer" do
       end
 
       it 'adds dataset UID as parameters if set (so they appear in output)' do
+        scenario.children[:uid] = 'abcd-efgh'
         datasets = scenario.children[:datatable].children[:datasets]
         datasets.first.children[:uid] = '1234'
         datasets.last.children[:uid] = '5678'
 
         expect(rendered).to eq([
           "",
-          "Scenario Outline: Create secondary colors",
+          "Scenario Outline: Create secondary colors (uid:abcd-efgh)",
           "  Given the color \"<first_color>\"",
           "  And the color \"<second_color>\"",
           "  When you mix colors",
