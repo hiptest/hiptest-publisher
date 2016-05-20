@@ -1,0 +1,2137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project format="0.1">
+  <name>Testing CASH WITHDRAWAL (sample N°2)</name>
+  <uid>fd6f24c8-8cbe-4438-899f-084de8fb5376</uid>
+  <testPlan>
+    <folder>
+      <name>Testing CASH WITHDRAWAL (sample N°2)</name>
+      <uid>2c401045-de40-46a5-9a33-f977189a10c3</uid>
+      <order_in_parent>3692763</order_in_parent>
+    </folder>
+    <folder>
+      <name>Account Holder withdraws cash</name>
+      <uid>0b17c73a-f6bd-4cde-992f-9bf34483b15b</uid>
+      <description>As an Account Holder
+I want to withdraw cash from an ATM
+So that I can get money when the bank is closed</description>
+      <parentUid>2c401045-de40-46a5-9a33-f977189a10c3</parentUid>
+      <order_in_parent>4194304</order_in_parent>
+    </folder>
+    <folder>
+      <name>Account Holder transfers cash</name>
+      <uid>59e71d6a-d1a9-4704-9850-dc36c5cb868e</uid>
+      <description>As an Account Holder
+I want to transfer cash from an ATM
+So that I can transfer money between accounts</description>
+      <parentUid>2c401045-de40-46a5-9a33-f977189a10c3</parentUid>
+      <order_in_parent>0</order_in_parent>
+    </folder>
+  </testPlan>
+  <scenarios>
+    <scenario>
+      <name>Account has sufficient funds</name>
+      <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+      <folderUid>0b17c73a-f6bd-4cde-992f-9bf34483b15b</folderUid>
+      <order_in_parent>0</order_in_parent>
+      <datatable>
+        <dataset>
+          <name>withdraw $100</name>
+          <datasetUid>f9b9ab4a-93d5-4722-8a93-50cb83edc0e5</datasetUid>
+          <raw_data>
+            <data>
+              <name>amount</name>
+              <value>$100</value>
+            </data>
+            <data>
+              <name>ending_balance</name>
+              <value>$0</value>
+            </data>
+          </raw_data>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <stringliteral>$100</stringliteral>
+              </value>
+            </argument>
+            <argument>
+              <name>ending_balance</name>
+              <value>
+                <stringliteral>$0</stringliteral>
+              </value>
+            </argument>
+          </arguments>
+        </dataset>
+        <dataset>
+          <name>withdraw $50</name>
+          <datasetUid>e6f05e15-65ec-48db-8a96-6ece7c32c5d9</datasetUid>
+          <raw_data>
+            <data>
+              <name>amount</name>
+              <value>$50</value>
+            </data>
+            <data>
+              <name>ending_balance</name>
+              <value>$50</value>
+            </data>
+          </raw_data>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <stringliteral>$50</stringliteral>
+              </value>
+            </argument>
+            <argument>
+              <name>ending_balance</name>
+              <value>
+                <stringliteral>$50</stringliteral>
+              </value>
+            </argument>
+          </arguments>
+        </dataset>
+        <dataset>
+          <name>withdraw $20</name>
+          <datasetUid>5df5e667-064d-4ce8-9e1d-4a43bdd91fd2</datasetUid>
+          <raw_data>
+            <data>
+              <name>amount</name>
+              <value>$20</value>
+            </data>
+            <data>
+              <name>ending_balance</name>
+              <value>$80</value>
+            </data>
+          </raw_data>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <stringliteral>$20</stringliteral>
+              </value>
+            </argument>
+            <argument>
+              <name>ending_balance</name>
+              <value>
+                <stringliteral>$80</stringliteral>
+              </value>
+            </argument>
+          </arguments>
+        </dataset>
+      </datatable>
+      <parameters>
+        <parameter>
+          <name>amount</name>
+        </parameter>
+        <parameter>
+          <name>ending_balance</name>
+        </parameter>
+      </parameters>
+      <steps>
+        <call>
+          <actionword>the account balance is "balance"</actionword>
+          <annotation>given</annotation>
+          <arguments>
+            <argument>
+              <name>balance</name>
+              <value>
+                <template>
+                  <stringliteral>$100</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the machine contains enough money</actionword>
+          <annotation>and</annotation>
+        </call>
+        <call>
+          <actionword>the card is valid</actionword>
+          <annotation>and</annotation>
+        </call>
+        <call>
+          <actionword>the Account Holder requests "amount"</actionword>
+          <annotation>when</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <var>amount</var>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the ATM should dispense "amount"</actionword>
+          <annotation>then</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <var>amount</var>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the account balance should be "balance"</actionword>
+          <annotation>and</annotation>
+          <arguments>
+            <argument>
+              <name>balance</name>
+              <value>
+                <template>
+                  <var>ending_balance</var>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the card should be returned</actionword>
+          <annotation>and</annotation>
+        </call>
+      </steps>
+    </scenario>
+    <scenario>
+      <name>Account has insufficient funds</name>
+      <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+      <folderUid>0b17c73a-f6bd-4cde-992f-9bf34483b15b</folderUid>
+      <order_in_parent>4194304</order_in_parent>
+      <steps>
+        <call>
+          <actionword>the account balance is "balance"</actionword>
+          <annotation>given</annotation>
+          <arguments>
+            <argument>
+              <name>balance</name>
+              <value>
+                <template>
+                  <stringliteral>$10</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the card is valid</actionword>
+          <annotation>and</annotation>
+        </call>
+        <call>
+          <actionword>the machine contains enough money</actionword>
+          <annotation>and</annotation>
+        </call>
+        <call>
+          <actionword>the Account Holder requests "amount"</actionword>
+          <annotation>when</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <stringliteral>$20</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the ATM should not dispense any money</actionword>
+          <annotation>then</annotation>
+        </call>
+        <call>
+          <actionword>the ATM should say there are insufficient funds</actionword>
+          <annotation>and</annotation>
+        </call>
+      </steps>
+    </scenario>
+    <scenario>
+      <name>Card has been disabled</name>
+      <uid>14792732-55af-4747-b771-370af0c06a6b</uid>
+      <folderUid>0b17c73a-f6bd-4cde-992f-9bf34483b15b</folderUid>
+      <order_in_parent>6291456</order_in_parent>
+      <steps>
+        <call>
+          <actionword>the card is disabled</actionword>
+          <annotation>given</annotation>
+        </call>
+        <call>
+          <actionword>the Account Holder requests "amount"</actionword>
+          <annotation>when</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <stringliteral>$10</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the ATM should retain the card</actionword>
+          <annotation>then</annotation>
+        </call>
+        <call>
+          <actionword>the ATM should say the card has been retained</actionword>
+          <annotation>and</annotation>
+        </call>
+      </steps>
+    </scenario>
+    <scenario>
+      <name>Account has sufficient funds for transferring cash</name>
+      <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      <folderUid>59e71d6a-d1a9-4704-9850-dc36c5cb868e</folderUid>
+      <order_in_parent>0</order_in_parent>
+      <steps>
+        <call>
+          <actionword>the account balance is "balance"</actionword>
+          <annotation>given</annotation>
+          <arguments>
+            <argument>
+              <name>balance</name>
+              <value>
+                <template>
+                  <stringliteral>$100</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the savings account balance is "amount"</actionword>
+          <annotation>and</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <stringliteral>$1000</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the card is valid</actionword>
+          <annotation>and</annotation>
+        </call>
+        <call>
+          <actionword>the Account Holder transfers "amount" to the savings account</actionword>
+          <annotation>when</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <stringliteral>$20</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the ATM should dispense "amount"</actionword>
+          <annotation>and</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <stringliteral>$0</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the account balance is "balance"</actionword>
+          <annotation>and</annotation>
+          <arguments>
+            <argument>
+              <name>balance</name>
+              <value>
+                <template>
+                  <stringliteral>$80</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the savings account balance should be "amount"</actionword>
+          <annotation>and</annotation>
+          <arguments>
+            <argument>
+              <name>amount</name>
+              <value>
+                <template>
+                  <stringliteral>$1020</stringliteral>
+                </template>
+              </value>
+            </argument>
+          </arguments>
+        </call>
+        <call>
+          <actionword>the card should be returned</actionword>
+          <annotation>and</annotation>
+        </call>
+      </steps>
+    </scenario>
+  </scenarios>
+  <actionwords>
+    <actionword>
+      <name>the card is valid</name>
+      <uid>451942c6-62d3-4911-8cb4-afa5e24f6ab4</uid>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+        <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the machine contains enough money</name>
+      <uid>a4b2f484-e72d-488b-8805-f8e658602420</uid>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+        <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the card should be returned</name>
+      <uid>5aed7d04-d841-4f2f-a145-3b03a0b3db8f</uid>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the account balance is "balance"</name>
+      <uid>7750c571-a89c-4c45-ac08-9cf52d24ab10</uid>
+      <parameters>
+        <parameter>
+          <name>balance</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+        <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the Account Holder requests "amount"</name>
+      <uid>771b8bf7-59b8-4d58-84ab-5e938daac2ed</uid>
+      <parameters>
+        <parameter>
+          <name>amount</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+        <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+        <uid>14792732-55af-4747-b771-370af0c06a6b</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the ATM should dispense "amount"</name>
+      <uid>eaa0f960-a28c-48e1-b6d5-bea0aa39f3f3</uid>
+      <parameters>
+        <parameter>
+          <name>amount</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the account balance should be "balance"</name>
+      <uid>92f04aa9-d2c3-40c9-929d-6aedd13a8d13</uid>
+      <parameters>
+        <parameter>
+          <name>balance</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>ed6ab167-cd3b-490b-b9b9-a42ac2c34689</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the ATM should not dispense any money</name>
+      <uid>7e46dc9b-a388-46ec-bb60-5e32acbd4bb8</uid>
+      <callers>
+        <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the ATM should say there are insufficient funds</name>
+      <uid>34ceef68-309f-4b6b-a14b-a163f68f9715</uid>
+      <callers>
+        <uid>152ec571-9e09-45be-b648-1677e9772c7d</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the card is disabled</name>
+      <uid>ff5109e8-5297-4cc0-a7c8-fa0a5e2a920b</uid>
+      <callers>
+        <uid>14792732-55af-4747-b771-370af0c06a6b</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the ATM should retain the card</name>
+      <uid>ab626bfb-5d11-43ed-96f9-7155d432eef3</uid>
+      <callers>
+        <uid>14792732-55af-4747-b771-370af0c06a6b</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the ATM should say the card has been retained</name>
+      <uid>9abd2802-dee8-41dd-8884-2ff6ca47c074</uid>
+      <callers>
+        <uid>14792732-55af-4747-b771-370af0c06a6b</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the savings account balance is "amount"</name>
+      <uid>35c547ef-4a6e-448e-ad96-c44d45c02bc8</uid>
+      <parameters>
+        <parameter>
+          <name>amount</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the Account Holder transfers "amount" to the savings account</name>
+      <uid>3fec8412-d465-47f3-938c-e0a1ebeb1c87</uid>
+      <parameters>
+        <parameter>
+          <name>amount</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+    <actionword>
+      <name>the savings account balance should be "amount"</name>
+      <uid>51cf9494-7d89-4d0f-8000-ec30b48a5f0d</uid>
+      <parameters>
+        <parameter>
+          <name>amount</name>
+        </parameter>
+      </parameters>
+      <callers>
+        <uid>75aa0ebe-ae34-4aaf-b9f1-52243ccfffc2</uid>
+      </callers>
+    </actionword>
+  </actionwords>
+  <testRuns>
+    <testRun>
+      <name>Continuous integration</name>
+      <uid>e9bf12cf-fdfe-4cc4-b73d-2ba988737458</uid>
+      <folderSnapshots>
+        <folderSnapshot>
+          <name>Testing CASH WITHDRAWAL (sample N°2)</name>
+          <uid>d1e54c80-cd28-44cf-86fd-ef31ac842357</uid>
+          <order_in_parent>2767329</order_in_parent>
+        </folderSnapshot>
+        <folderSnapshot>
+          <name>Account Holder withdraws cash</name>
+          <uid>15005bd8-1713-42d8-82c7-dda761643afa</uid>
+          <description>As an Account Holder
+I want to withdraw cash from an ATM
+So that I can get money when the bank is closed</description>
+          <parentUid>d1e54c80-cd28-44cf-86fd-ef31ac842357</parentUid>
+          <order_in_parent>4194304</order_in_parent>
+        </folderSnapshot>
+        <folderSnapshot>
+          <name>Account Holder transfers cash</name>
+          <uid>ef6caa0c-e369-4e0a-b9eb-5b29c54e8eee</uid>
+          <description>As an Account Holder
+I want to transfer cash from an ATM
+So that I can transfer money between accounts</description>
+          <parentUid>d1e54c80-cd28-44cf-86fd-ef31ac842357</parentUid>
+          <order_in_parent>0</order_in_parent>
+        </folderSnapshot>
+      </folderSnapshots>
+      <scenarioSnapshots>
+        <scenarioSnapshot>
+          <name>Account has sufficient funds for transferring cash</name>
+          <uid>7a73d18e-4cec-439c-9fcf-80ff7a4568a7</uid>
+          <folderUid>ef6caa0c-e369-4e0a-b9eb-5b29c54e8eee</folderUid>
+          <order_in_parent>0</order_in_parent>
+          <steps>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>given</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$100</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the savings account balance is "amount"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$1000</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card is valid</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder transfers "amount" to the savings account</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$20</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should dispense "amount"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$0</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$80</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the savings account balance should be "amount"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$1020</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card should be returned</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds for transferring cash</scenarioName>
+              <uid>a8f1f78e-fba6-459c-b901-d80968d14f21</uid>
+              <datasetUid/>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the savings account balance is $1000</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder transfers $20 to the savings account</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the ATM should dispense $0</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the account balance is $80</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the savings account balance should be $1020</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+        <scenarioSnapshot>
+          <name>Account has sufficient funds</name>
+          <uid>cbc86ce9-a39d-444e-a67e-a223011abd6f</uid>
+          <folderUid>15005bd8-1713-42d8-82c7-dda761643afa</folderUid>
+          <order_in_parent>0</order_in_parent>
+          <datatable>
+            <dataset>
+              <name>withdraw $100</name>
+              <datasetUid>f9b9ab4a-93d5-4722-8a93-50cb83edc0e5</datasetUid>
+              <raw_data>
+                <data>
+                  <name>amount</name>
+                  <value>$100</value>
+                </data>
+                <data>
+                  <name>ending_balance</name>
+                  <value>$0</value>
+                </data>
+              </raw_data>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <stringliteral>$100</stringliteral>
+                  </value>
+                </argument>
+                <argument>
+                  <name>ending_balance</name>
+                  <value>
+                    <stringliteral>$0</stringliteral>
+                  </value>
+                </argument>
+              </arguments>
+            </dataset>
+            <dataset>
+              <name>withdraw $50</name>
+              <datasetUid>e6f05e15-65ec-48db-8a96-6ece7c32c5d9</datasetUid>
+              <raw_data>
+                <data>
+                  <name>amount</name>
+                  <value>$50</value>
+                </data>
+                <data>
+                  <name>ending_balance</name>
+                  <value>$50</value>
+                </data>
+              </raw_data>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <stringliteral>$50</stringliteral>
+                  </value>
+                </argument>
+                <argument>
+                  <name>ending_balance</name>
+                  <value>
+                    <stringliteral>$50</stringliteral>
+                  </value>
+                </argument>
+              </arguments>
+            </dataset>
+            <dataset>
+              <name>withdraw $20</name>
+              <datasetUid>5df5e667-064d-4ce8-9e1d-4a43bdd91fd2</datasetUid>
+              <raw_data>
+                <data>
+                  <name>amount</name>
+                  <value>$20</value>
+                </data>
+                <data>
+                  <name>ending_balance</name>
+                  <value>$80</value>
+                </data>
+              </raw_data>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <stringliteral>$20</stringliteral>
+                  </value>
+                </argument>
+                <argument>
+                  <name>ending_balance</name>
+                  <value>
+                    <stringliteral>$80</stringliteral>
+                  </value>
+                </argument>
+              </arguments>
+            </dataset>
+          </datatable>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+            <parameter>
+              <name>ending_balance</name>
+            </parameter>
+          </parameters>
+          <steps>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>given</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$100</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the machine contains enough money</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the card is valid</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder requests "amount"</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <var>amount</var>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should dispense "amount"</actionword>
+              <annotation>then</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <var>amount</var>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the account balance should be "balance"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <var>ending_balance</var>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card should be returned</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds</scenarioName>
+              <uid>f3c30b42-1994-4d32-ad61-f81eddc981aa</uid>
+              <datasetUid>f9b9ab4a-93d5-4722-8a93-50cb83edc0e5</datasetUid>
+              <datasetName>withdraw $100</datasetName>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $100</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should dispense $100</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the account balance should be $0</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds</scenarioName>
+              <uid>4e53c154-f4ab-43be-9d78-f43551c0cebd</uid>
+              <datasetUid>e6f05e15-65ec-48db-8a96-6ece7c32c5d9</datasetUid>
+              <datasetName>withdraw $50</datasetName>
+              <index>1</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $50</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should dispense $50</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the account balance should be $50</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds</scenarioName>
+              <uid>538a01bc-6025-4a9b-a8df-fbe5ad2a32bb</uid>
+              <datasetUid>5df5e667-064d-4ce8-9e1d-4a43bdd91fd2</datasetUid>
+              <datasetName>withdraw $20</datasetName>
+              <index>2</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $20</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should dispense $20</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the account balance should be $80</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+        <scenarioSnapshot>
+          <name>Account has insufficient funds</name>
+          <uid>9b2c9a90-e938-4c13-8896-f09454947e6f</uid>
+          <folderUid>15005bd8-1713-42d8-82c7-dda761643afa</folderUid>
+          <order_in_parent>4194304</order_in_parent>
+          <steps>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>given</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$10</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card is valid</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the machine contains enough money</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder requests "amount"</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$20</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should not dispense any money</actionword>
+              <annotation>then</annotation>
+            </call>
+            <call>
+              <actionword>the ATM should say there are insufficient funds</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Account has insufficient funds</scenarioName>
+              <uid>5ca96bdf-e40a-4387-89f2-5fbfd2383b13</uid>
+              <datasetUid/>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $10</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $20</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should not dispense any money</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the ATM should say there are insufficient funds</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+        <scenarioSnapshot>
+          <name>Card has been disabled</name>
+          <uid>98f7d6e9-3131-42a9-8eaf-1d897cde42ab</uid>
+          <folderUid>15005bd8-1713-42d8-82c7-dda761643afa</folderUid>
+          <order_in_parent>6291456</order_in_parent>
+          <steps>
+            <call>
+              <actionword>the card is disabled</actionword>
+              <annotation>given</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder requests "amount"</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$10</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should retain the card</actionword>
+              <annotation>then</annotation>
+            </call>
+            <call>
+              <actionword>the ATM should say the card has been retained</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Card has been disabled</scenarioName>
+              <uid>f5c6c3d0-b4b3-44ea-89ff-ebb8117787e1</uid>
+              <datasetUid/>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the card is disabled</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $10</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should retain the card</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the ATM should say the card has been retained</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797647</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+      </scenarioSnapshots>
+      <actionwordSnapshots>
+        <actionwordSnapshot>
+          <name>the card is valid</name>
+          <uid>f65f3cd2-db79-4028-aa84-072a182bbefe</uid>
+          <actionwordUid>451942c6-62d3-4911-8cb4-afa5e24f6ab4</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the machine contains enough money</name>
+          <uid>3ad8c696-529d-4ac8-ab09-3933b808cb7d</uid>
+          <actionwordUid>a4b2f484-e72d-488b-8805-f8e658602420</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the card should be returned</name>
+          <uid>b7db92b8-0b16-47de-9ed2-7495ae65bf6c</uid>
+          <actionwordUid>5aed7d04-d841-4f2f-a145-3b03a0b3db8f</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the account balance is "balance"</name>
+          <uid>f49cd6f4-a347-461a-af39-124ffc2a79f6</uid>
+          <actionwordUid>7750c571-a89c-4c45-ac08-9cf52d24ab10</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>balance</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the Account Holder requests "amount"</name>
+          <uid>580bc7bc-f15b-4380-99ad-2c366ac03fb7</uid>
+          <actionwordUid>771b8bf7-59b8-4d58-84ab-5e938daac2ed</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should dispense "amount"</name>
+          <uid>6f6224d3-1ac1-49ff-b67b-c0cafec68211</uid>
+          <actionwordUid>eaa0f960-a28c-48e1-b6d5-bea0aa39f3f3</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the account balance should be "balance"</name>
+          <uid>c0dc6242-d0f7-4bc1-a1e7-0a3a39dba7ca</uid>
+          <actionwordUid>92f04aa9-d2c3-40c9-929d-6aedd13a8d13</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>balance</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should not dispense any money</name>
+          <uid>e0b9ce48-dde9-4ee4-9191-aa32cf5e1ae1</uid>
+          <actionwordUid>7e46dc9b-a388-46ec-bb60-5e32acbd4bb8</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should say there are insufficient funds</name>
+          <uid>4b663de0-cf87-4077-8f25-b7300a96cea0</uid>
+          <actionwordUid>34ceef68-309f-4b6b-a14b-a163f68f9715</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the card is disabled</name>
+          <uid>052f41bb-e1eb-469d-9eba-69e2092ead8d</uid>
+          <actionwordUid>ff5109e8-5297-4cc0-a7c8-fa0a5e2a920b</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should retain the card</name>
+          <uid>ad2ee5a6-a2a9-4a79-a610-1e4d9a2ffb25</uid>
+          <actionwordUid>ab626bfb-5d11-43ed-96f9-7155d432eef3</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should say the card has been retained</name>
+          <uid>7ff2f32b-3ae3-4574-ac09-7696fa81dd7e</uid>
+          <actionwordUid>9abd2802-dee8-41dd-8884-2ff6ca47c074</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the savings account balance is "amount"</name>
+          <uid>eb943392-475c-4e20-aee6-915a3423b28a</uid>
+          <actionwordUid>35c547ef-4a6e-448e-ad96-c44d45c02bc8</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the Account Holder transfers "amount" to the savings account</name>
+          <uid>eafd6383-e2dc-40be-a773-ac8a598bc401</uid>
+          <actionwordUid>3fec8412-d465-47f3-938c-e0a1ebeb1c87</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the savings account balance should be "amount"</name>
+          <uid>5672094c-18f8-4576-b909-fe84eec63553</uid>
+          <actionwordUid>51cf9494-7d89-4d0f-8000-ec30b48a5f0d</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+      </actionwordSnapshots>
+    </testRun>
+    <testRun>
+      <name>Sprint 1</name>
+      <uid>910fcd2a-2f22-426e-ae76-d654251b8b4d</uid>
+      <folderSnapshots>
+        <folderSnapshot>
+          <name>Testing CASH WITHDRAWAL (sample N°2)</name>
+          <uid>9d5c7dae-39f7-4443-8254-30df53a408e1</uid>
+          <order_in_parent>2769786</order_in_parent>
+        </folderSnapshot>
+        <folderSnapshot>
+          <name>Account Holder withdraws cash</name>
+          <uid>423b65b6-8bf7-45ba-9161-e3e37be93688</uid>
+          <description>As an Account Holder
+I want to withdraw cash from an ATM
+So that I can get money when the bank is closed</description>
+          <parentUid>9d5c7dae-39f7-4443-8254-30df53a408e1</parentUid>
+          <order_in_parent>4194304</order_in_parent>
+        </folderSnapshot>
+        <folderSnapshot>
+          <name>Account Holder transfers cash</name>
+          <uid>81fed135-3b86-4bf0-a3c6-f39cd6511fe6</uid>
+          <description>As an Account Holder
+I want to transfer cash from an ATM
+So that I can transfer money between accounts</description>
+          <parentUid>9d5c7dae-39f7-4443-8254-30df53a408e1</parentUid>
+          <order_in_parent>0</order_in_parent>
+        </folderSnapshot>
+      </folderSnapshots>
+      <scenarioSnapshots>
+        <scenarioSnapshot>
+          <name>Account has sufficient funds for transferring cash</name>
+          <uid>e61b5169-0e4e-424b-af33-dcb125b856cd</uid>
+          <folderUid>81fed135-3b86-4bf0-a3c6-f39cd6511fe6</folderUid>
+          <order_in_parent>0</order_in_parent>
+          <steps>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>given</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$100</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the savings account balance is "amount"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$1000</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card is valid</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder transfers "amount" to the savings account</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$20</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should dispense "amount"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$0</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$80</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the savings account balance should be "amount"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$1020</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card should be returned</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds for transferring cash</scenarioName>
+              <uid>5af5765a-814e-4e24-be10-af7dab32eaf3</uid>
+              <datasetUid/>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the savings account balance is $1000</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder transfers $20 to the savings account</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the ATM should dispense $0</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the account balance is $80</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the savings account balance should be $1020</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+        <scenarioSnapshot>
+          <name>Account has sufficient funds</name>
+          <uid>ee4764c3-4516-4d7c-9195-03468bde42c8</uid>
+          <folderUid>423b65b6-8bf7-45ba-9161-e3e37be93688</folderUid>
+          <order_in_parent>0</order_in_parent>
+          <datatable>
+            <dataset>
+              <name>withdraw $100</name>
+              <datasetUid>f9b9ab4a-93d5-4722-8a93-50cb83edc0e5</datasetUid>
+              <raw_data>
+                <data>
+                  <name>amount</name>
+                  <value>$100</value>
+                </data>
+                <data>
+                  <name>ending_balance</name>
+                  <value>$0</value>
+                </data>
+              </raw_data>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <stringliteral>$100</stringliteral>
+                  </value>
+                </argument>
+                <argument>
+                  <name>ending_balance</name>
+                  <value>
+                    <stringliteral>$0</stringliteral>
+                  </value>
+                </argument>
+              </arguments>
+            </dataset>
+            <dataset>
+              <name>withdraw $50</name>
+              <datasetUid>e6f05e15-65ec-48db-8a96-6ece7c32c5d9</datasetUid>
+              <raw_data>
+                <data>
+                  <name>amount</name>
+                  <value>$50</value>
+                </data>
+                <data>
+                  <name>ending_balance</name>
+                  <value>$50</value>
+                </data>
+              </raw_data>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <stringliteral>$50</stringliteral>
+                  </value>
+                </argument>
+                <argument>
+                  <name>ending_balance</name>
+                  <value>
+                    <stringliteral>$50</stringliteral>
+                  </value>
+                </argument>
+              </arguments>
+            </dataset>
+            <dataset>
+              <name>withdraw $20</name>
+              <datasetUid>5df5e667-064d-4ce8-9e1d-4a43bdd91fd2</datasetUid>
+              <raw_data>
+                <data>
+                  <name>amount</name>
+                  <value>$20</value>
+                </data>
+                <data>
+                  <name>ending_balance</name>
+                  <value>$80</value>
+                </data>
+              </raw_data>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <stringliteral>$20</stringliteral>
+                  </value>
+                </argument>
+                <argument>
+                  <name>ending_balance</name>
+                  <value>
+                    <stringliteral>$80</stringliteral>
+                  </value>
+                </argument>
+              </arguments>
+            </dataset>
+          </datatable>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+            <parameter>
+              <name>ending_balance</name>
+            </parameter>
+          </parameters>
+          <steps>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>given</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$100</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the machine contains enough money</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the card is valid</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder requests "amount"</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <var>amount</var>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should dispense "amount"</actionword>
+              <annotation>then</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <var>amount</var>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the account balance should be "balance"</actionword>
+              <annotation>and</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <var>ending_balance</var>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card should be returned</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds</scenarioName>
+              <uid>5fbc5bff-1f6c-4170-9ccd-b933201182c9</uid>
+              <datasetUid>f9b9ab4a-93d5-4722-8a93-50cb83edc0e5</datasetUid>
+              <datasetName>withdraw $100</datasetName>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $100</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should dispense $100</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the account balance should be $0</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+                <testResult>
+                  <status>skipped</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds</scenarioName>
+              <uid>a97d0a08-3482-413d-ba42-2b676dc95a63</uid>
+              <datasetUid>e6f05e15-65ec-48db-8a96-6ece7c32c5d9</datasetUid>
+              <datasetName>withdraw $50</datasetName>
+              <index>1</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $50</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should dispense $50</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the account balance should be $50</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+                <testResult>
+                  <status>failed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+            <testSnapshot>
+              <scenarioName>Account has sufficient funds</scenarioName>
+              <uid>6db51f3a-8527-47db-9410-bc8a70c8648f</uid>
+              <datasetUid>5df5e667-064d-4ce8-9e1d-4a43bdd91fd2</datasetUid>
+              <datasetName>withdraw $20</datasetName>
+              <index>2</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $100</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $20</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should dispense $20</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the account balance should be $80</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the card should be returned</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+        <scenarioSnapshot>
+          <name>Account has insufficient funds</name>
+          <uid>33d663f6-99c2-4fe7-a79c-86a5253a0f56</uid>
+          <folderUid>423b65b6-8bf7-45ba-9161-e3e37be93688</folderUid>
+          <order_in_parent>4194304</order_in_parent>
+          <steps>
+            <call>
+              <actionword>the account balance is "balance"</actionword>
+              <annotation>given</annotation>
+              <arguments>
+                <argument>
+                  <name>balance</name>
+                  <value>
+                    <template>
+                      <stringliteral>$10</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the card is valid</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the machine contains enough money</actionword>
+              <annotation>and</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder requests "amount"</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$20</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should not dispense any money</actionword>
+              <annotation>then</annotation>
+            </call>
+            <call>
+              <actionword>the ATM should say there are insufficient funds</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Account has insufficient funds</scenarioName>
+              <uid>64a7b194-99ff-4663-8340-b8f33fa5b505</uid>
+              <datasetUid/>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the account balance is $10</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the card is valid</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>And the machine contains enough money</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $20</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should not dispense any money</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the ATM should say there are insufficient funds</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+        <scenarioSnapshot>
+          <name>Card has been disabled</name>
+          <uid>d8137812-b574-4da2-8cc6-a78aa61021be</uid>
+          <folderUid>423b65b6-8bf7-45ba-9161-e3e37be93688</folderUid>
+          <order_in_parent>6291456</order_in_parent>
+          <steps>
+            <call>
+              <actionword>the card is disabled</actionword>
+              <annotation>given</annotation>
+            </call>
+            <call>
+              <actionword>the Account Holder requests "amount"</actionword>
+              <annotation>when</annotation>
+              <arguments>
+                <argument>
+                  <name>amount</name>
+                  <value>
+                    <template>
+                      <stringliteral>$10</stringliteral>
+                    </template>
+                  </value>
+                </argument>
+              </arguments>
+            </call>
+            <call>
+              <actionword>the ATM should retain the card</actionword>
+              <annotation>then</annotation>
+            </call>
+            <call>
+              <actionword>the ATM should say the card has been retained</actionword>
+              <annotation>and</annotation>
+            </call>
+          </steps>
+          <testSnapshots>
+            <testSnapshot>
+              <scenarioName>Card has been disabled</scenarioName>
+              <uid>4b53864f-8f07-4649-ae14-563597e4fcc5</uid>
+              <datasetUid/>
+              <index>0</index>
+              <steps>
+                <step>
+                  <type>action</type>
+                  <value>Given the card is disabled</value>
+                </step>
+                <step>
+                  <type>action</type>
+                  <value>When the Account Holder requests $10</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>Then the ATM should retain the card</value>
+                </step>
+                <step>
+                  <type>result</type>
+                  <value>And the ATM should say the card has been retained</value>
+                </step>
+              </steps>
+              <testResults>
+                <testResult>
+                  <status>undefined</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797648</created_at>
+                </testResult>
+                <testResult>
+                  <status>passed</status>
+                  <status_author/>
+                  <step_statuses>[]</step_statuses>
+                  <created_at>1452797649</created_at>
+                </testResult>
+              </testResults>
+            </testSnapshot>
+          </testSnapshots>
+        </scenarioSnapshot>
+      </scenarioSnapshots>
+      <actionwordSnapshots>
+        <actionwordSnapshot>
+          <name>the card is valid</name>
+          <uid>b37565d0-567e-4415-8639-6862872b4ad4</uid>
+          <actionwordUid>451942c6-62d3-4911-8cb4-afa5e24f6ab4</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the machine contains enough money</name>
+          <uid>3880712e-5ef3-48e7-9b7f-141409a936be</uid>
+          <actionwordUid>a4b2f484-e72d-488b-8805-f8e658602420</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the card should be returned</name>
+          <uid>25bbf755-a51f-47b1-85d4-d6c18f651bf3</uid>
+          <actionwordUid>5aed7d04-d841-4f2f-a145-3b03a0b3db8f</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the account balance is "balance"</name>
+          <uid>6ecd9535-8c1a-4d3e-b64c-a91a84d93897</uid>
+          <actionwordUid>7750c571-a89c-4c45-ac08-9cf52d24ab10</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>balance</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the Account Holder requests "amount"</name>
+          <uid>532a715f-8d13-48a5-9658-f3763cf352a4</uid>
+          <actionwordUid>771b8bf7-59b8-4d58-84ab-5e938daac2ed</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should dispense "amount"</name>
+          <uid>d819c741-55c5-4404-9b80-cc80f6435460</uid>
+          <actionwordUid>eaa0f960-a28c-48e1-b6d5-bea0aa39f3f3</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the account balance should be "balance"</name>
+          <uid>f2d319ee-db79-426e-98e0-214e30eeef9d</uid>
+          <actionwordUid>92f04aa9-d2c3-40c9-929d-6aedd13a8d13</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>balance</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should not dispense any money</name>
+          <uid>a4ff68e5-9a0e-4ccc-b94e-1ddeb1aa5910</uid>
+          <actionwordUid>7e46dc9b-a388-46ec-bb60-5e32acbd4bb8</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should say there are insufficient funds</name>
+          <uid>9505e24b-73f3-4341-a433-60e4f352e128</uid>
+          <actionwordUid>34ceef68-309f-4b6b-a14b-a163f68f9715</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the card is disabled</name>
+          <uid>c071640a-84c0-4e90-b2a1-8665f5ea4fc6</uid>
+          <actionwordUid>ff5109e8-5297-4cc0-a7c8-fa0a5e2a920b</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should retain the card</name>
+          <uid>cb912fd6-a681-4599-ba62-47858a40dc18</uid>
+          <actionwordUid>ab626bfb-5d11-43ed-96f9-7155d432eef3</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the ATM should say the card has been retained</name>
+          <uid>7b8c1c60-abce-461f-a61f-e7e5eebd7fc7</uid>
+          <actionwordUid>9abd2802-dee8-41dd-8884-2ff6ca47c074</actionwordUid>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the savings account balance is "amount"</name>
+          <uid>b27e7157-40ea-48e2-b5f9-bd746f57268e</uid>
+          <actionwordUid>35c547ef-4a6e-448e-ad96-c44d45c02bc8</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the Account Holder transfers "amount" to the savings account</name>
+          <uid>9425f321-f466-48c1-ae7b-6cd731027500</uid>
+          <actionwordUid>3fec8412-d465-47f3-938c-e0a1ebeb1c87</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+        <actionwordSnapshot>
+          <name>the savings account balance should be "amount"</name>
+          <uid>b67f91f3-f701-47b6-9d99-d400dcecae6a</uid>
+          <actionwordUid>51cf9494-7d89-4d0f-8000-ec30b48a5f0d</actionwordUid>
+          <parameters>
+            <parameter>
+              <name>amount</name>
+            </parameter>
+          </parameters>
+        </actionwordSnapshot>
+      </actionwordSnapshots>
+    </testRun>
+  </testRuns>
+</project>
