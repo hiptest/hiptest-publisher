@@ -12,6 +12,28 @@ Hiptest Publisher
 Installing
 ----------
 
+### Docker Installation
+
+You can build the docker image or use an already built docker image for unitive/hiptest-publisher.
+
+You can use the docker image just like the command line installation. The image includes a script that runs
+docker with the necessary options. Copy the script from the image using these commands:
+
+```shell
+cid=$(docker create unitive/hiptest-publisher) &&
+docker cp $cid:/usr/src/app/bin/hiptest-publisher.sh hiptest-publisher &&
+docker rm $cid > /dev/null
+```
+
+Now you can use `hiptest-publisher` in order to run the program. 
+
+Suggestions for installation of the hiptest-publisher script:
+
+* Copy hiptest-publisher to a path directory (e.g. ~/bin or /usr/local/bin).
+* Create an alias for hiptest-publisher: `alias 'hiptest-publisher=/path/to/hiptest-publisher'`
+
+### Local Installation
+
 You need to have [Ruby installed on your machine](https://www.ruby-lang.org/en/installation/). You can then install it using gem:
 
 ```shell
