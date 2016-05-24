@@ -49,6 +49,13 @@ describe 'Behat rendering' do
         '  public function youCannotPlayCroquet(){',
         '    $this->actionwords->youCannotPlayCroquet();',
         '  }',
+        '',
+        '  /**',
+        '   * @Given /^I am on the "(.*)" home page$/',
+        '   */',
+        '  public function iAmOnTheSiteHomePage($site){',
+        '    $this->actionwords->iAmOnTheSiteHomePage($site);',
+        '  }',
         '}',
         '?>'
       ].join("\n")

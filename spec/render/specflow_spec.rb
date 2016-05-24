@@ -44,6 +44,12 @@ describe 'Specflow rendering' do
         '        public void YouCannotPlayCroquet() {',
         '            Actionwords.YouCannotPlayCroquet();',
         '        }',
+        '',
+        '',
+        '        [Given("^I am on the \"(.*)\" home page$"), When("^I am on the \"(.*)\" home page$"), Then("^I am on the \"(.*)\" home page$")]',
+        '        public void IAmOnTheSiteHomePage(string site) {',
+        '            Actionwords.IAmOnTheSiteHomePage(site);',
+        '        }',
         '    }',
         '}'
       ].join("\n")

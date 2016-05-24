@@ -27,6 +27,10 @@ describe 'Cucumber rendering' do
         "  you_cannot_play_croquet",
         "end",
         "",
+        "Given /^I am on the \"(.*)\" home page$/ do |site|",
+        "  i_am_on_the_site_home_page(site)",
+        "end",
+        ""
       ].join("\n")
     }
   end
@@ -65,6 +69,11 @@ describe 'Cucumber/Java rendering' do
         '    @But("^you cannot play croquet$")',
         '    public void youCannotPlayCroquet() {',
         '        actionwords.youCannotPlayCroquet();',
+        '    }',
+        '',
+        '    @Given("^I am on the \"(.*)\" home page$")',
+        '    public void iAmOnTheSiteHomePage(String site) {',
+        '        actionwords.iAmOnTheSiteHomePage(site);',
         '    }',
         '}'
       ].join("\n")
@@ -168,6 +177,11 @@ describe 'Cucumber/Javascript rendering' do
         '',
         '    this.But(/^you cannot play croquet$/, function (callback) {',
         '        this.actionwords.youCannotPlayCroquet();',
+        '        callback();',
+        '    });',
+        '',
+        '    this.Given(/^I am on the "(.*)" home page$/, function (site, callback) {',
+        '        this.actionwords.iAmOnTheSiteHomePage(site);',
         '        callback();',
         '    });',
         '}',

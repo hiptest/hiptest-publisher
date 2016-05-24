@@ -595,6 +595,9 @@ shared_examples "a BDD renderer" do
       make_call("I know the expected color",  annotation: "and"),
     ])
   }
+  let(:regression_folder) {
+    make_folder("Regression tests", parent: root_folder)
+  }
 
   let(:actionwords) {
     [
@@ -602,7 +605,8 @@ shared_examples "a BDD renderer" do
       make_actionword("you mix colors"),
       make_actionword("you obtain \"color\"", parameters: [make_parameter("color")]),
       make_actionword("unused action word"),
-      make_actionword("you cannot play croquet")
+      make_actionword("you cannot play croquet"),
+      make_actionword("I am on the \"site\" home page", parameters: [make_parameter("site")])
     ]
   }
 
@@ -683,9 +687,23 @@ shared_examples "a BDD renderer" do
       ]))
   }
 
+  let(:scenario_with_capital_parameters) {
+    make_scenario("Validate Nav",
+      folder: regression_folder,
+      parameters: [make_parameter("SITE_NAME")],
+      body: [
+        make_call("I am on the \"site\" home page",  annotation: "given", arguments: [make_argument("site", variable("SITE_NAME"))])
+      ],
+      datatable: Hiptest::Nodes::Datatable.new([
+        Hiptest::Nodes::Dataset.new("Open Google", [
+          make_argument("SITE_NAME", template_of_literals("http://google.com"))
+        ])
+      ]))
+  }
+
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario],
+      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters],
       tests: [create_white_test],
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
@@ -820,6 +838,24 @@ shared_examples "a BDD renderer" do
           "",
         ].join("\n"))
       end
+    end
+
+    context 'Regression tests:' do
+      context 'when a scenario parameter is capitalized'
+        let(:scenario) {scenario_with_capital_parameters}
+
+        it 'the capitals are also keeps in the datatable headers' do
+          expect(rendered).to eq([
+            '',
+            'Scenario Outline: Validate Nav',
+            '  Given I am on the "<SITE_NAME>" home page',
+            '',
+            '  Examples:',
+            '    | SITE_NAME | hiptest-uid |',
+            '    | http://google.com |  |',
+            ''
+          ].join("\n"))
+        end
     end
   end
 

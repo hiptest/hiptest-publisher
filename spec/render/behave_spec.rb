@@ -38,6 +38,11 @@ describe 'Behave rendering' do
         '@but(r\'you cannot play croquet\')',
         'def impl(context):',
         '    context.actionwords.you_cannot_play_croquet()',
+        '',
+        '',
+        '@given(r\'I am on the "(.*)" home page\')',
+        'def impl(context, site):',
+        '    context.actionwords.i_am_on_the_site_home_page(site)',
         ''
       ].join("\n")
     }
