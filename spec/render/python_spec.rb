@@ -63,7 +63,7 @@ describe 'Render as Python' do
     @call_foo_with_fighters_rendered = "self.actionwords.foo(x = 'fighters')"
     # In Hiptest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "self.actionwords.foo_bar(x = 'fighters')"
-
+    @call_with_special_characters_in_value_rendered = "self.actionwords.my_call_with_weird_arguments(__free_text = \"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\")"
 
     # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '# TODO: Implement action: "%sfighters" % (foo)'

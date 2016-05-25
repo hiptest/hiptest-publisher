@@ -384,7 +384,13 @@ describe Hiptest::HandlebarsHelper do
 
   context 'hh_escape_new_line' do
     it 'escapes new lines' do
-      expect(instance.hh_escape_new_line(nil, "my\ntext\non\nmultiple lines", nil)).to eq("my\\ntext\\non\\nmultiple lines")
+      template = "{{escape_new_line txt}}"
+      expect(evaluate(template, {txt: "my\ntext\non\nmultiple lines"})).to eq("my\\ntext\\non\\nmultiple lines")
+    end
+
+    it 'also works with blocks' do
+      template = "{{#escape_new_line}} I have some \n lines {{/escape_new_line}}"
+      expect(evaluate(template, {})).to eq(" I have some \\n lines ")
     end
   end
 end

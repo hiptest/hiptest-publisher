@@ -41,9 +41,9 @@ describe 'Render as Ruby' do
     @call_foo_with_fighters_rendered = "foo('fighters')"
     # In Hiptest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "foo_bar('fighters')"
+    @call_with_special_characters_in_value_rendered = "my_call_with_weird_arguments(\"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\")"
 
     @action_foo_fighters_rendered = '# TODO: Implement action: "#{foo}fighters"'
-
 
     # Control blocks
     @if_then_rendered = [

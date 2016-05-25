@@ -52,6 +52,17 @@ shared_context "shared render" do
     @argument = Hiptest::Nodes::Argument.new('x', @fighters)
     @call_foo_with_fighters = Hiptest::Nodes::Call.new('foo', [@argument])
     @call_foo_bar_with_fighters = Hiptest::Nodes::Call.new('foo bar', [@argument])
+    @call_with_special_characters_in_value = Hiptest::Nodes::Call.new('my call with weird arguments', [
+      Hiptest::Nodes::Argument.new('__free_text', Hiptest::Nodes::Template.new([
+        Hiptest::Nodes::StringLiteral.new([
+          "{",
+          "  this: 'is',",
+          "  some: ['JSON', 'outputed'],",
+          "  as: 'a string'",
+          "}"
+        ].join("\n"))
+      ]))
+    ])
 
     @simple_tag = Hiptest::Nodes::Tag.new('myTag')
     @valued_tag = Hiptest::Nodes::Tag.new('myTag', 'somevalue')
@@ -416,6 +427,7 @@ shared_examples "a renderer" do
       expect(rendering(@call_foo_bar)).to eq(@call_foo_bar_rendered)
       expect(rendering(@call_foo_with_fighters)).to eq(@call_foo_with_fighters_rendered)
       expect(rendering(@call_foo_bar_with_fighters)).to eq(@call_foo_bar_with_fighters_rendered)
+      expect(rendering(@call_with_special_characters_in_value)).to eq(@call_with_special_characters_in_value_rendered)
     end
 
     it 'IfThen' do

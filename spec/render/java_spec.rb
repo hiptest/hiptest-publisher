@@ -71,6 +71,7 @@ describe 'Render as Java' do
     # In Hiptest: step {action: "${foo}fighters"}
     # TODO: it is a little big strange to use a string format
     @action_foo_fighters_rendered = '// TODO: Implement action: String.format("%sfighters", foo)'
+    @call_with_special_characters_in_value_rendered = "actionwords.myCallWithWeirdArguments(\"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\");"
 
     # In Hiptest:
     # if (true)

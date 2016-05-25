@@ -69,6 +69,8 @@ describe 'Render as C#' do
     # TODO: it is a little big strange to use a string format
     @action_foo_fighters_rendered = '// TODO: Implement action: foo + "fighters"'
 
+    @call_with_special_characters_in_value_rendered = "Actionwords.MyCallWithWeirdArguments(\"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\");"
+
     # In Hiptest:
     # if (true)
     #   foo := 'fighters'

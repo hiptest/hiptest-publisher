@@ -65,6 +65,8 @@ describe 'Render as Robot framework' do
     # In Hiptest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "foo_bar\tfighters"
 
+    @call_with_special_characters_in_value_rendered = "my_call_with_weird_arguments\t{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}"
+
     # In Hiptest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '# TODO: Implement action: ${foo}fighters'
 

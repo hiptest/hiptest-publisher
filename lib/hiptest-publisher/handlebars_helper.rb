@@ -144,7 +144,11 @@ module Hiptest
       end
     end
 
-    def hh_escape_new_line(context, s, block)
+    def hh_escape_new_line(context, s, block = nil)
+      if s.is_a? Handlebars::Tree::Block
+        s = s.fn(context)
+      end
+
       s.gsub("\n", '\\n')
     end
 
