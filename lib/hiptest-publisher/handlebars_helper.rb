@@ -144,6 +144,10 @@ module Hiptest
       end
     end
 
+    def hh_escape_new_line(context, s, block)
+      s.gsub("\n", '\\n')
+    end
+
     def hh_escape_single_quotes (context, s, block)
       # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
       s ? s.gsub('\'', "\\\\'") : ""

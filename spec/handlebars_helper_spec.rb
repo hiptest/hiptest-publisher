@@ -381,4 +381,10 @@ describe Hiptest::HandlebarsHelper do
 
     end
   end
+
+  context 'hh_escape_new_line' do
+    it 'escapes new lines' do
+      expect(instance.hh_escape_new_line(nil, "my\ntext\non\nmultiple lines", nil)).to eq("my\\ntext\\non\\nmultiple lines")
+    end
+  end
 end
