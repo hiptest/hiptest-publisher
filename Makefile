@@ -8,7 +8,7 @@ default : test
 Gemfile.lock : Gemfile
 	docker run --rm -v "$$(pwd)":/usr/src/app -w /usr/src/app ruby:2.3 bundle install
 
-DOCKER_IMAGE = unitive/hiptest-publisher
+DOCKER_IMAGE = hiptest/hiptest-publisher
 
 docker-image :
 	docker build -t $(DOCKER_IMAGE) .

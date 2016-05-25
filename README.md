@@ -14,14 +14,14 @@ Installing
 
 ### Docker Installation
 
-You can build the docker image or use an already built docker image for unitive/hiptest-publisher.
+You can build the docker image or use an already built docker image for hiptest/hiptest-publisher.
 
 You can use the docker image just like the command line installation. The image includes a script that runs
 docker with the necessary options. Copy the script from the image using these commands:
 
 ```shell
-cid=$(docker create unitive/hiptest-publisher) &&
-docker cp $cid:/usr/src/app/bin/hiptest-publisher.sh hiptest-publisher &&
+cid=$(docker create hiptest/hiptest-publisher) &&
+docker cp $cid:/usr/src/app/bin/hiptest-publisher-docker hiptest-publisher &&
 docker rm $cid > /dev/null
 ```
 

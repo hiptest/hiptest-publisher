@@ -1,0 +1,21 @@
+# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for
+# more about ignoring files.
+
+# Ignore config files
+*.config
+
+# Ignore bundler config & binstubs
+.bundle
+
+# Ignore all logfiles and tempfiles.
+log/*.log
+tmp
+coverage
+pkg
+
+# Ignore IDE files
+*.sublime-project
+*.sublime-workspace
+
+# Ignore gem
+*.gem
