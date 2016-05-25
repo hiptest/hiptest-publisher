@@ -17,7 +17,7 @@ describe 'Render as Robot framework' do
     @pi_rendered = '3.14'
 
     # In Hiptest: false
-    @false_rendered = 'false'
+    @false_rendered = 'False'
 
     # In Hiptest: "${foo}fighters"
     @foo_template_rendered = '${foo}fighters'
@@ -584,7 +584,7 @@ describe 'Render as Robot framework' do
           'scenario with datatable', '', [], [
             Hiptest::Nodes::Parameter.new('y'),
             Hiptest::Nodes::Parameter.new('z')
-          ], [Hiptest::Nodes::Step.new('result', "Observe some stuff here")], nil, 
+          ], [Hiptest::Nodes::Step.new('result', "Observe some stuff here")], nil,
           Hiptest::Nodes::Datatable.new([
             Hiptest::Nodes::Dataset.new('Will not be rendered anyway ....', [
               Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('plic')),

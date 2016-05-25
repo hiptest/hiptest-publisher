@@ -15,7 +15,7 @@ describe 'Render as Python' do
     @pi_rendered = '3.14'
 
     # In Hiptest: false
-    @false_rendered = 'false'
+    @false_rendered = 'False'
 
     # In Hiptest: "${foo}fighters"
     @foo_template_rendered = '"%sfighters" % (foo)'
@@ -73,7 +73,7 @@ describe 'Render as Python' do
     #   foo := 'fighters'
     #end
     @if_then_rendered = [
-        "if (true):",
+        "if (True):",
         "    foo = 'fighters'"
       ].join("\n")
 
@@ -84,7 +84,7 @@ describe 'Render as Python' do
     #   fighters := 'foo'
     #end
     @if_then_else_rendered = [
-        "if (true):",
+        "if (True):",
         "    foo = 'fighters'",
         "else:",
         "    fighters = 'foo'"

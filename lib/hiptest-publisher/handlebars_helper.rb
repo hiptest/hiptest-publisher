@@ -19,6 +19,7 @@ module Hiptest
         :normalize_with_dashes,
         :normalize_with_spaces,
         :underscore,
+        :capitalize,
         :camelize,
         :camelize_lower,
         :camelize_upper,
