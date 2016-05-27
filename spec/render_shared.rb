@@ -610,6 +610,9 @@ shared_examples "a BDD renderer" do
   let(:regression_folder) {
     make_folder("Regression tests", parent: root_folder)
   }
+  let(:gherkin_special_arguments_folder) {
+    make_folder('Gherkin special arguments', parent: root_folder)
+  }
 
   let(:actionwords) {
     [
@@ -713,9 +716,26 @@ shared_examples "a BDD renderer" do
       ]))
   }
 
+  let(:scenario_with_freetext_argument) {
+    make_scenario("Open a site with comments",
+      folder: gherkin_special_arguments_folder,
+      parameters: [],
+      body: [
+        make_call("I am on the \"site\" home page", annotation: "when", arguments: [
+          make_argument('site', template_of_literals("http://google.com")),
+          make_argument('__free_text', template_of_literals([
+            "Some explanations when opening the site:",
+            " - for example one explanation",
+            " - and another one"
+          ].join("\n")))
+        ]),
+        make_call("stuff happens", annotation: 'then')
+      ])
+  }
+
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters],
+      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument],
       tests: [create_white_test],
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
@@ -849,6 +869,27 @@ shared_examples "a BDD renderer" do
           "    | red | blue | purple | uid:5678 |",
           "",
         ].join("\n"))
+      end
+    end
+
+    context 'Gherkin special characters' do
+      context 'DocString' do
+        let(:scenario) {scenario_with_freetext_argument}
+
+        it "is rendered when the argument is called '__free_text'" do
+          expect(rendered).to eq([
+            '',
+            'Scenario: Open a site with comments',
+            '  When I am on the "http://google.com" home page',
+            '  """',
+            "  Some explanations when opening the site:",
+            "   - for example one explanation",
+            "   - and another one",
+            '  """',
+            '  Then stuff happens',
+            ''
+          ].join("\n"))
+        end
       end
     end
 

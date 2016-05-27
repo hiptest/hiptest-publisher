@@ -50,6 +50,18 @@ module Hiptest
           }
         end
 
+        if node.is_a?(Hiptest::Nodes::Call)
+          # For Gherkin, we need the __free_text argument rendered.
+
+          free_text_arg = node.children[:arguments].select do |arg|
+            arg.children[:name] == '__free_text'
+          end.first
+
+          unless free_text_arg.nil?
+            @rendered_children[:free_text_arg] = @rendered[free_text_arg.children[:value]]
+          end
+        end
+
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
         @rendered[node] = render_node(node, super(node))
       elsif node.is_a? Array
