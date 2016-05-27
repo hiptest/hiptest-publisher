@@ -135,6 +135,11 @@ module Hiptest
       s ? s.gsub('"', '\\"') : ""
     end
 
+    def hh_escape_single_quotes (context, s, block)
+      # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
+      s ? s.gsub('\'', "\\\\'") : ""
+    end
+
     def hh_escape_backslashes_and_double_quotes (context, s, block)
       if s
         s.gsub('\\') { |c| c*2 }.
@@ -152,9 +157,12 @@ module Hiptest
       s.gsub("\n", '\\n')
     end
 
-    def hh_escape_single_quotes (context, s, block)
-      # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
-      s ? s.gsub('\'', "\\\\'") : ""
+    def hh_remove_surrounding_quotes(context, s, block = nil)
+      if s.is_a? Handlebars::Tree::Block
+        s = s.fn(context)
+      end
+
+      s.gsub(/^("|')|("|')$/, '')
     end
 
     def hh_comment (context, commenter, block)

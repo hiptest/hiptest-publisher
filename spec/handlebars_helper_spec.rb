@@ -393,4 +393,31 @@ describe Hiptest::HandlebarsHelper do
       expect(evaluate(template, {})).to eq(" I have some \\n lines ")
     end
   end
+
+  context 'hh_remove_surrounding_quotes' do
+    it 'removes simple or double quotes at the beginning or the end of the text' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '"some text"'})).to eq("some text")
+      expect(evaluate(template, {txt: "'some text'"})).to eq("some text")
+    end
+
+    it 'only removes one quote' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '"""some text"""'})).to eq('""some text""')
+
+    end
+
+    it 'leaves intact quotes inside the text' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '"some "awesome" text"'})).to eq('some "awesome" text')
+    end
+
+    it 'also works with blocks' do
+      template = '{{#remove_surrounding_quotes}}"This is "my" text"{{/remove_surrounding_quotes}}'
+      expect(evaluate(template, {})).to eq('This is "my" text')
+    end
+  end
 end
