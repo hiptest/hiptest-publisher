@@ -46,10 +46,10 @@ describe 'Render as Python' do
     @foo_list_rendered = "[foo, 'fighters']"
 
     # In Hiptest: foo: 'fighters'
-    @foo_fighters_prop_rendered = "foo: 'fighters'"
+    @foo_fighters_prop_rendered = "'foo': 'fighters'"
 
     # In Hiptest: {foo: 'fighters', Alt: J}
-    @foo_dict_rendered = "{foo: 'fighters', Alt: J}"
+    @foo_dict_rendered = "{'foo': 'fighters', 'Alt': J}"
 
     # In Hiptest: foo := 'fighters'
     @assign_fighters_to_foo_rendered = "foo = 'fighters'"
