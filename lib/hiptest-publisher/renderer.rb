@@ -22,45 +22,32 @@ module Hiptest
       @template_finder = context.template_finder
     end
 
+    def walk_call(call)
+      # For Gherkin, we need the __free_text argument rendered.
+      free_text_arg = call.children[:arguments].select do |arg|
+        arg.children[:name] == '__free_text'
+      end.first
+
+      unless free_text_arg.nil?
+        @rendered_children[:free_text_arg] = @rendered[free_text_arg.children[:value]]
+      end
+
+      super(call)
+    end
+
+    def walk_scenarios(scs)
+      walk_scenario_container(scs)
+      super(scs)
+    end
+
+    def walk_folder(folder)
+      walk_scenario_container(folder)
+      super(folder)
+    end
+
     def call_node_walker(node)
       if node.is_a? Hiptest::Nodes::Node
         @rendered_children = {}
-
-        if node.is_a?(Hiptest::Nodes::Folder) || node.is_a?(Hiptest::Nodes::Scenarios)
-          # For Robot framework, we need direct access to every scenario
-          # datatables and body rendered ....
-
-          @rendered_children[:splitted_scenarios] = node.children[:scenarios].map {|sc| 
-            {
-              name: @rendered[sc.children[:name]],
-              tags: sc.children[:tags].map {|tag| @rendered[tag]},
-              uid: @rendered[sc.children[:uid]],
-              datatable: @rendered[sc.children[:datatable]],
-              datasets: sc.children[:datatable].children[:datasets].map {|dataset|
-                {
-                  scenario_name: @rendered[sc.children[:name]],
-                  name: @rendered[dataset.children[:name]],
-                  uid: @rendered[dataset.children[:uid]],
-                  arguments: @rendered[dataset.children[:arguments]]
-                }
-              },
-              parameters:  @rendered[sc.children[:parameters]],
-              body: @rendered[sc.children[:body]]
-            }
-          }
-        end
-
-        if node.is_a?(Hiptest::Nodes::Call)
-          # For Gherkin, we need the __free_text argument rendered.
-
-          free_text_arg = node.children[:arguments].select do |arg|
-            arg.children[:name] == '__free_text'
-          end.first
-
-          unless free_text_arg.nil?
-            @rendered_children[:free_text_arg] = @rendered[free_text_arg.children[:value]]
-          end
-        end
 
         node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
         @rendered[node] = render_node(node, super(node))
@@ -78,6 +65,32 @@ module Hiptest
       render_context[:context] = @context
 
       @template_finder.get_compiled_handlebars(node.kind).call(render_context)
+    end
+
+    private
+
+    def walk_scenario_container(container)
+     # For Robot framework, we need direct access to every scenario
+     # datatables and body rendered.
+
+      @rendered_children[:splitted_scenarios] = container.children[:scenarios].map {|sc|
+        {
+          name: @rendered[sc.children[:name]],
+          tags: sc.children[:tags].map {|tag| @rendered[tag]},
+          uid: @rendered[sc.children[:uid]],
+          datatable: @rendered[sc.children[:datatable]],
+          datasets: sc.children[:datatable].children[:datasets].map {|dataset|
+            {
+              scenario_name: @rendered[sc.children[:name]],
+              name: @rendered[dataset.children[:name]],
+              uid: @rendered[dataset.children[:uid]],
+              arguments: @rendered[dataset.children[:arguments]]
+            }
+          },
+          parameters:  @rendered[sc.children[:parameters]],
+          body: @rendered[sc.children[:body]]
+        }
+      }
     end
   end
 end
