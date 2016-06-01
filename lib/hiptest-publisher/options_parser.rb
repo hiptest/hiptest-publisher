@@ -147,6 +147,7 @@ class OptionsParser
       Option.new('l', 'language=LANG', 'ruby', String, "Target language", :language),
       Option.new('f', 'framework=FRAMEWORK', '', String, "Test framework to use", :framework),
       Option.new('o', 'output-directory=PATH', '.', String, "Output directory", :output_directory),
+      Option.new(nil, 'filename-pattern=PATTERN', nil, String, "Filename pattern (containing %s)", :filename_pattern),
       Option.new('c', 'config-file=PATH', nil, String, "Configuration file", :config),
       Option.new(nil, 'overriden-templates=PATH', '', String, "Folder for overriden templates", :overriden_templates),
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run", :test_run_id),
@@ -354,6 +355,7 @@ end
 class LanguageGroupConfig
   def initialize(user_params, language_group_params = nil)
     @output_directory = user_params.output_directory || ""
+    @filename_pattern = user_params.filename_pattern
     @split_scenarios = user_params.split_scenarios
     @with_folders = user_params.with_folders
     @leafless_export = user_params.leafless_export
@@ -366,12 +368,16 @@ class LanguageGroupConfig
     @language_group_params[key]
   end
 
+  def filename_pattern
+    @filename_pattern || self[:named_filename]
+  end
+
   def with_folders?
     @with_folders && (node_name == :scenarios || node_name == :folders)
   end
 
   def splitted_files?
-    if self[:named_filename].nil?
+    if filename_pattern.nil?
       # if we can't give a different name for each file, we can't split them
       false
     elsif self[:filename].nil?
@@ -384,10 +390,10 @@ class LanguageGroupConfig
   end
 
   def can_name_files?
-    if self[:named_filename]
-      splitted_files? || with_folders?
-    else
+    if filename_pattern.nil?
       false
+    else
+      splitted_files? || with_folders?
     end
   end
 
@@ -491,7 +497,7 @@ class LanguageGroupConfig
   def output_filename(node)
     if can_name_files?
       name = normalized_filename(node.children[:name] || '')
-      self[:named_filename].gsub('%s', name)
+      filename_pattern.gsub('%s', name)
     else
       self[:filename]
     end

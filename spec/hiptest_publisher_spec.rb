@@ -733,4 +733,26 @@ describe Hiptest::Publisher do
       expect_same_files("samples/expected_output/Hiptest publisher-selenium", output_dir)
     end
   end
+
+  describe "--filename-pattern" do
+    # Only works --with-folders
+    def run_publisher_command(*extra_args)
+      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+        to_return(body: File.read('samples/xml_input/cash_withdrawal.xml'))
+      args = [
+        "--language", "javascript",
+        "--framework", "mocha",
+        "--output-directory", output_dir,
+        "--with-folders",
+        "--token", "123456789",
+      ] + extra_args
+      publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
+      publisher.run
+    end
+
+    it "works" do
+      run_publisher_command("--filename-pattern", "%s.spec.js")
+      expect_same_files("samples/expected_output/filename-pattern", output_dir)
+    end
+  end
 end
