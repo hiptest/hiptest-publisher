@@ -446,6 +446,28 @@ describe Hiptest::GherkinAdder do
     end
   end
 
+  context "action word with special parameters" do
+    let(:actionword_name) { "I open \"site\" and see:" }
+
+    let(:actionword) {
+      make_actionword(actionword_name, parameters: [
+        make_parameter("site"),
+        make_parameter("__free_text", default: literal(""))
+      ])
+    }
+
+    let(:call) {
+      make_call(actionword_name, arguments: [
+        make_argument("site", literal("Google")),
+        make_argument("__free_text", literal("I'm feeling lucky"))
+      ])
+    }
+
+    it 'does not render the __free_text argument (the template will do it)' do
+      expect(gherkin_text).to eq("* I open \"Google\" and see:")
+    end
+  end
+
   context "call to unknown actionword" do
     let(:call) { make_call("Hi \"name\"", annotation: "given") }
 

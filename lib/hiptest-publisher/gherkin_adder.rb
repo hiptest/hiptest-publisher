@@ -62,7 +62,7 @@ module Hiptest
         end
       end
 
-      missing_parameter_names = all_arguments.keys - inline_parameter_names
+      missing_parameter_names = all_arguments.keys - inline_parameter_names - ['__free_text']
 
       prettified = call_chunks.join("\"")
       missing_parameter_names.each do |missing_parameter_name|
