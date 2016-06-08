@@ -16,6 +16,10 @@ describe 'Render as Ruby' do
     @foo_variable_rendered = 'foo'
     @foo_bar_variable_rendered = 'foo_bar'
 
+    # symbols
+    @foo_symbol_rendered = ':foo'
+    @foo_fighters_symbol_rendered = ':"foo(fighters)"'
+
     # Accessors
     @foo_dot_fighters_rendered = 'foo.fighters'
     @foo_brackets_fighters_rendered = "foo['fighters']"

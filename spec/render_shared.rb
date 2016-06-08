@@ -22,6 +22,13 @@ shared_context "shared render" do
     @foo_bar_variable = Hiptest::Nodes::Variable.new('foo bar')
     @x_variable = Hiptest::Nodes::Variable.new('x')
 
+    @foo_symbol = Hiptest::Nodes::Symbol.new('foo', '')
+    @foo_fighters_symbol = Hiptest::Nodes::Symbol.new('foo(fighters)', '"')
+
+    # Except for Ruby, they will be rendered as it.
+    @foo_symbol_rendered = 'foo'
+    @foo_fighters_symbol_rendered = 'foo(fighters)'
+
     @foo_fighters_prop = Hiptest::Nodes::Property.new(@foo_variable, @fighters)
     @foo_dot_fighters = Hiptest::Nodes::Field.new(@foo_variable, 'fighters')
     @foo_brackets_fighters = Hiptest::Nodes::Index.new(@foo_variable, @fighters)
@@ -379,6 +386,11 @@ shared_examples "a renderer" do
 
     it 'Variable' do
       expect(rendering(@foo_variable)).to eq(@foo_variable_rendered)
+    end
+
+    it 'Symbols' do
+      expect(rendering(@foo_symbol)).to eq(@foo_symbol_rendered)
+      expect(rendering(@foo_fighters_symbol)).to eq(@foo_fighters_symbol_rendered)
     end
 
     it 'Property' do

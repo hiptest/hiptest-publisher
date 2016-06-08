@@ -127,6 +127,26 @@ describe Hiptest::XMLParser do
       expect(node.children[:name]).to eq('my_var')
     end
 
+    it 'symbols' do
+      node = build_node("<symbol><value>plop</value></symbol>")
+
+      expect(node).to be_a(Hiptest::Nodes::Symbol)
+      expect(node.children[:delimiter]).to be_nil
+      expect(node.children[:value]).to eq('plop')
+
+      node = build_node("<symbol><delimiter /><value>plop</value></symbol>")
+
+      expect(node).to be_a(Hiptest::Nodes::Symbol)
+      expect(node.children[:delimiter]).to eq("")
+      expect(node.children[:value]).to eq('plop')
+
+      node = build_node("<symbol><delimiter>'</delimiter><value>plop</value></symbol>")
+
+      expect(node).to be_a(Hiptest::Nodes::Symbol)
+      expect(node.children[:delimiter]).to eq("'")
+      expect(node.children[:value]).to eq('plop')
+    end
+
     it 'field' do
       node = build_node("
         <field>

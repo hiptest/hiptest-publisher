@@ -121,6 +121,13 @@ module Hiptest
       end
     end
 
+    class Symbol < Node
+      def initialize(value, delimiter)
+        super()
+        @children = {:delimiter => delimiter, :value => value}
+      end
+    end
+
     class Property < Node
       def initialize(key, value)
         super()

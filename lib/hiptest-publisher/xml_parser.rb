@@ -47,6 +47,13 @@ module Hiptest
       Hiptest::Nodes::Variable.new(variable.content)
     end
 
+    def build_symbol(symbol)
+      Hiptest::Nodes::Symbol.new(
+        css_first_content(symbol, '> value'),
+        css_first_content(symbol, '> delimiter')
+      )
+    end
+
     def build_field(field)
       Hiptest::Nodes::Field.new(
         build_node(css_first(field, '> base > *')),
