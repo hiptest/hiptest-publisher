@@ -76,6 +76,10 @@ class CliOptions < OpenStruct
     actionwords_diff || aw_deleted || aw_created || aw_renamed || aw_signature_changed || aw_definition_changed
   end
 
+  def push?
+    push && !push.empty?
+  end
+
   def language_framework
     if framework.empty?
       language

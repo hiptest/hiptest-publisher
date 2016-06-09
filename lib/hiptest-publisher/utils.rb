@@ -35,25 +35,6 @@ def singularize(name)
   name.to_s.chomp("s")
 end
 
-def make_url(options)
-  if push?(options)
-    "#{options.site}/import_test_results/#{options.token}/#{options.push_format}"
-  else
-    base_url = "#{options.site}/publication/#{options.token}"
-    if options.test_run_id.nil? || options.test_run_id.empty?
-      "#{base_url}/#{options.leafless_export ? 'leafless_tests' : 'project'}"
-    else
-      "#{base_url}/test_run/#{options.test_run_id}"
-    end
-  end
-end
-
-def fetch_project_export(options)
-  url = make_url(options)
-
-  open(url, "User-Agent" => 'Ruby/hiptest-publisher', :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE)
-end
-
 def show_status_message(message, status=nil)
   status_icon = " "
   output = STDOUT
@@ -86,26 +67,6 @@ rescue
   raise
 ensure
   show_status_message message, status
-end
-
-def push?(options)
-  options.push && !options.push.empty?
-end
-
-def push_results(options)
-  # Code from: https://github.com/nicksieger/multipart-post
-  url = URI.parse(make_url(options))
-  use_ssl = (url.scheme == 'https')
-  uploaded = {}
-
-  Dir.glob(options.push.gsub('\\', '/')).each_with_index do |filename, index|
-    uploaded["file-#{filename.normalize}"] = UploadIO.new(File.new(filename), "text", filename)
-  end
-
-  req = Net::HTTP::Post::Multipart.new(url.path, uploaded)
-  response = Net::HTTP.start(url.host, url.port, :use_ssl => use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
-    http.request(req)
-  end
 end
 
 def clean_path(path)

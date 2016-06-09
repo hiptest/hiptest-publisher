@@ -76,24 +76,4 @@ describe 'Hiptest publisher utils' do
       expect(singularize(:actionword)).to eq("actionword")
     end
   end
-
-  describe 'make_url' do
-    it 'creates url for tests generation' do
-      args = ["--token", "1234"]
-      options = OptionsParser.parse(args, NullReporter.new)
-      expect(make_url(options)).to eq("https://hiptest.net/publication/1234/project")
-    end
-
-    it 'creates url for tests generation from a test run' do
-      args = ["--token", "1234", "--test-run-id", "98"]
-      options = OptionsParser.parse(args, NullReporter.new)
-      expect(make_url(options)).to eq("https://hiptest.net/publication/1234/test_run/98")
-    end
-
-    it 'creates url to push results' do
-      args = ["--token", "1234", "--push", "myfile.tap"]
-      options = OptionsParser.parse(args, NullReporter.new)
-      expect(make_url(options)).to eq("https://hiptest.net/import_test_results/1234/tap")
-    end
-  end
 end

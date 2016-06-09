@@ -5,6 +5,7 @@ require 'yaml'
 
 require 'hiptest-publisher/formatters/reporter'
 require 'hiptest-publisher/cli_options_checker'
+require 'hiptest-publisher/client'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/options_parser'
@@ -24,12 +25,13 @@ module Hiptest
     def initialize(args, listeners: nil, exit_on_bad_arguments: true)
       @reporter = Reporter.new(listeners)
       @cli_options = OptionsParser.parse(args, reporter)
+      @client = Hiptest::Client.new(@cli_options)
       # pass false to prevent hiptest-publisher from exiting, useful when used embedded
       @exit_on_bad_arguments = exit_on_bad_arguments
     end
 
     def run
-      puts "URL: #{make_url(@cli_options)}".white if @cli_options.verbose
+      puts "URL: #{@client.url}".white if @cli_options.verbose
       begin
         CliOptionsChecker.new(@cli_options, reporter).check!
       rescue CliOptionError => e
@@ -43,7 +45,7 @@ module Hiptest
         return
       end
 
-      if push?(@cli_options)
+      if @cli_options.push?
         post_results
         return
       end
@@ -72,7 +74,7 @@ module Hiptest
 
     def fetch_xml_file
       with_status_message "Fetching data from Hiptest" do
-        fetch_project_export(@cli_options)
+        @client.fetch_project_export
       end
     rescue Exception => err
       puts "Unable to open the file, please check that the token is correct".red
@@ -274,7 +276,7 @@ module Hiptest
     def post_results
       response = nil
       with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
-        response = push_results(@cli_options)
+        response = @client.push_results
       end
       passed_count = JSON.parse(response.body)['test_import'].size
       with_status_message "#{pluralize(passed_count, "test")} imported" do

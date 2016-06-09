@@ -22,7 +22,7 @@ module Hiptest
 
       check_secret_token
 
-      if push?(cli_options)
+      if cli_options.push?
         check_push_file
       else
         check_output_directory
