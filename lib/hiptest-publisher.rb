@@ -50,14 +50,10 @@ module Hiptest
         return
       end
 
-      if @cli_options.xml_file
-        xml = IO.read(@cli_options.xml_file)
-      else
-        xml = fetch_xml_file
+      get_xml_file do |xml|
+        return if xml.nil?
+        @project = get_project(xml)
       end
-      return if xml.nil?
-
-      @project = get_project(xml)
 
       if @cli_options.actionwords_signature
         export_actionword_signature
@@ -70,6 +66,17 @@ module Hiptest
       end
 
       export
+    end
+
+    def get_xml_file
+      if @cli_options.xml_file
+        xml = open(@cli_options.xml_file)
+      else
+        xml = fetch_xml_file
+      end
+      yield xml
+    ensure
+      xml && xml.close
     end
 
     def fetch_xml_file

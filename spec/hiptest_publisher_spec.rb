@@ -14,6 +14,7 @@ describe Hiptest::Publisher do
   before(:each) {
     # partially prevent printing on stdout during rspec run (hacky! comment to use pry correctly)
     allow(STDOUT).to receive(:print)
+    allow(STDERR).to receive(:print)
   }
 
   def have_printed(message)
@@ -56,6 +57,19 @@ describe Hiptest::Publisher do
       publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
       publisher.run
       expect_same_files("samples/expected_output/Hiptest publisher-rspec", output_dir)
+    end
+
+    it "can handle bad URL" do
+      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+        to_raise(StandardError)
+      args = [
+        "--language", "ruby",
+        "--token", "123456789",
+      ]
+      publisher = Hiptest::Publisher.new(args)
+      expect{
+        publisher.run
+      }.to output(a_string_including("Unable to open the file, please check that the token is correct")).to_stdout
     end
 
     it "displays exporting scenarios, actionwords and actionword signature" do
