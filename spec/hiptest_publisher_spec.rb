@@ -525,6 +525,14 @@ describe Hiptest::Publisher do
           run_publisher_expecting_exit("--token", "abc")
         }.to output(a_string_including("Invalid format --token=\"abc\": the project secret token must be numeric")).to_stdout
       end
+
+      context "with --verbose and --test-run-name" do
+        it "outputs an error message that token must be numeric *before* getting test runs list" do
+          expect {
+            run_publisher_expecting_exit("--token", "abc", "--verbose")
+          }.to output(a_string_including("Invalid format --token=\"abc\": the project secret token must be numeric")).to_stdout
+        end
+      end
     end
 
     context "with non-numeric test-run-id" do

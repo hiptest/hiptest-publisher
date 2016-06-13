@@ -3,65 +3,6 @@ require_relative "../lib/hiptest-publisher/formatters/reporter"
 require_relative '../lib/hiptest-publisher/utils'
 
 describe 'Hiptest publisher utils' do
-  describe 'show_status_message' do
-    before do
-      allow(STDOUT).to receive(:print)
-      allow(STDERR).to receive(:print)
-    end
-
-    context "is a tty" do
-      before do
-        allow($stdout).to receive(:tty?).and_return(true)
-      end
-
-      it 'sends a message on STDOUT with brackets before' do
-        show_status_message('My message')
-        expect(STDOUT).to have_received(:print).with("[ ] My message\r\e[1A\n").once
-      end
-
-      it 'if status is :success, it also adds a green checkbox and goes to the next line' do
-        show_status_message('My message', :success)
-        expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
-      end
-
-      it 'if status is :failure, it adds a red checkbox and sends to STDERR with a new line character' do
-        show_status_message('My message', :failure)
-        expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\n").once
-      end
-    end
-
-    context "not a tty" do
-      before do
-        allow($stdout).to receive(:tty?).and_return(false)
-      end
-
-      it 'does not output anything if no status' do
-        show_status_message('My message')
-        expect(STDOUT).not_to have_received(:print)
-      end
-
-      it 'outputs normally if status' do
-        show_status_message('My message', :success)
-        expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
-      end
-    end
-
-    context "unable to guess terminal size" do
-      before do
-        allow(IO.console).to receive(:winsize).and_return([0, 0])
-      end
-
-      it 'does not output anything if no status' do
-        show_status_message('My message')
-        expect(STDOUT).not_to have_received(:print)
-      end
-
-      it 'outputs normally if status' do
-        show_status_message('My message', :success)
-        expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
-      end
-    end
-  end
 
   describe "singularize" do
     it "singularizes a plural form" do

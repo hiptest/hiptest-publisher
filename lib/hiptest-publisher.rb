@@ -25,13 +25,12 @@ module Hiptest
     def initialize(args, listeners: nil, exit_on_bad_arguments: true)
       @reporter = Reporter.new(listeners)
       @cli_options = OptionsParser.parse(args, reporter)
-      @client = Hiptest::Client.new(@cli_options)
+      @client = Hiptest::Client.new(@cli_options, reporter)
       # pass false to prevent hiptest-publisher from exiting, useful when used embedded
       @exit_on_bad_arguments = exit_on_bad_arguments
     end
 
     def run
-      puts "URL: #{@client.url}".white if @cli_options.verbose
       begin
         CliOptionsChecker.new(@cli_options, reporter).check!
       rescue CliOptionError => e
@@ -77,7 +76,7 @@ module Hiptest
     end
 
     def fetch_xml_file
-      with_status_message "Fetching data from Hiptest" do
+      reporter.with_status_message "Fetching data from Hiptest" do
         @client.fetch_project_export
       end
     rescue ClientError => err
@@ -90,7 +89,7 @@ module Hiptest
     end
 
     def get_project(xml)
-      with_status_message "Extracting data" do
+      reporter.with_status_message "Extracting data" do
         parser = Hiptest::XMLParser.new(xml, reporter)
         return parser.build_project
       end
@@ -99,7 +98,7 @@ module Hiptest
     end
 
     def write_to_file(path, message)
-      with_status_message "#{message}: #{path}" do
+      reporter.with_status_message "#{message}: #{path}" do
         mkdirs_for(path)
         File.open(path, 'w') do |file|
           file.write(yield)
@@ -147,7 +146,7 @@ module Hiptest
 
     def show_actionwords_diff
       old = nil
-      with_status_message "Loading previous definition" do
+      reporter.with_status_message "Loading previous definition" do
         old = YAML.load_file("#{@cli_options.output_directory}/actionwords_signature.yaml")
       end
 
@@ -249,7 +248,7 @@ module Hiptest
     def export
       return if @project.nil?
 
-      with_status_message "Analyzing data" do
+      reporter.with_status_message "Analyzing data" do
         @language_config = LanguageConfigParser.new(@cli_options)
         Hiptest::Nodes::ParentAdder.add(@project)
         Hiptest::Nodes::ParameterTypeAdder.add(@project)
@@ -283,11 +282,11 @@ module Hiptest
 
     def post_results
       response = nil
-      with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
+      reporter.with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
         response = @client.push_results
       end
       passed_count = JSON.parse(response.body)['test_import'].size
-      with_status_message "#{pluralize(passed_count, "test")} imported" do
+      reporter.with_status_message "#{pluralize(passed_count, "test")} imported" do
         if @cli_options.verbose
           JSON.parse(response.body)['test_import'].each do |imported_test|
             puts "  Test '#{imported_test['name']}' imported"

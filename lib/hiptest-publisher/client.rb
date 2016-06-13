@@ -2,6 +2,8 @@ require 'json'
 require 'net/http'
 require 'uri'
 
+require_relative 'formatters/reporter'
+
 module Hiptest
 
   class ClientError < StandardError
@@ -10,8 +12,9 @@ module Hiptest
   class Client
     attr_reader :cli_options
 
-    def initialize(cli_options)
+    def initialize(cli_options, reporter = nil)
       @cli_options = cli_options
+      @reporter = reporter || NullReporter.new
     end
 
     def url
@@ -98,6 +101,7 @@ module Hiptest
       request["User-Agent"] = "Ruby/hiptest-publisher"
       use_ssl = request.uri.scheme == "https"
       Net::HTTP.start(request.uri.hostname, request.uri.port, use_ssl: use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+        @reporter.show_verbose_message("Request sent to: #{request.uri}")
         http.request(request)
       end
     end

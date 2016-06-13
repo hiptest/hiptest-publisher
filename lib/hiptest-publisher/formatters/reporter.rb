@@ -17,6 +17,21 @@ class Reporter
     notify(:show_options, options, message)
   end
 
+  def show_verbose_message(message)
+    notify(:show_verbose_message, message)
+  end
+
+  def with_status_message(message, &blk)
+    notify(:show_status_message, message)
+    status = :success
+    yield
+  rescue
+    status = :failure
+    raise
+  ensure
+    notify(:show_status_message, message, status)
+  end
+
   def notify(message, *args)
     @listeners.each do |listener|
       listener.send(message, *args)
