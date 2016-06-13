@@ -69,7 +69,21 @@ describe Hiptest::Publisher do
       publisher = Hiptest::Publisher.new(args)
       expect{
         publisher.run
-      }.to output(a_string_including("Unable to open the file, please check that the token is correct")).to_stdout
+      }.to output(a_string_including("An error has occured, sorry for the inconvenience.\n" +
+        "Try running the command again with --verbose for detailed output")).to_stdout
+    end
+
+    it "can handle 404 Not Found errors" do
+      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+        to_return(status: 404)
+      args = [
+        "--language", "ruby",
+        "--token", "123456789",
+      ]
+      publisher = Hiptest::Publisher.new(args)
+      expect{
+        publisher.run
+      }.to output(a_string_including("No project found with this secret token.")).to_stdout
     end
 
     it "displays exporting scenarios, actionwords and actionword signature" do

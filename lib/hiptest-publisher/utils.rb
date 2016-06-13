@@ -1,6 +1,5 @@
 require 'colorize'
 require 'io/console'
-require 'open-uri'
 require 'openssl'
 require 'net/http/post/multipart'
 require 'pathname'

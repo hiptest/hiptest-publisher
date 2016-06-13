@@ -50,10 +50,10 @@ module Hiptest
         return
       end
 
-      get_xml_file do |xml|
-        return if xml.nil?
-        @project = get_project(xml)
-      end
+      xml = get_xml_file
+      return if xml.nil?
+
+      @project = get_project(xml)
 
       if @cli_options.actionwords_signature
         export_actionword_signature
@@ -70,21 +70,22 @@ module Hiptest
 
     def get_xml_file
       if @cli_options.xml_file
-        xml = open(@cli_options.xml_file)
+        IO.read(@cli_options.xml_file)
       else
-        xml = fetch_xml_file
+        fetch_xml_file
       end
-      yield xml
-    ensure
-      xml && xml.close
     end
 
     def fetch_xml_file
       with_status_message "Fetching data from Hiptest" do
         @client.fetch_project_export
       end
+    rescue ClientError => err
+      # This should not be an error that needs reporting to an exception monitoring app
+      puts err.message.yellow
     rescue Exception => err
-      puts "Unable to open the file, please check that the token is correct".red
+      puts ("An error has occured, sorry for the inconvenience.\n" +
+        "Try running the command again with --verbose for detailed output").red
       reporter.dump_error(err)
     end
 
