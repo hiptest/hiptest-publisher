@@ -82,6 +82,9 @@ module Hiptest
     rescue ClientError => err
       # This should not be an error that needs reporting to an exception monitoring app
       puts err.message.yellow
+      if @exit_on_bad_arguments == false # means we are embedded in hiptest-publisher
+        raise
+      end
     rescue Exception => err
       puts ("An error has occured, sorry for the inconvenience.\n" +
         "Try running the command again with --verbose for detailed output").red
