@@ -81,6 +81,10 @@ describe ConsoleFormatter do
       end
 
       context 'when inside a #show_status_message' do
+        before do
+          allow($stdout).to receive(:tty?).and_return(true)
+        end
+
         it 'delays outputs until the #show_status_message is called with :success or :failed' do
           console_formatter.show_status_message('My status message')
           expect(STDOUT).to have_received(:print).with("[ ] My status message\r\e[1A\n").once
