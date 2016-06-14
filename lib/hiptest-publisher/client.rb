@@ -84,7 +84,7 @@ module Hiptest
       lines = []
       lines << ["ID", "Name"]
       lines << ["--", "----"]
-      lines += test_runs.map { |tr| [tr["id"].to_s, tr["name"]] }
+      lines += test_runs.map { |tr| [tr["id"], tr["name"]] }
       first_column_width = lines.map { |line| line[0].length }.max
       lines.map! { |line| "  #{line[0].ljust(first_column_width)}  #{line[1]}" }
       lines.join("\n")
