@@ -61,6 +61,9 @@ describe Hiptest::Publisher do
           assertion_text = "--language=#{language}"
           assertion_text <<  " --framework=#{framework}" if framework
           it assertion_text do
+            test_runs_json = { test_runs: [{id: "987",name: "Sprint 1"}] }.to_json
+            stub_request(:get, "https://hiptest.net/publication/123456789/test_runs").
+              to_return(body: test_runs_json, headers: {'Content-Type' => 'application/json'})
             stub_request(:get, "https://hiptest.net/publication/123456789/project").
               to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
             stub_request(:get, "https://hiptest.net/publication/123456789/test_run/987").

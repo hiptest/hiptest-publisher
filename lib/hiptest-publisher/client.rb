@@ -55,7 +55,11 @@ module Hiptest
 
     def test_run_id
       if cli_options.test_run_id && !cli_options.test_run_id.empty?
-        cli_options.test_run_id
+        matching_test_run = available_test_runs.find { |test_run| test_run["id"] == cli_options.test_run_id }
+        if matching_test_run.nil?
+          raise ClientError, no_matching_test_runs_error_message
+        end
+        matching_test_run["id"]
       elsif cli_options.test_run_name && !cli_options.test_run_name.empty?
         matching_test_run = available_test_runs.find { |test_run| test_run["name"] == cli_options.test_run_name }
         if matching_test_run.nil?
