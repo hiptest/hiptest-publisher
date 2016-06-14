@@ -54,19 +54,21 @@ module Hiptest
     private
 
     def test_run_id
-      if cli_options.test_run_id && !cli_options.test_run_id.empty?
-        matching_test_run = available_test_runs.find { |test_run| test_run["id"] == cli_options.test_run_id }
-        if matching_test_run.nil?
-          raise ClientError, no_matching_test_runs_error_message
-        end
-        matching_test_run["id"]
-      elsif cli_options.test_run_name && !cli_options.test_run_name.empty?
-        matching_test_run = available_test_runs.find { |test_run| test_run["name"] == cli_options.test_run_name }
-        if matching_test_run.nil?
-          raise ClientError, no_matching_test_runs_error_message
-        end
-        matching_test_run["id"]
+      return unless cli_options.test_run_id? || cli_options.test_run_name?
+
+      if cli_options.test_run_id?
+        key = "id"
+        searched_value = cli_options.test_run_id
+      elsif cli_options.test_run_name?
+        key = "name"
+        searched_value = cli_options.test_run_name
       end
+
+      matching_test_run = available_test_runs.find { |test_run| test_run[key] == searched_value }
+      if matching_test_run.nil?
+        raise ClientError, no_matching_test_runs_error_message
+      end
+      matching_test_run["id"]
     end
 
     def no_matching_test_runs_error_message
@@ -74,15 +76,15 @@ module Hiptest
         "No matching test run found: this project does not have any test runs."
       else
         "No matching test run found. Available test runs for this project are:\n" +
-        format_available_test_runs
+            columnize_test_runs(available_test_runs)
       end
     end
 
-    def format_available_test_runs
+    def columnize_test_runs(test_runs)
       lines = []
       lines << ["ID", "Name"]
       lines << ["--", "----"]
-      lines += available_test_runs.map { |tr| [tr["id"].to_s, tr["name"]] }
+      lines += test_runs.map { |tr| [tr["id"].to_s, tr["name"]] }
       first_column_width = lines.map { |line| line[0].length }.max
       lines.map! { |line| "  #{line[0].ljust(first_column_width)}  #{line[1]}" }
       lines.join("\n")

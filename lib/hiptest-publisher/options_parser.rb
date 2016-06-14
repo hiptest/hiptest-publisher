@@ -77,7 +77,15 @@ class CliOptions < OpenStruct
   end
 
   def push?
-    push && !push.empty?
+    option_present?(push)
+  end
+
+  def test_run_id?
+    option_present?(test_run_id)
+  end
+
+  def test_run_name?
+    option_present?(test_run_name)
   end
 
   def language_framework
@@ -122,6 +130,12 @@ class CliOptions < OpenStruct
       end
       return delta
     end
+  end
+
+  private
+
+  def option_present?(value)
+    value && !value.empty?
   end
 end
 

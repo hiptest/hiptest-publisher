@@ -8,24 +8,24 @@ describe Hiptest::Client do
   subject(:client) { Hiptest::Client.new(options) }
 
   let(:tr_89__Sprint_12) { {
-    id: "89",
-    name: "Sprint 12",
-    created_at: "2016-06-06T09:31:33.138Z",
+    "id" => "89",
+    "name" => "Sprint 12",
+    "created_at" => "2016-06-06T09:31:33.138Z",
   } }
   let(:tr_98__Sprint_13) { {
-    id: "98",
-    name: "Sprint 13",
-    created_at: "2016-06-20T09:35:17.981Z",
+    "id" => "98",
+    "name" => "Sprint 13",
+    "created_at" => "2016-06-20T09:35:17.981Z",
   } }
   let(:tr_18__Continuous_integration) { {
-    id: "18",
-    name: "Continuous integration",
-    created_at: "2016-03-03T16:02:38.574Z",
+    "id" => "18",
+    "name" => "Continuous integration",
+    "created_at" => "2016-03-03T16:02:38.574Z",
   } }
   let(:tr_54__Unit_tests) { {
-    id: "541",
-    name: "Unit tests",
-    created_at: "2015-02-12T20:17:44.600Z",
+    "id" => "541",
+    "name" => "Unit tests",
+    "created_at" => "2015-02-12T20:17:44.600Z",
   } }
 
   def stub_available_test_runs(test_runs:, token: "123456789")
@@ -183,23 +183,21 @@ describe Hiptest::Client do
     end
   end
 
-  describe "#format_available_test_runs" do
-    let(:args) { ["--token", "123456789"] }
+  describe "#columnize_test_runs" do
 
-    it "formats available test runs output to align their name together" do
+    it "formats given test runs in aligned columns" do
       test_runs = [
         tr_89__Sprint_12,
         {
-          id: 12345,
-          name: "Another one",
-          created_at: "2014-02-11T20:17:44.600Z",
+          "id" => "12345",
+          "name" => "Another one",
+          "created_at" => "2014-02-11T20:17:44.600Z",
         },
         tr_18__Continuous_integration,
         tr_54__Unit_tests,
       ]
-      stub_available_test_runs(test_runs: test_runs)
 
-      got_output = client.send(:format_available_test_runs)
+      got_output = client.send(:columnize_test_runs, test_runs)
       expect(got_output).to eq([
         "  ID     Name",
         "  --     ----",
