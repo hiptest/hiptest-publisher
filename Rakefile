@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "hiptest-publisher"
   gem.homepage = "https://hiptest.net"
-  gem.license = "GPL 2"
+  gem.license = "GPL-2.0"
   gem.summary = "Export your tests from Hiptest into executable tests."
   gem.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
   gem.email = "contact@hiptest.net"
