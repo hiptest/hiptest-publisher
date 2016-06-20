@@ -59,6 +59,7 @@ module Hiptest
 
     def walk_test(test)
       {
+        :has_description? => !test.children[:description].empty?,
         :has_parameters? => false,
         :has_tags? => !test.children[:tags].empty?,
         :has_step? => has_step?(test),

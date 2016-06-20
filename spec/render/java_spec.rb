@@ -142,6 +142,11 @@ describe 'Render as Java' do
       "    // Tags: myTag myTag:somevalue",
       "}"].join("\n")
 
+    @described_action_word_rendered = [
+      "public void myActionWord() {",
+      "    // Some description",
+      "}"].join("\n")
+
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
@@ -354,6 +359,7 @@ describe 'Render as Java' do
 
       @scenario_with_datatable_rendered = [
         "public void checkLogin(String login, String password, String expected) {",
+        "    // Ensure the login process",
         "    actionwords.fillLogin(login);",
         "    actionwords.fillPassword(password);",
         "    actionwords.pressEnter();",
@@ -377,6 +383,7 @@ describe 'Render as Java' do
 
       @scenario_with_datatable_rendered_with_uids = [
         "public void checkLogin(String login, String password, String expected) {",
+        "    // Ensure the login process",
         "    actionwords.fillLogin(login);",
         "    actionwords.fillPassword(password);",
         "    actionwords.pressEnter();",
@@ -410,6 +417,7 @@ describe 'Render as Java' do
         "    public Actionwords actionwords = new Actionwords();",
         "",
         "    public void checkLogin(String login, String password, String expected) {",
+        "        // Ensure the login process",
         "        actionwords.fillLogin(login);",
         "        actionwords.fillPassword(password);",
         "        actionwords.pressEnter();",
@@ -690,6 +698,7 @@ describe 'Render as Java' do
 
       @scenario_with_datatable_rendered = [
         "public void checkLogin(String login, String password, String expected) {",
+        "    // Ensure the login process",
         "    actionwords.fillLogin(login);",
         "    actionwords.fillPassword(password);",
         "    actionwords.pressEnter();",
@@ -716,6 +725,7 @@ describe 'Render as Java' do
 
       @scenario_with_datatable_rendered_with_uids = [
         "public void checkLogin(String login, String password, String expected) {",
+        "    // Ensure the login process",
         "    actionwords.fillLogin(login);",
         "    actionwords.fillPassword(password);",
         "    actionwords.pressEnter();",
@@ -751,6 +761,7 @@ describe 'Render as Java' do
         "    public Actionwords actionwords = new Actionwords();",
         "",
         "    public void checkLogin(String login, String password, String expected) {",
+        "        // Ensure the login process",
         "        actionwords.fillLogin(login);",
         "        actionwords.fillPassword(password);",
         "        actionwords.pressEnter();",

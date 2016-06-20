@@ -131,6 +131,12 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
+    @described_action_word_rendered = [
+      "def my_action_word(self):",
+      "    # Some description",
+      "    pass",
+      ""].join("\n")
+
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end

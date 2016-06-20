@@ -129,6 +129,11 @@ describe 'Render as Javascript' do
       "  // Tags: myTag myTag:somevalue",
       "}"].join("\n")
 
+    @described_action_word_rendered = [
+      "myActionWord: function () {",
+      "  // Some description",
+      "}"].join("\n")
+
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end

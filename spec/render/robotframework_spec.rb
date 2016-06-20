@@ -117,6 +117,12 @@ describe 'Render as Robot framework' do
       ""
     ].join("\n")
 
+    @described_action_word_rendered = [
+      "# Some description",
+      "my_action_word",
+      ""
+    ].join("\n")
+
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end

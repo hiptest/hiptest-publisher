@@ -138,6 +138,11 @@ describe 'Render as C#' do
       "    // Tags: myTag myTag:somevalue",
       "}"].join("\n")
 
+    @described_action_word_rendered = [
+      "public void MyActionWord() {",
+      "    // Some description",
+      "}"].join("\n")
+
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
@@ -351,6 +356,7 @@ describe 'Render as C#' do
 
     @scenario_with_datatable_rendered = [
       "public void CheckLogin(string login, string password, string expected) {",
+      "    // Ensure the login process",
       "    Actionwords.FillLogin(login);",
       "    Actionwords.FillPassword(password);",
       "    Actionwords.PressEnter();",
@@ -377,6 +383,7 @@ describe 'Render as C#' do
 
     @scenario_with_datatable_rendered_with_uids = [
       "public void CheckLogin(string login, string password, string expected) {",
+      "    // Ensure the login process",
       "    Actionwords.FillLogin(login);",
       "    Actionwords.FillPassword(password);",
       "    Actionwords.PressEnter();",
@@ -415,6 +422,7 @@ describe 'Render as C#' do
       "        public Actionwords Actionwords = new Actionwords();",
       "",
       "        public void CheckLogin(string login, string password, string expected) {",
+      "            // Ensure the login process",
       "            Actionwords.FillLogin(login);",
       "            Actionwords.FillPassword(password);",
       "            Actionwords.PressEnter();",

@@ -91,6 +91,11 @@ describe 'Render as Ruby' do
       "  # Tags: myTag myTag:somevalue",
       "end"].join("\n")
 
+    @described_action_word_rendered = [
+      "def my_action_word",
+      "  # Some description",
+      "end"].join("\n")
+
     @parameterized_action_word_rendered = [
       "def my_action_word(plic, flip = 'flap')",
       "",

@@ -1,7 +1,7 @@
 {{#clear_empty_lines}}
 {{#indent}}
-{{#comment '//'}}{{{ rendered_children.description }}}{{/comment}}
-{{#if has_tags?}}// Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
+{{#comment '//'}}{{#if has_description?}}{{{ rendered_children.description }}}
+{{/if}}{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}{{/comment}}
 {{#if declared_variables}}var {{#join declared_variables ', '}}{{{camelize_lower this}}}{{/join}};
 {{/if}}{{#each rendered_children.body}}{{{this}}}
 {{/each}}

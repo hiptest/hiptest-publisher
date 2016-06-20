@@ -99,6 +99,15 @@ shared_context "shared render" do
     @tagged_action_word = Hiptest::Nodes::Actionword.new(
       'my action word',
       [@simple_tag, @valued_tag])
+
+    @described_action_word = Hiptest::Nodes::Actionword.new(
+      'my action word',
+      [],
+      [],
+      [],
+      '1234',
+      'Some description')
+
     @parameterized_action_word = Hiptest::Nodes::Actionword.new(
       'my action word',
       [],
@@ -472,6 +481,10 @@ shared_examples "a renderer" do
 
       it 'with tags' do
         expect(rendering(@tagged_action_word)).to eq(@tagged_action_word_rendered)
+      end
+
+      it 'with description' do
+        expect(rendering(@described_action_word)).to eq(@described_action_word_rendered)
       end
 
       it 'with parameters' do

@@ -129,6 +129,11 @@ describe 'Render as PHP' do
       "  // Tags: myTag myTag:somevalue",
       "}"].join("\n")
 
+    @described_action_word_rendered = [
+      "public function myActionWord() {",
+      "  // Some description",
+      "}"].join("\n")
+
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
