@@ -195,7 +195,8 @@ module Hiptest
         build_tags(actionword),
         build_parameters(actionword),
         build_steps(actionword),
-        css_first_content(actionword, '> uid'))
+        css_first_content(actionword, '> uid'),
+        css_first_content(actionword, '> description'))
     end
 
     def build_actionwordSnapshot(actionword)
@@ -204,7 +205,8 @@ module Hiptest
         build_tags(actionword),
         build_parameters(actionword),
         build_steps(actionword),
-        css_first_content(actionword, '> actionwordUid'))
+        css_first_content(actionword, '> actionwordUid'),
+        css_first_content(actionword, '> description'))
     end
 
     def build_scenario(scenario)

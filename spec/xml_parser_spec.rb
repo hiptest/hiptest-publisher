@@ -29,16 +29,16 @@ describe Hiptest::XMLParser do
     "
   end
 
-  def create_actionword(name, tags = [], parameters = [], steps = [])
-    create_item('actionword', name, '', tags, parameters, steps)
+  def create_actionword(name, tags = [], parameters = [], steps = [], description = '')
+    create_item('actionword', name, description, tags, parameters, steps)
   end
 
   def create_scenario(name, description = '', tags = [], parameters = [], steps = [])
     create_item('scenario', name, description, tags, parameters, steps)
   end
 
-  def create_actionword_snapshot(name, tags = [], parameters = [], steps = [])
-    create_item('actionwordSnapshot', name, '', tags, parameters, steps)
+  def create_actionword_snapshot(name, tags = [], parameters = [], steps = [], description = '')
+    create_item('actionwordSnapshot', name, description, tags, parameters, steps)
   end
 
   def create_scenario_snapshot(name, description = '', tags = [], parameters = [], steps = [])

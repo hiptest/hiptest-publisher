@@ -259,11 +259,12 @@ module Hiptest
     class Item < Node
       attr_reader :variables, :non_valued_parameters, :valued_parameters
 
-      def initialize(name, tags = [], parameters = [], body = [])
+      def initialize(name, tags = [], description = '', parameters = [], body = [])
         super()
         @children = {
           :name => name,
           :tags => tags,
+          :description => description,
           :parameters => parameters,
           :body => body
         }
@@ -279,8 +280,8 @@ module Hiptest
     end
 
     class Actionword < Item
-      def initialize(name, tags = [], parameters = [], body = [], uid = nil)
-        super(name, tags, parameters, body)
+      def initialize(name, tags = [], parameters = [], body = [], uid = nil, description = '')
+        super(name, tags, description, parameters, body)
         @children[:uid] = uid
       end
 
@@ -293,8 +294,7 @@ module Hiptest
       attr_reader :folder_uid, :order_in_parent
 
       def initialize(name, description = '', tags = [], parameters = [], body = [], folder_uid = nil, datatable = Datatable.new, order_in_parent = 0)
-        super(name, tags, parameters, body)
-        @children[:description] = description
+        super(name, tags, description, parameters, body)
         @children[:datatable] = datatable
 
         @folder_uid = folder_uid

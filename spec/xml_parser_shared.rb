@@ -42,6 +42,14 @@ shared_examples 'actionword' do
     expect(node.children[:body][0]).to be_a(Hiptest::Nodes::Step)
     expect(node.children[:body][1]).to be_a(Hiptest::Nodes::Step)
   end
+
+  it 'with description' do
+    node = build_node(
+      actionword_maker('my action word', [], [], [], 'Here is some description'))
+
+    expect(node).to be_a(Hiptest::Nodes::Actionword)
+    expect(node.children[:description]).to eq('Here is some description')
+  end
 end
 
 shared_examples 'scenario' do
