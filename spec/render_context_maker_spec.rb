@@ -15,6 +15,7 @@ describe Hiptest::RenderContextMaker do
 
     it 'provides information about the item content' do
       expect(subject.walk_item(node).keys).to eq([
+        :has_description?,
         :has_parameters?,
         :has_tags?,
         :has_step?,
@@ -23,6 +24,13 @@ describe Hiptest::RenderContextMaker do
         :raw_parameter_names,
         :self_name,
       ])
+    end
+
+    it 'has_description? is true when a description is set' do
+      expect(subject.walk_item(node)[:has_description?]).to be false
+
+      node.children[:description] << 'A description for, well, describing ...'
+      expect(subject.walk_item(node)[:has_description?]).to be true
     end
 
     it 'has_parameters? is true when there is parameters' do
@@ -86,6 +94,7 @@ describe Hiptest::RenderContextMaker do
       allow(node_rendering_context).to receive(:relative_path).and_return("")
 
       expect(subject.walk_scenario(node).keys).to eq([
+        :has_description?,
         :has_parameters?,
         :has_tags?,
         :has_step?,

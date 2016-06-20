@@ -2,6 +2,7 @@ module Hiptest
   module RenderContextMaker
     def walk_item(item)
       {
+        :has_description? => !item.children[:description].empty?,
         :has_parameters? => !item.children[:parameters].empty?,
         :has_tags? => !item.children[:tags].empty?,
         :has_step? => has_step?(item),
