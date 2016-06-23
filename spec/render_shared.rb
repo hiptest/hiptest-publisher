@@ -935,6 +935,43 @@ shared_examples "a BDD renderer" do
           ].join("\n"))
         end
     end
+
+    context 'option no-uid' do
+      let(:options) {
+        context_for(
+          only: "features",
+          language: language,
+          framework: framework,
+          no_uids: true
+        )
+      }
+
+      let(:scenario) { create_secondary_colors_scenario }
+
+
+      it 'does not export the hiptest-uid column, nor the scenario uid' do
+        scenario.children[:uid] = 'abcd-efgh'
+        datasets = scenario.children[:datatable].children[:datasets]
+        datasets.first.children[:uid] = '1234'
+        datasets.last.children[:uid] = '5678'
+
+        expect(rendered).to eq([
+          "",
+          "Scenario Outline: Create secondary colors",
+          "  Given the color \"<first_color>\"",
+          "  And the color \"<second_color>\"",
+          "  When you mix colors",
+          "  Then you obtain \"<got_color>\"",
+          "",
+          "  Examples:",
+          "    | first_color | second_color | got_color |",
+          "    | blue | yellow | green |",
+          "    | yellow | red | orange |",
+          "    | red | blue | purple |",
+          "",
+        ].join("\n"))
+      end
+    end
   end
 
   context 'Folders' do

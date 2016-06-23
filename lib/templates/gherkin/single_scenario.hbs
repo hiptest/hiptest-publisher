@@ -1,10 +1,10 @@
 {{#if has_datasets?}}
 {{#if has_tags?}}{{join rendered_children.tags ' '}}
-{{/if}}Scenario Outline: {{{ rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{#indent}}
+{{/if}}Scenario Outline: {{{ rendered_children.name }}}{{#unless context.no_uids}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{/unless}}{{#indent}}
 {{#each rendered_children.body}}{{{ this }}}
 {{/each}}
 Examples:{{#indent}}
-| {{ join rendered_children.parameters ' | ' }} | hiptest-uid |
+| {{ join rendered_children.parameters ' | ' }} |{{#unless context.no_uids}} hiptest-uid |{{/unless}}
 {{{rendered_children.datatable}}}
 {{/indent}}{{/indent}}
 {{else}}
