@@ -9,7 +9,7 @@ Examples:{{#indent}}
 {{/indent}}{{/indent}}
 {{else}}
 {{#if has_tags?}}{{join rendered_children.tags ' '}}
-{{/if}}Scenario: {{{ rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{#indent}}
+{{/if}}Scenario: {{{ rendered_children.name }}}{{#unless context.no_uids}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{/unless}}{{#indent}}
 {{#each rendered_children.body}}{{{ this }}}
 {{/each}}
 {{/indent}}

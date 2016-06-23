@@ -971,6 +971,21 @@ shared_examples "a BDD renderer" do
           "",
         ].join("\n"))
       end
+
+      it 'also works when scenario has no datatable' do
+        scenario.children[:uid] = 'abcd-efgh'
+        scenario.children[:datatable].children[:datasets] = []
+
+        expect(rendered).to eq([
+          "",
+          "Scenario: Create secondary colors",
+          "  Given the color \"<first_color>\"",
+          "  And the color \"<second_color>\"",
+          "  When you mix colors",
+          "  Then you obtain \"<got_color>\"",
+          "",
+        ].join("\n"))
+      end
     end
   end
 
