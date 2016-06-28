@@ -11,6 +11,7 @@ require 'hiptest-publisher/utils'
 require 'hiptest-publisher/options_parser'
 require 'hiptest-publisher/xml_parser'
 require 'hiptest-publisher/parent_adder'
+require 'hiptest-publisher/datatable_fixer'
 require 'hiptest-publisher/parameter_type_adder'
 require 'hiptest-publisher/call_arguments_adder'
 require 'hiptest-publisher/signature_exporter'
@@ -154,6 +155,7 @@ module Hiptest
       end
 
       @language_config = LanguageConfigParser.new(@cli_options)
+      Hiptest::Nodes::DatatableFixer.add(@project)
       Hiptest::Nodes::ParentAdder.add(@project)
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
       Hiptest::DefaultArgumentAdder.add(@project)

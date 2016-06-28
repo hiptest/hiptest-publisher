@@ -1,6 +1,7 @@
 require_relative 'spec_helper'
 
 require_relative '../lib/hiptest-publisher'
+require_relative '../lib/hiptest-publisher/datatable_fixer'
 require_relative '../lib/hiptest-publisher/gherkin_adder'
 require_relative '../lib/hiptest-publisher/parameter_type_adder'
 require_relative '../lib/hiptest-publisher/nodes'
@@ -741,6 +742,36 @@ shared_examples "a BDD renderer" do
       ]))
   }
 
+  let(:scenario_with_incomplete_datatable) {
+    make_scenario("Incomplete datatable",
+      folder: regression_folder,
+      parameters: [
+        make_parameter("first_color"),
+        make_parameter("second_color"),
+        make_parameter("got_color"),
+      ],
+      body: [
+        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
+        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
+        make_call("you mix colors",       annotation: "when"),
+        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
+      ],
+      datatable: Hiptest::Nodes::Datatable.new([
+        Hiptest::Nodes::Dataset.new("Mix to green", [
+          make_argument("first_color", template_of_literals("blue")),
+          make_argument("second_color", template_of_literals("yellow")),
+          make_argument("got_color", template_of_literals("green")),
+        ]),
+        Hiptest::Nodes::Dataset.new("Mix to orange", [
+          make_argument("first_color", template_of_literals("yellow")),
+          make_argument("second_color", template_of_literals("red"))
+        ]),
+        Hiptest::Nodes::Dataset.new("Mix to purple", [
+          make_argument("first_color", literal("red"))
+        ]),
+      ]))
+  }
+
   let(:scenario_with_freetext_argument) {
     make_scenario("Open a site with comments",
       folder: gherkin_special_arguments_folder,
@@ -760,11 +791,12 @@ shared_examples "a BDD renderer" do
 
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument],
+      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument, scenario_with_incomplete_datatable],
       tests: [create_white_test],
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
     ).tap do |p|
+      Hiptest::Nodes::DatatableFixer.add(p)
       Hiptest::Nodes::ParentAdder.add(p)
       Hiptest::GherkinAdder.add(p)
     end
@@ -934,6 +966,31 @@ shared_examples "a BDD renderer" do
             ''
           ].join("\n"))
         end
+
+      context 'when some datatable rows are incomplete' do
+        # That one is a bit weird, but we found some examples where the XML
+        # made by Hiptedt misses some data ...
+
+        let(:scenario) {scenario_with_incomplete_datatable}
+
+        it 'even if a data is missing, that is fixed during export' do
+          expect(rendered).to eq([
+            '',
+            'Scenario Outline: Incomplete datatable',
+            '  Given the color "<first_color>"',
+            '  And the color "<second_color>"',
+            '  When you mix colors',
+            '  Then you obtain "<got_color>"',
+            '',
+            '  Examples:',
+            '    | first_color | second_color | got_color | hiptest-uid |',
+            '    | blue | yellow | green |  |',
+            '    | yellow | red |  |  |',
+            '    | red |  |  |  |',
+            ''
+          ].join("\n"))
+        end
+      end
     end
 
     context 'option no-uid' do
