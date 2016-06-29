@@ -154,7 +154,7 @@ module Hiptest
         s = s.fn(context)
       end
 
-      s.gsub("\n", '\\n')
+      s ? s.gsub("\n", '\\n') : ""
     end
 
     def hh_remove_surrounding_quotes(context, s, block = nil)
@@ -162,7 +162,7 @@ module Hiptest
         s = s.fn(context)
       end
 
-      s.gsub(/^("|')|("|')$/, '')
+      s ? s.gsub(/^("|')|("|')$/, '') : ""
     end
 
     def hh_comment (context, commenter, block)

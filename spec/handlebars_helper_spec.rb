@@ -392,6 +392,11 @@ describe Hiptest::HandlebarsHelper do
       template = "{{#escape_new_line}} I have some \n lines {{/escape_new_line}}"
       expect(evaluate(template, {})).to eq(" I have some \\n lines ")
     end
+
+    it 'works with nil' do
+      template = "A{{escape_new_line txt}}Z"
+      expect(evaluate(template, {txt: nil})).to eq("AZ")
+    end
   end
 
   context 'hh_remove_surrounding_quotes' do
@@ -418,6 +423,11 @@ describe Hiptest::HandlebarsHelper do
     it 'also works with blocks' do
       template = '{{#remove_surrounding_quotes}}"This is "my" text"{{/remove_surrounding_quotes}}'
       expect(evaluate(template, {})).to eq('This is "my" text')
+    end
+
+    it 'works with nil' do
+      template = "A{{remove_surrounding_quotes txt}}Z"
+      expect(evaluate(template, {txt: nil})).to eq("AZ")
     end
   end
 end
