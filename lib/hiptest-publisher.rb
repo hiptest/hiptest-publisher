@@ -255,6 +255,7 @@ module Hiptest
 
       reporter.with_status_message "Analyzing data" do
         @language_config = LanguageConfigParser.new(@cli_options)
+        Hiptest::Nodes::DatatableFixer.add(@project)
         Hiptest::Nodes::ParentAdder.add(@project)
         Hiptest::Nodes::ParameterTypeAdder.add(@project)
         Hiptest::DefaultArgumentAdder.add(@project)
