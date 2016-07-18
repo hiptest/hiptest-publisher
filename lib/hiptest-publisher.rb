@@ -142,6 +142,8 @@ module Hiptest
     end
 
     def export_actionword_signature
+      analyze_project_data
+
       write_to_file(
         "#{@cli_options.output_directory}/actionwords_signature.yaml",
         "Exporting actionword signature"
@@ -154,12 +156,7 @@ module Hiptest
         old = YAML.load_file("#{@cli_options.output_directory}/actionwords_signature.yaml")
       end
 
-      @language_config = LanguageConfigParser.new(@cli_options)
-      Hiptest::Nodes::DatatableFixer.add(@project)
-      Hiptest::Nodes::ParentAdder.add(@project)
-      Hiptest::Nodes::ParameterTypeAdder.add(@project)
-      Hiptest::DefaultArgumentAdder.add(@project)
-      Hiptest::GherkinAdder.add(@project)
+      analyze_project_data
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
       diff =  Hiptest::SignatureDiffer.diff( old, current)
@@ -250,9 +247,8 @@ module Hiptest
         return
     end
 
-    def export
-      return if @project.nil?
-
+    def analyze_project_data
+      return if @project_data_analyzed
       reporter.with_status_message "Analyzing data" do
         @language_config = LanguageConfigParser.new(@cli_options)
         Hiptest::Nodes::DatatableFixer.add(@project)
@@ -262,7 +258,13 @@ module Hiptest
         Hiptest::GherkinAdder.add(@project)
         Hiptest::ItemsOrderer.add(@project, @cli_options.sort)
       end
+      @project_data_analyzed = true
+    end
 
+    def export
+      return if @project.nil?
+
+      analyze_project_data
       export_files
       export_actionword_signature if @language_config.include_group?("actionwords")
     end
