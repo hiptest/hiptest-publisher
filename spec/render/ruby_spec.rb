@@ -11,6 +11,7 @@ describe 'Render as Ruby' do
     @false_rendered = 'false'
     @foo_template_rendered = '"#{foo}fighters"'
     @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
+    @empty_template_rendered = '""'
 
     # variable
     @foo_variable_rendered = 'foo'

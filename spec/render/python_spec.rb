@@ -23,6 +23,9 @@ describe 'Render as Python' do
     # In Hiptest: "Fighters said \"Foo !\""
     @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
 
+    # In Hiptest: ""
+    @empty_template_rendered = '""'
+
     # In Hiptest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
     @foo_bar_variable_rendered = 'foo_bar'

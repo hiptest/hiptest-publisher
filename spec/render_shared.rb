@@ -50,6 +50,7 @@ shared_context "shared render" do
     @double_quotes_template = Hiptest::Nodes::Template.new([
       Hiptest::Nodes::StringLiteral.new('Fighters said "Foo !"')
     ])
+    @empty_template = Hiptest::Nodes::Template.new([])
 
     @assign_fighters_to_foo = Hiptest::Nodes::Assign.new(@foo_variable, @fighters)
     @assign_foo_to_fighters = Hiptest::Nodes::Assign.new(
@@ -438,6 +439,7 @@ shared_examples "a renderer" do
     it 'Template' do
       expect(rendering(@foo_template)).to eq(@foo_template_rendered)
       expect(rendering(@double_quotes_template)).to eq(@double_quotes_template_rendered)
+      expect(rendering(@empty_template)).to eq(@empty_template_rendered)
     end
 
     it 'Assign' do
