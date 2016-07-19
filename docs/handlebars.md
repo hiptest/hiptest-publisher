@@ -76,8 +76,13 @@ Available values in templates
 In any template, you will have access to the following elements:
  - node: is the currently rendered node. In most cases, you will not need it. The main use case is accessing the project in the list of scenarios (``node.parent``) to get the project name.
  - rendered_children: contains the node's children already rendered. If you write your templates based on existing ones, the content should be pretty straightfoward. For more explanations on the content, you can have a look at the [nodes documentation](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md).
- - context: the rendering context. It contains some usefull information, mainly: ``context.package`` which is the package name and ``context.call_prefix`` which is the name of the actionwords class.
-
+ - context: the rendering context. It is related to the language and the file to which the rendering is output. It contains some useful external information determined from user config:
+   - ``context.package`` is the package name
+   - ``context.call_prefix`` is the name of the actionwords instance, used to prefix actionwords calls
+   - ``context.path`` is the full absolute path of the rendered output file, like ``/home/john/project/tests/greeter/WelcomeTest.js``
+   - ``context.filename`` is the filename of the rendered output file, like ``WelcomeTest.js``
+   - ``context.relative_path`` is the path relative to the output directorya, like ``greeter/WelcomeTest.js`` if ``/home/john/project/tests`` is the output directory
+   - ``context.no_uids`` is ``true`` if option ``--no-uids`` has been used, ``false`` otherwise
 
 For some nodes, we add some extra context shown below for each type of node. Following the Ruby naming convention, names ending with a question mark are booleans.
 
