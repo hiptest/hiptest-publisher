@@ -25,8 +25,8 @@ Now you have to update the expected output when exporting in Scala. That is the 
 Once all the expectations are written, it is time to write the template. The simplest way is to copy the Ruby sources:
 
 ```shell
-mkdir templates/scala
-cp templates/ruby/*.hbs templates/scala/
+mkdir lib/templates/scala
+cp lib/templates/ruby/*.hbs lib/templates/scala/
 ```
 
 
