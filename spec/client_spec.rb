@@ -95,6 +95,16 @@ describe Hiptest::Client do
             client.fetch_project_export
           }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
         end
+
+        it "raises a ClientError exception with a message (return 404 at another level)" do
+          stub_request(:get, "https://hiptest.net/publication/987654321/test_runs").
+            to_return(status: 404)
+          stub_request(:get, "https://hiptest.net/publication/987654321/test_run/98").
+            to_return(status: 404)
+          expect {
+            client.fetch_project_export
+          }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
+        end
       end
 
       context "with --test-run-name" do
@@ -105,7 +115,7 @@ describe Hiptest::Client do
             to_return(status: 404)
           expect {
             client.fetch_project_export
-          }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
+          }.to raise_error(Hiptest::ClientError, "Cannot get the list of available test runs from Hiptest. Try using --test-run-id instead of --test-run-name")
         end
       end
     end
@@ -142,6 +152,18 @@ describe Hiptest::Client do
           stub_available_test_runs(test_runs: [])
           expected_message = "No matching test run found: this project does not have any test runs."
           expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
+        end
+      end
+
+      context "on old Hiptest version (no /publication/<token>/test_runs API)" do
+        it "uses the given test run id and ignores that the API does not exist" do
+          stub_request(:get, "https://hiptest.net/publication/123456789/test_runs").
+            to_return(status: 404)
+          sent_xml = "<xml_everywhere/>"
+          stub_request(:get, "https://hiptest.net/publication/123456789/test_run/98").
+            to_return(body: sent_xml)
+          got_xml = client.fetch_project_export
+          expect(got_xml).to eq(sent_xml)
         end
       end
     end

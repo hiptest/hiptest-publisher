@@ -29,14 +29,21 @@ module Hiptest
 
     def fetch_project_export
       response = send_get_request(url)
+      if response.code_type == Net::HTTPNotFound
+        raise ClientError, "No project found with this secret token."
+      end
       response.body
     end
 
     def available_test_runs
       @available_test_runs ||= begin
         response = send_get_request("#{base_publication_path}/test_runs")
-        json_response = JSON.parse(response.body)
-        json_response["test_runs"]
+        if response.code_type == Net::HTTPNotFound
+          :api_not_available
+        else
+          json_response = JSON.parse(response.body)
+          json_response["test_runs"]
+        end
       end
     end
 
@@ -64,11 +71,19 @@ module Hiptest
         searched_value = cli_options.test_run_name
       end
 
-      matching_test_run = available_test_runs.find { |test_run| test_run[key] == searched_value }
-      if matching_test_run.nil?
-        raise ClientError, no_matching_test_runs_error_message
+      if available_test_runs == :api_not_available
+        if cli_options.test_run_id?
+          cli_options.test_run_id
+        else
+          raise ClientError, "Cannot get the list of available test runs from Hiptest. Try using --test-run-id instead of --test-run-name"
+        end
+      else
+        matching_test_run = available_test_runs.find { |test_run| test_run[key] == searched_value }
+        if matching_test_run.nil?
+          raise ClientError, no_matching_test_runs_error_message
+        end
+        matching_test_run["id"]
       end
-      matching_test_run["id"]
     end
 
     def no_matching_test_runs_error_message
@@ -97,9 +112,6 @@ module Hiptest
     def send_get_request(url)
       uri = URI.parse(url)
       response = send_request(Net::HTTP::Get.new(uri))
-      if response.code_type == Net::HTTPNotFound
-        raise ClientError, "No project found with this secret token."
-      end
       response
     end
 
