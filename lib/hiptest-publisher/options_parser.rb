@@ -150,7 +150,7 @@ class OptionsParser
       'Python' => ['Unittest'],
       'Robot Framework' => [''],
       'Selenium IDE' => [''],
-      'Javascript' => ['qUnit', 'Jasmine', 'Mocha'],
+      'Javascript' => ['qUnit', 'Jasmine', 'Mocha', 'Protractor'],
       'CSharp' => ['NUnit'],
       'PHP' => ['PHPUnit'],
       'SpecFlow' => [''],
