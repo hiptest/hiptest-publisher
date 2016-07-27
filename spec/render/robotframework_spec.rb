@@ -258,9 +258,9 @@ describe 'Render as Robot framework' do
       "*** Test Cases ***",
       "",
       "Reset password",
-      "\tpage_url_is_opened\t/login",
-      "\ti_click_on_link\tReset password",
-      "\tpage_url_should_be_opened\t/reset-password",
+      "\tGiven page_url_is_opened\t/login",
+      "\tWhen i_click_on_link\tReset password",
+      "\tThen page_url_should_be_opened\t/reset-password",
       ""
     ].join("\n")
 
