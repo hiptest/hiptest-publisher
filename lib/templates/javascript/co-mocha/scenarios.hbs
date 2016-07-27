@@ -1,0 +1,10 @@
+'use strict';
+require('co-mocha');
+describe('{{{ escape_single_quotes self_name }}}', function () {{#curly}}{{#indent}}
+{{> before_each}}
+
+{{#each rendered_children.scenarios}}{{{this}}}
+
+{{/each}}
+{{/indent}}
+{{/curly}});

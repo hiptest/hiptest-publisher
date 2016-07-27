@@ -1,0 +1,11 @@
+describe('{{{ escape_single_quotes self_name }}}', function () {{#curly}}{{#indent}}
+beforeEach(function () {{#curly}}{{#indent}}
+this.actionwords = Object.create(require('{{{ relative_path './actionwords.js' }}}').Actionwords);{{/indent}}
+{{#unless is_empty?}}{{> body}}
+{{/unless}}{{/curly}});
+
+{{#each rendered_children.scenarios}}{{{this}}}
+
+{{/each}}
+{{/indent}}
+{{/curly}});
