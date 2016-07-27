@@ -121,19 +121,19 @@ describe 'Render as Javascript' do
     # In Hiptest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "myActionWord: function () {\n\n}"
+    @empty_action_word_rendered = "myActionWord: function * () {\n\n}"
 
     # In Hiptest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
     @tagged_action_word_rendered = [
-      "myActionWord: function () {",
+      "myActionWord: function * () {",
       "  // Tags: myTag myTag:somevalue",
       "}"].join("\n")
 
     @described_action_word_rendered = [
-      "myActionWord: function () {",
+      "myActionWord: function * () {",
       "  // Some description",
       "}"].join("\n")
 
@@ -141,7 +141,7 @@ describe 'Render as Javascript' do
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
-      "myActionWord: function (plic, flip) {",
+      "myActionWord: function * (plic, flip) {",
       "",
       "}"].join("\n")
 
@@ -157,7 +157,7 @@ describe 'Render as Javascript' do
     #   end
     # end
     @full_actionword_rendered = [
-      "compareToPi: function (x) {",
+      "compareToPi: function * (x) {",
       "  // Tags: myTag",
       "  var foo;",
       "  foo = 3.14;",
@@ -175,7 +175,7 @@ describe 'Render as Javascript' do
     #   step {action: "basic action"}
     # end
     @step_action_word_rendered = [
-      "myActionWord: function () {",
+      "myActionWord: function * () {",
       "  // TODO: Implement action: basic action",
       "  throw 'Not implemented';",
       "}"].join("\n")
@@ -188,10 +188,10 @@ describe 'Render as Javascript' do
     # end
     @actionwords_rendered = [
       "var Actionwords = {",
-      "  yield firstActionWord: function () {",
+      "  yield firstActionWord: function * () {",
       "",
       "  },",
-      "  secondActionWord: function () {",
+      "  secondActionWord: function * () {",
       "    yield this.firstActionWord();",
       "  }",
       "};"].join("\n")
@@ -516,11 +516,13 @@ describe 'Render as Javascript' do
     #   call 'first action word'
     # end
     @actionwords_rendered = [
+      "'use strict';",
+      "require('co-mocha');",
       "exports.Actionwords = {",
-      "  firstActionWord: function () {",
+      "  firstActionWord: function * () {",
       "",
       "  },",
-      "  secondActionWord: function () {",
+      "  secondActionWord: function * () {",
       "    yield this.firstActionWord();",
       "  }",
       "};"].join("\n")
@@ -541,23 +543,25 @@ describe 'Render as Javascript' do
     #   call 'aw with string param'(x = 'toto')
     #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
+      "'use strict';",
+      "require('co-mocha');",
       "exports.Actionwords = {",
-      "  awWithIntParam: function (x) {",
+      "  awWithIntParam: function * (x) {",
       "",
       "  },",
-      "  awWithFloatParam: function (x) {",
+      "  awWithFloatParam: function * (x) {",
       "",
       "  },",
-      "  awWithBooleanParam: function (x) {",
+      "  awWithBooleanParam: function * (x) {",
       "",
       "  },",
-      "  awWithNullParam: function (x) {",
+      "  awWithNullParam: function * (x) {",
       "",
       "  },",
-      "  awWithStringParam: function (x) {",
+      "  awWithStringParam: function * (x) {",
       "",
       "  },",
-      "  awWithTemplateParam: function (x) {",
+      "  awWithTemplateParam: function * (x) {",
       "",
       "  }",
       "};"
