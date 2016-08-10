@@ -1,4 +1,4 @@
-FROM ruby:2.3-alpine
+d.gvFROM ruby:2.3-alpine
 WORKDIR /app
 VOLUME /app
 COPY . $WORKDIR

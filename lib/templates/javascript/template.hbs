@@ -1,1 +1,1 @@
-{{#join treated_chunks ' + '}}{{#if this.is_variable?}}String({{{this.raw.children.name}}}){{else}}"{{{ escape_double_quotes this.raw.children.value }}}"{{/if}}{{else}}""{{/join}}
+{{#join treated_chunks ' + '}}{{#if this.is_variable?}}String({{{this.raw.children.name}}}){{else}}'{{{ escape_single_quotes this.raw.children.value }}}'{{/if}}{{else}}''{{/join}}
