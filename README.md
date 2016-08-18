@@ -155,12 +155,12 @@ Posting results to Hiptest
 
 You can use the options --push to push the results back to Hiptest. For this, you first need to generate the test code from a Test run by specifying option ``--test-run-id=<xxx>`` during code generation (or add it to the configuration file).
 The tests must then generate a test report that is supported by Hiptest. Currently four types of test results are handled:
- - tap (Test Anything Protocol)
  - jUnit XML format
- - NUnit XML format
+ - [NUnit XML v2 format](https://github.com/nunit/docs/wiki/XML-Formats#v2-test-results)
+ - [TAP (Test Anything Protocol)](https://testanything.org/)
  - Robot framework XML output
 
-You can specify the type of export when pushing by using the option "--push-format=[tap|junit|nunit|robot]" or specifying it in the config file.
+You can specify the type of export when pushing by using the option "--push-format=[junit|nunit|tap|robot]" or specifying it in the config file.
 
 You can push multiple files at once (using wildcard) but in that case, do not forget to add quotes. For examples:
 
