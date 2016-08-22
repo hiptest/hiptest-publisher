@@ -162,7 +162,17 @@ module Hiptest
         s = s.fn(context)
       end
 
-      s ? s.gsub(/^("|')|("|')$/, '') : ""
+      if s.nil?
+        ""
+      elsif surrounded_with?(s, "'") || surrounded_with?(s, '"')
+        s.slice(1...-1)
+      else
+        s
+      end
+    end
+
+    def surrounded_with?(main, sub)
+      main.start_with?(sub) && main.end_with?(sub)
     end
 
     def hh_comment (context, commenter, block)

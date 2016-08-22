@@ -404,14 +404,22 @@ describe Hiptest::HandlebarsHelper do
       template = "{{remove_surrounding_quotes txt}}"
 
       expect(evaluate(template, {txt: '"some text"'})).to eq("some text")
+      expect(evaluate(template, {txt: '""'})).to eq("")
       expect(evaluate(template, {txt: "'some text'"})).to eq("some text")
+      expect(evaluate(template, {txt: "''"})).to eq("")
     end
 
     it 'only removes one quote' do
       template = "{{remove_surrounding_quotes txt}}"
 
       expect(evaluate(template, {txt: '"""some text"""'})).to eq('""some text""')
+    end
 
+    it 'removes quotes only if they are present on both sides' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '\"some text\"'})).to eq('\"some text\"')
+      expect(evaluate(template, {txt: "'hello': 742"})).to eq("'hello': 742")
     end
 
     it 'leaves intact quotes inside the text' do
