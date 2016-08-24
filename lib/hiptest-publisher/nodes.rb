@@ -211,6 +211,10 @@ module Hiptest
         annotation = nil if annotation == ""
         @children = {:actionword => actionword, :arguments => arguments, :all_arguments => arguments, :annotation => annotation}
       end
+
+      def free_text_arg
+        children[:arguments].find { |arg| arg.children[:name] == '__free_text' }
+      end
     end
 
     class IfThen < Node

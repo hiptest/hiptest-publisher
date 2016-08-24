@@ -24,12 +24,8 @@ module Hiptest
 
     def walk_call(call)
       # For Gherkin, we need the __free_text argument rendered.
-      free_text_arg = call.children[:arguments].select do |arg|
-        arg.children[:name] == '__free_text'
-      end.first
-
-      unless free_text_arg.nil?
-        @rendered_children[:free_text_arg] = @rendered[free_text_arg.children[:value]]
+      if call.free_text_arg
+        @rendered_children[:free_text_arg] = @rendered[call.free_text_arg.children[:value]]
       end
 
       super(call)
