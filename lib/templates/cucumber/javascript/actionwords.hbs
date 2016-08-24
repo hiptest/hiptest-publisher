@@ -1,5 +1,7 @@
 module.exports = function () {{#curly}}{{#indent}}
-{{> around_hook}}
+{{> before_hook}}
+
+{{> after_hook}}
 
 {{#each rendered_children.actionwords}}{{{this}}}
 {{/each}}{{/indent}}

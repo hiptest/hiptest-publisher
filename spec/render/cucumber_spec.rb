@@ -151,11 +151,12 @@ describe 'Cucumber/Javascript rendering' do
     let(:rendered_actionwords) {
       [
         'module.exports = function () {',
-        '    this.Around(function (scenario, runScenario) {',
+        '    this.Before(function (scenario) {',
         '        this.actionwords = Object.create(require(\'./actionwords.js\').Actionwords);',
-        '        runScenario(null, function () {',
-        '            this.actionwords = null;',
-        '        });',
+        '    });',
+        '',
+        '    this.After(function (scenario) {',
+        '        this.actionwords = null;',
         '    });',
         '',
         '',
