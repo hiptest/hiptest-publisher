@@ -203,6 +203,10 @@ module Hiptest
         super()
         @children = {:name => name, :value => value}
       end
+
+      def free_text?
+        @children[:name] == "__free_text"
+      end
     end
 
     class Call < Node
@@ -213,7 +217,7 @@ module Hiptest
       end
 
       def free_text_arg
-        children[:arguments].find { |arg| arg.children[:name] == '__free_text' }
+        children[:arguments].find(&:free_text?)
       end
     end
 
@@ -257,6 +261,10 @@ module Hiptest
         else
           @children[:type].to_s
         end
+      end
+
+      def free_text?
+        @children[:name] == "__free_text"
       end
     end
 

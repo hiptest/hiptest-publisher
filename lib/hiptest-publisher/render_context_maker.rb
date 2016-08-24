@@ -93,7 +93,7 @@ module Hiptest
 
     def walk_parameter(p)
       {
-        :is_free_text? => p.children[:name] == "__free_text",
+        :is_free_text? => p.free_text?,
         :has_default_value? => !p.children[:default].nil?
       }
     end
