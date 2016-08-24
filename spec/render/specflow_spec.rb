@@ -47,8 +47,8 @@ describe 'Specflow rendering' do
         '',
         '',
         '        [Given("^I am on the \"(.*)\" home page$"), When("^I am on the \"(.*)\" home page$"), Then("^I am on the \"(.*)\" home page$")]',
-        '        public void IAmOnTheSiteHomePage(string site) {',
-        '            Actionwords.IAmOnTheSiteHomePage(site);',
+        '        public void IAmOnTheSiteHomePage(string site, string freeText) {',
+        '            Actionwords.IAmOnTheSiteHomePage(site, freeText);',
         '        }',
         '    }',
         '}'

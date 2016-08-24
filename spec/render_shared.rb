@@ -649,7 +649,7 @@ shared_examples "a BDD renderer" do
       make_actionword("you obtain \"color\"", parameters: [make_parameter("color")]),
       make_actionword("unused action word"),
       make_actionword("you cannot play croquet"),
-      make_actionword("I am on the \"site\" home page", parameters: [make_parameter("site")])
+      make_actionword("I am on the \"site\" home page", parameters: [make_parameter("site"), make_parameter("__free_text", default: literal(""))])
     ]
   }
 

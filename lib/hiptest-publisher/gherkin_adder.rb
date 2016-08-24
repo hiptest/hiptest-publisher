@@ -87,7 +87,7 @@ module Hiptest
           result << inline_parameter_name if inline_parameter_name
         end
       end
-      missing_parameter_names = actionword_parameters.keys - inline_parameter_names
+      missing_parameter_names = actionword_parameters.keys - inline_parameter_names - ['__free_text']
 
       patterned = result.join("\"")
       missing_parameter_names.each do |missing_parameter_name|

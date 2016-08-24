@@ -53,8 +53,8 @@ describe 'Behat rendering' do
         '  /**',
         '   * @Given /^I am on the "(.*)" home page$/',
         '   */',
-        '  public function iAmOnTheSiteHomePage($site){',
-        '    $this->actionwords->iAmOnTheSiteHomePage($site);',
+        '  public function iAmOnTheSiteHomePage($site, PyStringNode $__free_text){',
+        '    $this->actionwords->iAmOnTheSiteHomePage($site, $__free_text);',
         '  }',
         '}',
         '?>'

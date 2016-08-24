@@ -463,8 +463,12 @@ describe Hiptest::GherkinAdder do
       ])
     }
 
-    it 'does not render the __free_text argument (the template will do it)' do
+    it 'does not render the __free_text argument in gherkin_text (the template will do it)' do
       expect(gherkin_text).to eq("* I open \"Google\" and see:")
+    end
+
+    it 'does not add a capturing group in the gherkin_pattern for the __free_text argument' do
+      expect(gherkin_pattern).to eq("^I open \"(.*)\" and see:$")
     end
   end
 

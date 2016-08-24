@@ -197,14 +197,23 @@ describe Hiptest::RenderContextMaker do
     it 'tells if the parameter has a default value' do
       node = Hiptest::Nodes::Parameter.new('My parameter')
 
-      expect(subject.walk_parameter(node)).to eq({
+      expect(subject.walk_parameter(node)).to match(a_hash_including({
         :has_default_value? => false
-      })
+      }))
 
       node.children[:default] = 'Tralala'
-      expect(subject.walk_parameter(node)).to eq({
+      expect(subject.walk_parameter(node)).to match(a_hash_including({
         :has_default_value? => true
-      })
+      }))
+    end
+
+    it 'tells if the parameter is a free text parameter' do
+      expect(subject.walk_parameter(Hiptest::Nodes::Parameter.new('param'))).to match(a_hash_including({
+        :is_free_text? => false
+      }))
+      expect(subject.walk_parameter(Hiptest::Nodes::Parameter.new('__free_text'))).to match(a_hash_including({
+        :is_free_text? => true
+      }))
     end
   end
 

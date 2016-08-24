@@ -42,8 +42,8 @@ describe 'Behave rendering' do
         '',
         '@given(r\'I am on the "(.*)" home page\')',
         '@when(r\'I am on the "(.*)" home page\')',
-        'def impl(context, site):',
-        '    context.actionwords.i_am_on_the_site_home_page(site)',
+        'def impl(context, site, __free_text = \'\'):',
+        '    context.actionwords.i_am_on_the_site_home_page(site, __free_text)',
         ''
       ].join("\n")
     }

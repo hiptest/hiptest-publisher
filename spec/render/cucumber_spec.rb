@@ -27,8 +27,8 @@ describe 'Cucumber rendering' do
         "  you_cannot_play_croquet",
         "end",
         "",
-        "Given /^I am on the \"(.*)\" home page$/ do |site|",
-        "  i_am_on_the_site_home_page(site)",
+        "Given /^I am on the \"(.*)\" home page$/ do |site, __free_text|",
+        "  i_am_on_the_site_home_page(site, __free_text)",
         "end",
         ""
       ].join("\n")
@@ -72,8 +72,8 @@ describe 'Cucumber/Java rendering' do
         '    }',
         '',
         '    @Given("^I am on the \"(.*)\" home page$")',
-        '    public void iAmOnTheSiteHomePage(String site) {',
-        '        actionwords.iAmOnTheSiteHomePage(site);',
+        '    public void iAmOnTheSiteHomePage(String site, String freeText) {',
+        '        actionwords.iAmOnTheSiteHomePage(site, freeText);',
         '    }',
         '}'
       ].join("\n")
@@ -180,8 +180,8 @@ describe 'Cucumber/Javascript rendering' do
         '        callback();',
         '    });',
         '',
-        '    this.Given(/^I am on the "(.*)" home page$/, function (site, callback) {',
-        '        this.actionwords.iAmOnTheSiteHomePage(site);',
+        '    this.Given(/^I am on the "(.*)" home page$/, function (site, __free_text, callback) {',
+        '        this.actionwords.iAmOnTheSiteHomePage(site, __free_text);',
         '        callback();',
         '    });',
         '}',
