@@ -31,6 +31,30 @@ describe Hiptest::Publisher do
     end
   }
 
+  context "with http_proxy env var set" do
+    before { ENV['http_proxy'] = "http://www.example.org:12345" }
+    after  { ENV['http_proxy'] = nil }
+
+    it "connects through the proxy" do
+      WebMock.allow_net_connect!
+
+      expect(TCPSocket).to receive(:open).with("www.example.org", 12345, anything, anything).and_throw(:connected_to_proxy)
+
+      catch :connected_to_proxy do
+        args = [
+          "--language", "ruby",
+          "--output-directory", output_dir,
+          "--token", "123456789",
+        ]
+        Hiptest::Publisher.new(args).run
+        # TCPSocket was mocked to throw :connected_to_proxy when called with
+        # proxy setting. If we did not exit the catch block, that means it
+        # did not connect to the proxy we set.
+        fail('It did not connect through the http proxy set with "http_proxy" env var')
+      end
+    end
+  end
+
   describe "--language=ruby" do
     def run_publisher_command(*extra_args)
       stub_request(:get, "https://hiptest.net/publication/123456789/project").
