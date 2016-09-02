@@ -117,8 +117,12 @@ module Hiptest
 
     def send_request(request)
       request["User-Agent"] = "Ruby/hiptest-publisher"
-      use_ssl = request.uri.scheme == "https"
-      Net::HTTP.start(request.uri.hostname, request.uri.port, use_ssl: use_ssl, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+      # Using Net::HTTP.new will use http proxy if http_proxy env var is set.
+      # Using Net::HTTP.start would not.
+      http = Net::HTTP.new(request.uri.hostname, request.uri.port)
+      http.use_ssl = request.uri.scheme == "https"
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      http.start do |http|
         @reporter.show_verbose_message("Request sent to: #{request.uri}")
         http.request(request)
       end
