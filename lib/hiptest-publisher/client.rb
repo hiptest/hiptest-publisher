@@ -119,9 +119,11 @@ module Hiptest
       request["User-Agent"] = "Ruby/hiptest-publisher"
       use_ssl = request.uri.scheme == "https"
       proxy_uri = find_proxy_uri(request.uri.hostname, request.uri.port)
-      proxy_address = proxy_uri&.hostname
-      proxy_port = proxy_uri&.port
-      proxy_user, proxy_pass = proxy_uri&.userinfo&.split(':', 2)
+      if proxy_uri
+        proxy_address = proxy_uri.hostname
+        proxy_port = proxy_uri.port
+        proxy_user, proxy_pass = proxy_uri.userinfo.split(':', 2) if proxy_uri.userinfo
+      end
       Net::HTTP.start(
           request.uri.hostname, request.uri.port,
           proxy_address, proxy_port, proxy_user, proxy_pass,
