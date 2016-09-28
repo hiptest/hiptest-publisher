@@ -25,7 +25,7 @@ docker cp $cid:/usr/src/app/bin/hiptest-publisher-docker hiptest-publisher &&
 docker rm $cid > /dev/null
 ```
 
-Now you can use `hiptest-publisher` in order to run the program. 
+Now you can use `hiptest-publisher` in order to run the program.
 
 Suggestions for installation of the hiptest-publisher script:
 
@@ -121,7 +121,6 @@ Specific options:
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
-    -F, --filters-help               Show help about scenario filtering
     -h, --help                       Show this message
 ```
 

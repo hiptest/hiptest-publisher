@@ -210,22 +210,6 @@ class OptionsParser
         exit
       end
 
-      opts.on("-F", "--filters-help", "Show help about scenario filtering") do
-        [
-          "hiptest-publisher allows you to filter the exported scenarios.",
-          "You can select the ids of the scenarios:",
-          "hiptest-publisher --scenario-ids=12",
-          "hiptest-publisher --scenario-ids=12,15,16",
-          "",
-          "You can also filter by tags:",
-          "hiptest-publisher --scenario-tags=mytag",
-          "hiptest-publisher --scenario-tags=mytag,myother:tag",
-          "",
-          "You can not mix ids and tag filtering, only the id filtering will be applied."
-        ].each {|line| puts line}
-        exit
-      end
-
       opts.on_tail("-h", "--help", "Show this message") do
         puts opts
         exit
