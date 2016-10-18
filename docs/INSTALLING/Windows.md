@@ -3,14 +3,12 @@ Installing Hiptest-publisher on Windows
 
 Since version 0.3.4, we support installing hiptest-publisher on Windows. Here's a quick how-to:
 
-
 Install Ruby
 ------------
 
 Go to [Ruby installer](http://rubyinstaller.org/), click on "Downloads" and get "Ruby 2.3.1 (x64)". Once the file has been downloaded, open your "Downloads" folder and run ``rubyinstaller-2.3.1-x64``. On the second screen, select the checkbox "Add Ruby executables to your PATH".
 
 Now run in the prompt: ``gem install hiptest-publisher`` and you'll have hiptest-publisher installed.
-
 
 Troubleshooting
 ---------------
@@ -35,11 +33,9 @@ The RubyGems command line tool embeds the certificates needed to connect securel
 
 **Fix**
 
-Upgrade RubyGems by temporarly using non-ssl connection:
+Download the [GlobalSignRootCA.pem](https://raw.githubusercontent.com/rubygems/rubygems/master/lib/rubygems/ssl_certs/index.rubygems.org/GlobalSignRootCA.pem) file into the `C:\Ruby23-x64\lib\ruby\2.3.0\rubygems\ssl_certs` directory. This makes RubyGems trust the certificate presented when connecting to api.rubygems.org next time you run a `gem install` command.
 
-    gem update --system --source http://rubygems.org/
-
-It will upgrade to newest RubyGems version which includes all necessary certificates. Then run `gem install hiptest-publisher` to complete the installation.
+Then run `gem update --system` to upgrade RubyGems to its latest version which includes all required certificates.
 
 
 Notes
