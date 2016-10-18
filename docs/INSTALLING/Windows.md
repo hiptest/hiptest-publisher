@@ -33,7 +33,9 @@ The RubyGems command line tool embeds the certificates needed to connect securel
 
 **Fix**
 
-Download the [GlobalSignRootCA.pem](https://raw.githubusercontent.com/rubygems/rubygems/master/lib/rubygems/ssl_certs/index.rubygems.org/GlobalSignRootCA.pem) file into the `C:\Ruby23-x64\lib\ruby\2.3.0\rubygems\ssl_certs` directory. This will make RubyGems trust the certificate presented when connecting to api.rubygems.org next time you run a `gem install` command.
+Download the [GlobalSignRootCA.pem](https://raw.githubusercontent.com/rubygems/rubygems/master/lib/rubygems/ssl_certs/index.rubygems.org/GlobalSignRootCA.pem) file into the `C:\Ruby23-x64\lib\ruby\2.3.0\rubygems\ssl_certs` directory. This makes RubyGems trust the certificate presented when connecting to api.rubygems.org next time you run a `gem install` command.
+
+Then run `gem update --system` to upgrade RubyGems to its latest version which includes all required certificates.
 
 
 Notes
