@@ -40,7 +40,7 @@ You need to have [Ruby installed on your machine](https://www.ruby-lang.org/en/i
 gem install hiptest-publisher
 ```
 
-Note: for Windows user, take a look, at [this (short) documentation](docs/INSTALLING/Windows.md).
+Note: for Windows users, take a look at [this Windows installation guide](docs/INSTALLING/Windows.md).
 
 Exporting a project
 -------------------
