@@ -774,6 +774,25 @@ shared_examples "a BDD renderer" do
       ]))
   }
 
+  let(:scenario_with_double_quotes_in_datatable) {
+    make_scenario("Double quote in datatable",
+      folder: regression_folder,
+      parameters: [
+        make_parameter("color_definition")
+      ],
+      body: [
+        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("color_definition"))])
+      ],
+      datatable: Hiptest::Nodes::Datatable.new([
+        Hiptest::Nodes::Dataset.new("Mix to green", [
+          make_argument("color_definition", template_of_literals('{"html": ["#008000", "#50D050"]}'))
+        ]),
+        Hiptest::Nodes::Dataset.new("Mix to purple", [
+          make_argument("color_definition", template_of_literals('{"html": ["#D14FD1"]}'))
+        ])
+      ]))
+  }
+
   let(:scenario_with_freetext_argument) {
     make_scenario("Open a site with comments",
       folder: gherkin_special_arguments_folder,
@@ -793,7 +812,7 @@ shared_examples "a BDD renderer" do
 
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument, scenario_with_incomplete_datatable],
+      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument, scenario_with_incomplete_datatable, scenario_with_double_quotes_in_datatable],
       tests: [create_white_test],
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
@@ -946,6 +965,24 @@ shared_examples "a BDD renderer" do
             "   - and another one",
             '  """',
             '  Then stuff happens',
+            ''
+          ].join("\n"))
+        end
+      end
+
+      context 'With double quotes in datatable' do
+        let(:scenario) {scenario_with_double_quotes_in_datatable}
+
+        it "the double quotes should be displayed", :current => true do
+          expect(rendered).to eq([
+            '',
+            'Scenario Outline: Double quote in datatable',
+            '  Given the color "<color_definition>"',
+            '',
+            '  Examples:',
+            '    | color_definition | hiptest-uid |',
+            '    | {"html": ["#008000", "#50D050"]} |  |',
+            '    | {"html": ["#D14FD1"]} |  |',
             ''
           ].join("\n"))
         end
