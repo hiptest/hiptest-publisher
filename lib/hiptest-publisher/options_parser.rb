@@ -12,10 +12,16 @@ class FileConfigParser
     config = ParseConfig.new(options.config)
     config.get_params.each do |param|
       next if options.__cli_args && options.__cli_args.include?(param.to_sym)
-      if falsy?(config[param])
+      if param.start_with?("no_")
+        value = falsy?(config[param]) ? "true" : "false"
+        param = param.sub("no_", "")
+      else
+        value = config[param]
+      end
+      if falsy?(value)
         options[param] = false
       else
-        options[param] = config[param]
+        options[param] = value
       end
       options.__config_args << param.to_sym if options.__config_args
     end
@@ -101,6 +107,7 @@ class CliOptions < OpenStruct
   end
 
   def normalize!(reporter = nil)
+    self.no_uids = !uids  # silent normalization
     modified_options = self.clone
     if actionwords_only
       modified_options.only = 'actionwords'
@@ -188,7 +195,7 @@ class OptionsParser
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
       Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (junit, nunit, tap, robot)", :push_format),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
-      Option.new(nil, 'no-uids', false, nil, 'Do not export UIDs (note: only for Gherkin-based exports, may cause issue when pushing results back)', :no_uids),
+      Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
@@ -480,7 +487,7 @@ class LanguageGroupConfig
       call_prefix: @language_group_params[:call_prefix],
       package: @language_group_params[:package],
       namespace: @language_group_params[:namespace],
-      no_uids: @user_params[:no_uids]
+      uids: @user_params[:uids]
     )
   end
 

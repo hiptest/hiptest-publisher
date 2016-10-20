@@ -623,8 +623,8 @@ shared_examples "a BDD renderer" do
   # Note: we do not want to test everything as we'll only render
   # tests and calls.
   # You have to define language and framework.
-  let(:language) {nil}
-  let(:framework) {nil}
+  let(:language) { "" }
+  let(:framework) { "" }
 
   let(:root_folder) { make_folder("Colors") }
   let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
@@ -1001,7 +1001,7 @@ shared_examples "a BDD renderer" do
           only: "features",
           language: language,
           framework: framework,
-          no_uids: true
+          uids: false,
         )
       }
 

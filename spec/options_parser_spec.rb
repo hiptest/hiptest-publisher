@@ -36,11 +36,35 @@ describe OptionParser do
       end
     end
 
+    it "understands all combinations of no_uids/uids = true/false" do
+      f = Tempfile.new('config')
+      File.write(f, "no_uids = true")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(options.uids).to be_falsy
+
+      File.write(f, "no_uids = false")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(options.uids).to be_truthy
+
+      File.write(f, "uids = true")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(options.uids).to be_truthy
+
+      File.write(f, "uids = false")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(options.uids).to be_falsy
+    end
+
     it "works if config file is nil" do
       options = CliOptions.new
       options.config = nil
       expect { FileConfigParser.update_options(options, NullReporter.new) }.not_to raise_error
     end
+  end
+
+  it "recognizes --no-uids correctly" do
+    options = OptionsParser.parse(["--no-uids"], NullReporter.new)
+    expect(options.uids).to be(false)
   end
 end
 
@@ -101,6 +125,15 @@ describe CliOptions do
       options = CliOptions.new
 
       expect(options.normalize!).to be_nil
+    end
+
+    it "adds context.no_uids for compatibility" do
+      options = CliOptions.new(uids: true)
+      options.normalize!
+      expect(options.no_uids).to be(false)
+      options = CliOptions.new(uids: false)
+      options.normalize!
+      expect(options.no_uids).to be(true)
     end
   end
 end

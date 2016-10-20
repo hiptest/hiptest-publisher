@@ -114,7 +114,9 @@ def language_group_config_for(properties)
     args = properties
     cli_options = OptionsParser.parse(args, error_reporter)
   else
-    cli_options = CliOptions.new(properties)
+    cli_options = OptionsParser.parse(["--language", "ruby"], error_reporter)
+    properties[:framework] ||= "" if properties[:language]
+    properties.each { |key, value| cli_options[key] = value }
   end
   cli_options.normalize!
   language_config = LanguageConfigParser.new(cli_options)

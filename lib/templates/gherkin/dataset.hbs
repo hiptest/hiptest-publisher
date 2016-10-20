@@ -1,1 +1,1 @@
-| {{{ join rendered_children.arguments ' | ' }}} |{{#unless context.no_uids}} {{#if rendered_children.uid}}uid:{{{rendered_children.uid}}}{{/if}} |{{/unless}}
+| {{{ join rendered_children.arguments ' | ' }}} |{{#if context.uids}} {{#if rendered_children.uid}}uid:{{{rendered_children.uid}}}{{/if}} |{{/if}}

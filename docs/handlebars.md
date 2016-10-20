@@ -82,7 +82,7 @@ In any template, you will have access to the following elements:
    - ``context.path`` is the full absolute path of the rendered output file, like ``/home/john/project/tests/greeter/WelcomeTest.js``
    - ``context.filename`` is the filename of the rendered output file, like ``WelcomeTest.js``
    - ``context.relative_path`` is the path relative to the output directorya, like ``greeter/WelcomeTest.js`` if ``/home/john/project/tests`` is the output directory
-   - ``context.no_uids`` is ``true`` if option ``--no-uids`` has been used, ``false`` otherwise
+   - ``context.uids`` is ``false`` if option ``--no-uids`` has been used, ``true`` otherwise
 
 For some nodes, we add some extra context shown below for each type of node. Following the Ruby naming convention, names ending with a question mark are booleans.
 
