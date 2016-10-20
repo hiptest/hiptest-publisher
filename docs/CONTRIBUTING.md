@@ -15,7 +15,7 @@ The first step is to write the tests. Copy the file ``spec/render_template_spec.
 Run the following command line:
 
 ```shell
-rspec spec/render_scala_spec.rb -f d
+rspec spec/render/scala_spec.rb -f d
 ```
 
 
@@ -68,7 +68,7 @@ Adding support for a new framework
 
 Let's say you want to add support for Scala Specs (considering Scalatest is the default Scala framework).
 
-First, let's write some tests. Open ``specs/render_scala_spec.rb`` and go to the end of the file.
+First, let's write some tests. Open ``spec/render/scala_spec.rb`` and go to the end of the file.
 
 Add the following lines before the last ``end`` tag:
 
@@ -92,7 +92,7 @@ end
 Run the tests:
 
 ```shell
-rspec spec/render_scala_spec.rb -f d
+rspec spec/render/scala_spec.rb -f d
 ```
 
 
