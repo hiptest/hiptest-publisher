@@ -310,9 +310,16 @@ class TemplateFinder
 
   def dirs
     @dirs ||= begin
-      search_dirs = template_dirs.map { |path|
-        "#{hiptest_publisher_path}/lib/templates/#{path}"
+      search_dirs = []
+      #Template paths in overriden_templates
+      template_dirs.map { |path|
+        search_dirs.push("#{overriden_templates}/#{path}") if overriden_templates
       }
+      #Template paths in hiptest_publisher
+      template_dirs.map { |path|
+        search_dirs.push("#{hiptest_publisher_path}/lib/templates/#{path}")
+      }
+      # for backwards compatibility
       search_dirs.unshift(overriden_templates) if overriden_templates
       search_dirs
     end
