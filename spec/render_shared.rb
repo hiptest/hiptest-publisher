@@ -635,9 +635,19 @@ shared_examples "a BDD renderer" do
       make_call("I know the expected color",  annotation: "and"),
     ])
   }
+
   let(:regression_folder) {
     make_folder("Regression tests", parent: root_folder)
   }
+
+  let(:subreg_folder) {
+    make_folder("Sub-regression folder", parent: regression_folder, tags: [make_tag('simple')])
+  }
+
+  let(:subsubreg_folder) {
+    make_folder("Sub-sub-regression folder", parent: subreg_folder, tags: [make_tag('key', 'value')])
+  }
+
   let(:gherkin_special_arguments_folder) {
     make_folder('Gherkin special arguments', parent: root_folder)
   }
@@ -810,9 +820,19 @@ shared_examples "a BDD renderer" do
       ])
   }
 
+  let(:scenario_inheriting_tags) {
+    make_scenario('Inherit tags',
+      folder: subsubreg_folder,
+      tags: [make_tag('my', 'own')],
+      body: [
+        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("color_definition"))])
+      ]
+    )
+  }
+
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument, scenario_with_incomplete_datatable, scenario_with_double_quotes_in_datatable],
+      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument, scenario_with_incomplete_datatable, scenario_with_double_quotes_in_datatable, scenario_inheriting_tags],
       tests: [create_white_test],
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
@@ -1008,7 +1028,7 @@ shared_examples "a BDD renderer" do
 
       context 'when some datatable rows are incomplete' do
         # That one is a bit weird, but we found some examples where the XML
-        # made by Hiptedt misses some data ...
+        # made by Hiptest misses some data ...
 
         let(:scenario) {scenario_with_incomplete_datatable}
 
@@ -1172,7 +1192,27 @@ shared_examples "a BDD renderer" do
           '    Then you obtain "purple"',
           ''
         ].join("\n"))
+      end
+    end
 
+    context 'ancestors tags are inherited' do
+      context 'for Folder nodes at' do
+        let(:node_to_render) {
+          subsubreg_folder
+        }
+
+        it 'the feature level' do
+          expect(rendered).to eq([
+            '@simple @key-value',
+            'Feature: Sub-sub-regression folder',
+            '',
+            '',
+            '  @my-own',
+            '  Scenario: Inherit tags',
+            '    Given the color "<color_definition>"',
+            ''
+          ].join("\n"))
+        end
       end
     end
 

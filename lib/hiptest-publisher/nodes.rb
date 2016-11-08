@@ -443,6 +443,18 @@ module Hiptest
       def folder
         root? ? nil : parent
       end
+
+      def ancestors
+        ancestors = []
+
+        current_ancestor = folder
+        until current_ancestor.nil?
+          ancestors << current_ancestor
+          current_ancestor = current_ancestor.folder
+        end
+
+        ancestors
+      end
     end
 
     class TestPlan < Node

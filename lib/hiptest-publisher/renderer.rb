@@ -37,6 +37,9 @@ module Hiptest
     end
 
     def walk_folder(folder)
+      ancestor_tags = folder.ancestors.map {|f| f.children[:tags]}.flatten.uniq
+      @rendered_children[:ancestor_tags] = ancestor_tags.map {|t| Hiptest::Renderer.render(t, @context)}
+
       walk_scenario_container(folder)
       super(folder)
     end

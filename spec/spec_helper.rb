@@ -77,16 +77,20 @@ module HelperFactories
     end
   end
 
+  def make_tag(key, value = nil)
+    Hiptest::Nodes::Tag.new(key, value)
+  end
+
   def make_test(name, tags: [], body: [])
     Hiptest::Nodes::Test.new(name, '', tags, body)
   end
 
-  def make_folder(name, description: nil, parent: nil, body: [])
+  def make_folder(name, description: nil, parent: nil, body: [], tags: [])
     uid = SecureRandom.uuid
     if parent.respond_to?(:uid)
       parent_uid = parent.uid
     end
-    folder = Hiptest::Nodes::Folder.new(uid, parent_uid, name, description, [], 0, body)
+    folder = Hiptest::Nodes::Folder.new(uid, parent_uid, name, description, tags, 0, body)
     if parent
       folder.parent = parent
       if parent.is_a?(Hiptest::Nodes::TestPlan)
