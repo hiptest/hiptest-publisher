@@ -15,6 +15,7 @@ describe ConsoleFormatter do
     context "is a tty" do
       before do
         allow($stdout).to receive(:tty?).and_return(true)
+        allow(IO.console).to receive(:winsize).and_return([80, 25])
       end
 
       it 'sends a message on STDOUT with brackets before' do
@@ -83,6 +84,7 @@ describe ConsoleFormatter do
       context 'when inside a #show_status_message' do
         before do
           allow($stdout).to receive(:tty?).and_return(true)
+          allow(IO.console).to receive(:winsize).and_return([80, 25])
         end
 
         it 'delays outputs until the #show_status_message is called with :success or :failed' do
