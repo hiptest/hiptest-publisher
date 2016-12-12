@@ -113,6 +113,23 @@ module Hiptest
       end.compact.join("\n")
     end
 
+    def hh_index(context, list, index, block)
+      current_this = context.get('this')
+      context.add_item(:this, list[index.to_i])
+      rendered = block.fn(context)
+      context.add_item(:this, current_this)
+
+      return rendered
+    end
+
+    def hh_first(context, list, block)
+      hh_index(context, list, 0, block)
+    end
+
+    def hh_last(context, list, block)
+      hh_index(context, list, list.size - 1, block)
+    end
+
     # kept for backward compatibility of customized templates
     def hh_remove_quotes (context, s, block)
       hh_remove_double_quotes(context, s, block)

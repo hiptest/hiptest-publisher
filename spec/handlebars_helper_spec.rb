@@ -382,6 +382,37 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context 'hh_index' do
+    it 'calls the block with the correct element of the list' do
+      template = '{{#index list index}}- {{this}}{{/index}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- a')
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 2})).to eq('- c')
+    end
+
+    it 'also work when the index is written in the template' do
+      template = '{{#index list "1"}}- {{this}}{{/index}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c']})).to eq('- b')
+    end
+  end
+
+  context 'hh_first' do
+    it 'works like hh_index, with a index set to zero' do
+      template = '{{#first list}}- {{this}}{{/first}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- a')
+    end
+  end
+
+  context 'hh_last' do
+    it 'works like hh_index, but always points to the last element of the list' do
+      template = '{{#last list}}- {{this}}{{/last}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- c')
+    end
+  end
+
   context 'hh_escape_new_line' do
     it 'escapes new lines' do
       template = "{{escape_new_line txt}}"
