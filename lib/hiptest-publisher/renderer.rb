@@ -36,6 +36,11 @@ module Hiptest
       super(scs)
     end
 
+    def walk_actionword(aw)
+      add_splitted_tags(aw)
+      super(aw)
+    end
+
     def walk_folder(folder)
       ancestor_tags = folder.ancestors.map {|f| f.children[:tags]}.flatten.uniq
       @rendered_children[:ancestor_tags] = ancestor_tags.map {|t| Hiptest::Renderer.render(t, @context)}
@@ -67,6 +72,12 @@ module Hiptest
     end
 
     private
+
+    def add_splitted_tags(context)
+      @rendered_children[:splitted_tags] = context.children[:tags].map do |tag|
+        @rendered[tag]
+      end
+    end
 
     def walk_scenario_container(container)
      # For Robot framework, we need direct access to every scenario
