@@ -1,16 +1,17 @@
 <?php
+
+namespace Feature\Context;
+
 use Behat\Behat\Tester\Exception\PendingException;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 
-require_once('Actionwords.php');
-
-class FeatureContext implements SnippetAcceptingContext {{#curly}}{{#indent}}
-public function __construct() {{#curly}}{{#indent}}
-$this->actionwords = new Actionwords();{{/indent}}
-{{/curly}}
+trait Actionwords {{#curly}}{{#indent}}
 {{#each rendered_children.actionwords}}
-{{{this}}}{{/each}}{{/indent}}
+{{#clear_empty_lines}}
+{{{this}}}
+{{/clear_empty_lines}}
+{{/each}}
+{{/indent}}
 {{/curly}}
 ?>

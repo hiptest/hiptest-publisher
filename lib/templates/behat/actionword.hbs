@@ -3,6 +3,5 @@
  * @{{{ rendered_children.gherkin_annotation }}} /{{{ rendered_children.gherkin_pattern }}}/
  */
 public function {{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{{ join rendered_children.parameters ', '}}}{{/if}}){{#curly}}{{#indent}}
-$this->actionwords->{{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}${{{underscore this}}}{{/join}}{{/if}});
-{{/indent}}
+throw new PendingException();{{/indent}}
 {{/curly}}{{/if}}
