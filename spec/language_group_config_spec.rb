@@ -435,33 +435,25 @@ describe LanguageGroupConfig do
                                                       "/buy_goods.feature",
                                                       "/sell_goods.feature",
                                                       "[step_definitions]",
-                                                      "/FeatureContext.php",
-                                                      "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
                                                     ],
         ["--split-scenarios"]                    => [ "[features]",
                                                       "/buy_goods.feature",
                                                       "/sell_goods.feature",
                                                       "[step_definitions]",
-                                                      "/FeatureContext.php",
-                                                      "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
                                                     ],
         ["--with-folders"]                       => [ "[features]",
                                                       "/global_trades/buy_goods.feature",
                                                       "/global_trades/sell_goods.feature",
                                                       "[step_definitions]",
-                                                      "/FeatureContext.php",
-                                                      "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[features]",
                                                       "/global_trades/buy_goods.feature",
                                                       "/global_trades/sell_goods.feature",
                                                       "[step_definitions]",
-                                                      "/FeatureContext.php",
-                                                      "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
                                                     ]
       },
       "cucumber-javascript" => {
