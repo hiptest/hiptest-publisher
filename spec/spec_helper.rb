@@ -63,9 +63,9 @@ module HelperFactories
     Hiptest::Nodes::Actionword.new(name, tags, parameters, body, uid)
   end
 
-  def make_scenario(name, tags: [], parameters: [], body: [], folder: nil, datatable: Hiptest::Nodes::Datatable.new)
+  def make_scenario(name, tags: [], description: '', parameters: [], body: [], folder: nil, datatable: Hiptest::Nodes::Datatable.new)
     folder_uid = folder ? folder.uid : nil
-    Hiptest::Nodes::Scenario.new(name, '', tags, parameters, body, folder_uid, datatable).tap do |scenario|
+    Hiptest::Nodes::Scenario.new(name, description, tags, parameters, body, folder_uid, datatable).tap do |scenario|
       if folder
         folder.children[:scenarios] << scenario
         project = folder.project
@@ -81,8 +81,8 @@ module HelperFactories
     Hiptest::Nodes::Tag.new(key, value)
   end
 
-  def make_test(name, tags: [], body: [])
-    Hiptest::Nodes::Test.new(name, '', tags, body)
+  def make_test(name, tags: [], body: [], description: [])
+    Hiptest::Nodes::Test.new(name, description, tags, body)
   end
 
   def make_folder(name, description: nil, parent: nil, body: [], tags: [])

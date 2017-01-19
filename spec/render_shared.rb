@@ -675,6 +675,7 @@ shared_examples "a BDD renderer" do
 
   let(:create_green_scenario) {
     make_scenario("Create green",
+      description: "You can create green by mixing other colors",
       folder: cool_colors_folder,
       body: [
         make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
@@ -687,6 +688,7 @@ shared_examples "a BDD renderer" do
 
   let(:create_purple_scenario) {
     make_scenario("Create purple",
+      description: "You can have a description\non multiple lines",
       folder: cool_colors_folder,
       body: [
         make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
@@ -885,6 +887,7 @@ shared_examples "a BDD renderer" do
       expect(rendered).to eq([
         "",
         "Scenario: Create green",
+        '  # You can create green by mixing other colors',
         "  Given the color \"blue\"",
         "  And the color \"yellow\"",
         "  When you mix colors",
@@ -900,6 +903,7 @@ shared_examples "a BDD renderer" do
       expect(rendered).to eq([
         "",
         "Scenario: Create green (uid:1234-4567)",
+        '  # You can create green by mixing other colors',
         "  Given the color \"blue\"",
         "  And the color \"yellow\"",
         "  When you mix colors",
@@ -1179,6 +1183,7 @@ shared_examples "a BDD renderer" do
           '    They are the hues from blue green through blue violet, most grays included.',
           '',
           '  Scenario: Create green',
+          '    # You can create green by mixing other colors',
           '    Given the color "blue"',
           '    And the color "yellow"',
           '    When you mix colors',
@@ -1186,6 +1191,8 @@ shared_examples "a BDD renderer" do
           '    But you cannot play croquet',
           '',
           '  Scenario: Create purple',
+          '    # You can have a description',
+          '    # on multiple lines',
           '    Given the color "blue"',
           '    And the color "red"',
           '    When you mix colors',
@@ -1228,6 +1235,8 @@ shared_examples "a BDD renderer" do
           '',
           '@myTag @myTag-some_value',
           'Scenario: Create purple',
+          '  # You can have a description',
+          '  # on multiple lines',
           '  Given the color "blue"',
           '  And the color "red"',
           '  When you mix colors',
