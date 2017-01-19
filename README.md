@@ -98,9 +98,11 @@ Specific options:
     -l, --language=LANG              Target language (default: ruby)
     -f, --framework=FRAMEWORK        Test framework to use
     -o, --output-directory=PATH      Output directory (default: .)
+        --filename-pattern=PATTERN   Filename pattern (containing %s)
     -c, --config-file=PATH           Configuration file
         --overriden-templates=PATH   Folder for overriden templates
-        --test-run-id=ID             Export data from a test run
+        --test-run-id=ID             Export data from a test run identified by its id
+        --test-run-name=NAME         Export data from a test run identified by its name
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
     -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from Hiptest
         --tests-only                 (deprecated) alias for --only=tests (default: false)
@@ -112,13 +114,18 @@ Specific options:
         --show-actionwords-renamed   Output signatures of renamed action words (default: false)
         --show-actionwords-signature-changed
                                      Output signatures of action words for which signature changed (default: false)
+        --show-actionwords-definition-changed
+                                     Output action words for which definition changed (default: false)
         --with-folders               Use folders hierarchy to export files in respective directories (default: false)
         --split-scenarios            Export each scenario in a single file (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
-        --push-format=tap            Format of the test results (tap, junit, nunit, robot) (default: tap)
+        --push-format=tap            Format of the test results (junit, nunit, tap, robot) (default: tap)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
+        --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
+        --keep-filenames             Keep the same name as in Hiptest for the test files (note: may cause encoding issues) (default: false)
+        --keep-foldernames           Keep the same name as in Hiptest for the folders (note: may cause encoding issues) (default: false)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -h, --help                       Show this message
