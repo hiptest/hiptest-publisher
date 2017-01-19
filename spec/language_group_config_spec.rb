@@ -55,6 +55,31 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
+        ["--keep-filenames"]                      => ["[features]",
+                                                      "/Buy goods.feature",
+                                                      "/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[features]",
+                                                      "/Global trades/buy_goods.feature",
+                                                      "/Global trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[features]",
+                                                      "/Global trades/Buy goods.feature",
+                                                      "/Global trades/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ]
       },
 
       "csharp" => {
@@ -81,6 +106,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/Actionwords.cs",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy PontarlierTest.cs",
+                                                      "/Sell Mont d'OrTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/BuyGoodsTest.cs",
+                                                      "/Global trades/SellGoodsTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goodsTest.cs",
+                                                      "/Global trades/Sell goodsTest.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs"
+                                                    ]
       },
 
       "java" => {
@@ -107,6 +151,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/Actionwords.java",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy PontarlierTest.java",
+                                                      "/Sell Mont d'OrTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/BuyGoodsTest.java",
+                                                      "/Global trades/SellGoodsTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goodsTest.java",
+                                                      "/Global trades/Sell goodsTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java"
+                                                    ]
       },
 
       "java-testng" => {
@@ -133,6 +196,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/Actionwords.java",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy PontarlierTest.java",
+                                                      "/Sell Mont d'OrTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/BuyGoodsTest.java",
+                                                      "/Global trades/SellGoodsTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goodsTest.java",
+                                                      "/Global trades/Sell goodsTest.java",
+                                                      "[actionwords]",
+                                                      "/Actionwords.java"
+                                                    ]
       },
 
       "javascript" => {
@@ -159,6 +241,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy Pontarlier_test.js",
+                                                      "/Sell Mont d'Or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/buy_goods_test.js",
+                                                      "/Global trades/sell_goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goods_test.js",
+                                                      "/Global trades/Sell goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ]
       },
 
       "javascript-jasmine" => {
@@ -185,6 +286,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy Pontarlier_test.js",
+                                                      "/Sell Mont d'Or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/buy_goods_test.js",
+                                                      "/Global trades/sell_goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goods_test.js",
+                                                      "/Global trades/Sell goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ]
       },
 
       "javascript-mocha" => {
@@ -211,6 +331,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.js",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy Pontarlier_test.js",
+                                                      "/Sell Mont d'Or_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/buy_goods_test.js",
+                                                      "/Global trades/sell_goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goods_test.js",
+                                                      "/Global trades/Sell goods_test.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ]
       },
 
       "php" => {
@@ -237,6 +376,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/Actionwords.php",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy PontarlierTest.php",
+                                                      "/Sell Mont d'OrTest.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/BuyGoodsTest.php",
+                                                      "/Global trades/SellGoodsTest.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goodsTest.php",
+                                                      "/Global trades/Sell goodsTest.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ]
       },
 
       "python" => {
@@ -263,6 +421,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.py",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/test_Buy Pontarlier.py",
+                                                      "/test_Sell Mont d'Or.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/test_buy_goods.py",
+                                                      "/Global trades/test_sell_goods.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/test_Buy goods.py",
+                                                      "/Global trades/test_Sell goods.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py"
+                                                    ]
       },
 
       "robotframework" => {
@@ -289,6 +466,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/keywords.txt",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/test_Buy Pontarlier.txt",
+                                                      "/test_Sell Mont d'Or.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/test_buy_goods.txt",
+                                                      "/Global trades/test_sell_goods.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/test_Buy goods.txt",
+                                                      "/Global trades/test_Sell goods.txt",
+                                                      "[actionwords]",
+                                                      "/keywords.txt"
+                                                    ]
       },
 
       "ruby" => {
@@ -315,6 +511,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy Pontarlier_spec.rb",
+                                                      "/Sell Mont d'Or_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/buy_goods_spec.rb",
+                                                      "/Global trades/sell_goods_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goods_spec.rb",
+                                                      "/Global trades/Sell goods_spec.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ]
       },
 
       "ruby-minitest" => {
@@ -341,6 +556,25 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.rb",
                                                     ],
+        ["--split-scenarios", "--keep-filenames"] => ["[tests]",
+                                                      "/Buy Pontarlier_test.rb",
+                                                      "/Sell Mont d'Or_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[tests]",
+                                                      "/Global trades/buy_goods_test.rb",
+                                                      "/Global trades/sell_goods_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[tests]",
+                                                      "/Global trades/Buy goods_test.rb",
+                                                      "/Global trades/Sell goods_test.rb",
+                                                      "[actionwords]",
+                                                      "/actionwords.rb"
+                                                    ]
       },
 
       "seleniumide" => {
@@ -429,6 +663,31 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ],
+        ["--keep-filenames"]                      => ["[features]",
+                                                      "/Buy goods.feature",
+                                                      "/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/steps.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[features]",
+                                                      "/Global trades/buy_goods.feature",
+                                                      "/Global trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/steps.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[features]",
+                                                      "/Global trades/Buy goods.feature",
+                                                      "/Global trades/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/steps.py",
+                                                      "[actionwords]",
+                                                      "/actionwords.py"
+                                                    ]
       },
       "behat" => {
         []                                       => [ "[features]",
@@ -458,6 +717,31 @@ describe LanguageGroupConfig do
         ["--split-scenarios", "--with-folders"]  => [ "[features]",
                                                       "/global_trades/buy_goods.feature",
                                                       "/global_trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--keep-filenames"]                      => ["[features]",
+                                                      "/Buy goods.feature",
+                                                      "/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[features]",
+                                                      "/Global trades/buy_goods.feature",
+                                                      "/Global trades/sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/FeatureContext.php",
+                                                      "[actionwords]",
+                                                      "/Actionwords.php"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[features]",
+                                                      "/Global trades/Buy goods.feature",
+                                                      "/Global trades/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
@@ -494,6 +778,31 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/step_definitions.js",
                                                       "[actionwords]", "/actionwords.js"
+                                                    ],
+        ["--keep-filenames"]                      => ["[features]",
+                                                      "/Buy goods.feature",
+                                                      "/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[features]",
+                                                      "/Global trades/Buy_goods.feature",
+                                                      "/Global trades/Sell_goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[features]",
+                                                      "/Global trades/Buy goods.feature",
+                                                      "/Global trades/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/step_definitions.js",
+                                                      "[actionwords]",
+                                                      "/actionwords.js"
                                                     ]
       },
     }.each do |dialect, output_files_for_options|
