@@ -1,7 +1,8 @@
 {{#if has_datasets?}}
 {{#if has_tags?}}{{join rendered_children.tags ' '}}
 {{/if}}Scenario Outline: {{{ rendered_children.name }}}{{#if context.uids}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{/if}}{{#indent}}
-{{#each rendered_children.body}}{{{ this }}}
+{{#if has_description?}}{{#comment '#'}}{{rendered_children.description}}{{/comment}}
+{{/if}}{{#each rendered_children.body}}{{{ this }}}
 {{/each}}
 Examples:{{#indent}}
 | {{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid |{{/if}}

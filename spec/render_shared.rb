@@ -711,6 +711,7 @@ shared_examples "a BDD renderer" do
 
   let(:create_secondary_colors_scenario) {
     make_scenario("Create secondary colors",
+      description: "This scenario has a datatable and a description",
       folder: other_colors_folder,
       parameters: [
         make_parameter("first_color"),
@@ -936,6 +937,7 @@ shared_examples "a BDD renderer" do
         expect(rendered).to eq([
           "",
           "Scenario Outline: Create secondary colors",
+          "  # This scenario has a datatable and a description",
           "  Given the color \"<first_color>\"",
           "  And the color \"<second_color>\"",
           "  When you mix colors",
@@ -959,6 +961,7 @@ shared_examples "a BDD renderer" do
         expect(rendered).to eq([
           "",
           "Scenario Outline: Create secondary colors (uid:abcd-efgh)",
+          "  # This scenario has a datatable and a description",
           "  Given the color \"<first_color>\"",
           "  And the color \"<second_color>\"",
           "  When you mix colors",
@@ -1078,6 +1081,7 @@ shared_examples "a BDD renderer" do
         expect(rendered).to eq([
           "",
           "Scenario Outline: Create secondary colors",
+          "  # This scenario has a datatable and a description",
           "  Given the color \"<first_color>\"",
           "  And the color \"<second_color>\"",
           "  When you mix colors",
@@ -1099,6 +1103,7 @@ shared_examples "a BDD renderer" do
         expect(rendered).to eq([
           "",
           "Scenario: Create secondary colors",
+          "  # This scenario has a datatable and a description",
           "  Given the color \"<first_color>\"",
           "  And the color \"<second_color>\"",
           "  When you mix colors",
@@ -1132,6 +1137,7 @@ shared_examples "a BDD renderer" do
         '    And I know the expected color',
         '',
         '  Scenario Outline: Create secondary colors',
+        '    # This scenario has a datatable and a description',
         '    Given the color "<first_color>"',
         '    And the color "<second_color>"',
         '    When you mix colors',
