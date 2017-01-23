@@ -197,7 +197,6 @@ class OptionsParser
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
       Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
       Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in Hiptest for the test files (note: may cause encoding issues)", :keep_filenames),
-      Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in Hiptest for the test files (note: may cause encoding issues)", :keep_filenames),
       Option.new(nil, 'keep-foldernames', false, nil, "Keep the same name as in Hiptest for the folders (note: may cause encoding issues)", :keep_foldernames),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
