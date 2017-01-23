@@ -274,7 +274,7 @@ describe 'Render as Python' do
     #   call then 'page "url" should be opened'(url='/reset-password')
     # end
     @bdd_scenario_rendered = [
-      'def test_Reset_password(self):',
+      'def test_reset_password(self):',
       '    # Given Page "/login" is opened',
       '    self.actionwords.page_url_is_opened(url = \'/login\')',
       '    # When I click on "Reset password"',
@@ -422,7 +422,7 @@ describe 'Render as Python' do
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
-      "    def test_Login(self):",
+      "    def test_login(self):",
       "        # The description is on ",
       "        # two lines",
       "        # Tags: myTag myTag:somevalue",
@@ -432,7 +432,7 @@ describe 'Render as Python' do
       "        self.actionwords.click(path = '.login-form input[type=submit]')",
       "        self.actionwords.check_url(path = '/welcome')",
       "",
-      "    def test_Failed_login(self):",
+      "    def test_failed_login(self):",
       "        # Tags: myTag:somevalue",
       "        self.actionwords.visit(url = '/login')",
       "        self.actionwords.fill(login = 'user@example.com')",
@@ -443,7 +443,7 @@ describe 'Render as Python' do
     ].join("\n")
 
     @first_test_rendered = [
-      "def test_Login(self):",
+      "def test_login(self):",
       "    # The description is on ",
       "    # two lines",
       "    # Tags: myTag myTag:somevalue",
@@ -464,7 +464,7 @@ describe 'Render as Python' do
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
-      "    def test_Login(self):",
+      "    def test_login(self):",
       "        # The description is on ",
       "        # two lines",
       "        # Tags: myTag myTag:somevalue",
@@ -485,7 +485,7 @@ describe 'Render as Python' do
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
-      "    def test_One_grandchild_scenario(self):",
+      "    def test_one_grandchild_scenario(self):",
       "        pass",
       "",
     ].join("\n")
@@ -499,10 +499,10 @@ describe 'Render as Python' do
       "    def setUp(self):",
       "        self.actionwords = Actionwords(self)",
       "",
-      "    def test_One_root_scenario(self):",
+      "    def test_one_root_scenario(self):",
       "        pass",
       "",
-      "    def test_Another_root_scenario(self):",
+      "    def test_another_root_scenario(self):",
       "        pass",
       "",
     ].join("\n")
@@ -530,7 +530,7 @@ describe 'Render as Python' do
       "        self.actionwords.fill(login = 'user@example.com')",
       "        self.actionwords.fill(password = 'notTh4tS3cret')",
       "",
-      "    def test_One_grandchild_scenario(self):",
+      "    def test_one_grandchild_scenario(self):",
       "        pass",
       ""
     ].join("\n")
