@@ -231,6 +231,10 @@ module Hiptest
       return regexp.gsub(/(^\^)|(\$$)/, '')
     end
 
+    def hh_trim_surrounding_characters(context, character, block)
+      return block.fn(context).gsub(/(\A(#{character})*)|((#{character})*\z)/, '')
+    end
+
     def hh_debug(context, block)
       require 'pry'
       binding.pry

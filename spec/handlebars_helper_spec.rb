@@ -430,6 +430,23 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context "trim_surrounding_characters" do
+    it 'removes the given character around the text' do
+      template = '{{#trim_surrounding_characters "#"}}{{txt}}{{/trim_surrounding_characters}}'
+
+      expect(evaluate(template, {txt: '##some text##'})).to eq("some text")
+      expect(evaluate(template, {txt: '##some#text##'})).to eq("some#text")
+      expect(evaluate(template, {txt: 'some text##'})).to eq("some text")
+    end
+
+    it 'can use multiple characters' do
+      template = '{{#trim_surrounding_characters "__"}}{{txt}}{{/trim_surrounding_characters}}'
+
+      expect(evaluate(template, {txt: '__my_very_private_function__'})).to eq("my_very_private_function")
+      expect(evaluate(template, {txt: '_my_a_bit_private_function'})).to eq("_my_a_bit_private_function")
+    end
+  end
+
   context 'hh_remove_surrounding_quotes' do
     it 'removes simple or double quotes at the beginning or the end of the text' do
       template = "{{remove_surrounding_quotes txt}}"
