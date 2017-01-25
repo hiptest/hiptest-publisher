@@ -20,19 +20,50 @@ describe TemplateFinder do
     end
 
     context 'when option[:overriden_templates] is set' do
-      it 'if no matching template file found in overriden templates dir, it uses the default template file' do
-        Dir.mktmpdir("overriden_templates") do |dir|
-          template_finder = context_for(language: 'python', overriden_templates: "#{dir}").template_finder
-          expect(template_finder.get_template_path('scenarios')).to eq('./lib/templates/python/scenarios.hbs')
+      let(:overriden_templates_dir) {
+        @overriden_templates_dir_created = true
+        d = Dir.mktmpdir
+        FileUtils.mkdir_p("#{d}/python/unittest")
+        d
+      }
+
+      after(:each) {
+        if @overriden_templates_dir_created
+          FileUtils.rm_rf(overriden_templates_dir)
         end
+      }
+
+      # create a new one each time because it is stateful
+      def template_finder
+        context_for(language: 'python', overriden_templates: overriden_templates_dir).template_finder
+      end
+
+      it 'if no matching template file found in overriden templates dir, it uses the default template file' do
+        expect(template_finder.get_template_path('scenarios')).to eq('./lib/templates/python/scenarios.hbs')
       end
 
       it 'if matching template file found in overriden templates dir, it uses the overriden template file' do
-        Dir.mktmpdir("overriden_templates") do |dir|
-          template_finder = context_for(language: 'python', overriden_templates: "#{dir}").template_finder
-          File.write("#{dir}/scenarios.hbs", "")
-          expect(template_finder.get_template_path('scenarios')).to eq("#{dir}/scenarios.hbs")
-        end
+        FileUtils.touch("#{overriden_templates_dir}/scenarios.hbs")
+        expect(template_finder.get_template_path('scenarios')).to eq("#{overriden_templates_dir}/scenarios.hbs")
+      end
+
+      it 'looks for template in overriden templates base dir first' do
+        FileUtils.touch("#{overriden_templates_dir}/actionwords.hbs")
+        FileUtils.touch("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
+        FileUtils.touch("#{overriden_templates_dir}/python/actionwords.hbs")
+        expect(template_finder.get_template_path('actionwords')).to eq("#{overriden_templates_dir}/actionwords.hbs")
+      end
+
+      it 'looks for template in each template subdirectory, both in overriden templates and hiptest-publisher template' do
+        FileUtils.touch("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
+        FileUtils.touch("#{overriden_templates_dir}/python/actionwords.hbs")
+        expect(template_finder.get_template_path('actionwords')).to eq("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
+
+        # if removing the overriden_template/python/unittest/actionwords.hbs file,
+        # it should pick the hiptest publisher one
+        # it should not pick the overriden_template/python/unittestactionwords.hbs one
+        FileUtils.rm("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
+        expect(template_finder.get_template_path('actionwords')).to eq("./lib/templates/python/unittest/actionwords.hbs")
       end
     end
 
