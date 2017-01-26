@@ -231,8 +231,17 @@ module Hiptest
       return regexp.gsub(/(^\^)|(\$$)/, '')
     end
 
+    def hh_remove_last_character(context, character = '', block)
+      txt = block.fn(context)
+      return txt[-1] == character ? txt[0..-2] : txt
+    end
+
     def hh_trim_surrounding_characters(context, character, block)
       return block.fn(context).gsub(/(\A(#{character})*)|((#{character})*\z)/, '')
+    end
+
+    def hh_replace(context, str, replacement, block)
+      return block.fn(context).gsub(str, replacement)
     end
 
     def hh_debug(context, block)

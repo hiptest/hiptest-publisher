@@ -430,7 +430,7 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
-  context "trim_surrounding_characters" do
+  context "hh_trim_surrounding_characters" do
     it 'removes the given character around the text' do
       template = '{{#trim_surrounding_characters "#"}}{{txt}}{{/trim_surrounding_characters}}'
 
@@ -444,6 +444,25 @@ describe Hiptest::HandlebarsHelper do
 
       expect(evaluate(template, {txt: '__my_very_private_function__'})).to eq("my_very_private_function")
       expect(evaluate(template, {txt: '_my_a_bit_private_function'})).to eq("_my_a_bit_private_function")
+    end
+  end
+
+  context "hh_remove_last_character" do
+    it 'removes the last character of the string if it is the correct one' do
+      template = '{{#remove_last_character ":"}}{{txt}}{{/remove_last_character}}'
+
+      expect(evaluate(template, {txt: 'Something ending with a colon:'})).to eq("Something ending with a colon")
+      expect(evaluate(template, {txt: 'Something not ending with a colon :)'})).to eq("Something not ending with a colon :)")
+      expect(evaluate(template, {txt: ''})).to eq("")
+
+    end
+  end
+
+  context "hh_replace" do
+    it 'replaces a string by another one' do
+      template = '{{#replace "plic" "ploc"}}{{txt}}{{/replace}}'
+
+      expect(evaluate(template, {txt: 'When I plic'})).to eq("When I ploc")
     end
   end
 

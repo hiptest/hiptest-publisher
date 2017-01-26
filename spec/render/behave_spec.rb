@@ -2,6 +2,8 @@ require_relative '../spec_helper'
 require_relative '../render_shared'
 
 describe 'Behave rendering' do
+  include HelperFactories
+
   it_behaves_like 'a BDD renderer' do
     let(:language) {'behave'}
 
@@ -43,14 +45,17 @@ describe 'Behave rendering' do
         '@given(r\'I am on the "(.*)" home page\')',
         '@when(r\'I am on the "(.*)" home page\')',
         'def impl(context, site, free_text = \'\'):',
-        '    context.actionwords.i_am_on_the_site_home_page(site, free_text)',
+        '    context.actionwords.i_am_on_the_site_home_page(site, context.text)',
         '',
         '',
         '@when(r\'the following users are available on "(.*)"\')',
         'def impl(context, site, datatable = \'||\'):',
-        '    context.actionwords.the_following_users_are_available_on_site(site, datatable)',
+        '    context.actionwords.the_following_users_are_available_on_site(site, context.table)',
         ''
       ].join("\n")
     }
   end
+
+  # Needs to be tested ....
+  it 'strips last colon in regexp'
 end
