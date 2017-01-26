@@ -207,6 +207,10 @@ module Hiptest
       def free_text?
         @children[:name] == "__free_text"
       end
+
+      def datatable?
+        @children[:name] == "__datatable"
+      end
     end
 
     class Call < Node
@@ -218,6 +222,10 @@ module Hiptest
 
       def free_text_arg
         children[:arguments].find(&:free_text?)
+      end
+
+      def datatable_arg
+        children[:arguments].find(&:datatable?)
       end
     end
 
@@ -265,6 +273,10 @@ module Hiptest
 
       def free_text?
         @children[:name] == "__free_text"
+      end
+
+      def datatable?
+        @children[:name] == "__datatable"
       end
     end
 

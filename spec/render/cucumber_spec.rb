@@ -30,6 +30,10 @@ describe 'Cucumber rendering' do
         "Given /^I am on the \"(.*)\" home page$/ do |site, __free_text|",
         "  i_am_on_the_site_home_page(site, __free_text)",
         "end",
+        "",
+        "When /^the following users are available on \"(.*)\"$/ do |site, __datatable|",
+        "  the_following_users_are_available_on_site(site, __datatable)",
+        "end",
         ""
       ].join("\n")
     }
@@ -74,6 +78,11 @@ describe 'Cucumber/Java rendering' do
         '    @Given("^I am on the \"(.*)\" home page$")',
         '    public void iAmOnTheSiteHomePage(String site, String freeText) {',
         '        actionwords.iAmOnTheSiteHomePage(site, freeText);',
+        '    }',
+        '',
+        '    @When("^the following users are available on \"(.*)\"$")',
+        '    public void theFollowingUsersAreAvailableOnSite(String site, DataTable datatable) {',
+        '        actionwords.theFollowingUsersAreAvailableOnSite(site, datatable);',
         '    }',
         '}'
       ].join("\n")
@@ -183,6 +192,11 @@ describe 'Cucumber/Javascript rendering' do
         '',
         '    this.Given(/^I am on the "(.*)" home page$/, function (site, __free_text, callback) {',
         '        this.actionwords.iAmOnTheSiteHomePage(site, __free_text);',
+        '        callback();',
+        '    });',
+        '',
+        '    this.When(/^the following users are available on "(.*)"$/, function (site, __datatable, callback) {',
+        '        this.actionwords.theFollowingUsersAreAvailableOnSite(site, __datatable);',
         '        callback();',
         '    });',
         '}',

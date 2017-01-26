@@ -654,12 +654,31 @@ shared_examples "a BDD renderer" do
 
   let(:actionwords) {
     [
-      make_actionword("the color \"color\"", parameters: [make_parameter("color")]),
+      make_actionword(
+        "the color \"color\"",
+        parameters: [make_parameter("color")]
+      ),
       make_actionword("you mix colors"),
-      make_actionword("you obtain \"color\"", parameters: [make_parameter("color")]),
+      make_actionword(
+        "you obtain \"color\"",
+        parameters: [make_parameter("color")]
+      ),
       make_actionword("unused action word"),
       make_actionword("you cannot play croquet"),
-      make_actionword("I am on the \"site\" home page", parameters: [make_parameter("site"), make_parameter("__free_text", default: literal(""))])
+      make_actionword(
+        "I am on the \"site\" home page",
+        parameters: [
+          make_parameter("site"),
+          make_parameter("__free_text", default: literal(""))
+        ]
+      ),
+      make_actionword(
+        "the following users are available on \"site\"",
+        parameters: [
+          make_parameter("site"),
+          make_parameter("__datatable", default: literal("||"))
+        ]
+      )
     ]
   }
 
@@ -823,6 +842,27 @@ shared_examples "a BDD renderer" do
       ])
   }
 
+  let(:scenario_with_datatable_argument) {
+    make_scenario("Check users",
+      folder: gherkin_special_arguments_folder,
+      parameters: [],
+      body: [
+        make_call(
+          "the following users are available on \"site\"",
+          annotation: "when",
+          arguments: [
+          make_argument('site', template_of_literals("http://google.com")),
+            make_argument('__datatable', template_of_literals([
+              "| name  | password |",
+              "| bob   | plopi    |",
+              "| alice | dou      |"
+            ].join("\n")))
+          ]
+        ),
+        make_call("stuff happens", annotation: 'then')
+      ])
+  }
+
   let(:scenario_inheriting_tags) {
     make_scenario('Inherit tags',
       folder: subsubreg_folder,
@@ -835,7 +875,18 @@ shared_examples "a BDD renderer" do
 
   let!(:project) {
     make_project("Colors",
-      scenarios: [create_green_scenario, create_secondary_colors_scenario, unannotated_create_orange_scenario, create_purple_scenario, scenario_with_capital_parameters, scenario_with_freetext_argument, scenario_with_incomplete_datatable, scenario_with_double_quotes_in_datatable, scenario_inheriting_tags],
+      scenarios: [
+        create_green_scenario,
+        create_secondary_colors_scenario,
+        unannotated_create_orange_scenario,
+        create_purple_scenario,
+        scenario_with_capital_parameters,
+        scenario_with_freetext_argument,
+        scenario_with_datatable_argument,
+        scenario_with_incomplete_datatable,
+        scenario_with_double_quotes_in_datatable,
+        scenario_inheriting_tags
+      ],
       tests: [create_white_test],
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
@@ -977,7 +1028,7 @@ shared_examples "a BDD renderer" do
       end
     end
 
-    context 'Gherkin special characters' do
+    context 'Gherkin special arguments' do
       context 'DocString' do
         let(:scenario) {scenario_with_freetext_argument}
 
@@ -997,6 +1048,25 @@ shared_examples "a BDD renderer" do
         end
       end
 
+      context 'Datatable' do
+        let(:scenario) {scenario_with_datatable_argument}
+
+        it "is rendered when the argument is called '__datatable'" do
+          expect(rendered).to eq([
+            '',
+            'Scenario: Check users',
+            '  When the following users are available on "http://google.com"',
+            '    | name  | password |',
+            '    | bob   | plopi    |',
+            '    | alice | dou      |',
+            '  Then stuff happens',
+            ''
+          ].join("\n"))
+        end
+      end
+    end
+
+    context 'Gherkin special characters' do
       context 'With double quotes in datatable' do
         let(:scenario) {scenario_with_double_quotes_in_datatable}
 

@@ -44,6 +44,11 @@ describe 'Behave rendering' do
         '@when(r\'I am on the "(.*)" home page\')',
         'def impl(context, site, free_text = \'\'):',
         '    context.actionwords.i_am_on_the_site_home_page(site, free_text)',
+        '',
+        '',
+        '@when(r\'the following users are available on "(.*)"\')',
+        'def impl(context, site, datatable = \'||\'):',
+        '    context.actionwords.the_following_users_are_available_on_site(site, datatable)',
         ''
       ].join("\n")
     }

@@ -1,4 +1,5 @@
 {{{ rendered_children.gherkin_text }}}{{#if rendered_children.free_text_arg}}
 """
 {{remove_surrounding_quotes rendered_children.free_text_arg }}
-"""{{/if}}
+"""{{/if}}{{#if rendered_children.datatable_arg}}{{#indent}}
+{{remove_surrounding_quotes rendered_children.datatable_arg }}{{/indent}}{{/if}}

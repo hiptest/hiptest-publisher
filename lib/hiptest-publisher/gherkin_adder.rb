@@ -11,6 +11,8 @@ module Hiptest
       @project = project
       @indexer = ActionwordIndexer.new(project)
       @annotations_counter = AnnotationsCounter.new
+
+      @special_params = ['__free_text', '__datatable']
     end
 
     def update_calls
@@ -62,7 +64,7 @@ module Hiptest
         end
       end
 
-      missing_parameter_names = all_arguments.keys - inline_parameter_names - ['__free_text']
+      missing_parameter_names = all_arguments.keys - inline_parameter_names - @special_params
 
       prettified = call_chunks.join("\"")
       missing_parameter_names.each do |missing_parameter_name|
@@ -87,7 +89,7 @@ module Hiptest
           result << inline_parameter_name if inline_parameter_name
         end
       end
-      missing_parameter_names = actionword_parameters.keys - inline_parameter_names - ['__free_text']
+      missing_parameter_names = actionword_parameters.keys - inline_parameter_names - @special_params
 
       patterned = result.join("\"")
       missing_parameter_names.each do |missing_parameter_name|

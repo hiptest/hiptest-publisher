@@ -50,6 +50,12 @@ describe 'Specflow rendering' do
         '        public void IAmOnTheSiteHomePage(string site, string freeText) {',
         '            Actionwords.IAmOnTheSiteHomePage(site, freeText);',
         '        }',
+        '',
+        '',
+        '        [Given("^the following users are available on \"(.*)\"$"), When("^the following users are available on \"(.*)\"$"), Then("^the following users are available on \"(.*)\"$")]',
+        '        public void TheFollowingUsersAreAvailableOnSite(string site, Table datatable) {',
+        '            Actionwords.TheFollowingUsersAreAvailableOnSite(site, datatable);',
+        '        }',
         '    }',
         '}'
       ].join("\n")

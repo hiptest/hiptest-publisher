@@ -56,6 +56,13 @@ describe 'Behat rendering' do
         '  public function iAmOnTheSiteHomePage($site, PyStringNode $__free_text){',
         '    $this->actionwords->iAmOnTheSiteHomePage($site, $__free_text);',
         '  }',
+        '',
+        '  /**',
+        '   * @When /^the following users are available on "(.*)"$/',
+        '   */',
+        '  public function theFollowingUsersAreAvailableOnSite($site, TableNode $__datatable){',
+        '    $this->actionwords->theFollowingUsersAreAvailableOnSite($site, $__datatable);',
+        '  }',
         '}',
         '?>'
       ].join("\n")

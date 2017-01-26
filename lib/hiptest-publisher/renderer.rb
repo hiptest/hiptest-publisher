@@ -23,9 +23,13 @@ module Hiptest
     end
 
     def walk_call(call)
-      # For Gherkin, we need the __free_text argument rendered.
+      # For Gherkin, we need the special arguments rendered.
       if call.free_text_arg
         @rendered_children[:free_text_arg] = @rendered[call.free_text_arg.children[:value]]
+      end
+
+      if call.datatable_arg
+        @rendered_children[:datatable_arg] = @rendered[call.datatable_arg.children[:value]]
       end
 
       super(call)
