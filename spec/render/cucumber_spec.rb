@@ -49,6 +49,7 @@ describe 'Cucumber/Java rendering' do
       [
         'package com.example;',
         '',
+        'import cucumber.api.DataTable;',
         'import cucumber.api.java.en.*;',
         '',
         'public class StepDefinitions {',
@@ -132,6 +133,7 @@ describe 'Cucumber/Java rendering' do
       expect(rendered).to eq([
         'package com.example;',
         '',
+        'import cucumber.api.DataTable;',
         'import cucumber.api.java.en.*;',
         '',
         'public class StepDefinitions {',
