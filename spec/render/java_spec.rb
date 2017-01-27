@@ -240,7 +240,7 @@ describe 'Render as Java' do
       "",
       "    }",
       "",
-      "    public void awWithBooleanParam(bool x) {",
+      "    public void awWithBooleanParam(boolean x) {",
       "",
       "    }",
       "",

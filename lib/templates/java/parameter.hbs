@@ -1,1 +1,1 @@
-{{{ node.type }}} {{{ camelize_lower rendered_children.name }}}
+{{#if is_bool?}}boolean{{else}}{{{ node.type }}}{{/if}} {{{ camelize_lower rendered_children.name }}}
