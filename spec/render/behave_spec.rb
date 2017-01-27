@@ -6,7 +6,6 @@ describe 'Behave rendering' do
 
   it_behaves_like 'a BDD renderer' do
     let(:language) {'behave'}
-
     let(:rendered_actionwords) {
       [
         'from behave import *',
@@ -56,6 +55,26 @@ describe 'Behave rendering' do
     }
   end
 
-  # Needs to be tested ....
-  it 'strips last colon in regexp'
+  it 'strips last colon of an actionword name' do
+    # If your action word is called "Do something:", Behave will try to match "Do something"
+    aw = make_actionword('I do something:')
+    project = make_project("Colors",
+      scenarios: [
+        make_scenario('My scenario',
+          body: [
+            make_call("I do something:",  annotation: "when")
+          ])
+      ],
+      actionwords: [aw]
+    )
+    Hiptest::GherkinAdder.add(project)
+
+    options =  context_for(only: "step_definitions", language: 'behave')
+    expect(aw.render(options)).to eq([
+      "",
+      "@when(r'I do something')",
+      "def impl(context):",
+      "    context.actionwords.i_do_something()"
+    ].join("\n"))
+  end
 end

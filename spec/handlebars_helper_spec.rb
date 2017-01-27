@@ -454,7 +454,6 @@ describe Hiptest::HandlebarsHelper do
       expect(evaluate(template, {txt: 'Something ending with a colon:'})).to eq("Something ending with a colon")
       expect(evaluate(template, {txt: 'Something not ending with a colon :)'})).to eq("Something not ending with a colon :)")
       expect(evaluate(template, {txt: ''})).to eq("")
-
     end
   end
 
