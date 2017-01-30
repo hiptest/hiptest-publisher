@@ -1037,11 +1037,11 @@ shared_examples "a BDD renderer" do
             '',
             'Scenario: Open a site with comments',
             '  When I am on the "http://google.com" home page',
-            '  """',
-            "  Some explanations when opening the site:",
-            "   - for example one explanation",
-            "   - and another one",
-            '  """',
+            '    """',
+            "    Some explanations when opening the site:",
+            "     - for example one explanation",
+            "     - and another one",
+            '    """',
             '  Then stuff happens',
             ''
           ].join("\n"))
