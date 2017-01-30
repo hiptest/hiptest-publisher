@@ -195,3 +195,8 @@ Adding support for other languages and framework
 ------------------------------------------------
 
 See the [CONTRIBUTING](https://github.com/hiptest/hiptest-publisher/blob/master/docs/CONTRIBUTING.md>) help page for more information.
+
+Contributors
+------------
+
+The @hiptest team, @mhfrantz, @tikolakin, @atulhm, @etorreborre, @daniel-kun
