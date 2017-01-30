@@ -113,7 +113,7 @@ DEPENDENCIES
   i18n (~> 0.7, >= 0.7.0)
   jeweler (~> 2.0, >= 2.1.1)
   multipart-post (~> 2.0, >= 2.0.0)
-  nokogiri (~> 1.6, >= 1.6.7)
+  nokogiri (~> 1.6.0, >= 1.6.7)
   parseconfig (~> 1.0, >= 1.0.4)
   pry (~> 0)
   pry-byebug (~> 3)
