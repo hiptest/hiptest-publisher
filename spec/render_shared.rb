@@ -907,6 +907,60 @@ shared_examples "a BDD renderer" do
 
   subject(:rendered) { node_to_render.render(options) }
 
+  let(:scenario_tag_rendered) {
+    [
+      '',
+      '@myTag @myTag-some_value',
+      'Scenario: Create purple',
+      '  # You can have a description',
+      '  # on multiple lines',
+      '  Given the color "blue"',
+      '  And the color "red"',
+      '  When you mix colors',
+      '  Then you obtain "purple"',
+      ''
+    ].join("\n")
+  }
+
+  let(:folder_tag_rendered) {
+    [
+      '@myTag @myTag-some_value @JIRA-CW-6',
+      'Feature: Cool colors',
+      '    Cool colors calm and relax.',
+      '    They are the hues from blue green through blue violet, most grays included.',
+      '',
+      '  Scenario: Create green',
+      '    # You can create green by mixing other colors',
+      '    Given the color "blue"',
+      '    And the color "yellow"',
+      '    When you mix colors',
+      '    Then you obtain "green"',
+      '    But you cannot play croquet',
+      '',
+      '  Scenario: Create purple',
+      '    # You can have a description',
+      '    # on multiple lines',
+      '    Given the color "blue"',
+      '    And the color "red"',
+      '    When you mix colors',
+      '    Then you obtain "purple"',
+      ''
+    ].join("\n")
+  }
+
+  let(:inherited_tags_rendered) {
+    [
+      '@simple @key-value',
+      'Feature: Sub-sub-regression folder',
+      '',
+      '',
+      '  @my-own',
+      '  Scenario: Inherit tags',
+      '    Given the color "<color_definition>"',
+      ''
+    ].join("\n")
+  }
+
   context 'Argument with a nil value' do
     let(:node_to_render) { make_argument("first_color", nil) }
 
@@ -1252,29 +1306,7 @@ shared_examples "a BDD renderer" do
       it 'Folder nodes' do
         node_to_render.children[:tags] = [simple_tag, valued_tag, jira_tag]
 
-        expect(rendered).to eq([
-          '@myTag @myTag-some_value @JIRA-CW-6',
-          'Feature: Cool colors',
-          '    Cool colors calm and relax.',
-          '    They are the hues from blue green through blue violet, most grays included.',
-          '',
-          '  Scenario: Create green',
-          '    # You can create green by mixing other colors',
-          '    Given the color "blue"',
-          '    And the color "yellow"',
-          '    When you mix colors',
-          '    Then you obtain "green"',
-          '    But you cannot play croquet',
-          '',
-          '  Scenario: Create purple',
-          '    # You can have a description',
-          '    # on multiple lines',
-          '    Given the color "blue"',
-          '    And the color "red"',
-          '    When you mix colors',
-          '    Then you obtain "purple"',
-          ''
-        ].join("\n"))
+        expect(rendered).to eq(folder_tag_rendered)
       end
     end
 
@@ -1285,16 +1317,7 @@ shared_examples "a BDD renderer" do
         }
 
         it 'the feature level' do
-          expect(rendered).to eq([
-            '@simple @key-value',
-            'Feature: Sub-sub-regression folder',
-            '',
-            '',
-            '  @my-own',
-            '  Scenario: Inherit tags',
-            '    Given the color "<color_definition>"',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(inherited_tags_rendered)
         end
       end
     end
@@ -1307,18 +1330,7 @@ shared_examples "a BDD renderer" do
       it 'Scenario tag' do
         node_to_render.children[:tags] = [simple_tag, valued_tag]
 
-        expect(rendered).to eq([
-          '',
-          '@myTag @myTag-some_value',
-          'Scenario: Create purple',
-          '  # You can have a description',
-          '  # on multiple lines',
-          '  Given the color "blue"',
-          '  And the color "red"',
-          '  When you mix colors',
-          '  Then you obtain "purple"',
-          ''
-        ].join("\n"))
+        expect(rendered).to eq(scenario_tag_rendered)
       end
     end
   end

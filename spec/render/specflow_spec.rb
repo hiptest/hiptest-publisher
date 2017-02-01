@@ -5,6 +5,60 @@ describe 'Specflow rendering' do
   it_behaves_like 'a BDD renderer' do
     let(:language) {'specflow'}
 
+    let(:scenario_tag_rendered) {
+      [
+        '',
+        '@myTag @myTag_some_value',
+        'Scenario: Create purple',
+        '  # You can have a description',
+        '  # on multiple lines',
+        '  Given the color "blue"',
+        '  And the color "red"',
+        '  When you mix colors',
+        '  Then you obtain "purple"',
+        ''
+      ].join("\n")
+    }
+
+    let(:folder_tag_rendered) {
+      [
+        '@myTag @myTag_some_value @JIRA_CW6',
+        'Feature: Cool colors',
+        '    Cool colors calm and relax.',
+        '    They are the hues from blue green through blue violet, most grays included.',
+        '',
+        '  Scenario: Create green',
+        '    # You can create green by mixing other colors',
+        '    Given the color "blue"',
+        '    And the color "yellow"',
+        '    When you mix colors',
+        '    Then you obtain "green"',
+        '    But you cannot play croquet',
+        '',
+        '  Scenario: Create purple',
+        '    # You can have a description',
+        '    # on multiple lines',
+        '    Given the color "blue"',
+        '    And the color "red"',
+        '    When you mix colors',
+        '    Then you obtain "purple"',
+        ''
+      ].join("\n")
+    }
+
+    let(:inherited_tags_rendered) {
+      [
+        '@simple @key_value',
+        'Feature: Sub-sub-regression folder',
+        '',
+        '',
+        '  @my_own',
+        '  Scenario: Inherit tags',
+        '    Given the color "<color_definition>"',
+        ''
+      ].join("\n")
+    }
+
     let(:rendered_actionwords) {
       [
         'namespace Example {',
