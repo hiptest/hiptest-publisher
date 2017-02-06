@@ -5,7 +5,8 @@ Test Template     {{{ normalize_with_spaces rendered_children.name }}}
 {{{ rendered_children.datatable }}}
 
 *** Keywords ***
-{{else}}
+
+{{{normalize_with_spaces rendered_children.name }}}{{else}}
 *** Test Cases ***
-{{/if}}
-{{{normalize_with_spaces rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{normalize rendered_children.uid}}){{/if}}{{> keyword_body}}
+
+{{{normalize_with_spaces rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{normalize rendered_children.uid}}){{/if}}{{/if}}{{> keyword_body}}
