@@ -978,6 +978,484 @@ describe 'Render as Java' do
       let(:package) { 'com.example' }
     end
   end
+
+  context 'Espresso' do
+    before(:each) do
+      # In Hiptest:
+      # @myTag
+      # scenario 'compare to pi' (x) do
+      #   foo := 3.14
+      #   if (foo > x)
+      #     step {result: "x is greater than Pi"}
+      #   else
+      #     step {result: "x is lower than Pi
+      #       on two lines"}
+      #   end
+      # end
+      @full_scenario_rendered = [
+        "// This is a scenario which description ",
+        "// is on two lines",
+        "// Tags: myTag",
+        "@Test",
+        "public void testCompareToPi() {",
+        "    foo = 3.14;",
+        "    if (foo > x) {",
+        "        // TODO: Implement result: x is greater than Pi",
+        "    } else {",
+        "        // TODO: Implement result: x is lower than Pi",
+        "        // on two lines",
+        "    }",
+        "",
+        "    throw new UnsupportedOperationException();",
+        "}"
+      ].join("\n")
+
+      # In hiptest
+      # scenario 'reset password' do
+      #   call given 'Page "url" is opened'(url='/login')
+      #   call when 'I click on "link"'(link='Reset password')
+      #   call then 'page "url" should be opened'(url='/reset-password')
+      # end
+      @bdd_scenario_rendered = [
+        '',
+        '@Test',
+        'public void testResetPassword() {',
+        '    // Given Page "/login" is opened',
+        '    actionwords.pageUrlIsOpened("/login");',
+        '    // When I click on "Reset password"',
+        '    actionwords.iClickOnLink("Reset password");',
+        '    // Then Page "/reset-password" should be opened',
+        '    actionwords.pageUrlShouldBeOpened("/reset-password");',
+        '}'
+      ].join("\n")
+
+      @full_scenario_with_uid_rendered = [
+        "// This is a scenario which description ",
+        "// is on two lines",
+        "// Tags: myTag",
+        "@Test",
+        "public void testCompareToPiUidabcd1234() {",
+        "    foo = 3.14;",
+        "    if (foo > x) {",
+        "        // TODO: Implement result: x is greater than Pi",
+        "    } else {",
+        "        // TODO: Implement result: x is lower than Pi",
+        "        // on two lines",
+        "    }",
+        "",
+        "    throw new UnsupportedOperationException();",
+        "}"
+      ].join("\n")
+
+      @full_scenario_rendered_for_single_file = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class CompareToPiTest {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    // This is a scenario which description ',
+        '    // is on two lines',
+        '    // Tags: myTag',
+        '    @Test',
+        '    public void testCompareToPi() {',
+        '        foo = 3.14;',
+        '        if (foo > x) {',
+        '            // TODO: Implement result: x is greater than Pi',
+        '        } else {',
+        '            // TODO: Implement result: x is lower than Pi',
+        '            // on two lines',
+        '        }',
+        '',
+        '        throw new UnsupportedOperationException();',
+        '    }',
+        '}'
+      ].join("\n")
+
+      # Scenario definition is:
+      # call 'fill login' (login = login)
+      # call 'fill password' (password = password)
+      # call 'press enter'
+      # call 'assert "error" is displayed' (error = expected)
+
+      # Scenario datatable is:
+      # Dataset name             | login   | password | expected
+      # -----------------------------------------------------------------------------
+      # Wrong 'login'            | invalid | invalid  | 'Invalid username or password
+      # Wrong "password"         | valid   | invalid  | 'Invalid username or password
+      # Valid 'login'/"password" | valid   | valid    | nil
+
+      @scenario_with_datatable_rendered = [
+        'public void checkLogin(String login, String password, String expected) {',
+        '    // Ensure the login process',
+        '    actionwords.fillLogin(login);',
+        '    actionwords.fillPassword(password);',
+        '    actionwords.pressEnter();',
+        '    actionwords.assertErrorIsDisplayed(expected);',
+        '}',
+        '',
+        '@Test',
+        'public void testCheckLoginWrongLogin() {',
+        '    checkLogin("invalid", "invalid", "Invalid username or password");',
+        '}',
+        '',
+        '@Test',
+        'public void testCheckLoginWrongPassword() {',
+        '    checkLogin("valid", "invalid", "Invalid username or password");',
+        '}',
+        '',
+        '@Test',
+        'public void testCheckLoginValidLoginpassword() {',
+        '    checkLogin("valid", "valid", null);',
+        '}',
+        '',
+        ''
+      ].join("\n")
+
+      @scenario_with_datatable_rendered_with_uids = [
+        'public void checkLogin(String login, String password, String expected) {',
+        '    // Ensure the login process',
+        '    actionwords.fillLogin(login);',
+        '    actionwords.fillPassword(password);',
+        '    actionwords.pressEnter();',
+        '    actionwords.assertErrorIsDisplayed(expected);',
+        '}',
+        '',
+        '@Test',
+        'public void testCheckLoginWrongLoginUida123() {',
+        '    checkLogin("invalid", "invalid", "Invalid username or password");',
+        '}',
+        '',
+        '@Test',
+        'public void testCheckLoginWrongPasswordUidb456() {',
+        '    checkLogin("valid", "invalid", "Invalid username or password");',
+        '}',
+        '',
+        '@Test',
+        'public void testCheckLoginValidLoginpasswordUidc789() {',
+        '    checkLogin("valid", "valid", null);',
+        '}',
+        '',
+        ''
+      ].join("\n")
+
+
+      # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
+      @scenario_with_datatable_rendered_in_single_file = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class CheckLoginTest {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    public void checkLogin(String login, String password, String expected) {',
+        '        // Ensure the login process',
+        '        actionwords.fillLogin(login);',
+        '        actionwords.fillPassword(password);',
+        '        actionwords.pressEnter();',
+        '        actionwords.assertErrorIsDisplayed(expected);',
+        '    }',
+        '',
+        '    @Test',
+        '    public void testCheckLoginWrongLogin() {',
+        '        checkLogin("invalid", "invalid", "Invalid username or password");',
+        '    }',
+        '',
+        '    @Test',
+        '    public void testCheckLoginWrongPassword() {',
+        '        checkLogin("valid", "invalid", "Invalid username or password");',
+        '    }',
+        '',
+        '    @Test',
+        '    public void testCheckLoginValidLoginpassword() {',
+        '        checkLogin("valid", "valid", null);',
+        '    }',
+        '}'
+      ].join("\n")
+
+      # In Hiptest, correspond to two scenarios in a project called 'My project'
+      # scenario 'first scenario' do
+      # end
+      # scenario 'second scenario' do
+      #   call 'my action word'
+      # end
+      @scenarios_rendered = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class ProjectTest {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '',
+        '    @Test',
+        '    public void testFirstScenario() {',
+        '    }',
+        '',
+        '    @Test',
+        '    public void testSecondScenario() {',
+        '        actionwords.myActionWord();',
+        '    }',
+        '}'
+      ].join("\n")
+
+      @tests_rendered = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class ProjectTest {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    // The description is on ',
+        '    // two lines',
+        '    // Tags: myTag myTag:somevalue',
+        '    @Test',
+        '    public void testLogin() {',
+        '        actionwords.visit("/login");',
+        '        actionwords.fill("user@example.com");',
+        '        actionwords.fill("s3cret");',
+        '        actionwords.click(".login-form input[type=submit]");',
+        '        actionwords.checkUrl("/welcome");',
+        '    }',
+        '    // ',
+        '    // Tags: myTag:somevalue',
+        '    @Test',
+        '    public void testFailedLogin() {',
+        '        actionwords.visit("/login");',
+        '        actionwords.fill("user@example.com");',
+        '        actionwords.fill("notTh4tS3cret");',
+        '        actionwords.click(".login-form input[type=submit]");',
+        '        actionwords.checkUrl("/login");',
+        '    }',
+        '}'
+      ].join("\n")
+
+      @first_test_rendered = [
+        '// The description is on ',
+        '// two lines',
+        '// Tags: myTag myTag:somevalue',
+        '@Test',
+        'public void testLogin() {',
+        '    actionwords.visit("/login");',
+        '    actionwords.fill("user@example.com");',
+        '    actionwords.fill("s3cret");',
+        '    actionwords.click(".login-form input[type=submit]");',
+        '    actionwords.checkUrl("/welcome");',
+        '}'
+      ].join("\n")
+
+      @first_test_rendered_for_single_file = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class LoginTest {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    // The description is on ',
+        '    // two lines',
+        '    // Tags: myTag myTag:somevalue',
+        '    @Test',
+        '    public void testLogin() {',
+        '        actionwords.visit("/login");',
+        '        actionwords.fill("user@example.com");',
+        '        actionwords.fill("s3cret");',
+        '        actionwords.click(".login-form input[type=submit]");',
+        '        actionwords.checkUrl("/welcome");',
+        '    }',
+        '}'
+      ].join("\n")
+
+      @grand_child_scenario_rendered_for_single_file = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        'import com.example.Actionwords;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class OneGrandchildScenarioTest {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '',
+        '    @Test',
+        '    public void testOneGrandchildScenario() {',
+        '    }',
+        '}'
+      ].join("\n")
+
+      @root_folder_rendered = [
+        'package com.example;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class MyRootFolderTest {',
+        '',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    @Test',
+        '    public void testOneRootScenario() {',
+        '    }',
+        '',
+        '    @Test',
+        '    public void testAnotherRootScenario() {',
+        '    }',
+        '}'
+      ].join("\n")
+
+      @grand_child_folder_rendered = [
+        'package com.example.child_folder;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class AGrandchildFolderTest {',
+        '',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '}'
+      ].join("\n")
+
+      @second_grand_child_folder_rendered = [
+        'package com.example.child_folder;',
+        '',
+        'import android.support.test.filters.LargeTest;',
+        'import android.support.test.rule.ActivityTestRule;',
+        'import android.support.test.runner.AndroidJUnit4;',
+        '',
+        'import org.junit.Rule;',
+        'import org.junit.Test;',
+        'import org.junit.runner.RunWith;',
+        '',
+        '@RunWith(AndroidJUnit4.class)',
+        '@LargeTest',
+        'public class ASecondGrandchildFolderTest {',
+        '',
+        '',
+        '    @Rule',
+        '    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '    protected void setUp() throws Exception {',
+        '        super.setUp();',
+        '',
+        '        actionwords.visit("/login");',
+        '        actionwords.fill("user@example.com");',
+        '        actionwords.fill("notTh4tS3cret");',
+        '    }',
+        '',
+        '',
+        '    @Test',
+        '    public void testOneGrandchildScenario() {',
+        '    }',
+        '}'
+      ].join("\n")
+    end
+
+    it_behaves_like "a renderer" do
+      let(:language) { 'java' }
+      let(:framework) { 'espresso' }
+      let(:package) { 'com.example' }
+    end
+  end
 end
 
 describe 'default package' do

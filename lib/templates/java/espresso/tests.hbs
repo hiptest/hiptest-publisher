@@ -1,0 +1,23 @@
+package {{{ context.package }}};
+
+import android.support.test.filters.LargeTest;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(AndroidJUnit4.class)
+@LargeTest
+public class {{{ clear_extension context.filename }}} {{#curly}}
+{{#indent}}
+public Actionwords {{{ context.call_prefix }}} = new Actionwords();
+
+@Rule
+public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
+
+{{#each rendered_children.tests}}{{{this}}}
+{{/each}}
+{{/indent}}
+{{/curly}}

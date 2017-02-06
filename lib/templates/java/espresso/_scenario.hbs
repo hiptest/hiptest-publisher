@@ -1,0 +1,8 @@
+{{#if has_datasets?}}{{> item_as_function}}
+{{{ rendered_children.datatable }}}
+{{else}}{{#comment '//'}}{{{ rendered_children.description }}}
+{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}
+{{/comment}}
+@Test
+public void test{{{ camelize rendered_children.name }}}{{#if rendered_children.uid}}Uid{{{ normalize rendered_children.uid}}}{{/if}}() {{#curly}}{{> body}}
+{{/curly}}{{/if}}
