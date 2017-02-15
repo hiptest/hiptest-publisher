@@ -23,8 +23,26 @@ module Hiptest
       elsif test_run_id
         "#{base_publication_path}/test_run/#{test_run_id}"
       else
-        "#{base_publication_path}/#{cli_options.leafless_export ? 'leafless_tests' : 'project'}"
+        "#{base_publication_path}/#{cli_options.leafless_export ? 'leafless_tests' : 'project'}#{project_export_filters}"
       end
+    end
+
+    def project_export_filters
+      mapping = {
+        filter_on_scenario_ids: 'filter_scenario_ids',
+        filter_on_folder_ids: 'filter_folder_ids',
+        filter_on_scenario_name: 'filter_scenario_name',
+        filter_on_folder_name: 'filter_folder_name',
+        filter_on_tags: 'filter_tags'
+      }
+
+      options = mapping.map do |key, filter_name|
+        value = @cli_options.send(key)
+        next if value.nil? || value.empty?
+
+        "#{filter_name}=#{value}"
+      end.compact
+      return options.empty? ? '' : "?#{options.first}"
     end
 
     def fetch_project_export
