@@ -21,6 +21,7 @@ module Hiptest
       end
 
       check_secret_token
+      check_filters
 
       if cli_options.push?
         check_push_file
@@ -39,6 +40,36 @@ module Hiptest
       rescue Errno::EACCES => err
         raise CliOptionError, "Error with --config: the file \"#{cli_options.config}\" does not exist or is not readable"
       end
+    end
+
+    def check_filters
+      filters = [
+        cli_options.filter_on_scenario_ids,
+        cli_options.filter_on_folder_ids,
+        cli_options.filter_on_scenario_name,
+        cli_options.filter_on_folder_name,
+        cli_options.filter_on_tags
+      ].reject {|opt| absent?(opt) }
+
+      return if filters.empty?
+
+      if filters.size > 1
+        raise CliOptionError, [
+          "You specified multiple filters for the export.",
+          "",
+          "Only one filter can be applied."
+        ].join("\n")
+      end
+
+      if present?(cli_options.test_run_id) || present?(cli_options.test_run_name)
+        raise CliOptionError, [
+          "Filtering can not be applied when exporting from a test run"
+        ].join("\n")
+      end
+
+      check_numeric_list(:filter_on_scenario_ids)
+      check_numeric_list(:filter_on_folder_ids)
+      check_tag_list(:filter_on_tags)
     end
 
     def check_secret_token
@@ -127,6 +158,36 @@ module Hiptest
       end
     end
 
+    def check_numeric_list(option_name)
+      value = cli_options.send(option_name)
+      return if absent?(value)
+
+       value.split(',').each do |val|
+          next if numeric?(val.strip)
+
+          raise CliOptionError, [
+            "#{option_name} should be a list of comma separated numeric values",
+            "",
+            "Found: #{val.strip.inspect}"
+          ].join("\n")
+       end
+    end
+
+    def check_tag_list(option_name)
+      value = cli_options.send(option_name)
+      return if absent?(value)
+
+      value.split(',').each do |val|
+          next if tag_compatible?(val.strip)
+
+          raise CliOptionError, [
+            "#{option_name} should be a list of comma separated tags in Hiptest",
+            "",
+            "Found: #{val.strip.inspect}"
+          ].join("\n")
+      end
+    end
+
     def check_language_and_only
       if present?(cli_options.language)
         begin
@@ -153,7 +214,7 @@ module Hiptest
     private
 
     def numeric?(arg)
-      arg =~ /^\d*$/
+      arg =~ /\A\d*\z/
     end
 
     def missing?(arg)
@@ -170,6 +231,10 @@ module Hiptest
 
     def present?(arg)
       !absent?(arg)
+    end
+
+    def tag_compatible?(value)
+      value =~ /\A[a-zA-Z0-9_-]*(:[a-zA-Z0-9_-]*)?\z/
     end
 
     def formatted_categories(categories)

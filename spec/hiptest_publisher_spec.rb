@@ -544,6 +544,86 @@ describe Hiptest::Publisher do
       end
     end
 
+    context 'with filters' do
+      it 'outputs an error message when there is more than one filter set' do
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-scenario-ids', '1', '--filter-on-tags', 'plop')
+        }.to output([
+          "You specified multiple filters for the export.",
+          "",
+          "Only one filter can be applied.",
+          ""
+        ].join("\n")).to_stdout
+      end
+
+      it 'outputs an error message when filters are applied in conjunction with test run' do
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-scenario-ids', '1', '--test-run-id', '12')
+        }.to output([
+          "Filtering can not be applied when exporting from a test run",
+          ""
+        ].join("\n")).to_stdout
+
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-scenario-ids', '1', '--test-run-name', 'CI')
+        }.to output([
+          "Filtering can not be applied when exporting from a test run",
+          ""
+        ].join("\n")).to_stdout
+      end
+
+      it 'outputs an error message when the scenario ids is not a numeric list' do
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-scenario-ids', 'abc')
+        }.to output([
+          'filter_on_scenario_ids should be a list of comma separated numeric values',
+          '',
+          'Found: "abc"',
+          ""
+        ].join("\n")).to_stdout
+
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-scenario-ids', '1, 2, abc')
+        }.to output([
+          'filter_on_scenario_ids should be a list of comma separated numeric values',
+          '',
+          'Found: "abc"',
+          ""
+        ].join("\n")).to_stdout
+      end
+
+      it 'outputs an error message when the folder ids is not a numeric list' do
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-folder-ids', 'abc')
+        }.to output([
+          'filter_on_folder_ids should be a list of comma separated numeric values',
+          '',
+          'Found: "abc"',
+          ""
+        ].join("\n")).to_stdout
+
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-folder-ids', '1, 2, abc')
+        }.to output([
+          'filter_on_folder_ids should be a list of comma separated numeric values',
+          '',
+          'Found: "abc"',
+          ""
+        ].join("\n")).to_stdout
+      end
+
+      it 'outputs an error message when the tag list is not a valid tag list' do
+        expect {
+          run_publisher_expecting_exit('-t', '123', '--filter-on-tags', 'abc, pli!c')
+        }.to output([
+          'filter_on_tags should be a list of comma separated tags in Hiptest',
+          '',
+          'Found: "pli!c"',
+          ""
+        ].join("\n")).to_stdout
+      end
+    end
+
     context 'with unknown language ONLY' do
       it 'outputs an error message indicating that language is unknown' do
         expect {

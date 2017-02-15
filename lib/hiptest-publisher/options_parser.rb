@@ -198,11 +198,11 @@ class OptionsParser
       Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
       Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in Hiptest for the test files (note: may cause encoding issues)", :keep_filenames),
       Option.new(nil, 'keep-foldernames', false, nil, "Keep the same name as in Hiptest for the folders (note: may cause encoding issues)", :keep_foldernames),
-      Option.new(nil, 'filter-on-scenario-ids', '', String, "Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)", :filter_on_scenario_ids),
-      Option.new(nil, 'filter-on-folder-ids', '', String, "Filter on folder ids (use commas to separate ids when fetching multiple folders)", :filter_on_folder_ids),
-      Option.new(nil, 'filter-on-scenario-name', '', String, "Filter on scenario name (only one name is accepted)", :filter_on_scenario_name),
-      Option.new(nil, 'filter-on-folder-name', '', String, "Filter on folder name (only one name is accepted)", :filter_on_folder_name),
-      Option.new(nil, 'filter-on-tags', '', String, "Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)", :filter_on_tags),
+      Option.new(nil, 'filter-on-scenario-ids=IDS', '', String, "Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)", :filter_on_scenario_ids),
+      Option.new(nil, 'filter-on-folder-ids=IDS', '', String, "Filter on folder ids (use commas to separate ids when fetching multiple folders)", :filter_on_folder_ids),
+      Option.new(nil, 'filter-on-scenario-name=NAME', '', String, "Filter on scenario name (only one name is accepted)", :filter_on_scenario_name),
+      Option.new(nil, 'filter-on-folder-name=NAME', '', String, "Filter on folder name (only one name is accepted)", :filter_on_folder_name),
+      Option.new(nil, 'filter-on-tags=TAGS', '', String, "Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)", :filter_on_tags),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
