@@ -126,6 +126,11 @@ Specific options:
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
         --keep-filenames             Keep the same name as in Hiptest for the test files (note: may cause encoding issues) (default: false)
         --keep-foldernames           Keep the same name as in Hiptest for the folders (note: may cause encoding issues) (default: false)
+        --filter-on-scenario-ids     Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)
+        --filter-on-folder-ids       Filter on folder ids (use commas to separate ids when fetching multiple folders)
+        --filter-on-scenario-name    Filter on scenario name (only one name is accepted)
+        --filter-on-folder-name      Filter on folder name (only one name is accepted)
+        --filter-on-tags             Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -h, --help                       Show this message
