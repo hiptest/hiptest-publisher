@@ -6,7 +6,7 @@ Resource          keywords.txt
 {{#if this.datatable}}{{this.name}}{{#indent}}
 [Template]{{tab}}{{this.name}} keyword
 {{this.datatable}}{{/indent}}
-{{else}}{{normalize_with_spaces this.name}}{{#if rendered_children.uid}} (uid:{{normalize rendered_children.uid}}){{/if}}{{#indent}}
+{{else}}{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
 {{/if}}{{/each}}
 *** Keywords ***
@@ -17,6 +17,6 @@ Resource          keywords.txt
 
 {{/if}}{{/each}}{{else}}
 {{#each rendered_children.splitted_scenarios}}
-{{normalize_with_spaces this.name}}{{#if rendered_children.uid}} (uid:{{normalize rendered_children.uid}}){{/if}}{{#indent}}
+{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}
 {{join this.body '\n'}}{{/indent}}
 {{/each}}{{/if}}
