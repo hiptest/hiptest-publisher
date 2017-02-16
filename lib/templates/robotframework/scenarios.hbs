@@ -6,14 +6,16 @@ Resource          keywords.txt
 {{#if this.datatable}}{{this.name}}{{#indent}}
 [Template]{{tab}}{{this.name}} keyword
 {{this.datatable}}{{/indent}}
-{{else}}{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}
-{{join this.body '\n'}}{{/indent}}
+{{else}}{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}{{#if this.tags}}
+[Tags] {{{ join this.tags ' '}}}
+{{/if}}{{join this.body '\n'}}{{/indent}}
 {{/if}}{{/each}}
 *** Keywords ***
 
 {{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
 [Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
-{{join this.body '\n'}}{{/indent}}
+{{#if this.tags}}[Tags] {{{ join this.tags ' '}}}
+{{/if}}{{join this.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}
 {{#each rendered_children.splitted_scenarios}}
