@@ -108,6 +108,32 @@ describe Hiptest::Nodes do
         expect(node.declared_variables_names).to eq(['x', 'y', 'z'])
       end
     end
+
+    context 'add_tags' do
+      it 'add each tags to the tags list' do
+        item = Hiptest::Nodes::Item.new('My item')
+        item.add_tags([
+          Hiptest::Nodes::Tag.new('my_tag'),
+          Hiptest::Nodes::Tag.new('my_other', 'tag')
+        ])
+
+        expect(item.children[:tags].map(&:to_s)).to contain_exactly('my_tag', 'my_other:tag')
+      end
+
+      it 'avoids duplication' do
+        item = Hiptest::Nodes::Item.new('My item', [
+          Hiptest::Nodes::Tag.new('my_tag')
+        ])
+
+        item.add_tags([
+          Hiptest::Nodes::Tag.new('my_tag'),
+          Hiptest::Nodes::Tag.new('my_other', 'tag'),
+          Hiptest::Nodes::Tag.new('my_other', 'tag')
+        ])
+
+        expect(item.children[:tags].map(&:to_s)).to contain_exactly('my_tag', 'my_other:tag')
+      end
+    end
   end
 
   context 'Actionword' do

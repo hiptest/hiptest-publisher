@@ -630,6 +630,36 @@ describe Hiptest::XMLParser do
         end
       end
 
+      it 'reads the tags of the test snapshot as its own tags' do
+        scenario = build_node([
+          '<scenarioSnapshot>',
+          '  <name>My scenario</name>',
+          '  <tags>',
+          '    <tag>',
+          '      <key>my_tag</key>',
+          '    </tag>',
+          '  </tags>',
+          '  <datatable />',
+          '  <testSnapshots>',
+          '    <testSnapshot>',
+          '    <tags>',
+          '      <tag>',
+          '        <key>my_tag</key>',
+          '      </tag>',
+          '      <tag>',
+          '        <key>my_snapshot_tag</key>',
+          '        <value>with_a_value</value>',
+          '      </tag>',
+          '    </tags>',
+          '    </testSnapshot>',
+          '  </testSnapshots>',
+          '</scenarioSnapshot>'
+        ].join("\n"))
+
+        expect(scenario.children[:tags].map(&:to_s)).to eq(['my_tag', 'my_snapshot_tag:with_a_value'])
+
+      end
+
       context 'uid is set' do
         it 'at the scenarioLevel snapshot if there is no datatable and it uses the testSnapshot uid' do
           scenario = build_node([

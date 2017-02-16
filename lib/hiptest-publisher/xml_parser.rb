@@ -225,6 +225,8 @@ module Hiptest
       scenario = build_scenario(scs)
       datasets = scenario.each_sub_nodes(Hiptest::Nodes::Dataset).to_a
 
+      scenario.add_tags(scs.css('testSnapshot').flat_map { |test| build_tags(test)}.compact)
+
       if datasets.empty?
         scenario.set_uid(css_first_content(scs, 'testSnapshot > uid'))
       else

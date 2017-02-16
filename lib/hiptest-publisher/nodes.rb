@@ -255,6 +255,10 @@ module Hiptest
         super()
         @children = {:key => key, :value => value}
       end
+
+      def to_s
+        "#{@children[:key]}#{@children[:value].nil? ? '' : ':' + @children[:value]}"
+      end
     end
 
     class Parameter < Node
@@ -300,6 +304,17 @@ module Hiptest
           v_name = var.children[:name]
           p_names.include?(v_name) ? nil : v_name
         end.uniq.compact
+      end
+
+      def add_tags(tags)
+        existing = @children[:tags].map(&:to_s)
+
+        tags.each do |tag|
+          next if existing.include? tag.to_s
+
+          existing << tag.to_s
+          @children[:tags] << tag
+        end
       end
     end
 
