@@ -21,7 +21,7 @@ module Hiptest
       if cli_options.push?
         "#{cli_options.site}/import_test_results/#{cli_options.token}/#{cli_options.push_format}"
       elsif test_run_id
-        "#{base_publication_path}/test_run/#{test_run_id}"
+        "#{base_publication_path}/test_run/#{test_run_id}#{test_run_export_filter}"
       else
         "#{base_publication_path}/#{cli_options.leafless_export ? 'leafless_tests' : 'project'}#{project_export_filters}"
       end
@@ -40,9 +40,20 @@ module Hiptest
         value = @cli_options.send(key)
         next if value.nil? || value.empty?
 
+        if [:filter_on_scenario_ids, :filter_on_folder_ids, :filter_on_tags].include?(key)
+          value = value.split(',').map(&:strip).join(',')
+        end
+
         "#{filter_name}=#{value}"
       end.compact
       return options.empty? ? '' : "?#{options.first}"
+    end
+
+    def test_run_export_filter
+      value = @cli_options.filter_on_status
+      return '' if value.nil? || value.empty?
+
+      return "?filter_status=#{value}"
     end
 
     def fetch_project_export

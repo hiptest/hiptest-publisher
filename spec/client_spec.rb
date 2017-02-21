@@ -50,6 +50,15 @@ describe Hiptest::Client do
           stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "1234")
           expect(client.url).to eq("https://hiptest.net/publication/1234/test_run/98")
         end
+
+        context 'and with --filter-on-status' do
+          let(:args) { ["--token", "1234", "--test-run-id", "98", '--filter-on-status', 'passed']}
+
+          it 'creates a url to download only tests matching the status' do
+            stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "1234")
+            expect(client.url).to eq("https://hiptest.net/publication/1234/test_run/98?filter_status=passed")
+          end
+        end
       end
 
       context "and with --push" do
@@ -57,6 +66,57 @@ describe Hiptest::Client do
 
         it 'creates url to push results' do
           expect(client.url).to eq("https://hiptest.net/import_test_results/1234/tap")
+        end
+      end
+
+      context "and with --filter-on-scenario-ids" do
+        let(:args) {['--token', '123', '--filter-on-scenario-ids', '1, 3, 4']}
+
+        it 'creates a url specifying the filter' do
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_ids=1,3,4")
+        end
+      end
+
+      context "and with --filter-on-scenario-name" do
+        let(:args) {['--token', '123', '--filter-on-scenario-name', 'My scenario']}
+
+        it 'creates a url specifying the filter' do
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=My scenario")
+        end
+      end
+
+      context "and with --filter-on-folder-ids" do
+        let(:args) {['--token', '123', '--filter-on-folder-ids', '7, 8, 10']}
+
+        it 'creates a url specifying the filter' do
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_ids=7,8,10")
+
+        end
+      end
+
+      context "and with --filter-on-folder-name" do
+        let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder']}
+
+        it 'creates a url specifying the filter' do
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My super folder")
+        end
+      end
+
+      context "and with --filter-on-tags" do
+        let(:args) {['--token', '123', '--filter-on-tags', 'tag, another:tag']}
+
+        it 'creates a url specifying the filter' do
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_tags=tag,another:tag")
+        end
+      end
+
+      context 'with filters' do
+        context 'on project' do
+          context 'and scenario ids'
+          context 'and scenario name'
+          context 'and folder ids'
+          context 'and folder names'
+          context 'and tags'
         end
       end
     end
