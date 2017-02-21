@@ -131,6 +131,7 @@ Specific options:
         --filter-on-scenario-name    Filter on scenario name (only one name is accepted)
         --filter-on-folder-name      Filter on folder name (only one name is accepted)
         --filter-on-tags             Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)
+        --filter-on-status=STATUS    Filter on test status in last build (use in conjunction with a test run)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -h, --help                       Show this message

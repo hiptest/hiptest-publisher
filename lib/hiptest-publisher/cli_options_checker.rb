@@ -22,6 +22,7 @@ module Hiptest
 
       check_secret_token
       check_filters
+      check_status_filter
 
       if cli_options.push?
         check_push_file
@@ -70,6 +71,17 @@ module Hiptest
       check_numeric_list(:filter_on_scenario_ids)
       check_numeric_list(:filter_on_folder_ids)
       check_tag_list(:filter_on_tags)
+    end
+
+    def check_status_filter
+      return if absent?(cli_options.filter_on_status)
+
+      if absent?(cli_options.test_run_id) || absent?(cli_options.test_run_name)
+          raise CliOptionError, [
+            "You need to specify a test run when filtering on test status.",
+            "Use options test_ruin_id or test_run_name."
+          ].join("\n")
+      end
     end
 
     def check_secret_token
