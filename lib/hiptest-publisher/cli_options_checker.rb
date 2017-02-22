@@ -76,10 +76,10 @@ module Hiptest
     def check_status_filter
       return if absent?(cli_options.filter_on_status)
 
-      if absent?(cli_options.test_run_id) || absent?(cli_options.test_run_name)
+      if absent?(cli_options.test_run_id) && absent?(cli_options.test_run_name)
           raise CliOptionError, [
             "You need to specify a test run when filtering on test status.",
-            "Use options test_ruin_id or test_run_name."
+            "Use options test_run_id or test_run_name."
           ].join("\n")
       end
     end

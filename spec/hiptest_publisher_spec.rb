@@ -628,7 +628,7 @@ describe Hiptest::Publisher do
           run_publisher_expecting_exit('-t', '123', '--filter-on-status', 'passed')
         }.to output([
           "You need to specify a test run when filtering on test status.",
-          "Use options test_ruin_id or test_run_name.",
+          "Use options test_run_id or test_run_name.",
           ""
         ].join("\n")).to_stdout
       end
