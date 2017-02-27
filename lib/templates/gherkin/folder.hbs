@@ -1,4 +1,5 @@
-{{#each rendered_children.ancestor_tags}}{{this}} {{/each}}{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{#if rendered_children.ancestor_tags}}{{#each rendered_children.ancestor_tags}}{{this}} {{/each}}{{#unless has_tags?}}
+{{/unless}}{{/if}}{{#if has_tags?}}{{join rendered_children.tags ' '}}
 {{/if}}Feature: {{{ rendered_children.name }}}{{#indent}}
 {{#if rendered_children.description}}{{#indent}}{{rendered_children.description}}{{/indent}}{{/if}}
 {{#unless is_empty?}}

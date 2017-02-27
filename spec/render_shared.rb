@@ -1144,7 +1144,7 @@ shared_examples "a BDD renderer" do
       context 'when a scenario parameter is capitalized'
         let(:scenario) {scenario_with_capital_parameters}
 
-        it 'the capitals are also keeps in the datatable headers' do
+        it 'the capitals are also kept in the datatable headers' do
           expect(rendered).to eq([
             '',
             'Scenario Outline: Validate Nav',
@@ -1331,6 +1331,40 @@ shared_examples "a BDD renderer" do
         node_to_render.children[:tags] = [simple_tag, valued_tag]
 
         expect(rendered).to eq(scenario_tag_rendered)
+      end
+    end
+
+    context 'Regression tests' do
+      let(:node_to_render) {
+        cool_colors_folder
+      }
+
+      it 'produces a correct Gherin file if the scenario inherits tag but does not own its own tags' do
+        root_folder.children[:tags] = [simple_tag]
+
+        expect(rendered).to eq([
+          '@myTag ',
+          'Feature: Cool colors',
+          '    Cool colors calm and relax.',
+          '    They are the hues from blue green through blue violet, most grays included.',
+          '',
+          '  Scenario: Create green',
+          '    # You can create green by mixing other colors',
+          '    Given the color "blue"',
+          '    And the color "yellow"',
+          '    When you mix colors',
+          '    Then you obtain "green"',
+          '    But you cannot play croquet',
+          '',
+          '  Scenario: Create purple',
+          '    # You can have a description',
+          '    # on multiple lines',
+          '    Given the color "blue"',
+          '    And the color "red"',
+          '    When you mix colors',
+          '    Then you obtain "purple"',
+          ''
+        ].join("\n"))
       end
     end
   end
