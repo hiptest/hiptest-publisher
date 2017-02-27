@@ -1339,7 +1339,7 @@ shared_examples "a BDD renderer" do
         cool_colors_folder
       }
 
-      it 'produces a correct Gherin file if the scenario inherits tag but does not own its own tags' do
+      it 'produces a correct Gherin file if the scenario inherits tag but does not have its own tags' do
         root_folder.children[:tags] = [simple_tag]
 
         expect(rendered).to eq([
