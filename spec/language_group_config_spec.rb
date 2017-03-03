@@ -630,6 +630,15 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/Actionwords.cs",
                                                     ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[features]",
+                                                      "/Global trades/Buy goods.feature",
+                                                      "/Global trades/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.cs",
+                                                      "[actionwords]",
+                                                      "/Actionwords.cs"
+                                                    ]
       },
       "behave" => {
         []                                       => [ "[features]",
