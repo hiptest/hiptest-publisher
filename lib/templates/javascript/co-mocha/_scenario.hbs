@@ -1,0 +1,8 @@
+{{#if has_datasets?}}describe('{{escape_single_quotes rendered_children.name}}', function () {{#curly}}{{#indent}}
+{{> item_as_function}}
+{{{ rendered_children.datatable }}}
+{{/indent}}
+{{/curly}});
+{{else}}it('{{{ escape_single_quotes rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}', function * () {{#curly}}
+{{> body}}
+{{/curly}});{{/if}}
