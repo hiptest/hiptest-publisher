@@ -10,8 +10,6 @@ hiptest-publisher -c <path to your configuration file>
 
 Now, the actionwords signature file should be present. Manually fix the action words if changes have been made (for the last time you'll have to use the diff system) and save the files in your repository.
 
-Note: all those command are in an experimental status and it is likely that those commands will be changed in version 1.0 of hiptest-publisher.
-
 Checking for action words changes
 ---------------------------------
 
