@@ -14,6 +14,9 @@ group :development do
   gem 'rspec', '~> 3.3'
   gem 'rspec-mocks', '~> 3.3'
   gem 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.6'
+end
+
+group :packaging do
   gem 'jeweler', '~> 2.0', '>= 2.1.1'
 end
 

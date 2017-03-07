@@ -8,7 +8,7 @@
 .bundle
 
 # Ignore all logfiles and tempfiles.
-log/*.log
+*.log
 tmp
 coverage
 pkg
@@ -19,3 +19,7 @@ pkg
 
 # Ignore gem
 *.gem
+
+# Ignore git and environment files
+.git
+.env*
