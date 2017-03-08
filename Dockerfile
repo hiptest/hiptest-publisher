@@ -24,6 +24,7 @@ RUN set -ex \
   && rm -rf /usr/local/bundle/cache \
     /root/.bundle \
     /root/.gem \
+    .git \
   && apk del --no-cache .builddeps
 
 ENTRYPOINT ["hiptest-publisher"]
