@@ -34,6 +34,10 @@ describe 'Cucumber rendering' do
         "When /^the following users are available on \"(.*)\"$/ do |site, __datatable|",
         "  the_following_users_are_available_on_site(site, __datatable)",
         "end",
+        "",
+        "Given /^an untrimed action word$/ do",
+        "  an_untrimed_action_word",
+        "end",
         ""
       ].join("\n")
     }
@@ -84,6 +88,11 @@ describe 'Cucumber/Java rendering' do
         '    @When("^the following users are available on \"(.*)\"$")',
         '    public void theFollowingUsersAreAvailableOnSite(String site, DataTable datatable) {',
         '        actionwords.theFollowingUsersAreAvailableOnSite(site, datatable);',
+        '    }',
+        '',
+        '    @Given("^an untrimed action word$")',
+        '    public void anUntrimedActionWord() {',
+        '        actionwords.anUntrimedActionWord();',
         '    }',
         '}'
       ].join("\n")
@@ -199,6 +208,11 @@ describe 'Cucumber/Javascript rendering' do
         '',
         '    this.When(/^the following users are available on "(.*)"$/, function (site, __datatable, callback) {',
         '        this.actionwords.theFollowingUsersAreAvailableOnSite(site, __datatable);',
+        '        callback();',
+        '    });',
+        '',
+        '    this.Given(/^an untrimed action word$/, function (callback) {',
+        '        this.actionwords.anUntrimedActionWord();',
         '        callback();',
         '    });',
         '}',

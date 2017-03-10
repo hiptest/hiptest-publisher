@@ -110,6 +110,12 @@ describe 'Specflow rendering' do
         '        public void TheFollowingUsersAreAvailableOnSite(string site, Table datatable) {',
         '            Actionwords.TheFollowingUsersAreAvailableOnSite(site, datatable);',
         '        }',
+        '',
+        '',
+        '        [Given("^an untrimed action word$"), When("^an untrimed action word$"), Then("^an untrimed action word$")]',
+        '        public void AnUntrimedActionWord() {',
+        '            Actionwords.AnUntrimedActionWord();',
+        '        }',
         '    }',
         '}'
       ].join("\n")

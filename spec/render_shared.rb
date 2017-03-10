@@ -678,7 +678,8 @@ shared_examples "a BDD renderer" do
           make_parameter("site"),
           make_parameter("__datatable", default: literal("||"))
         ]
-      )
+      ),
+      make_actionword("  an untrimed action word  ")
     ]
   }
 
@@ -774,6 +775,14 @@ shared_examples "a BDD renderer" do
           make_argument("SITE_NAME", template_of_literals("http://google.com"))
         ])
       ]))
+  }
+
+  let(:scenario_calling_untrimed_actionword) {
+    make_scenario("Calling an untrimed action word",
+      folder: regression_folder,
+      body: [
+        make_call("  an untrimed action word  ",  annotation: "given")
+      ])
   }
 
   let(:scenario_with_incomplete_datatable) {
@@ -884,6 +893,7 @@ shared_examples "a BDD renderer" do
         scenario_with_freetext_argument,
         scenario_with_datatable_argument,
         scenario_with_incomplete_datatable,
+        scenario_calling_untrimed_actionword,
         scenario_with_double_quotes_in_datatable,
         scenario_inheriting_tags
       ],
@@ -1178,6 +1188,19 @@ shared_examples "a BDD renderer" do
             '    | yellow | red |  |  |',
             '    | red |  |  |  |',
             ''
+          ].join("\n"))
+        end
+      end
+
+      context 'when the action word name is not trimmed' do
+        let(:scenario) {scenario_calling_untrimed_actionword}
+
+        it 'renders the call trimmed' do
+          expect(rendered).to eq([
+           '',
+           'Scenario: Calling an untrimed action word',
+           '  Given an untrimed action word',
+           ''
           ].join("\n"))
         end
       end

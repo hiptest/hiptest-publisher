@@ -71,6 +71,18 @@ describe Hiptest::GherkinAdder do
       end
     end
 
+    context "with untrimed action words" do
+      let(:actionword_name) { "  do things and \"stuff\" " }
+
+      it "trims the name in the :gherkin_pattern" do
+        expect(gherkin_pattern).to eq("^do things and \"stuff\"$")
+      end
+
+      it "trims the name in the :gherkin_text" do
+        expect(gherkin_text).to eq("When do things and \"stuff\"")
+      end
+    end
+
     shared_examples "generic gherkin annotations" do
       it "uses 'Given' as default annotation in gherkin code" do
         expect(gherkin_annotation).to eq("Given")

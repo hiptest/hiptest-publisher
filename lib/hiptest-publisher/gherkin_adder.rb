@@ -71,7 +71,7 @@ module Hiptest
         value = all_arguments[missing_parameter_name]
         prettified << " \"#{value}\""
       end
-      prettified
+      prettified.strip
     end
 
     def pattern(actionword)
@@ -95,7 +95,7 @@ module Hiptest
       missing_parameter_names.each do |missing_parameter_name|
         patterned << " \"(.*)\""
       end
-      "^#{patterned}$"
+      "^#{patterned.strip}$"
     end
 
     def all_valued_arguments_for(call)

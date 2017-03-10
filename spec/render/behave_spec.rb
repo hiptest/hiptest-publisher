@@ -50,6 +50,11 @@ describe 'Behave rendering' do
         '@when(r\'the following users are available on "(.*)"\')',
         'def impl(context, site, datatable = \'||\'):',
         '    context.actionwords.the_following_users_are_available_on_site(site, context.table)',
+        '',
+        '',
+        '@given(r\'an untrimed action word\')',
+        'def impl(context):',
+        '    context.actionwords.an_untrimed_action_word()',
         ''
       ].join("\n")
     }

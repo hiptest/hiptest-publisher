@@ -63,6 +63,13 @@ describe 'Behat rendering' do
         '  public function theFollowingUsersAreAvailableOnSite($site, TableNode $__datatable){',
         '    $this->actionwords->theFollowingUsersAreAvailableOnSite($site, $__datatable);',
         '  }',
+        '',
+        '  /**',
+        '   * @Given /^an untrimed action word$/',
+        '   */',
+        '  public function anUntrimedActionWord(){',
+        '    $this->actionwords->anUntrimedActionWord();',
+        '  }',
         '}',
         '?>'
       ].join("\n")
