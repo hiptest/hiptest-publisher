@@ -70,6 +70,13 @@ describe 'Behat rendering' do
         '  public function anUntrimedActionWord(){',
         '    $this->actionwords->anUntrimedActionWord();',
         '  }',
+        '',
+        '  /**',
+        '   * @Given /^the "(.*)" of "(.*)" is weird "(.*)" "(.*)"$/',
+        '   */',
+        '  public function theOrderOfParametersIsWeird($order, $parameters, $p0, $p1){',
+        '    $this->actionwords->theOrderOfParametersIsWeird($p0, $p1, $parameters, $order);',
+        '  }',
         '}',
         '?>'
       ].join("\n")

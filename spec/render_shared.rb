@@ -679,7 +679,16 @@ shared_examples "a BDD renderer" do
           make_parameter("__datatable", default: literal("||"))
         ]
       ),
-      make_actionword("  an untrimed action word  ")
+      make_actionword("  an untrimed action word  "),
+      make_actionword(
+        "the \"order\" of \"parameters\" is weird",
+        parameters: [
+          make_parameter("p0"),
+          make_parameter("p1"),
+          make_parameter("parameters"),
+          make_parameter("order")
+        ]
+      )
     ]
   }
 
@@ -782,6 +791,20 @@ shared_examples "a BDD renderer" do
       folder: regression_folder,
       body: [
         make_call("  an untrimed action word  ",  annotation: "given")
+      ])
+  }
+
+  let(:scenario_calling_aw_with_incorrect_order) {
+    make_scenario("Calling an action word with weird parameter order",
+      folder: regression_folder,
+      body: [
+        make_call("the \"order\" of \"parameters\" is weird",  annotation: "given"),
+        arguments: [
+          make_argument("p0", literal("some value")),
+          make_argument("p1", literal("some other value")),
+          make_argument("parameters", literal("and again another one")),
+          make_argument("order", literal("and finally another one"))
+        ]
       ])
   }
 
@@ -894,6 +917,7 @@ shared_examples "a BDD renderer" do
         scenario_with_datatable_argument,
         scenario_with_incomplete_datatable,
         scenario_calling_untrimed_actionword,
+        scenario_calling_aw_with_incorrect_order,
         scenario_with_double_quotes_in_datatable,
         scenario_inheriting_tags
       ],

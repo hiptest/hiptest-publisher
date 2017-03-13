@@ -23,6 +23,7 @@ module Hiptest
           if actionword = get_actionword(call)
             @annotations_counter.increment(actionword, code_annotation(call))
             actionword.children[:gherkin_pattern] ||= pattern(actionword)
+            actionword.children[:parameters_ordered_by_pattern] ||= order_parameters_by_pattern(actionword)
           end
         end
       end
@@ -96,6 +97,17 @@ module Hiptest
         patterned << " \"(.*)\""
       end
       "^#{patterned.strip}$"
+    end
+
+    def order_parameters_by_pattern(actionword)
+      inline_parameter_names = actionword.children[:name].scan(/\"(.*?)\"/).flatten
+      actionword_parameters = {}
+      actionword.children[:parameters].map {|p| actionword_parameters[p.children[:name]] = p}
+
+      missing_parameter_names = actionword_parameters.keys - inline_parameter_names - @special_params
+      [inline_parameter_names, missing_parameter_names, @special_params].flatten.map do |name|
+        actionword_parameters[name]
+      end.compact
     end
 
     def all_valued_arguments_for(call)

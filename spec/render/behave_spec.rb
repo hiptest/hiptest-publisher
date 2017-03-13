@@ -55,6 +55,11 @@ describe 'Behave rendering' do
         '@given(r\'an untrimed action word\')',
         'def impl(context):',
         '    context.actionwords.an_untrimed_action_word()',
+        '',
+        '',
+        '@given(r\'the "(.*)" of "(.*)" is weird "(.*)" "(.*)"\')',
+        'def impl(context, order, parameters, p0, p1):',
+        '    context.actionwords.the_order_of_parameters_is_weird(p0, p1, parameters, order)',
         ''
       ].join("\n")
     }

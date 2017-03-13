@@ -38,6 +38,10 @@ describe 'Cucumber rendering' do
         "Given /^an untrimed action word$/ do",
         "  an_untrimed_action_word",
         "end",
+        "",
+        "Given /^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$/ do |order, parameters, p0, p1|",
+        "  the_order_of_parameters_is_weird(p0, p1, parameters, order)",
+        "end",
         ""
       ].join("\n")
     }
@@ -93,6 +97,11 @@ describe 'Cucumber/Java rendering' do
         '    @Given("^an untrimed action word$")',
         '    public void anUntrimedActionWord() {',
         '        actionwords.anUntrimedActionWord();',
+        '    }',
+        '',
+        '    @Given("^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$")',
+        '    public void theOrderOfParametersIsWeird(String order, String parameters, String p0, String p1) {',
+        '        actionwords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
         '    }',
         '}'
       ].join("\n")
@@ -213,6 +222,11 @@ describe 'Cucumber/Javascript rendering' do
         '',
         '    this.Given(/^an untrimed action word$/, function (callback) {',
         '        this.actionwords.anUntrimedActionWord();',
+        '        callback();',
+        '    });',
+        '',
+        '    this.Given(/^the "(.*)" of "(.*)" is weird "(.*)" "(.*)"$/, function (order, parameters, p0, p1, callback) {',
+        '        this.actionwords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
         '        callback();',
         '    });',
         '}',

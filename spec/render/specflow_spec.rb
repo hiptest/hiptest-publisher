@@ -116,6 +116,12 @@ describe 'Specflow rendering' do
         '        public void AnUntrimedActionWord() {',
         '            Actionwords.AnUntrimedActionWord();',
         '        }',
+        '',
+        '',
+        '        [Given("^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$"), When("^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$"), Then("^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$")]',
+        '        public void TheOrderOfParametersIsWeird(string order, string parameters, string p0, string p1) {',
+        '            Actionwords.TheOrderOfParametersIsWeird(p0, p1, parameters, order);',
+        '        }',
         '    }',
         '}'
       ].join("\n")
