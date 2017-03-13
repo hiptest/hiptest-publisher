@@ -1448,5 +1448,9 @@ shared_examples "a BDD renderer" do
     it 'generates a steps definitions mapping' do
       expect(rendered).to eq(rendered_actionwords)
     end
+
+    it 'should not export unused action words' do
+      expect(rendered.downcase).not_to include('usused')
+    end
   end
 end
