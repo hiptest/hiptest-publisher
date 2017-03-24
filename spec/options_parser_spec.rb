@@ -135,6 +135,47 @@ describe CliOptions do
       options.normalize!
       expect(options.no_uids).to be(true)
     end
+
+    context 'without' do
+      it 'replaces --without=actionwords by --only=tests in classic frameworks' do
+        options = CliOptions.new(language: 'ruby', without: 'actionwords')
+        options.normalize!
+
+        expect(options.only).to eq("tests")
+      end
+
+      it 'replaces --without=actionwords by --only=features,step_definitions in Gherkin frameworks' do
+        options = CliOptions.new(language: 'cucumber', without: 'actionwords')
+        options.normalize!
+
+        expect(options.only).to eq("features,step_definitions")
+      end
+
+      context 'basically makes only with all options excepted the specified ones' do
+        it 'works with classic test frameworks' do
+          options = CliOptions.new(language: 'ruby', without: 'tests')
+          options.normalize!
+
+          expect(options.only).to eq("actionwords")
+        end
+
+        context 'works with Gherkin based frameworks' do
+          it 'can exclude the steps definitions (why ?)' do
+            options = CliOptions.new(language: 'cucumber', without: 'features')
+            options.normalize!
+
+            expect(options.only).to eq("step_definitions,actionwords")
+          end
+
+          it 'can exclude both features and step definitions' do
+            options = CliOptions.new(language: 'cucumber', without: 'features,step_definitions')
+            options.normalize!
+
+            expect(options.only).to eq("actionwords")
+          end
+        end
+      end
+    end
   end
 end
 
