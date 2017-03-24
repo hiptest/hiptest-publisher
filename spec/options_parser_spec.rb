@@ -177,6 +177,28 @@ describe CliOptions do
       end
     end
   end
+
+  describe '#command_line_used' do
+    it 'displays the command line used' do
+      options = OptionsParser.parse(["-l", "ruby", "--only", "actionwords"], NullReporter.new)
+      expect(options.command_line_used).to eq('hiptest-publisher --language=ruby --only=actionwords')
+    end
+
+    it 'does not include options from the config file or default ones' do
+      options = OptionsParser.parse(["-c", "hiptest-publisher.conf"], NullReporter.new)
+      expect(options.command_line_used).to eq('hiptest-publisher --config=hiptest-publisher.conf')
+    end
+
+    it 'can exclude some of the options' do
+      options = OptionsParser.parse(["-l", "ruby", "-f", "minitest", "--only", "actionwords"], NullReporter.new)
+      expect(options.command_line_used(exclude: [:only, :language])).to eq('hiptest-publisher --framework=minitest')
+    end
+
+    it 'does not leave and ugly white-space at the end' do
+      options = OptionsParser.parse(["-l", "ruby"], NullReporter.new)
+      expect(options.command_line_used(exclude: [:language])).to eq('hiptest-publisher')
+    end
+  end
 end
 
 

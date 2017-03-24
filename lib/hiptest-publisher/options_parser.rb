@@ -112,7 +112,7 @@ class CliOptions < OpenStruct
       "--#{key.to_s.gsub('_', '-')}=#{self[key]}"
     end.compact
 
-    return "hiptest-publisher #{args.join(' ')}"
+    return "hiptest-publisher #{args.join(' ')}".strip
   end
 
   def normalize!(reporter = nil)
