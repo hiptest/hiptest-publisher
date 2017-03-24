@@ -301,8 +301,30 @@ module Hiptest
           end
         end
       end
+
+      display_empty_push_help if passed_count == 0
     rescue Exception => err
       reporter.dump_error(err)
+    end
+
+    def display_empty_push_help
+      command = @cli_options.command_line_used(exclude: ['push', 'push_format'])
+      enhanced_command = "#{command} --without=actionwords"
+      if @cli_options.test_run_id.nil? || @cli_options.test_run_id.empty?
+        enhanced_command += " --test-run-id=<the ID of the test run you want to push the results to>"
+      end
+
+      puts [
+        "Possible causes for the lack of imported tests:",
+        "",
+        "  * Did you run the following command before executing your tests ?",
+        "    #{enhanced_command}",
+        "",
+        "  * Did you specify the correct push format ?",
+        "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
+        "    Available formats are: tap, junit, robot, nunit",
+        ""
+      ].join("\n")
     end
   end
 end

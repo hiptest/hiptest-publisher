@@ -106,6 +106,15 @@ class CliOptions < OpenStruct
     only.split(",") if only
   end
 
+  def command_line_used(exclude: [])
+    args = self.__cli_args.map do |key|
+      next if exclude.include?(key)
+      "--#{key.to_s.gsub('_', '-')}=#{self[key]}"
+    end.compact
+
+    return "hiptest-publisher #{args.join(' ')}"
+  end
+
   def normalize!(reporter = nil)
     self.no_uids = !uids  # silent normalization
     modified_options = self.clone
