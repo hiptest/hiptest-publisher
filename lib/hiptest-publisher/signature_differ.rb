@@ -15,9 +15,10 @@ module Hiptest
 
       compute_created
       compute_deleted
-      compute_renamed
-      compute_signature_changed
+
       compute_definition_changed
+      compute_signature_changed
+      compute_renamed
 
       diff = {}
       diff[:created] = @created unless @created.empty?
@@ -42,8 +43,15 @@ module Hiptest
     end
 
     def compute_renamed
+      excluded = [
+        @created_uids,
+        @deleted_uids,
+        @definition_changed_uids,
+        @signature_changed_uids
+      ].flatten.uniq
+
       @renamed = @current_uid.map do |uid, aw|
-        next if @created_uids.include?(uid) || @deleted_uids.include?(uid)
+        next if excluded.include?(uid)
         next if @old_uid[uid]['name'] == aw['name']
 
         {name: @old_uid[uid]['name'], new_name: aw['name'], node: aw['node']}
@@ -51,20 +59,31 @@ module Hiptest
     end
 
     def compute_signature_changed
+      excluded = [
+        @created_uids,
+        @deleted_uids,
+        @definition_changed_uids
+      ].flatten.uniq
+
+      @signature_changed_uids = []
       @signature_changed = @current_uid.map do |uid, aw|
-        next if @created_uids.include?(uid) || @deleted_uids.include?(uid)
+        next if excluded.include?(uid)
         next if @old_uid[uid]['parameters'] == aw['parameters']
 
+        @signature_changed_uids << uid
         {name: aw['name'], node: aw['node']}
       end.compact
     end
 
     def compute_definition_changed
+      @definition_changed_uids = []
+
       @definition_changed = @current_uid.map do |uid, aw|
         next if @old_uid[uid].nil?
         next unless @old_uid[uid].has_key?('body_hash')
         next if aw['body_hash'] == @old_uid[uid]['body_hash']
 
+        @definition_changed_uids << uid
         {name: aw['name'], node: aw['node']}
       end.compact
     end

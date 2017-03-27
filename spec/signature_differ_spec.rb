@@ -49,10 +49,6 @@ describe Hiptest::SignatureDiffer do
     make_actionword('My actionwürst', uid: 'id2')
   }
 
-  let(:aw2v2) {
-    make_actionword('My actionwürst', uid: 'id2')
-  }
-
   let(:v1) {
     exporter.export_actionwords(
       make_project('My project', actionwords: [aw1v1]), true
@@ -112,9 +108,67 @@ describe Hiptest::SignatureDiffer do
   it 'can find lots of things at once' do
     expect(differ.diff(v2, v6)).to eq({
       deleted: [{name: "My actionwurst"}],
-      renamed: [{name: "My actionword", new_name: "My actionzord", node: aw1v4}],
-      signature_changed: [{name: "My actionzord", node: aw1v4}],
       definition_changed: [{name: 'My actionzord', node: aw1v4}]
     })
+  end
+
+  context 'it does not display the same action words in multiple categories' do
+    let(:aw3v1) {
+      make_actionword('I do "p1"', uid: 'id1', parameters: [
+        make_parameter('p1'),
+      ], body: [
+      ])
+    }
+
+    let(:aw3v2) {
+      make_actionword('I do "things"', uid: 'id1', parameters: [
+        make_parameter('things'),
+      ], body: [
+      ])
+    }
+
+    let(:aw3v3) {
+      make_actionword('I do "things"', uid: 'id1', parameters: [
+        make_parameter('things', default: literal('')),
+      ], body: [
+        Hiptest::Nodes::Step.new('action', Hiptest::Nodes::StringLiteral.new('Do things'))
+      ])
+    }
+
+    let(:v1) {
+      exporter.export_actionwords(
+        make_project('My project', actionwords: [aw3v1]), true
+      )
+    }
+
+    let(:v2) {
+      exporter.export_actionwords(
+        make_project('My project', actionwords: [aw3v2]), true
+      )
+    }
+
+    let(:v3) {
+      exporter.export_actionwords(
+        make_project('My project', actionwords: [aw3v3]), true
+      )
+    }
+
+    it 'when the name and signature changed' do
+      expect(differ.diff(v1, v2)).to eq({
+        signature_changed: [{name: 'I do "things"', node: aw3v2}]
+      })
+    end
+
+    it 'when the definition and signature changed' do
+      expect(differ.diff(v2, v3)).to eq({
+        definition_changed: [{name: 'I do "things"', node: aw3v3}]
+      })
+    end
+
+    it 'when the definition, signature and definition changed' do
+      expect(differ.diff(v1, v3)).to eq({
+        definition_changed: [{name: 'I do "things"', node: aw3v3}]
+      })
+    end
   end
 end
