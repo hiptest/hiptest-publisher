@@ -4,7 +4,8 @@ import org.testng.annotations.*;
 {{#if needs_to_import_actionwords? }}import {{{ context.package }}}.Actionwords;
 {{/if}}
 public class {{{ clear_extension context.filename }}} {{#curly}}{{#indent}}
-
+{{#if has_tags?}}{{#comment '//'}}Tags: {{join rendered_children.tags ' '}}
+{{/comment}}{{/if}}
 public Actionwords {{{ context.call_prefix }}};
 
 @BeforeMethod
