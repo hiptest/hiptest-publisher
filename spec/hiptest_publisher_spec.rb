@@ -479,16 +479,16 @@ describe Hiptest::Publisher do
       expect(STDOUT).to have_printed("2 tests imported\n")
     end
 
-    it "should display an error is no tests have been imported" do
+    it "should display an error if no tests have been imported" do
       result_file = create_file('result.tap')
       stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": []}')
       publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
 
-      publisher.run
+      expect {publisher.run}.to output(a_string_including("Possible causes for the lack of imported tests:")).to_stdout
 
-      expect(STDOUT).to have_printed("0 tests imported\n")  # TODO: we should guide the user to help him push his tests
+      expect(STDOUT).to have_printed("0 tests imported\n")
     end
 
     it "displays names of passed tests with --verbose" do
@@ -502,6 +502,75 @@ describe Hiptest::Publisher do
         publisher.run
       }.to output(a_string_including("Test 'test1' imported").
               and(a_string_including("Test 'test2' imported"))).to_stdout
+    end
+
+    context 'when no results have been imported' do
+      before do
+        stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+            to_return(status: 200,
+                      body: '{"test_import": []}')
+      end
+
+      let(:result_file) {create_file('result.tap')}
+
+
+      it 'shows some help' do
+        expect {
+          publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
+          publisher.run
+        }.to output([
+          "Possible causes for the lack of imported tests:",
+          "",
+          "  * Did you run the following command before executing your tests ?",
+          "    hiptest-publisher --token=456 --without=actionwords --test-run-id=<the ID of the test run you want to push the results to>",
+          "",
+          "  * Did you specify the correct push format ?",
+          "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
+          "    Available formats are: tap, junit, robot, nunit",
+          ""
+        ].join("\n")).to_stdout
+      end
+
+      context 'does not add the "--test-run-id=<the ID of the test run you want to push the results to>" part' do
+        it 'when it was specified in the config file (even if it is a bad practice ...)' do
+          config_file = create_file('hiptest-publisher.conf', [
+            "token = 456",
+            "test_run_id = 123"
+          ].join("\n"))
+
+        expect {
+          publisher = Hiptest::Publisher.new(["c", "hiptest-publisher.conf", "--push", result_file], listeners: listeners)
+          publisher.run
+        }.to output([
+          "Possible causes for the lack of imported tests:",
+          "",
+          "  * Did you run the following command before executing your tests ?",
+          "    hiptest-publisher --config=hiptest-publisher.conf --without=actionwords",
+          "",
+          "  * Did you specify the correct push format ?",
+          "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
+          "    Available formats are: tap, junit, robot, nunit",
+          ""
+        ].join("\n")).to_stdout
+        end
+
+        it 'when it was specified in the command line args' do
+          expect {
+            publisher = Hiptest::Publisher.new(["--token", "456", "--test-run-id", "7899", "--push", result_file], listeners: listeners)
+            publisher.run
+          }.to output([
+            "Possible causes for the lack of imported tests:",
+            "",
+            "  * Did you run the following command before executing your tests ?",
+            "    hiptest-publisher --token=456 --test-run-id=7899 --without=actionwords",
+            "",
+            "  * Did you specify the correct push format ?",
+            "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
+            "    Available formats are: tap, junit, robot, nunit",
+            ""
+          ].join("\n")).to_stdout
+        end
+      end
     end
   end
 
