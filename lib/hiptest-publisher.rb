@@ -194,32 +194,40 @@ module Hiptest
         return
       end
 
+      command_line = @cli_options.command_line_used(exclude: [:actionwords_diff])
+
       unless diff[:deleted].nil?
-        puts "#{pluralize(diff[:deleted].length, "action word")} deleted:"
+        puts "#{pluralize(diff[:deleted].length, "action word")} deleted,"
+        puts "run '#{command_line} --show-actionwords-deleted' to list the #{pluralize_word(diff[:deleted].length, "name")} in the code"
         puts diff[:deleted].map {|d| "- #{d[:name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:created].nil?
-        puts "#{pluralize(diff[:created].length, "action word")} created:"
+        puts "#{pluralize(diff[:created].length, "action word")} created,"
+        puts "run '#{command_line} --show-actionwords-created' to get the #{pluralize_word(diff[:created].length, "definition")}"
+
         puts diff[:created].map {|c| "- #{c[:name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:renamed].nil?
-        puts "#{pluralize(diff[:renamed].length, "action word")} renamed:"
+        puts "#{pluralize(diff[:renamed].length, "action word")} renamed,"
+        puts "run '#{command_line} --show-actionwords-renamed' to get the new #{pluralize_word(diff[:renamed].length, "name")}"
         puts diff[:renamed].map {|r| "- #{r[:name]} => #{r[:new_name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:signature_changed].nil?
-        puts "#{pluralize(diff[:signature_changed].length, "action word")} which signature changed:"
+        puts "#{pluralize(diff[:signature_changed].length, "action word")} which signature changed,"
+        puts "run '#{command_line} --show-actionwords-signature-changed' to get the new #{pluralize_word(diff[:signature_changed].length, "signature")}"
         puts diff[:signature_changed].map {|c| "- #{c[:name]}"}.join("\n")
         puts ""
       end
 
       unless diff[:definition_changed].nil?
         puts "#{pluralize(diff[:definition_changed].length, "action word")} which definition changed:"
+        puts "run '#{command_line} --show-actionwords-definition-changed' to get the new #{pluralize_word(diff[:definition_changed].length, "definition")}"
         puts diff[:definition_changed].map {|c| "- #{c[:name]}"}.join("\n")
         puts ""
       end
