@@ -538,25 +538,27 @@ describe Hiptest::Publisher do
             "test_run_id = 123"
           ].join("\n"))
 
-        expect {
-          publisher = Hiptest::Publisher.new(["c", "hiptest-publisher.conf", "--push", result_file], listeners: listeners)
-          publisher.run
-        }.to output([
-          "Possible causes for the lack of imported tests:",
-          "",
-          "  * Did you run the following command before executing your tests ?",
-          "    hiptest-publisher --config=hiptest-publisher.conf --without=actionwords",
-          "",
-          "  * Did you specify the correct push format ?",
-          "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
-          "    Available formats are: tap, junit, robot, nunit",
-          ""
-        ].join("\n")).to_stdout
+          publisher = Hiptest::Publisher.new(["-c", config_file, "--push", result_file], listeners: listeners)
+
+          expect {
+            publisher.run
+          }.to output([
+            "Possible causes for the lack of imported tests:",
+            "",
+            "  * Did you run the following command before executing your tests ?",
+            "    hiptest-publisher --config=#{config_file} --without=actionwords",
+            "",
+            "  * Did you specify the correct push format ?",
+            "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
+            "    Available formats are: tap, junit, robot, nunit",
+            ""
+          ].join("\n")).to_stdout
         end
 
         it 'when it was specified in the command line args' do
+          publisher = Hiptest::Publisher.new(["--token", "456", "--test-run-id", "7899", "--push", result_file], listeners: listeners)
+
           expect {
-            publisher = Hiptest::Publisher.new(["--token", "456", "--test-run-id", "7899", "--push", result_file], listeners: listeners)
             publisher.run
           }.to output([
             "Possible causes for the lack of imported tests:",
