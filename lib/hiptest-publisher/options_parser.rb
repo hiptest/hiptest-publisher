@@ -196,7 +196,7 @@ class OptionsParser
       Option.new(nil, 'test-run-id=ID', '', String, "Export data from a test run identified by its id", :test_run_id),
       Option.new(nil, 'test-run-name=NAME', '', String, "Export data from a test run identified by its name", :test_run_name),
       Option.new(nil, 'only=CATEGORIES', nil, String, "Restrict export to given file categories (--only=list to list them)", :only),
-      Option.new(nil, 'without=CATEGORIES', nil, String, "Exclude file categories from import (--only=list to list them)", :only),
+      Option.new(nil, 'without=CATEGORIES', nil, String, "Exclude file categories from import (--only=list to list them)", :without),
       Option.new('x', 'xml-file=PROJECT_XML', nil, String, "XML file to use instead of fetching it from Hiptest", :xml_file),
       Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --only=tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --only=actionwords", :actionwords_only),
