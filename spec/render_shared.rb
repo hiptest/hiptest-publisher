@@ -1428,9 +1428,9 @@ shared_examples "a BDD renderer" do
 
     it 'generates a features.feature file asking to use --split-scenarios' do
       expect(rendered).to eq([
-        "# To export your project to Gherkin correctly, please add the option",
-        "# --split-scenarios when calling hiptest-publisher. It will generate one",
-        "# feature file per folder from your project."
+        "# To export your project to Gherkin correctly, you can add the option",
+        "# --with-folders when calling hiptest-publisher. It will keep the",
+        "#  Hiptest folders hierarchy of your project."
       ].join("\n"))
     end
   end
