@@ -10,7 +10,6 @@ gem 'ruby-handlebars', '~> 0.0.2'
 group :development do
   gem 'pry', '~> 0'
   gem 'pry-byebug', '~> 3'
-  gem 'pry-stack_explorer', '~> 0'
   gem 'rspec', '~> 3.3'
   gem 'rspec-mocks', '~> 3.3'
   gem 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.6'
