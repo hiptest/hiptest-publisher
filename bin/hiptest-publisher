@@ -18,9 +18,17 @@ rescue LoadError
 end
 
 # Ensure ruby version >= 2
-if RUBY_VERSION.to_i < 2
-  STDERR.puts "Error: you are using #{RUBY_ENGINE} #{RUBY_VERSION}."
-  STDERR.puts "hiptest-publisher requires Ruby version >= 2.0.0."
+if RubyVersion < '2.1.0'
+  STDERR.puts "hiptest-publisher requires Ruby version >= 2.1.0."
+  STDERR.puts "You are using #{RUBY_ENGINE} #{RUBY_VERSION}."
+  STDERR.puts "Please use a more recent ruby release to run hiptest-publisher."
+  if RubyVersion.is? 2.0
+    STDERR.puts "Official support for Ruby 2.0.0 ended on 2016-02-24"
+  elsif RubyVersion.is? '1.9.3'
+    STDERR.puts "Official support for Ruby 1.9.3 ended on 2015-02-23"
+  elsif RubyVersion.is? '1.9.2'
+    STDERR.puts "Official support for Ruby 1.9.2 ended on 2014-07-31"
+  end
   exit 1
 end
 
