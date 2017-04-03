@@ -1,6 +1,6 @@
 ---
 - name: Parameters and assignements
-  uid: 0803eaf1-224d-4a47-bc5c-827bc8595839
+  uid: '0803eaf1-224d-4a47-bc5c-827bc8595839'
   parameters:
   - name: no_default
   - name: default_integer
