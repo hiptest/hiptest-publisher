@@ -17,7 +17,7 @@ group :development do
 end
 
 group :packaging do
-  gem 'jeweler', '~> 2.0', '>= 2.1.2'
+  gem 'jeweler', '~> 2.0', '>= 2.1.1'
 end
 
 group :test do
