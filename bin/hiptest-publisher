@@ -17,6 +17,8 @@ begin
 rescue LoadError
 end
 
+require 'ruby_version'
+
 # Ensure ruby version >= 2
 if RubyVersion < '2.1.0'
   STDERR.puts "hiptest-publisher requires Ruby version >= 2.1.0."
