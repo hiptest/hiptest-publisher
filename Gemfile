@@ -17,7 +17,7 @@ group :development do
 end
 
 group :packaging do
-  gem 'jeweler', '~> 2.0', '>= 2.1.1'
+  gem 'jeweler', git: 'https://github.com/hiptest/jeweler.git', branch: 'use_github_api_16' # we forked jeweler to relax dependency on nokokgiri and be able to upgrade it
 end
 
 group :test do
