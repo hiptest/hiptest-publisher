@@ -1,21 +1,16 @@
 #!/usr/bin/env ruby
 
-# Use the following command to run hiptest-publisher and test your changes:
+# Don't try to run this binary directly. Instead:
 #
-#     bundle exec ruby -I lib bin/hiptest-publisher
+#   * `hiptest-publisher` if installed through rubygems, relying on the rubygem
+#     wrapper
 #
-# You can define an alias for this command and run it as if you were running
-# the gem.
+#   * `bundle exec ruby -I lib bin/hiptest-publisher` if doing hiptest-publisher
+#     development. You can define an alias for this command and run it as if
+#     you were running the gem natively.
 #
-#     alias hiptest-publisher='bundle exec ruby -I lib bin/hiptest-publisher'
-#     hiptest-publisher -v --token=1234567890
+#         alias hiptest-publisher='bundle exec ruby -I lib bin/hiptest-publisher'
 #
-
-begin
-  require 'rubygems'
-  gem 'hiptest-publisher'
-rescue LoadError
-end
 
 require 'ruby_version'
 
