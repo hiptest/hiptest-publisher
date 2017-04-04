@@ -32,6 +32,11 @@ module Hiptest
     end
 
     def run
+      if @cli_options.check_version
+        check_version
+        return
+      end
+
       begin
         CliOptionsChecker.new(@cli_options, reporter).check!
       rescue CliOptionError => e
@@ -294,6 +299,30 @@ module Hiptest
         "To export both #{group_names.first} and #{group_names[1]} files:",
         "    hiptest-publisher --language=#{@cli_options.language} --only=#{group_names.take(2).join(",")}"
       ].join("\n")
+    end
+
+    def check_version
+      latest = nil
+      reporter.with_status_message "Checking latest version on Rubygem" do
+        latest_gem = Gem.latest_version_for('hiptest-publisher')
+
+        raise RuntimeError, "Unable to connect to Rubygem" if latest_gem.nil?
+
+        latest = latest_gem.version
+      end
+
+      return if latest.nil?
+
+      current = hiptest_publisher_version
+
+      if latest == current
+        puts "Your current install of hiptest-publisher (#{current}) is up-to-date."
+      else
+        puts [
+          "Your current install of hiptest-publisher (#{current}) is outdated, version #{latest} is available",
+          "run 'gem install hiptest-publisher' to get the latest version."
+          ].join("\n")
+      end
     end
 
     def post_results
