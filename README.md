@@ -117,7 +117,7 @@ Specific options:
         --show-actionwords-definition-changed
                                      Output action words for which definition changed (default: false)
         --with-folders               Use folders hierarchy to export files in respective directories (default: false)
-        --split-scenarios            Export each scenario in a single file unless for cucumber langage (default: false)
+        --split-scenarios            Export each scenario in a single file  (except for Gherkin based languages) (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
