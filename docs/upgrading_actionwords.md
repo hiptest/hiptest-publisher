@@ -1,7 +1,7 @@
 Upgrading actionwords
 =====================
 
-Since version 4.0, hiptest-publisher comes with a system allowing finer updates of the action words, so you do not have to regenerate the full action words skeleton.
+Since version 0.4.0, hiptest-publisher comes with a system allowing finer updates of the action words, so you do not have to regenerate the full action words skeleton.
 The first thing to do is to check if a file called ``actionwords_signature.yaml`` has been generated in the folder were your action words and tests are stored. If this file in not available, regenerate the whole project:
 
 ```shell
