@@ -1,0 +1,2 @@
+def {{{camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{{join rendered_children.parameters ', '}}}{{/if}}) {{#curly}}{{#indent}}{{> desc}}{{> steps}}{{/indent}}
+{{/curly}}

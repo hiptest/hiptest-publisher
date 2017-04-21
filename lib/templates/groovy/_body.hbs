@@ -1,0 +1,8 @@
+{{#curly}}{{#indent}}{{> desc}}{{#unless has_annotations?}}{{#unless is_empty?}}
+expect:{{/unless}}{{/unless}}
+{{> steps}}{{#if has_datasets?}}
+where:
+{{ join rendered_children.parameters ' | ' }} {{#if context.uids}} | hiptestUid{{/if}}
+{{rendered_children.datatable}}
+{{/if}}{{/indent}}
+{{/curly}}

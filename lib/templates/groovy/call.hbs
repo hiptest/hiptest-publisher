@@ -1,0 +1,2 @@
+{{#if use_main_annotation?}}{{rendered_children.annotation}}:
+{{/if}}{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}{{{ camelize_lower rendered_children.actionword }}}({{{ join rendered_children.all_arguments ', '}}})

@@ -1,0 +1,8 @@
+import spock.lang.*
+
+class {{{ clear_extension context.filename }}} extends Specification {{#curly}}{{#indent}}
+def {{{ context.call_prefix }}} = Actionwords.newInstance()
+
+{{> test}}
+{{/indent}}
+{{/curly}}
