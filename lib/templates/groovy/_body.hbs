@@ -1,0 +1,9 @@
+{{#curly}}{{#indent}}{{#if has_tags?}}
+{{#comment '//'}}Tags: {{{ join rendered_children.tags ' '}}}{{/comment}}
+{{/if}}{{#if has_description?}}
+{{#comment '//'}}{{rendered_children.description}}{{/comment}}
+{{/if}}{{#each rendered_children.body}}{{{this}}}
+{{/each}}{{#if has_step?}}
+throw new UnsupportedOperationException{{/if}}
+{{/indent}}
+{{/curly}}

@@ -1,0 +1,6 @@
+class ProjectSpec extends Specification {{#curly}}{{#indent}}
+def actionwords = Actionwords.newInstance()
+
+{{#each rendered_children.scenarios}}{{{this}}}
+{{/each}}
+{{/indent}}{{/curly}}

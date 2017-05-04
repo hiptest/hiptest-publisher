@@ -1,7 +1,7 @@
-require_relative 'spec_helper'
-require_relative "render_shared"
+require_relative '../spec_helper'
+require_relative "../render_shared"
 
-describe 'Render as <My language>' do
+describe 'Render as Groovy' do
   include_context "shared render"
 
   before(:each) do
@@ -101,7 +101,7 @@ describe 'Render as <My language>' do
     @while_loop_rendered = [
         "while (foo)",
         '  fighters = "foo"',
-        '  foo('fighters')',
+        '  foo("fighters")',
         "end\n"
       ].join("\n")
 
@@ -185,7 +185,7 @@ describe 'Render as <My language>' do
       "  }",
       "",
       "  def secondActionWord() {",
-      "    first_action_word();",
+      "    firstActionWord();",
       "  }",
       "}"].join("\n")
 
@@ -226,8 +226,6 @@ describe 'Render as <My language>' do
       "}"
     ].join("\n")
 
-    # XXXXXXXXXXXXX-------------- STOPPED HERE FOR NOW
-
     # In Hiptest:
     # @myTag
     # scenario 'compare to pi' (x) do
@@ -240,58 +238,51 @@ describe 'Render as <My language>' do
     #   end
     # end
     @full_scenario_rendered = [
-      "it 'compare_to_pi' do",
-      "  # This is a scenario which description ",
-      "  # is on two lines",
-      "  # Tags: myTag",
+      'def "compare to pi"() {',
+      "  // This is a scenario which description ",
+      "  // is on two lines",
+      "  // Tags: myTag",
+      "  expect:",
       "  foo = 3.14",
-      "  if (foo > x)",
-      "    # TODO: Implement result: x is greater than Pi",
-      "  else",
-      "    # TODO: Implement result: x is lower than Pi",
-      "    # on two lines",
-      "  end",
-      "end"].join("\n")
+      "  if (foo > x) {",
+      "    // TODO: Implement result: x is greater than Pi",
+      "  } else {",
+      "    // TODO: Implement result: x is lower than Pi",
+      "    // on two lines",
+      "  }",
+      "}"].join("\n")
 
     @full_scenario_with_uid_rendered = [
-      "def test_compare_to_pi_uidabcd1234",
-      "  # This is a scenario which description ",
-      "  # is on two lines",
-      "  # Tags: myTag",
+      'def "compare to pi (uid: abcd1234)" {',
+      "  // This is a scenario which description ",
+      "  // is on two lines",
+      "  // Tags: myTag",
+      "  expect:",
       "  foo = 3.14",
-      "  if (foo > x)",
-      "    # TODO: Implement result: x is greater than Pi",
-      "  else",
-      "    # TODO: Implement result: x is lower than Pi",
-      "    # on two lines",
-      "  end",
-      "  raise NotImplementedError",
-      "end"].join("\n")
-
-    # In hiptest
-    # scenario 'reset password' do
-    #   call given 'Page "url" is opened'(url='/login')
-    #   call when 'I click on "link"'(link='Reset password')
-    #   call then 'page "url" should be opened'(url='/reset-password')
-    # end
-    @bdd_scenario_rendered = [
-    ].join("\n")
+      "  if (foo > x) {",
+      "    // TODO: Implement result: x is greater than Pi",
+      "  } else {",
+      "    // TODO: Implement result: x is lower than Pi",
+      "    // on two lines",
+      "  }",
+      "}"].join("\n")
 
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
-      "it 'compare_to_pi' do",
-      "  # This is a scenario which description ",
-      "  # is on two lines",
-      "  # Tags: myTag",
+      'def "compare to pi (uid: abcd1234)" {',
+      "  // This is a scenario which description ",
+      "  // is on two lines",
+      "  // Tags: myTag",
+      "  expect:",
       "  foo = 3.14",
-      "  if (foo > x)",
-      "    # TODO: Implement result: x is greater than Pi",
-      "  else",
-      "    # TODO: Implement result: x is lower than Pi",
-      "    # on two lines",
-      "  end",
-      "end"].join("\n")
+      "  if (foo > x) {",
+      "    // TODO: Implement result: x is greater than Pi",
+      "  } else {",
+      "    // TODO: Implement result: x is lower than Pi",
+      "    // on two lines",
+      "  }",
+      "}"].join("\n")
 
     # Scenario definition is:
     # call 'fill login' (login = login)
@@ -307,84 +298,56 @@ describe 'Render as <My language>' do
     # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
-      "context \"check login\" do",
-      "  def check_login(login, password, expected)",
-      "    \# Ensure the login process",
-      "    fill_login(login)",
-      "    fill_password(password)",
-      "    press_enter",
-      "    assert_error_is_displayed(expected)",
-      "  end",
-      "",
-      "  it \"Wrong login\" do",
-      "    check_login('invalid', 'invalid', 'Invalid username or password')",
-      "  end",
-      "",
-      "  it \"Wrong \\\"password\\\"\" do",
-      "    check_login('valid', 'invalid', 'Invalid username or password')",
-      "  end",
-      "",
-      "  it \"Valid login/password\" do",
-      "    check_login('valid', 'valid', nil)",
-      "  end",
-      "end"
+      'def "check login"() {',
+      '  expect:',
+      '  actionwords.fillLogin(login)',
+      '  actionwords.fillPassword(password)',
+      '  actionwords.assertErrorIsDisplayed(expected)',
+      '',
+      '  where:',
+      '  login     | password   | expected',
+      '  "invalid" | "invalid"  | "Invalid username or password"',
+      '  "valid"   | "invalid"  | "Invalid username or password"',
+      '  "valid"   | "valid"    | null',
+      '}',
+      ''
     ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
-      "def check_login(login, password, expected)",
-      "  \# Ensure the login process",
-      "  fill_login(login)",
-      "  fill_password(password)",
-      "  press_enter",
-      "  assert_error_is_displayed(expected)",
-      "end",
-      "",
-      "def test_check_login_wrong_login_uida123",
-      "  check_login('invalid', 'invalid', 'Invalid username or password')",
-      "end",
-      "",
-      "def test_check_login_wrong_password_uidb456",
-      "  check_login('valid', 'invalid', 'Invalid username or password')",
-      "end",
-      "",
-      "def test_check_login_valid_loginpassword_uidc789",
-      "  check_login('valid', 'valid', nil)",
-      "end",
-      ""
+      'def "check login"() {',
+      '  expect:',
+      '  actionwords.fillLogin(login)',
+      '  actionwords.fillPassword(password)',
+      '  actionwords.assertErrorIsDisplayed(expected)',
+      '',
+      '  where:',
+      '  login     | password   | expected                       | hiptestUid',
+      '  "invalid" | "invalid"  | "Invalid username or password" | "a123"',
+      '  "valid"   | "invalid"  | "Invalid username or password" | "b456"',
+      '  "valid"   | "valid"    | null                           | "c789"',
+      '}',
+      ''
     ].join("\n")
 
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
-      "# encoding: UTF-8",
-      "require 'spec_helper'",
-      "require_relative 'actionwords'",
-      "",
-      "describe 'AProjectWithDatatables' do",
-      "  include Actionwords",
-      "",
-      "",
-      "  context \"check login\" do",
-      "    def check_login(login, password, expected)",
-      "      \# Ensure the login process",
-      "      fill_login(login)",
-      "      fill_password(password)",
-      "      press_enter",
-      "      assert_error_is_displayed(expected)",
-      "    end",
-      "",
-      "    it \"Wrong login\" do",
-      "      check_login('invalid', 'invalid', 'Invalid username or password')",
-      "    end",
-      "",
-      "    it \"Wrong password\" do",
-      "      check_login('valid', 'invalid', 'Invalid username or password')",
-      "    end",
-      "",
-      "    it \"Valid login/password\" do",
-      "      check_login('valid', 'valid', nil)",
-      "    end",
-      "  end",
-      "end"
+      'class ProjectSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "check login"() {',
+      '    expect:',
+      '    actionwords.fillLogin(login)',
+      '    actionwords.fillPassword(password)',
+      '    actionwords.assertErrorIsDisplayed(expected)',
+      '  ',
+      '    where:',
+      '    login     | password   | expected',
+      '    "invalid" | "invalid"  | "Invalid username or password"',
+      '    "valid"   | "invalid"  | "Invalid username or password"',
+      '    "valid"   | "valid"    | null',
+      '  }',
+      '}',
+      ''
     ].join("\n")
 
     # In Hiptest, correspond to two scenarios in a project called 'My project'
@@ -393,84 +356,77 @@ describe 'Render as <My language>' do
     # scenario 'second scenario' do
     #   call 'my action word'
     # end
-    @scenarios_rendered = [
-      "# encoding: UTF-8",
-      "require_relative 'actionwords'",
-      "",
-      "describe 'MyProject' do",
-      "  include Actionwords",
-      "",
-      "  it 'first_scenario' do",
-      "  end",
-      "  it 'second_scenario' do",
-      "    my_action_word",
-      "  end",
-      "end"].join("\n")
+    @scenariocenarios_rendered = [
+      'class MyProjectSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "first scenario"() {',
+      '  }',
+      '',
+      '  def "second scenario"() {',
+      '    expect:',
+      '    actionwords.myActionWord()',
+      '  }',
+      '}',
+      ''
+    ].join("\n")
 
-      @tests_rendered = [
-       "# encoding: UTF-8",
-       "require 'spec_helper'",
-       "require_relative 'actionwords'",
-       "",
-       "describe 'MyTestProject' do",
-       "  include Actionwords",
-       "",
-       "  it \"Login\" do",
-       "    # The description is on ",
-       "    # two lines",
-       "    # Tags: myTag myTag:somevalue",
-       "    visit('/login')",
-       "    fill('user@example.com')",
-       "    fill('s3cret')",
-       "    click('.login-form input[type=submit]')",
-       "    check_url('/welcome')",
-       "  end",
-       "",
-       "  it \"Failed login\" do",
-       "    # Tags: myTag:somevalue",
-       "    visit('/login')",
-       "    fill('user@example.com')",
-       "    fill('notTh4tS3cret')",
-       "    click('.login-form input[type=submit]')",
-       "    check_url('/login')",
-       "  end",
-       "end"
-      ].join("\n")
+    @tests_rendered = [
+      'class MyProjectSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "Login"() {',
+      '    // The description is on',
+      '    // two lines',
+      '    // Tags: Tags: myTag myTag:somevalue',
+      '    actionwords.visit("/login")',
+      '    actionwords.fill("user@example.com")',
+      '    actionwords.fill("s3cret")',
+      '    actionwords.click(".login-form input[type=submit]")',
+      '    actionwordfs.check_url("/welcome")',
+      '  }',
+      '',
+      '  def "Failed login"() {',
+      '    // Tags: myTag:somevalue',
+      '    actionwords.visit("/login")',
+      '    actionwords.fill("user@example.com")',
+      '    actionwords.fill("notTh4tS3cret")',
+      '    actionwords.click(".login-form input[type=submit]")',
+      '    actionwordfs.check_url("/login")',
+      '  }',
+      '}',
+      ''
+    ].join("\n")
 
-      @first_test_rendered = [
-        "it \"Login\" do",
-        "  # The description is on ",
-        "  # two lines",
-        "  # Tags: myTag myTag:somevalue",
-        "  visit('/login')",
-        "  fill('user@example.com')",
-        "  fill('s3cret')",
-        "  click('.login-form input[type=submit]')",
-        "  check_url('/welcome')",
-        "end"
-      ].join("\n")
+    @first_test_rendered = [
+      'def "login"() {',
+      '  // The description is on',
+      '  // two lines',
+      '  // Tags: Tags: myTag myTag:somevalue',
+      '  actionwords.visit("/login")',
+      '  actionwords.fill("user@example.com")',
+      '  actionwords.fill("s3cret")',
+      '  actionwords.click(".login-form input[type=submit]")',
+      '  actionwordfs.check_url("/welcome")',
+      '}'
+    ].join("\n")
 
-      @first_test_rendered_for_single_file = [
-       "# encoding: UTF-8",
-       "require 'spec_helper'",
-       "require_relative 'actionwords'",
-       "",
-       "describe 'MyTestProject' do",
-       "  include Actionwords",
-       "",
-       "",
-       "  it \"Login\" do",
-       "    # The description is on ",
-       "    # two lines",
-       "    # Tags: myTag myTag:somevalue",
-       "    visit('/login')",
-       "    fill('user@example.com')",
-       "    fill('s3cret')",
-       "    click('.login-form input[type=submit]')",
-       "    check_url('/welcome')",
-       "  end",
-       "end"
-      ].join("\n")
+    @first_test_rendered_for_single_file = [
+      'class MyTestProject extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "login"() {',
+      '    // The description is on',
+      '    // two lines',
+      '    // Tags: Tags: myTag myTag:somevalue',
+      '    actionwords.visit("/login")',
+      '    actionwords.fill("user@example.com")',
+      '    actionwords.fill("s3cret")',
+      '    actionwords.click(".login-form input[type=submit]")',
+      '    actionwordfs.check_url("/welcome")',
+      '  }',
+      '}'
+    ].join("\n")
 
     # In hiptest
     # scenario 'reset password' do
@@ -479,21 +435,22 @@ describe 'Render as <My language>' do
     #   call then 'page "url" should be opened'(url='/reset-password')
     # end
     @bdd_scenario_rendered = [
-      'it "Reset password" do',
-      '  # Given Page "/login" is opened',
-      '  page_url_is_opened(\'/login\')',
-      '  # When I click on "Reset password"',
-      '  i_click_on_link(\'Reset password\')',
-      '  # Then Page "/reset-password" should be opened',
-      '  page_url_should_be_opened(\'/reset-password\')',
-      'end'
+      'def "reset password"() {',
+      '  given:',
+      '  actionwords.pageUrlIsOpened("/login")',
+      '  when:',
+      '  actionwords.iClickOnLink("Reset password")',
+      '  then:',
+      '  actionwords.pageUrlShouldBeOpened("/reset-password")',
+      '}',
+      ''
     ].join("\n")
   end
 
-  context '<The test framework>' do
+  context 'Groovy/Spock' do
     it_behaves_like "a renderer" do
-      let(:language) {'<My language>'}
-      let(:framework) {'<The test framework>'}
+      let(:language) {'groovy'}
+      let(:framework) {'spock'}
     end
   end
 end
