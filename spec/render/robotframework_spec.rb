@@ -437,7 +437,7 @@ describe 'Render as Robot framework' do
       "Documentation",
       "...  The description is on ",
       "...  two lines",
-      "Default Tags\tmyTag myTag:somevalue",
+      "Default Tags\tmyTag\tmyTag:somevalue",
       "",
       "Resource\tkeywords.txt",
       "",

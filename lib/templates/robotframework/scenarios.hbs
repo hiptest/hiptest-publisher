@@ -7,14 +7,14 @@ Resource{{tab}}keywords.txt
 [Template]{{tab}}{{this.name}} keyword
 {{this.datatable}}{{/indent}}
 {{else}}{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}{{#if this.tags}}
-[Tags]{{tab}}{{{ join this.tags ' '}}}
+[Tags]{{tab}}{{{ join this.tags '\t'}}}
 {{/if}}{{join this.body '\n'}}{{/indent}}
 {{/if}}{{/each}}
 *** Keywords ***
 
 {{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
 [Arguments]{{tab}}${{#curly}}__test_name{{/curly}}{{tab}}{{join this.parameters '\t'}}
-{{#if this.tags}}[Tags]{{tab}}{{{ join this.tags ' '}}}
+{{#if this.tags}}[Tags]{{tab}}{{{ join this.tags '\t'}}}
 {{/if}}{{join this.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}
