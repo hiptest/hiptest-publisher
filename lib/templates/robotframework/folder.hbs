@@ -3,9 +3,9 @@ Documentation
 {{#comment '... '}}{{#clear_empty_lines}}
 {{{ rendered_children.description}}}
 {{/clear_empty_lines}}{{/comment}}{{#if has_tags?}}
-Default Tags {{{ join rendered_children.tags ' '}}}
+Default Tags{{tab}}{{{ join rendered_children.tags ' '}}}
 {{/if}}
-Resource          keywords.txt
+Resource{{tab}}keywords.txt
 {{#unless is_empty?}}
 Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
 {{/unless}}
