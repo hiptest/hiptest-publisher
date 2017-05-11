@@ -81,7 +81,8 @@ module Hiptest
     def walk_call(c)
       {
         :has_arguments? => !c.children[:arguments].empty?,
-        :has_annotation? => !c.children[:annotation].nil?
+        :has_annotation? => !c.children[:annotation].nil?,
+        :use_main_annotation? => !(c.children[:annotation].nil? || ['and', 'but'].include?(c.children[:annotation]))
       }
     end
 

@@ -4,6 +4,9 @@
 {{#comment '//'}}{{rendered_children.description}}{{/comment}}
 {{/if}}{{#each rendered_children.body}}{{{this}}}
 {{/each}}{{#if has_step?}}
-throw new UnsupportedOperationException{{/if}}
-{{/indent}}
+throw new UnsupportedOperationException(){{/if}}{{#if has_datasets?}}
+where:
+{{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid{{/if}}
+{{rendered_children.datatable}}
+{{/if}}{{/indent}}
 {{/curly}}

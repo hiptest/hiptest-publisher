@@ -1,5 +1,14 @@
-class ProjectSpec extends Specification {{#curly}}{{#indent}}
+import spock.lang.*
+
+class {{{ clear_extension context.filename }}} extends Specification {{#curly}}{{#indent}}
 def actionwords = Actionwords.newInstance()
+
+{{#unless is_empty?}}
+def setup() {{#curly}}{{#indent}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
+{{/indent}}{{/curly}}
+{{/unless}}
 
 {{#each rendered_children.scenarios}}{{{this}}}
 {{/each}}
