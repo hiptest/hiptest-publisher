@@ -746,6 +746,7 @@ shared_examples "a BDD renderer" do
         make_parameter("first_color"),
         make_parameter("second_color"),
         make_parameter("got_color"),
+        make_parameter("priority"),
       ],
       body: [
         make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
@@ -758,16 +759,19 @@ shared_examples "a BDD renderer" do
           make_argument("first_color", template_of_literals("blue")),
           make_argument("second_color", template_of_literals("yellow")),
           make_argument("got_color", template_of_literals("green")),
+          make_argument("priority", Hiptest::Nodes::UnaryExpression.new('-', Hiptest::Nodes::NumericLiteral.new(1))),
         ]),
         Hiptest::Nodes::Dataset.new("Mix to orange", [
           make_argument("first_color", template_of_literals("yellow")),
           make_argument("second_color", template_of_literals("red")),
           make_argument("got_color", template_of_literals("orange")),
+          make_argument("priority", Hiptest::Nodes::NumericLiteral.new(1)),
         ]),
         Hiptest::Nodes::Dataset.new("Mix to purple", [
           make_argument("first_color", literal("red")),
           make_argument("second_color", literal("blue")),
           make_argument("got_color", literal("purple")),
+          make_argument("priority", Hiptest::Nodes::BooleanLiteral.new(true)),
         ]),
       ]))
   }
@@ -1083,10 +1087,10 @@ shared_examples "a BDD renderer" do
           "  Then you obtain \"<got_color>\"",
           "",
           "  Examples:",
-          "    | first_color | second_color | got_color | hiptest-uid |",
-          "    | blue | yellow | green |  |",
-          "    | yellow | red | orange |  |",
-          "    | red | blue | purple |  |",
+          "    | first_color | second_color | got_color | priority | hiptest-uid |",
+          "    | blue | yellow | green | -1 |  |",
+          "    | yellow | red | orange | 1 |  |",
+          "    | red | blue | purple | true |  |",
           "",
         ].join("\n"))
       end
@@ -1107,10 +1111,10 @@ shared_examples "a BDD renderer" do
           "  Then you obtain \"<got_color>\"",
           "",
           "  Examples:",
-          "    | first_color | second_color | got_color | hiptest-uid |",
-          "    | blue | yellow | green | uid:1234 |",
-          "    | yellow | red | orange |  |",
-          "    | red | blue | purple | uid:5678 |",
+          "    | first_color | second_color | got_color | priority | hiptest-uid |",
+          "    | blue | yellow | green | -1 | uid:1234 |",
+          "    | yellow | red | orange | 1 |  |",
+          "    | red | blue | purple | true | uid:5678 |",
           "",
         ].join("\n"))
       end
@@ -1259,10 +1263,10 @@ shared_examples "a BDD renderer" do
           "  Then you obtain \"<got_color>\"",
           "",
           "  Examples:",
-          "    | first_color | second_color | got_color |",
-          "    | blue | yellow | green |",
-          "    | yellow | red | orange |",
-          "    | red | blue | purple |",
+          "    | first_color | second_color | got_color | priority |",
+          "    | blue | yellow | green | -1 |",
+          "    | yellow | red | orange | 1 |",
+          "    | red | blue | purple | true |",
           "",
         ].join("\n"))
       end
@@ -1315,10 +1319,10 @@ shared_examples "a BDD renderer" do
         '    Then you obtain "<got_color>"',
         '',
         '    Examples:',
-        '      | first_color | second_color | got_color | hiptest-uid |',
-        '      | blue | yellow | green |  |',
-        '      | yellow | red | orange |  |',
-        '      | red | blue | purple |  |',
+        '      | first_color | second_color | got_color | priority | hiptest-uid |',
+        '      | blue | yellow | green | -1 |  |',
+        '      | yellow | red | orange | 1 |  |',
+        '      | red | blue | purple | true |  |',
         ''
       ].join("\n"))
     end
