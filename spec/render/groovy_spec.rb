@@ -57,17 +57,17 @@ describe 'Render as Groovy' do
     @assign_fighters_to_foo_rendered = 'foo = "fighters"'
 
     # In Hiptest: call 'foo'
-    @call_foo_rendered = "foo"
+    @call_foo_rendered = "actionwords.foo()"
     # In Hiptest: call 'foo bar'
-    @call_foo_bar_rendered = "fooBar"
+    @call_foo_bar_rendered = "actionwords.fooBar()"
 
     # In Hiptest: call 'foo'('fighters')
-    @call_foo_with_fighters_rendered = 'foo("fighters")'
+    @call_foo_with_fighters_rendered = 'actionwords.foo("fighters")'
     # In Hiptest: call 'foo bar'('fighters')
-    @call_foo_bar_with_fighters_rendered = 'fooBar("fighters")'
+    @call_foo_bar_with_fighters_rendered = 'actionwords.fooBar("fighters")'
 
     # In Hiptest: step {action: "${foo}fighters"}
-    @action_foo_fighters_rendered = '# TODO: Implement action: "${foo}fighters"'
+    @action_foo_fighters_rendered = '// TODO: Implement action: "${foo}fighters"'
 
     # In Hiptest:
     # if (true)
@@ -75,8 +75,8 @@ describe 'Render as Groovy' do
     #end
     @if_then_rendered = [
         "if (true) {",
-        '  foo = "fighters";',
-        "}\n"
+        '  foo = "fighters"',
+        "}"
       ].join("\n")
 
     # In Hiptest:
@@ -90,7 +90,7 @@ describe 'Render as Groovy' do
         '  foo = "fighters"',
         "} else {",
         '  fighters = "foo"',
-        "}\n"
+        "}"
       ].join("\n")
 
     # In Hiptest:
@@ -99,10 +99,10 @@ describe 'Render as Groovy' do
     #   foo('fighters')
     # end
     @while_loop_rendered = [
-        "while (foo)",
+        "while (foo) {",
         '  fighters = "foo"',
-        '  foo("fighters")',
-        "end\n"
+        '  actionwords.foo("fighters")',
+        "}"
       ].join("\n")
 
     # In Hiptest: @myTag
@@ -120,7 +120,7 @@ describe 'Render as Groovy' do
     # In Hiptest:
     # actionword 'my action word' do
     # end
-    @empty_action_word_rendered = "def myActionWord(){\n}"
+    @empty_action_word_rendered = "def myActionWord() {\n}"
 
     # In Hiptest:
     # @myTag @myTag:somevalue
@@ -131,13 +131,17 @@ describe 'Render as Groovy' do
       "  // Tags: myTag myTag:somevalue",
       "}"].join("\n")
 
-    @described_action_word_rendered = ''
+    @described_action_word_rendered = [
+      "def myActionWord() {",
+      "  // Some description",
+      "}"
+    ].join("\n")
 
     # In Hiptest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
-      "def myActionWord(plic, flip = 'flap') {",
+      'def myActionWord(plic, flip = "flap") {',
       "}"].join("\n")
 
     # In Hiptest:
@@ -154,6 +158,7 @@ describe 'Render as Groovy' do
     @full_actionword_rendered = [
       "def compareToPi(x) {",
       "  // Tags: myTag",
+      "",
       "  foo = 3.14",
       "  if (foo > x) {",
       "    // TODO: Implement result: x is greater than Pi",
@@ -161,6 +166,8 @@ describe 'Render as Groovy' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "",
+      "  throw new UnsupportedOperationException()",
       "}"].join("\n")
 
     # In Hiptest:
@@ -170,7 +177,8 @@ describe 'Render as Groovy' do
     @step_action_word_rendered = [
       "def myActionWord() {",
       "  // TODO: Implement action: basic action",
-      "  throw new UnsupportedOperationException",
+      "",
+      "  throw new UnsupportedOperationException()",
       "}"].join("\n")
 
     # In Hiptest, correspond to two action words:
@@ -185,9 +193,13 @@ describe 'Render as Groovy' do
       "  }",
       "",
       "  def secondActionWord() {",
-      "    firstActionWord();",
+      "    firstActionWord()",
       "  }",
       "}"].join("\n")
+
+    @call_with_special_characters_in_value_rendered = [
+      'actionwords.myCallWithWeirdArguments("{\n  this: \'is\',\n  some: [\'JSON\', \'outputed\'],\n  as: \'a string\'\n}")'
+    ].join("\n")
 
     # In Hiptest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
@@ -241,8 +253,11 @@ describe 'Render as Groovy' do
       'def "compare to pi"() {',
       "  // This is a scenario which description ",
       "  // is on two lines",
+      "",
       "  // Tags: myTag",
+      "",
       "  expect:",
+      "",
       "  foo = 3.14",
       "  if (foo > x) {",
       "    // TODO: Implement result: x is greater than Pi",
@@ -250,14 +265,19 @@ describe 'Render as Groovy' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "",
+      "  throw new UnsupportedOperationException()",
       "}"].join("\n")
 
     @full_scenario_with_uid_rendered = [
-      'def "compare to pi (uid: abcd1234)" {',
+      'def "compare to pi (uid: abcd-1234)"() {',
       "  // This is a scenario which description ",
       "  // is on two lines",
+      "",
       "  // Tags: myTag",
+      "",
       "  expect:",
+      "",
       "  foo = 3.14",
       "  if (foo > x) {",
       "    // TODO: Implement result: x is greater than Pi",
@@ -265,22 +285,35 @@ describe 'Render as Groovy' do
       "    // TODO: Implement result: x is lower than Pi",
       "    // on two lines",
       "  }",
+      "",
+      "  throw new UnsupportedOperationException()",
       "}"].join("\n")
 
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
-      'def "compare to pi (uid: abcd1234)" {',
-      "  // This is a scenario which description ",
-      "  // is on two lines",
-      "  // Tags: myTag",
-      "  expect:",
-      "  foo = 3.14",
-      "  if (foo > x) {",
-      "    // TODO: Implement result: x is greater than Pi",
-      "  } else {",
-      "    // TODO: Implement result: x is lower than Pi",
-      "    // on two lines",
+      'import spock.lang.*',
+      '',
+      'class CompareToPiSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "compare to pi"() {',
+      "    // This is a scenario which description ",
+      "    // is on two lines",
+      "",
+      "    // Tags: myTag",
+      "",
+      "    expect:",
+      "",
+      "    foo = 3.14",
+      "    if (foo > x) {",
+      "      // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "      // TODO: Implement result: x is lower than Pi",
+      "      // on two lines",
+      "    }",
+      "",
+      "    throw new UnsupportedOperationException()",
       "  }",
       "}"].join("\n")
 
@@ -299,55 +332,66 @@ describe 'Render as Groovy' do
 
     @scenario_with_datatable_rendered = [
       'def "check login"() {',
+      '  // Ensure the login process',
+      '',
       '  expect:',
+      '',
       '  actionwords.fillLogin(login)',
       '  actionwords.fillPassword(password)',
+      '  actionwords.pressEnter()',
       '  actionwords.assertErrorIsDisplayed(expected)',
       '',
       '  where:',
-      '  login     | password   | expected',
-      '  "invalid" | "invalid"  | "Invalid username or password"',
-      '  "valid"   | "invalid"  | "Invalid username or password"',
-      '  "valid"   | "valid"    | null',
-      '}',
-      ''
+      '  login | password | expected',
+      '  "invalid" | "invalid" | "Invalid username or password"',
+      '  "valid" | "invalid" | "Invalid username or password"',
+      '  "valid" | "valid" | null',
+      '}'
     ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
       'def "check login"() {',
+      '  // Ensure the login process',
+      '',
       '  expect:',
+      '',
       '  actionwords.fillLogin(login)',
       '  actionwords.fillPassword(password)',
+      '  actionwords.pressEnter()',
       '  actionwords.assertErrorIsDisplayed(expected)',
       '',
       '  where:',
-      '  login     | password   | expected                       | hiptestUid',
-      '  "invalid" | "invalid"  | "Invalid username or password" | "a123"',
-      '  "valid"   | "invalid"  | "Invalid username or password" | "b456"',
-      '  "valid"   | "valid"    | null                           | "c789"',
-      '}',
-      ''
+      '  login | password | expected | hiptestUid',
+      '  "invalid" | "invalid" | "Invalid username or password" | "uid:a-123"',
+      '  "valid" | "invalid" | "Invalid username or password" | "uid:b-456"',
+      '  "valid" | "valid" | null | "uid:c-789"',
+      '}'
     ].join("\n")
 
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
-      'class ProjectSpec extends Specification {',
+      'import spock.lang.*',
+      '',
+      'class CheckLoginSpec extends Specification {',
       '  def actionwords = Actionwords.newInstance()',
       '',
       '  def "check login"() {',
+      '    // Ensure the login process',
+      '',
       '    expect:',
+      '',
       '    actionwords.fillLogin(login)',
       '    actionwords.fillPassword(password)',
+      '    actionwords.pressEnter()',
       '    actionwords.assertErrorIsDisplayed(expected)',
-      '  ',
+      '',
       '    where:',
-      '    login     | password   | expected',
-      '    "invalid" | "invalid"  | "Invalid username or password"',
-      '    "valid"   | "invalid"  | "Invalid username or password"',
-      '    "valid"   | "valid"    | null',
+      '    login | password | expected',
+      '    "invalid" | "invalid" | "Invalid username or password"',
+      '    "valid" | "invalid" | "Invalid username or password"',
+      '    "valid" | "valid" | null',
       '  }',
-      '}',
-      ''
+      '}'
     ].join("\n")
 
     # In Hiptest, correspond to two scenarios in a project called 'My project'
@@ -365,6 +409,7 @@ describe 'Render as Groovy' do
       '',
       '  def "second scenario"() {',
       '    expect:',
+      '',
       '    actionwords.myActionWord()',
       '  }',
       '}',
@@ -372,58 +417,77 @@ describe 'Render as Groovy' do
     ].join("\n")
 
     @tests_rendered = [
-      'class MyProjectSpec extends Specification {',
+      'import spock.lang.*',
+      '',
+      'class ProjectSpec extends Specification {',
       '  def actionwords = Actionwords.newInstance()',
       '',
       '  def "Login"() {',
-      '    // The description is on',
+      '    // The description is on ',
       '    // two lines',
-      '    // Tags: Tags: myTag myTag:somevalue',
+      '',
+      '    // Tags: myTag myTag:somevalue',
+      '',
+      '    expect:',
+      '',
       '    actionwords.visit("/login")',
       '    actionwords.fill("user@example.com")',
       '    actionwords.fill("s3cret")',
       '    actionwords.click(".login-form input[type=submit]")',
-      '    actionwordfs.check_url("/welcome")',
+      '    actionwords.checkUrl("/welcome")',
       '  }',
       '',
       '  def "Failed login"() {',
       '    // Tags: myTag:somevalue',
+      '',
+      '    expect:',
+      '',
       '    actionwords.visit("/login")',
       '    actionwords.fill("user@example.com")',
       '    actionwords.fill("notTh4tS3cret")',
       '    actionwords.click(".login-form input[type=submit]")',
-      '    actionwordfs.check_url("/login")',
+      '    actionwords.checkUrl("/login")',
       '  }',
-      '}',
-      ''
+      '}'
     ].join("\n")
 
     @first_test_rendered = [
-      'def "login"() {',
-      '  // The description is on',
+      'def "Login"() {',
+      '  // The description is on ',
       '  // two lines',
-      '  // Tags: Tags: myTag myTag:somevalue',
+      '',
+      '  // Tags: myTag myTag:somevalue',
+      '',
+      '  expect:',
+      '',
       '  actionwords.visit("/login")',
       '  actionwords.fill("user@example.com")',
       '  actionwords.fill("s3cret")',
       '  actionwords.click(".login-form input[type=submit]")',
-      '  actionwordfs.check_url("/welcome")',
-      '}'
+      '  actionwords.checkUrl("/welcome")',
+      '}',
+      ''
     ].join("\n")
 
     @first_test_rendered_for_single_file = [
-      'class MyTestProject extends Specification {',
+      'import spock.lang.*',
+      '',
+      'class LoginSpec extends Specification {',
       '  def actionwords = Actionwords.newInstance()',
       '',
-      '  def "login"() {',
-      '    // The description is on',
+      '  def "Login"() {',
+      '    // The description is on ',
       '    // two lines',
-      '    // Tags: Tags: myTag myTag:somevalue',
+      '',
+      '    // Tags: myTag myTag:somevalue',
+      '',
+      '    expect:',
+      '',
       '    actionwords.visit("/login")',
       '    actionwords.fill("user@example.com")',
       '    actionwords.fill("s3cret")',
       '    actionwords.click(".login-form input[type=submit]")',
-      '    actionwordfs.check_url("/welcome")',
+      '    actionwords.checkUrl("/welcome")',
       '  }',
       '}'
     ].join("\n")
@@ -435,15 +499,83 @@ describe 'Render as Groovy' do
     #   call then 'page "url" should be opened'(url='/reset-password')
     # end
     @bdd_scenario_rendered = [
-      'def "reset password"() {',
+      'def "Reset password"() {',
+      '',
       '  given:',
       '  actionwords.pageUrlIsOpened("/login")',
       '  when:',
       '  actionwords.iClickOnLink("Reset password")',
       '  then:',
       '  actionwords.pageUrlShouldBeOpened("/reset-password")',
+      '}'
+    ].join("\n")
+
+    @scenarios_rendered = [
+      'import spock.lang.*',
+      '',
+      'class ProjectSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "first scenario"() {',
+      '  }',
+      '  def "second scenario"() {',
+      '    expect:',
+      '',
+      '    actionwords.myActionWord()',
+      '  }',
+      '}'
+    ].join("\n")
+
+    @root_folder_rendered = [
+      'import spock.lang.*',
+      '',
+      'class MyRootFolderSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '',
+      '',
+      '  def "One root scenario"() {',
+      '  }',
+      '  def "Another root scenario"() {',
+      '  }',
       '}',
-      ''
+    ].join("\n")
+
+    @grand_child_folder_rendered = [
+      'import spock.lang.*',
+      '',
+      'class AGrandchildFolderSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '}'
+    ].join("\n")
+
+    @grand_child_scenario_rendered_for_single_file = [
+      'import spock.lang.*',
+      '',
+      'class OneGrandchildScenarioSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '  def "One grand\'child scenario"() {',
+      '  }',
+      '}'
+    ].join("\n")
+
+    @second_grand_child_folder_rendered = [
+      'import spock.lang.*',
+      '',
+      'class ASecondGrandchildFolderSpec extends Specification {',
+      '  def actionwords = Actionwords.newInstance()',
+      '',
+      '',
+      '  def setup() {',
+      '    actionwords.visit("/login")',
+      '    actionwords.fill("user@example.com")',
+      '    actionwords.fill("notTh4tS3cret")}',
+      '',
+      '',
+      '  def "One grand\'child scenario"() {',
+      '  }',
+      '}'
     ].join("\n")
   end
 

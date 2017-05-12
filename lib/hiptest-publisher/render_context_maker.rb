@@ -30,14 +30,15 @@ module Hiptest
         :has_tags? => !folder.children[:tags].empty?,
         :has_step? => has_step?(folder),
         :is_empty? => folder.children[:body].empty?,
-        :datatables_present? => datatable_present?(folder),
+        :datatables_present? => datatable_present?(folder)
       )
     end
 
     def walk_scenario(scenario)
       walk_item(scenario).merge(walk_relative_item(scenario)).merge(
         :project_name => scenario.parent.parent.children[:name],
-        :has_datasets? => has_datasets?(scenario)
+        :has_datasets? => has_datasets?(scenario),
+        :has_annotations? => has_annotations?(scenario)
       )
     end
 
@@ -127,6 +128,13 @@ module Hiptest
     def has_step?(item)
       item.each_sub_nodes(deep: true) do |node|
         return true if node.is_a?(Hiptest::Nodes::Step)
+      end
+      false
+    end
+
+    def has_annotations?(scenario)
+      scenario.each_sub_nodes(deep: true) do |node|
+        return true if node.is_a?(Hiptest::Nodes::Call) && !node.children[:annotation].nil?
       end
       false
     end

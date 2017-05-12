@@ -1,7 +1,7 @@
 import spock.lang.*
 
 class {{{ clear_extension context.filename }}} extends Specification {{#curly}}{{#indent}}
-def actionwords = Actionwords.newInstance()
+def {{{ context.call_prefix }}} = Actionwords.newInstance()
 
 {{#unless is_empty?}}
 def setup() {{#curly}}{{#indent}}
@@ -12,4 +12,5 @@ def setup() {{#curly}}{{#indent}}
 
 {{#each rendered_children.scenarios}}{{{this}}}
 {{/each}}
-{{/indent}}{{/curly}}
+{{/indent}}
+{{/curly}}
