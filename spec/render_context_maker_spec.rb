@@ -105,7 +105,8 @@ describe Hiptest::RenderContextMaker do
         :needs_to_import_actionwords?,
         :relative_package,
         :project_name,
-        :has_datasets?
+        :has_datasets?,
+        :has_annotations?
       ])
 
       expect(subject.walk_scenario(node)[:project_name]).to eq('A project')
@@ -137,6 +138,18 @@ describe Hiptest::RenderContextMaker do
       expect(subject.walk_scenario(node)[:needs_to_import_actionwords?]).to be false
       expect(subject.walk_scenario(node)[:relative_package]).to eq("")
     end
+
+    it 'sets has_annotations? to true if at least one call has a Gherkin annotation' do
+      allow(node_rendering_context).to receive(:relative_path).and_return("")
+
+      expect(subject.walk_scenario(node)[:has_annotations?]).to be false
+
+      node.children[:body] << Hiptest::Nodes::Call.new('my action word')
+      expect(subject.walk_scenario(node)[:has_annotations?]).to be false
+
+      node.children[:body] << Hiptest::Nodes::Call.new('my action word', [], 'given')
+      expect(subject.walk_scenario(node)[:has_annotations?]).to be true
+    end
   end
 
   context 'walk_scenarios' do
@@ -161,19 +174,22 @@ describe Hiptest::RenderContextMaker do
 
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => false,
-        :has_annotation? => false
+        :has_annotation? => false,
+        :use_main_annotation? => false
       })
 
       node.children[:arguments] << 'x'
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => true,
-        :has_annotation? => false
+        :has_annotation? => false,
+        :use_main_annotation? => false
       })
 
       node.children[:annotation] = 'Given'
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => true,
-        :has_annotation? => true
+        :has_annotation? => true,
+        :use_main_annotation? => true
       })
     end
   end
