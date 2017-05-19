@@ -180,7 +180,8 @@ class OptionsParser
       'PHP' => ['PHPUnit'],
       'SpecFlow' => [''],
       'Behave' => [''],
-      'Behat' => ['']
+      'Behat' => [''],
+      'Groovy' => ['']
     }
   end
 
