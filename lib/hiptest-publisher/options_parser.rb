@@ -181,7 +181,7 @@ class OptionsParser
       'SpecFlow' => [''],
       'Behave' => [''],
       'Behat' => [''],
-      'Groovy' => ['']
+      'Groovy' => ['Spock']
     }
   end
 
