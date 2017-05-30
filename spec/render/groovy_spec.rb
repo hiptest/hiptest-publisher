@@ -270,7 +270,7 @@ describe 'Render as Groovy' do
       "}"].join("\n")
 
     @full_scenario_with_uid_rendered = [
-      'def "compare to pi (uid: abcd-1234)"() {',
+      'def "compare to pi (uid:abcd-1234)"() {',
       "  // This is a scenario which description ",
       "  // is on two lines",
       "",
