@@ -899,6 +899,44 @@ shared_examples "a BDD renderer" do
       ])
   }
 
+  let(:scenario_using_variables_in_step_datatables) {
+    make_scenario("Check users",
+      folder: gherkin_special_arguments_folder,
+      parameters: [
+        make_parameter("username")
+      ],
+      body: [
+        make_call(
+          "I login as",
+          annotation: "when",
+          arguments: [
+            make_argument('__datatable', Hiptest::Nodes::Template.new([
+              Hiptest::Nodes::StringLiteral.new("| "),
+              Hiptest::Nodes::Variable.new('username'),
+              Hiptest::Nodes::StringLiteral.new(" |"),
+            ]))
+          ]
+        ),
+        make_call(
+          "I am logged in as",
+          annotation: "then",
+          arguments: [
+            make_argument('__free_text', Hiptest::Nodes::Template.new([
+              Hiptest::Nodes::StringLiteral.new(" -: "),
+              Hiptest::Nodes::Variable.new('username'),
+              Hiptest::Nodes::StringLiteral.new(" :- "),
+            ]))
+          ]
+        ),
+      ],
+      datatable: Hiptest::Nodes::Datatable.new([
+        Hiptest::Nodes::Dataset.new("First user", [
+          make_argument("username", template_of_literals('user@example.com'))
+        ])
+      ])
+    )
+  }
+
   let(:scenario_inheriting_tags) {
     make_scenario('Inherit tags',
       folder: subsubreg_folder,
@@ -919,6 +957,7 @@ shared_examples "a BDD renderer" do
         scenario_with_capital_parameters,
         scenario_with_freetext_argument,
         scenario_with_datatable_argument,
+        scenario_using_variables_in_step_datatables,
         scenario_with_incomplete_datatable,
         scenario_calling_untrimed_actionword,
         scenario_calling_aw_with_incorrect_order,
@@ -1152,6 +1191,28 @@ shared_examples "a BDD renderer" do
             '    | bob   | plopi    |',
             '    | alice | dou      |',
             '  Then stuff happens',
+            ''
+          ].join("\n"))
+        end
+      end
+
+      context 'Using variables set in the scenario datatable' do
+        let(:scenario) {scenario_using_variables_in_step_datatables}
+
+        it "is rendered using the <> notation" do
+          expect(rendered).to eq([
+            '',
+            'Scenario Outline: Check users',
+            '  When I login as',
+            '    | <username> |',
+            '  Then I am logged in as',
+            '    """',
+            '     -: <username> :- ',
+            '    """',
+            '',
+            '  Examples:',
+            '    | username | hiptest-uid |',
+            '    | user@example.com |  |',
             ''
           ].join("\n"))
         end
