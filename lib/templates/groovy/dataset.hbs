@@ -1,1 +1,5 @@
-{{{ join rendered_children.arguments ' | ' }}}{{#if context.uids}} | "uid:{{{rendered_children.uid}}}"{{/if}}
+def "{{{ escape_double_quotes scenario_name }}} - {{{ escape_double_quotes rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{  rendered_children.uid}}}){{/if}}"() {{#curly}}{{#indent}}
+expect:
+{{{ camelize_lower scenario_name }}}({{{ join rendered_children.arguments ', '}}})
+{{/indent}}
+{{/curly}}

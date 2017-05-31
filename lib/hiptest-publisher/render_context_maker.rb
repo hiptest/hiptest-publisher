@@ -83,7 +83,9 @@ module Hiptest
       {
         :has_arguments? => !c.children[:arguments].empty?,
         :has_annotation? => !c.children[:annotation].nil?,
-        :use_main_annotation? => !(c.children[:annotation].nil? || ['and', 'but'].include?(c.children[:annotation]))
+        :use_main_annotation? => !(c.children[:annotation].nil? || ['and', 'but'].include?(c.children[:annotation])),
+        :in_actionword? => c.parent.is_a?(Hiptest::Nodes::Actionword),
+        :in_datatabled_scenario? => c.parent.is_a?(Hiptest::Nodes::Scenario) && has_datasets?(c.parent)
       }
     end
 

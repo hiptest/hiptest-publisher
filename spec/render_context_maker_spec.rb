@@ -169,28 +169,53 @@ describe Hiptest::RenderContextMaker do
   end
 
   context 'walk_call' do
-    it 'tells if there is arguments' do
-      node = Hiptest::Nodes::Call.new('my_action_word')
+    let(:node) {node = Hiptest::Nodes::Call.new('my_action_word')}
 
+    it 'tells if there is arguments' do
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => false,
         :has_annotation? => false,
-        :use_main_annotation? => false
+        :use_main_annotation? => false,
+        :in_actionword? => false,
+        :in_datatabled_scenario? => false
       })
 
       node.children[:arguments] << 'x'
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => true,
         :has_annotation? => false,
-        :use_main_annotation? => false
+        :use_main_annotation? => false,
+        :in_actionword? => false,
+        :in_datatabled_scenario? => false
       })
 
       node.children[:annotation] = 'Given'
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => true,
         :has_annotation? => true,
-        :use_main_annotation? => true
+        :use_main_annotation? => true,
+        :in_actionword? => false,
+        :in_datatabled_scenario? => false
       })
+    end
+
+    it ':in_actionword? tells if the parent is an action word' do
+      expect(subject.walk_call(node)[:in_actionword?]).to be false
+
+      node.parent = Hiptest::Nodes::Actionword.new('Another action word')
+      expect(subject.walk_call(node)[:in_actionword?]).to be true
+    end
+
+    it ':in_datatabled_scenario? tells if the parent is a scenario with a datatable' do
+      expect(subject.walk_call(node)[:in_datatabled_scenario?]).to be false
+
+      node.parent = Hiptest::Nodes::Scenario.new('My scenario')
+      expect(subject.walk_call(node)[:in_datatabled_scenario?]).to be false
+
+      node.parent.children[:datatable] = Hiptest::Nodes::Datatable.new()
+      node.parent.children[:datatable].children[:datasets] << 'Anything'
+
+      expect(subject.walk_call(node)[:in_datatabled_scenario?]).to be true
     end
   end
 

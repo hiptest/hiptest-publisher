@@ -1,8 +1,8 @@
-def "{{{ escape_double_quotes rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{  rendered_children.uid}}}){{/if}}"() {{#curly}}{{#indent}}{{> desc}}{{#unless has_annotations?}}{{#unless is_empty?}}
-expect:{{/unless}}{{/unless}}
-{{> steps}}{{#if has_datasets?}}
-where:
-{{ join rendered_children.parameters ' | ' }}{{#if context.uids}} | hiptestUid{{/if}}
-{{rendered_children.datatable}}
-{{/if}}{{/indent}}
+{{#if has_datasets?}}def {{{ camelize_lower rendered_children.name }}}({{ join rendered_children.parameters ', ' }}) {{#curly}}{{#indent}}{{> desc}}
+{{> steps}}{{/indent}}
 {{/curly}}
+
+{{rendered_children.datatable}}{{else}}def "{{{ escape_double_quotes rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{  rendered_children.uid}}}){{/if}}"() {{#curly}}{{#indent}}{{> desc}}{{#unless has_annotations?}}{{#unless is_empty?}}
+expect:{{/unless}}{{/unless}}
+{{> steps}}{{/indent}}
+{{/curly}}{{/if}}
