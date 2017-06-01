@@ -81,5 +81,15 @@ describe 'Behat rendering' do
         '?>'
       ].join("\n")
     }
+
+    let(:rendered_free_texted_actionword) {[
+      'public function theFollowingUsersAreAvailable(PyStringNode $__free_text) {',
+      '',
+      '}'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'public function theFollowingUsersAreAvailable(TableNode $__datatable) {',
+      '',
+      '}'].join("\n")}
   end
 end

@@ -1518,4 +1518,43 @@ shared_examples "a BDD renderer" do
       expect(rendered.downcase).not_to include('usused')
     end
   end
+
+  context 'Action words' do
+    let(:options) {
+      context_for(
+        only: "actionwords",
+        language: language,
+        framework: framework
+      )
+    }
+    context 'the __datatable parameter' do
+      let(:node_to_render) {
+        make_actionword(
+          "the following users are available",
+          parameters: [
+            make_parameter("__datatable", default: literal(""))
+          ]
+        )
+      }
+
+      it 'is correctly typed (when needed)' do
+        expect(rendered).to eq(rendered_datatabled_actionword)
+      end
+    end
+
+    context 'the __free_text parameter' do
+      let(:node_to_render) {
+        make_actionword(
+          "the following users are available",
+          parameters: [
+            make_parameter("__free_text", default: literal(""))
+          ]
+        )
+      }
+
+      it 'is correctly typed (when needed)' do
+        expect(rendered).to eq(rendered_free_texted_actionword)
+      end
+    end
+  end
 end

@@ -114,5 +114,15 @@ describe 'Specflow rendering' do
         '}'
       ].join("\n")
     }
+
+    let(:rendered_free_texted_actionword) {[
+      'public void TheFollowingUsersAreAvailable(string freeText) {',
+      '',
+      '}'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'public void TheFollowingUsersAreAvailable(Table datatable) {',
+      '',
+      '}'].join("\n")}
   end
 end

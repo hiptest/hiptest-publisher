@@ -45,6 +45,16 @@ describe 'Cucumber rendering' do
         ""
       ].join("\n")
     }
+
+    let(:rendered_free_texted_actionword) {[
+      'def the_following_users_are_available(__free_text = \'\')',
+      '',
+      'end'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'def the_following_users_are_available(__datatable = \'\')',
+      '',
+      'end'].join("\n")}
   end
 end
 
@@ -52,6 +62,16 @@ describe 'Cucumber/Java rendering' do
   it_behaves_like 'a BDD renderer' do
     let(:language) {'cucumber'}
     let(:framework) {'java'}
+
+    let(:rendered_free_texted_actionword) {[
+      'public void theFollowingUsersAreAvailable(String freeText) {',
+      '',
+      '}'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'public void theFollowingUsersAreAvailable(DataTable datatable) {',
+      '',
+      '}'].join("\n")}
 
     let(:rendered_actionwords) {
       [
@@ -176,6 +196,16 @@ describe 'Cucumber/Javascript rendering' do
   it_behaves_like 'a BDD renderer' do
     let(:language) {'cucumber'}
     let(:framework) {'javascript'}
+
+    let(:rendered_free_texted_actionword) {[
+      'theFollowingUsersAreAvailable: function (__free_text) {',
+      '',
+      '}'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'theFollowingUsersAreAvailable: function (__datatable) {',
+      '',
+      '}'].join("\n")}
 
     let(:rendered_actionwords) {
       [

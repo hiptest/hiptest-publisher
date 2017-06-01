@@ -63,6 +63,16 @@ describe 'Behave rendering' do
         ''
       ].join("\n")
     }
+
+    let(:rendered_free_texted_actionword) {[
+      'def the_following_users_are_available(self, free_text = \'\'):',
+      '    pass',
+      ''].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'def the_following_users_are_available(self, datatable = \'\'):',
+      '    pass',
+      ''].join("\n")}
   end
 
   it 'strips last colon of an actionword name' do
