@@ -124,5 +124,7 @@ describe 'Specflow rendering' do
       'public void TheFollowingUsersAreAvailable(Table datatable) {',
       '',
       '}'].join("\n")}
+
+    let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 end

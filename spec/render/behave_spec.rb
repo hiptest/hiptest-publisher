@@ -73,6 +73,8 @@ describe 'Behave rendering' do
       'def the_following_users_are_available(self, datatable = \'\'):',
       '    pass',
       ''].join("\n")}
+
+    let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 
   it 'strips last colon of an actionword name' do

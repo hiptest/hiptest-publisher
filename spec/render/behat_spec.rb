@@ -91,5 +91,7 @@ describe 'Behat rendering' do
       'public function theFollowingUsersAreAvailable(TableNode $__datatable) {',
       '',
       '}'].join("\n")}
+
+    let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 end

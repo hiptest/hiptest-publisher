@@ -55,6 +55,8 @@ describe 'Cucumber rendering' do
       'def the_following_users_are_available(__datatable = \'\')',
       '',
       'end'].join("\n")}
+
+    let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 end
 
@@ -126,6 +128,8 @@ describe 'Cucumber/Java rendering' do
         '}'
       ].join("\n")
     }
+
+    let(:rendered_empty_scenario) { "" }
   end
 
   context "special cases in StepDefinitions.java file" do
@@ -263,5 +267,7 @@ describe 'Cucumber/Javascript rendering' do
         ''
       ].join("\n")
     }
+
+    let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 end

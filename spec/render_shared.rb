@@ -738,6 +738,13 @@ shared_examples "a BDD renderer" do
       ])
   }
 
+  let(:empty_scenario) {
+    make_scenario('Empty Scenario',
+      folder: root_folder,
+      body: [],
+    )
+  }
+
   let(:create_secondary_colors_scenario) {
     make_scenario("Create secondary colors",
       description: "This scenario has a datatable and a description",
@@ -954,6 +961,7 @@ shared_examples "a BDD renderer" do
         create_secondary_colors_scenario,
         unannotated_create_orange_scenario,
         create_purple_scenario,
+        empty_scenario,
         scenario_with_capital_parameters,
         scenario_with_freetext_argument,
         scenario_with_datatable_argument,
@@ -1216,6 +1224,17 @@ shared_examples "a BDD renderer" do
             ''
           ].join("\n"))
         end
+      end
+    end
+
+    context 'empty' do
+      let(:scenario) { empty_scenario }
+
+      it 'generates Scenario section depending on the language' do
+        if !defined?(rendered_empty_scenario)
+          fail "You must define how an empty scenario should render in #{language}/#{framework} by defining :rendered_empty_scenario"
+        end
+        expect(rendered).to eq(rendered_empty_scenario)
       end
     end
 
