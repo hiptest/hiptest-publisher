@@ -1,6 +1,7 @@
 require 'optparse'
 require 'parseconfig'
 require 'ostruct'
+require 'digest/md5'
 
 require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/utils'
@@ -398,6 +399,8 @@ class TemplateFinder
 end
 
 class LanguageGroupConfig
+  @@MAX_FILE_SIZE = 255
+
   def initialize(user_params, language_group_params = nil)
     @output_directory = user_params.output_directory || ""
     @filename_pattern = user_params.filename_pattern
@@ -542,10 +545,19 @@ class LanguageGroupConfig
 
   def output_filename(node)
     if can_name_files?
-      name = normalized_filename(node.children[:name] || '')
-      filename_pattern.gsub('%s', name)
+      name = shorten_filename(normalized_filename(node.children[:name] || ''))
+      filename = filename_pattern.gsub('%s', name)
     else
       self[:filename]
+    end
+  end
+
+  def shorten_filename(name)
+    mandatory_characters = filename_pattern.gsub('%s', '').length
+    if name.length + mandatory_characters > @@MAX_FILE_SIZE
+      "#{name[0, (@@MAX_FILE_SIZE - 32 - mandatory_characters)]}#{Digest::MD5.hexdigest(name)}"
+    else
+      name
     end
   end
 

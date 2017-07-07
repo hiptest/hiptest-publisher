@@ -271,3 +271,25 @@ describe LanguageConfigParser do
     end
   end
 end
+
+describe LanguageGroupConfig do
+  context "shorten_filename" do
+    let(:options) { CliOptions.new(split_scenarios: true, filename_pattern: "%s_spec.rb").tap {|options| options.normalize! } }
+    let(:config) {LanguageGroupConfig.new(options)}
+
+    it "truncates file name when its length exceeds 255 character" do
+      filename = 'Hiptest_is_a_collaborative_testing_platform_in_the_cloud_that_allows_the_software_delivery_team_to_codesign_acceptance_tests_It_provides_a_realtime_environment_for_designing_executing_and_refactoring_tests_Ultimately_Hiptest_enables_to automate_tests_that_become_the_living_specification_of_your_Apps'
+      shorten_filename = config.shorten_filename(filename)
+      filename_md5 = Digest::MD5.hexdigest(filename)
+
+      expect(shorten_filename.length).to eq(247) # 255 - 8 (the length of "_spec.rb")
+      expect(shorten_filename).to eq("Hiptest_is_a_collaborative_testing_platform_in_the_cloud_that_allows_the_software_delivery_team_to_codesign_acceptance_tests_It_provides_a_realtime_environment_for_designing_executing_and_refactoring_tests_Ultimatel#{filename_md5}")
+    end
+
+    it "maintains file name when its length is lower than 255 character" do
+      shorten_filename = config.shorten_filename('My_Scenario')
+
+      expect(shorten_filename).to eq("My_Scenario")
+    end
+  end
+end
