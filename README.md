@@ -200,7 +200,7 @@ alias hiptest-publisher='bundle exec ruby -I lib bin/hiptest-publisher'
 Adding support for other languages and framework
 ------------------------------------------------
 
-See the [CONTRIBUTING](https://github.com/hiptest/hiptest-publisher/blob/master/docs/CONTRIBUTING.md>) help page for more information.
+See the [CONTRIBUTING](https://github.com/hiptest/hiptest-publisher/blob/master/docs/CONTRIBUTING.md) help page for more information.
 
 Contributors
 ------------
