@@ -29,6 +29,7 @@ Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...        
 
 {{/if}}{{/each}}{{else}}
 {{#each rendered_children.splitted_scenarios}}
-{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
+{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}{{#if this.tags}}
+[Tags]{{tab}}{{{ join this.tags '\t'}}}{{/if}}
 {{join this.body '\n'}}{{/indent}}
 {{/each}}{{/if}}

@@ -627,6 +627,7 @@ describe 'Render as Robot framework' do
           "*** Test Cases ***",
           "",
           "scenario without datatable",
+          "\t[Tags]\tfirstTag\tpriority:1",
           "\t# TODO: Implement action: Do something",
           "",
           "second scenario without datatable",
