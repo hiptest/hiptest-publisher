@@ -42,6 +42,7 @@ GEM
       hashie (>= 3.4)
       mime-types (>= 1.16, < 3.0)
       oauth2 (~> 1.0)
+    hashdiff (0.3.4)
     hashie (3.5.5)
     highline (1.7.8)
     i18n (0.7.0)
@@ -101,9 +102,10 @@ GEM
     simplecov-html (0.10.0)
     slop (3.6.0)
     thread_safe (0.3.6)
-    webmock (1.21.0)
+    webmock (3.0.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
+      hashdiff
 
 PLATFORMS
   ruby

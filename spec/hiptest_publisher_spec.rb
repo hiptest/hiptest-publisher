@@ -443,8 +443,10 @@ describe Hiptest::Publisher do
       publisher.run
 
       expect(a_request(:post, "https://hiptest.net/import_test_results/123/tap").
-             with(:body => a_string_matching(/Content-Disposition: form-data;.+ filename="result.tap"/),
-                  :headers => {'Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost'})
+        with { |req|
+          expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.tap"/)
+          expect(req.headers).to include('Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost')
+        }
       ).to have_been_made
       expect(STDOUT).to have_printed("Posting #{result_file} to https://hiptest.net")
     end
@@ -458,10 +460,12 @@ describe Hiptest::Publisher do
       publisher.run
 
       expect(a_request(:post, "https://hiptest.net/import_test_results/123/tap").
-        with(:body => (a_string_matching(/Content-Disposition: form-data;.+ filename="result1.tap"/).
-                   and a_string_matching(/Content-Disposition: form-data;.+ filename="result2.tap"/)),
-            :headers => {'Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost'})
-        ).to have_been_made
+        with { |req|
+          expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result1.tap"/).
+                          and match(/Content-Disposition: form-data;.+ filename="result2.tap"/)
+          expect(req.headers).to include('Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost')
+        }
+      ).to have_been_made
     end
 
     it "displays number of passed tests" do
