@@ -17,6 +17,7 @@ module Hiptest
 
       def process(project)
         gather_scenarios_argument_types(project)
+        gather_actionwords_default_parameters_types(project)
 
         # To have the most accurate type, the closest calls must be computed
         # first, and deepest calls must be computed last (because they  depend
@@ -37,6 +38,17 @@ module Hiptest
         end
       end
 
+      def gather_actionwords_default_parameters_types(project)
+        project.children[:actionwords].children[:actionwords].each do |actionword|
+          @call_types.add_callable_item(actionword.children[:name], Actionword)
+          actionword.each_sub_nodes(Parameter) do |parameter|
+            default = parameter.children[:default]
+            next if default.nil?
+            @call_types.add_argument_type(parameter.children[:name], get_type(default))
+          end
+        end
+      end
+
       def gather_call_argument_types(node)
         node.each_sub_nodes(Call) do |call|
           @call_types.add_callable_item(call.children[:actionword], Actionword)
@@ -52,15 +64,13 @@ module Hiptest
 
       def add_arguments_from(node, context = nil)
         node.each_sub_nodes(Argument) do |argument|
-          @call_types.add_argument_type(argument.children[:name], get_type(argument, context))
+          @call_types.add_argument_type(argument.children[:name], get_type(argument.children[:value], context))
         end
       end
 
       private
 
-      def get_type(node, context = nil)
-        value = node.children[:value]
-
+      def get_type(value, context = nil)
         case value
           when StringLiteral, Template then :String
           when NumericLiteral then value.children[:value].include?(".") ? :float : :int

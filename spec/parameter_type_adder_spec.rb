@@ -5,12 +5,49 @@ require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/parameter_type_adder'
 
 describe Hiptest::Nodes do
-  context 'ParameterTypeAdder' do
+  describe Hiptest::Nodes::ParameterTypeAdder do
+
+    describe '.add' do
+      it 'adds parameter type information to all parameters of all actionwords' do
+        called_aw = Hiptest::Nodes::Actionword.new('called_aw', [], [
+          Hiptest::Nodes::Parameter.new('x', Hiptest::Nodes::NumericLiteral.new('3')),
+          Hiptest::Nodes::Parameter.new('y', Hiptest::Nodes::NumericLiteral.new('3')),
+          Hiptest::Nodes::Parameter.new('z'),
+        ])
+        not_called_aw = Hiptest::Nodes::Actionword.new('not_called_aw', [], [
+          Hiptest::Nodes::Parameter.new('a', Hiptest::Nodes::NumericLiteral.new('3')),
+          Hiptest::Nodes::Parameter.new('b'),
+        ])
+
+        sc_calling_aw = Hiptest::Nodes::Scenario.new('sc_calling_aw', '', [], [], [
+            Hiptest::Nodes::Call.new('called_aw', [Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('My value'))])
+        ])
+
+        actionwords = Hiptest::Nodes::Actionwords.new([called_aw, not_called_aw])
+        scenarios = Hiptest::Nodes::Scenarios.new([sc_calling_aw])
+        project = Hiptest::Nodes::Project.new('My project', '', nil, scenarios, actionwords)
+
+        Hiptest::Nodes::ParameterTypeAdder.add(project)
+
+        expect(called_aw.children[:parameters][0].children).to include(name: 'x', type: :String)
+        expect(called_aw.children[:parameters][1].children).to include(name: 'y', type: :int)
+        expect(called_aw.children[:parameters][2].children).to include(name: 'z', type: :String)
+
+        expect(not_called_aw.children[:parameters][0].children).to include(name: 'a', type: :int)
+        expect(not_called_aw.children[:parameters][1].children).to include(name: 'b', type: :String)
+      end
+    end
 
     context 'Actionword parameter typing' do
       it 'gives string type if called nothing' do
         parameter = type_adding(Hiptest::Nodes::Parameter.new('x'))
         expect(parameter.children[:type]).to eq(:String)
+      end
+
+      it 'gives default value type if called nothing' do
+        default = Hiptest::Nodes::NumericLiteral.new('3')
+        parameter = type_adding(Hiptest::Nodes::Parameter.new('x', default))
+        expect(parameter.children[:type]).to eq(:int)
       end
 
       it 'gives integer type if called with an integer value' do
@@ -379,11 +416,11 @@ def type_adding(parameter, *called_values)
     Hiptest::Nodes::Call.new('aw', [Hiptest::Nodes::Argument.new('x', called_value)])
   }
 
-  actionwords= Hiptest::Nodes::Actionwords.new([
+  actionwords = Hiptest::Nodes::Actionwords.new([
     Hiptest::Nodes::Actionword.new('aw', [], [parameter], [])
   ])
 
-  scenarios= Hiptest::Nodes::Scenarios.new([
+  scenarios = Hiptest::Nodes::Scenarios.new([
     Hiptest::Nodes::Scenario.new('many calls scenarios', '', [], [], calls)
   ])
   project = Hiptest::Nodes::Project.new('My project', '', nil, scenarios, actionwords)
