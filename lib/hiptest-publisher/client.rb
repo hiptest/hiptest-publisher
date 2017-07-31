@@ -36,7 +36,9 @@ module Hiptest
         filter_on_tags: 'filter_tags'
       }
 
-      options = mapping.map do |key, filter_name|
+      options = []
+
+      mapping.each do |key, filter_name|
         value = @cli_options.send(key)
         next if value.nil? || value.empty?
 
@@ -44,9 +46,14 @@ module Hiptest
           value = value.split(',').map(&:strip).join(',')
         end
 
-        "#{filter_name}=#{value}"
-      end.compact
-      return options.empty? ? '' : "?#{options.first}"
+        options << "#{filter_name}=#{value}"
+        if [:filter_on_folder_ids, :filter_on_folder_name].include?(key) && @cli_options.send(:not_recursive)
+          options << "not_recursive=true"
+        end
+      end
+
+
+      return options.empty? ? '' : "?#{options.join('&')}"
     end
 
     def test_run_export_filter

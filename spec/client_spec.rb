@@ -90,7 +90,14 @@ describe Hiptest::Client do
 
         it 'creates a url specifying the filter' do
           expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_ids=7,8,10")
+        end
 
+        context '--not-recursive' do
+          let(:args) {['--token', '123', '--filter-on-folder-ids', '7, 8, 10', '--not-recursive']}
+
+          it 'allows enabling the not_recursive option' do
+            expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_ids=7,8,10&not_recursive=true")
+          end
         end
       end
 
@@ -99,6 +106,14 @@ describe Hiptest::Client do
 
         it 'creates a url specifying the filter' do
           expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My super folder")
+        end
+
+        context '--not-recursive' do
+          let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder', '--not-recursive']}
+
+          it 'allows enabling the not_recursive option' do
+            expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My super folder&not_recursive=true")
+          end
         end
       end
 
