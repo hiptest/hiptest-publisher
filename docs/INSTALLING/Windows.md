@@ -13,11 +13,40 @@ Now run in the prompt: ``gem install hiptest-publisher`` and you'll have hiptest
 Troubleshooting
 ---------------
 
+### Error: 'hiptest-publisher' is not recognized as an internal or external command, operable program or batch file.
+
+**Symptom**
+
+During a Jenkins build, you have a Windows batch command execution invoking hiptest-publisher, but it fails and displays the following error in Jenkins build log:
+
+```
+'hiptest-publisher' is not recognized as an internal or external command, operable program or batch file.
+```
+
+Meanwhile, the command works well when you try it in a command prompt.
+
+**Reason**
+
+The PATH environment variable specifies the directories in which executable programs are located on the machine that can be started without knowing and typing the whole path to the file on the command line.
+
+Windows uses two distinct PATH: one for the user and another one for the system. The problem is that the user PATH contains the path to ruby executables, like `C:\Ruby24-x64\bin` and that's why you can run hiptest-publisher in a command prompt, but the system PATH does not. As Jenkins uses the system PATH, it can't run ruby executables.
+
+**Fix**
+
+Two possibilities to fix this one:
+
+1. First possibility: in Windows, edit `Path` by opening Control Panel > System > Advanced > Environment Variables. From there, search for `Path` variable in the "System variables" section. Ensure it contains the directory where you installed Ruby, like `C:\Ruby24-x64\bin`. Please note that directories are separated with semicolons `;`.
+
+2. Second possibility: in Jenkins, modify `Path` by going to Manage Jenkins > Global Properties > Environment variables. Add another entry with the following information:
+
+  * name: `Path`
+  * value: `%Path%;C:\Ruby24-x64\bin`
+
 ### Error: Unable to download data from https://rubygems.org/
 
 **Symptom**
 
-When running `gem install hiptest-publisher`, I have the following error:
+When running `gem install hiptest-publisher`, you have the following error:
 
 ```
 C:\Ruby23-x64>gem install hiptest-publisher
