@@ -202,6 +202,29 @@ describe CliOptions do
 end
 
 
+describe NodeRenderingContext do
+  subject(:node_rendering_context) do
+    NodeRenderingContext.new(
+      path: '/output/directory/features/cart/payment/pay_by_credit_card.feature',
+      relative_path: 'cart/payment/pay_by_credit_card.feature',
+      # other options not detailed here...
+    )
+  end
+
+  describe '#folder' do
+    it 'returns the absolute folder to the file' do
+      expect(node_rendering_context.folder).to eq('/output/directory/features/cart/payment')
+    end
+  end
+
+  describe '#relative_folder' do
+    it 'returns the folder to the file relative to the output directory' do
+      expect(node_rendering_context.relative_folder).to eq('cart/payment')
+    end
+  end
+end
+
+
 describe LanguageConfigParser do
 
   let(:options) { CliOptions.new(language: "ruby").tap {|options| options.normalize! } }
