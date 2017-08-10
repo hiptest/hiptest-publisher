@@ -317,6 +317,14 @@ class NodeRenderingContext
   def filename
     File.basename(@properties.path)
   end
+
+  def folder
+    File.dirname(@properties.path)
+  end
+
+  def relative_folder
+    File.dirname(@properties.relative_path)
+  end
 end
 
 
