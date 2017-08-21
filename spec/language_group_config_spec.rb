@@ -852,6 +852,17 @@ describe LanguageGroupConfig do
         # using node names to limit output when test fails
         expect(node_names(nodes)).not_to include(*node_names([root_folder, trade_folder, loan_folder]))
       end
+
+      it "with Gherkin language, export folder nodes without any scenarios if --empty-folders is specified" do
+        language_group_config = language_group_config_for(
+          only: "features",
+          language: language,
+          empty_folders: true
+        )
+        nodes = language_group_config.nodes(project)
+        # using node names to limit output when test fails
+        expect(node_names(nodes)).to include(*node_names([root_folder, trade_folder, loan_folder, sell_folder, buy_folder]))
+      end
     end
 
     ['cucumber', 'specflow', 'behave', 'behat'].each do |language|

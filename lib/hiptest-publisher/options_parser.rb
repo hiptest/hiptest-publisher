@@ -210,6 +210,7 @@ class OptionsParser
       Option.new(nil, 'show-actionwords-signature-changed', false, nil, "Output signatures of action words for which signature changed", :aw_signature_changed),
       Option.new(nil, 'show-actionwords-definition-changed', false, nil, "Output action words for which definition changed", :aw_definition_changed),
       Option.new(nil, 'with-folders', false, nil, "Use folders hierarchy to export files in respective directories", :with_folders),
+      Option.new(nil, 'empty-folders', false, nil, "Export empty folders", :empty_folders),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file (except for Gherkin based languages)", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
       Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
@@ -585,7 +586,12 @@ class LanguageGroupConfig
   end
 
   def get_folder_nodes(project)
-    project.children[:test_plan].children[:folders].select {|folder| folder.children[:scenarios].length > 0}
+    folders = project.children[:test_plan].children[:folders]
+    unless @user_params.empty_folders
+      folders.select {|folder| folder.children[:scenarios].length > 0}
+    else
+      folders
+    end
   end
 
   def normalized_dirname(name)
