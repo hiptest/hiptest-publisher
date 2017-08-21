@@ -104,6 +104,7 @@ Specific options:
         --test-run-id=ID             Export data from a test run identified by its id
         --test-run-name=NAME         Export data from a test run identified by its name
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
+        --without=CATEGORIES         Exclude file categories from import (--only=list to list them)
     -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from Hiptest
         --tests-only                 (deprecated) alias for --only=tests (default: false)
         --actionwords-only           (deprecated) alias for --only=actionwords (default: false)
@@ -117,8 +118,8 @@ Specific options:
         --show-actionwords-definition-changed
                                      Output action words for which definition changed (default: false)
         --with-folders               Use folders hierarchy to export files in respective directories (default: false)
-        --empty-folders              Export empty folders
-        --split-scenarios            Export each scenario in a single file  (except for Gherkin based languages) (default: false)
+        --empty-folders              Export empty folders (default: false)
+        --split-scenarios            Export each scenario in a single file (except for Gherkin based languages) (default: false)
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
     -p, --push=FILE.TAP              Push a results file to the server
@@ -127,12 +128,15 @@ Specific options:
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
         --keep-filenames             Keep the same name as in Hiptest for the test files (note: may cause encoding issues) (default: false)
         --keep-foldernames           Keep the same name as in Hiptest for the folders (note: may cause encoding issues) (default: false)
-        --filter-on-scenario-ids     Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)
-        --filter-on-folder-ids       Filter on folder ids (use commas to separate ids when fetching multiple folders)
-        --filter-on-scenario-name    Filter on scenario name (only one name is accepted)
-        --filter-on-folder-name      Filter on folder name (only one name is accepted)
-        --filter-on-tags             Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)
+        --filter-on-scenario-ids=IDS Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)
+        --filter-on-folder-ids=IDS   Filter on folder ids (use commas to separate ids when fetching multiple folders)
+        --filter-on-scenario-name=NAME
+                                     Filter on scenario name (only one name is accepted)
+        --filter-on-folder-name=NAME Filter on folder name (only one name is accepted)
+        --filter-on-tags=TAGS        Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)
         --filter-on-status=STATUS    Filter on test status in last build (use in conjunction with a test run)
+        --not-recursive              Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children (default: false)
+        --check-version              Check if a new release of hiptest-publisher is available (default: false)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -h, --help                       Show this message
