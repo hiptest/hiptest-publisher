@@ -1,2 +1,2 @@
-{{#unless in_actionword?}}{{#unless in_datatabled_scenario?}}{{#if use_main_annotation?}}{{rendered_children.annotation}}:
-{{/if}}{{/unless}}{{/unless}}{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}{{{ camelize_lower rendered_children.actionword }}}({{{ join rendered_children.all_arguments ', '}}})
+{{#unless in_actionword?}}{{#if use_main_annotation?}}{{rendered_children.annotation}}:
+{{/if}}{{/unless}}{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}{{{ camelize_lower rendered_children.actionword }}}({{{ join rendered_children.all_arguments ', '}}})
