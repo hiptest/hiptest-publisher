@@ -60,6 +60,34 @@ describe OptionParser do
       options.config = nil
       expect { FileConfigParser.update_options(options, NullReporter.new) }.not_to raise_error
     end
+
+    it "resolves the real path relative to config file" do
+      f = Tempfile.new('config')
+      
+      File.write(f, "overriden_templates = ./templates")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(Pathname.new(options.overriden_templates).absolute?).to be true
+      expect(options.overriden_templates).to eq(File.join(File.dirname(f.path), 'templates'))
+
+      File.write(f, "output_directory = ./tests")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(Pathname.new(options.output_directory).absolute?).to be true
+      expect(options.output_directory).to eq(File.join(File.dirname(f.path), 'tests'))
+    end
+
+    it 'does not resolves the path if the given path is absolute' do
+      f = Tempfile.new('config')
+      
+      File.write(f, "overriden_templates = /home/user/hps/robot/templates")
+      options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
+      expect(options.overriden_templates).to eq("/home/user/hps/robot/templates")
+    end
+  end
+
+  it "does not resolve paths if the value does not come from config file" do
+    options = OptionsParser.parse(["--overriden-templates=./templates", "--output-directory=./tests"], NullReporter.new)
+    expect(options.overriden_templates).to eq('./templates')
+    expect(options.output_directory).to eq('./tests')
   end
 
   it "recognizes --no-uids correctly" do
