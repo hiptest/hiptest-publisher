@@ -1,4 +1,5 @@
-{{#if has_datasets?}}@Unroll("{{{ escape_double_quotes rendered_children.name }}} #hiptestUid")
+{{#if has_datasets?}}
+@Unroll("{{{ escape_double_quotes rendered_children.name }}} #hiptestUid")
 {{/if}}def "{{{ escape_double_quotes rendered_children.name }}}{{#if rendered_children.uid}} (uid:{{{  rendered_children.uid}}}){{/if}}"() {{#curly}}{{#indent}}{{> desc}}{{#unless has_annotations?}}{{#unless is_empty?}}
 expect:{{/unless}}{{/unless}}
 {{> steps}}{{#if has_datasets?}}

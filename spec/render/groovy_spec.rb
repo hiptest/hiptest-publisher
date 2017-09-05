@@ -331,6 +331,7 @@ describe 'Render as Groovy' do
     # Valid 'login'/"password" | valid   | valid    | nil
 
     @scenario_with_datatable_rendered = [
+      '',
       '@Unroll("check login #hiptestUid")',
       'def "check login"() {',
       '  // Ensure the login process',
@@ -351,6 +352,7 @@ describe 'Render as Groovy' do
     ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
+      '',
       '@Unroll("check login #hiptestUid")',
       'def "check login"() {',
       '  // Ensure the login process',
@@ -377,6 +379,7 @@ describe 'Render as Groovy' do
       '',
       'class CheckLoginSpec extends Specification {',
       '  def actionwords = Actionwords.newInstance()',
+      '',
       '',
       '  @Unroll("check login #hiptestUid")',
       '  def "check login"() {',
@@ -587,6 +590,77 @@ describe 'Render as Groovy' do
     it_behaves_like "a renderer" do
       let(:language) {'groovy'}
       let(:framework) {'spock'}
+    end
+
+    it 'handles correctly a folder where multiple scenarios with datatable are present' do
+      container = make_folder("Multiple datatables", parent: @root_folder)
+      sc1 = make_scenario("First scenario",
+        folder: container,
+        parameters: [make_parameter('x'), make_parameter('y')],
+        datatable: Hiptest::Nodes::Datatable.new([
+          Hiptest::Nodes::Dataset.new('First line', [
+            Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('1')),
+            Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('2')),
+          ]),
+          Hiptest::Nodes::Dataset.new('Second line', [
+            Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('3')),
+            Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('4')),
+          ])
+        ])
+      )
+      sc2 = make_scenario("Second scenario",
+        folder: container,
+        parameters: [make_parameter('x'), make_parameter('y')],
+        datatable: Hiptest::Nodes::Datatable.new([
+          Hiptest::Nodes::Dataset.new('First line', [
+            Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('1')),
+            Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('2')),
+          ]),
+          Hiptest::Nodes::Dataset.new('Second line', [
+            Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('3')),
+            Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('4')),
+          ])
+        ])
+      )
+
+      Hiptest::Nodes::ParentAdder.add(@folders_project)
+      render_context = context_for(
+        node: container,
+        # only to select the right config group: we render [actionwords], [tests] and others differently
+        language: 'groovy',
+        framework: 'spock',
+        with_folders: true)
+
+      expect(container.render(render_context)).to eq([
+        'import spock.lang.*',
+        '',
+        'class MultipleDatatablesSpec extends Specification {',
+        '  def actionwords = Actionwords.newInstance()',
+        '',
+        '',
+        '',
+        '',
+        '  @Unroll("First scenario #hiptestUid")',
+        '  def "First scenario"() {',
+        '',
+        '',
+        '    where:',
+        '    x | y | hiptestUid',
+        '    "1" | "2" | "uid:"',
+        '    "3" | "4" | "uid:"',
+        '  }',
+        '',
+        '  @Unroll("Second scenario #hiptestUid")',
+        '  def "Second scenario"() {',
+        '',
+        '',
+        '    where:',
+        '    x | y | hiptestUid',
+        '    "1" | "2" | "uid:"',
+        '    "3" | "4" | "uid:"',
+        '  }',
+        '}',
+      ].join("\n"))
     end
   end
 end
