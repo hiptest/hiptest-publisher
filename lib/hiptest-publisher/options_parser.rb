@@ -2,6 +2,7 @@ require 'optparse'
 require 'parseconfig'
 require 'ostruct'
 require 'digest/md5'
+require 'pathname'
 
 require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/utils'
@@ -24,6 +25,9 @@ class FileConfigParser
       else
         options[param] = value
       end
+      if %w(overriden_templates output_directory).include?(param)
+        update_path!(param, config, options)
+      end
       options.__config_args << param.to_sym if options.__config_args
     end
   rescue => err
@@ -32,6 +36,15 @@ class FileConfigParser
 
   def self.falsy?(value)
     FALSY_VALUE_PATTERN.match(value)
+  end
+
+  def self.update_path!(param, config, options)
+    path = Pathname.new(config[param])
+    return unless path.relative?
+    config_path =  Pathname.new(options.config)
+    config_absolute_path = config_path.relative? ? Pathname.pwd + config_path : config_path
+    resolved_path = config_absolute_path.cleanpath.dirname + path
+    options[param] = resolved_path.cleanpath.to_path
   end
 end
 
