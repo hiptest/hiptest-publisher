@@ -834,6 +834,31 @@ describe Hiptest::Publisher do
           }.to output(a_string_including("Error with --push: the file \"#{file}\" is not a regular file")).to_stdout
         end
       end
+
+      context "with option global_failure_on_missing_reports on" do
+        before(:each) {
+          stub_request(:post, "https://hiptest.net/report_global_failure/123/456/").
+            to_return(body: '{"test_import": [{"name": "Simple use", "status": "failed"}]}')
+        }
+
+        context "does not raise error when" do
+          it "the file is missing" do
+            run_publisher_command("--token", "123",
+                                  "--test-run-id", "456",
+                                  "--push", 'this file does not exist',
+                                  '--global-failure-on-missing-reports')
+            expect(STDOUT).to have_printed('1 test imported')
+          end
+
+          it "there are no matching files" do
+            run_publisher_command("--token", "123",
+                                  "--test-run-id", "456",
+                                  "--push", 'the files * do not exist',
+                                  '--global-failure-on-missing-reports')
+            expect(STDOUT).to have_printed('1 test imported')
+          end
+        end
+      end
     end
 
     context "--output-directory" do

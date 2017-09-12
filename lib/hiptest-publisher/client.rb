@@ -27,6 +27,10 @@ module Hiptest
       end
     end
 
+    def global_failure_url
+      "#{cli_options.site}/report_global_failure/#{cli_options.token}/#{cli_options.test_run_id}/"
+    end
+
     def project_export_filters
       mapping = {
         filter_on_scenario_ids: 'filter_scenario_ids',
@@ -90,6 +94,10 @@ module Hiptest
         uploaded["file-#{filename.normalize}"] = UploadIO.new(File.new(filename), "text", filename)
       end
 
+      if cli_options.global_failure_on_missing_reports && uploaded.empty?
+        return send_post_request(global_failure_url)
+      end
+
       uri = URI.parse(url)
       send_request(Net::HTTP::Post::Multipart.new(uri, uploaded))
     end
@@ -148,6 +156,12 @@ module Hiptest
     def send_get_request(url)
       uri = URI.parse(url)
       response = send_request(Net::HTTP::Get.new(uri))
+      response
+    end
+
+    def send_post_request(url)
+      uri = URI.parse(url)
+      response = send_request(Net::HTTP::Post.new(uri))
       response
     end
 
