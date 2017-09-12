@@ -330,10 +330,14 @@ module Hiptest
       reporter.with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
         response = @client.push_results
       end
-      passed_count = JSON.parse(response.body)['test_import'].size
+      json = JSON.parse(response.body)
+
+      reported_tests = json.has_key?('test_import') ? json['test_import'] : []
+      passed_count = reported_tests.size
+
       reporter.with_status_message "#{pluralize(passed_count, "test")} imported" do
         if @cli_options.verbose
-          JSON.parse(response.body)['test_import'].each do |imported_test|
+          reported_tests.each do |imported_test|
             puts "  Test '#{imported_test['name']}' imported"
           end
         end

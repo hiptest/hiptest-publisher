@@ -105,7 +105,7 @@ module Hiptest
     end
 
     def check_push_file
-      if cli_options.push
+      if cli_options.push && !cli_options.global_failure_on_missing_reports
         agnostic_path = clean_path(cli_options.push)
         globbed_files = Dir.glob(agnostic_path)
 
