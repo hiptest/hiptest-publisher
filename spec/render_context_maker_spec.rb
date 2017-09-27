@@ -177,7 +177,9 @@ describe Hiptest::RenderContextMaker do
         :has_annotation? => false,
         :use_main_annotation? => false,
         :in_actionword? => false,
-        :in_datatabled_scenario? => false
+        :in_datatabled_scenario? => false,
+        :chunks => [],
+        :extra_inlined_arguments => []
       })
 
       node.children[:arguments] << 'x'
@@ -186,7 +188,9 @@ describe Hiptest::RenderContextMaker do
         :has_annotation? => false,
         :use_main_annotation? => false,
         :in_actionword? => false,
-        :in_datatabled_scenario? => false
+        :in_datatabled_scenario? => false,
+        :chunks => [],
+        :extra_inlined_arguments => []
       })
 
       node.children[:annotation] = 'Given'
@@ -195,7 +199,9 @@ describe Hiptest::RenderContextMaker do
         :has_annotation? => true,
         :use_main_annotation? => true,
         :in_actionword? => false,
-        :in_datatabled_scenario? => false
+        :in_datatabled_scenario? => false,
+        :chunks => [],
+        :extra_inlined_arguments => []
       })
     end
 
