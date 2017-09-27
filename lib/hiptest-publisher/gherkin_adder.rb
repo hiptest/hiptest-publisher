@@ -19,7 +19,9 @@ module Hiptest
       @project.each_sub_nodes(Hiptest::Nodes::Scenario, Hiptest::Nodes::Actionword, Hiptest::Nodes::Test, Hiptest::Nodes::Folder) do |item|
         @last_annotation = nil
         item.each_sub_nodes(Hiptest::Nodes::Call) do |call|
+          set_call_chunks(call)
           call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
+
           if actionword = get_actionword(call)
             @annotations_counter.increment(actionword, code_annotation(call))
             actionword.children[:gherkin_pattern] ||= pattern(actionword)
@@ -53,26 +55,56 @@ module Hiptest
     end
 
     def prettified(call)
+      base = call.children[:chunks].map {|chunk| chunk[:value]}.join("\"").strip
+      call.children[:extra_inlined_arguments].each do |chunk|
+        base += " \"#{chunk[:value]}\""
+      end
+
+      base
+    end
+
+    def set_call_chunks(call)
       all_arguments = all_valued_arguments_for(call)
       inline_parameter_names = []
 
+      chunks = []
+      extra_inlined_arguments = []
+
       call_chunks = call.children[:actionword].split("\"", -1)
       call_chunks.each_slice(2) do |text, inline_parameter_name|
+        chunks << {
+          value: text,
+          is_argument: false
+        }
+
         if all_arguments.has_key?(inline_parameter_name)
           inline_parameter_names << inline_parameter_name.clone
           value = all_arguments[inline_parameter_name]
           inline_parameter_name.replace(value)
+
+          chunks << {
+            value: inline_parameter_name,
+            is_argument: true
+          }
+        else
+         chunks << {
+            value: inline_parameter_name,
+            is_argument: false
+          } unless inline_parameter_name.nil?
         end
       end
 
-      missing_parameter_names = all_arguments.keys - inline_parameter_names - @special_params
 
-      prettified = call_chunks.join("\"")
-      missing_parameter_names.each do |missing_parameter_name|
-        value = all_arguments[missing_parameter_name]
-        prettified << " \"#{value}\""
+      missing_parameter_names = all_arguments.keys - inline_parameter_names - @special_params
+      extra_inlined_arguments = missing_parameter_names.map do |missing_parameter_name|
+        {
+          value: all_arguments[missing_parameter_name],
+          is_argument: true
+        }
       end
-      prettified.strip
+
+      call.children[:chunks] = chunks
+      call.children[:extra_inlined_arguments] = extra_inlined_arguments
     end
 
     def pattern(actionword)
