@@ -1,4 +1,4 @@
 {{#if rendered_children.gherkin_used_annotations}}
-{{#each rendered_children.gherkin_used_annotations}}@{{{downcase this }}}(r'{{#remove_last_character ':'}}{{{ strip_regexp_delimiters rendered_children.gherkin_pattern }}}{{/remove_last_character}}')
+{{#each rendered_children.gherkin_used_annotations}}@{{{downcase this }}}(r'{{#remove_last_character ':'}}{{#strip_regexp_delimiters}}{{> gherkin_pattern}}{{/strip_regexp_delimiters}}{{/remove_last_character}}')
 {{/each}}def impl(context{{#if has_parameters?}}, {{{ join rendered_children.parameters_ordered_by_pattern ', '}}}{{/if}}):{{#indent}}
 context.actionwords.{{{ underscore rendered_children.name }}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{#replace "__datatable" "context.table"}}{{#replace "__free_text" "context.text"}}{{{underscore this}}}{{/replace}}{{/replace}}{{/join}}{{/if}}){{/indent}}{{/if}}
