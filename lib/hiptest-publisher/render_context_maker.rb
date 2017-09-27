@@ -22,7 +22,12 @@ module Hiptest
       }
     end
 
-    alias :walk_actionword :walk_item
+    def walk_actionword(aw)
+      walk_item(aw).merge(
+        :chunks => aw.chunks || [],
+        :extra_inlined_parameters => aw.extra_inlined_parameters || []
+      )
+    end
 
     def walk_folder(folder)
       walk_relative_item(folder).merge(
