@@ -154,7 +154,11 @@ module Hiptest
       hh_escape_double_quotes(context, s, block)
     end
 
-    def hh_escape_double_quotes (context, s, block)
+    def hh_escape_double_quotes (context, s)
+      if s.is_a? Handlebars::Tree::Block
+        s = s.fn(context)
+      end
+
       s ? s.gsub('"', '\\"') : ""
     end
 
@@ -163,7 +167,11 @@ module Hiptest
       s ? s.gsub('\'', "\\\\'") : ""
     end
 
-    def hh_escape_backslashes_and_double_quotes (context, s, block)
+    def hh_escape_backslashes_and_double_quotes (context, s)
+      if s.is_a? Handlebars::Tree::Block
+        s = s.fn(context)
+      end
+
       if s
         s.gsub('\\') { |c| c*2 }.
           gsub('"', '\\"')
@@ -233,7 +241,11 @@ module Hiptest
       name
     end
 
-    def hh_strip_regexp_delimiters(context, regexp, block)
+    def hh_strip_regexp_delimiters(context, regexp)
+      if regexp.is_a? Handlebars::Tree::Block
+        regexp = regexp.fn(context)
+      end
+
       return regexp.gsub(/(^\^)|(\$$)/, '')
     end
 
