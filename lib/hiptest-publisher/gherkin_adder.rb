@@ -66,8 +66,10 @@ module Hiptest
     def set_call_chunks(call)
       all_arguments = all_valued_arguments_for(call)
       inline_parameter_names = []
-
       extra_inlined_arguments = []
+
+      call.chunks = []
+      call.extra_inlined_arguments = []
 
       call_chunks = call.children[:actionword].split("\"", -1)
       call_chunks.each_slice(2) do |text, inline_parameter_name|
