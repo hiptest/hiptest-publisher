@@ -55,8 +55,8 @@ module Hiptest
     end
 
     def prettified(call)
-      base = call.children[:chunks].map {|chunk| chunk[:value]}.join("\"").strip
-      call.children[:extra_inlined_arguments].each do |chunk|
+      base = call.chunks.map {|chunk| chunk[:value]}.join("\"").strip
+      call.extra_inlined_arguments.each do |chunk|
         base += " \"#{chunk[:value]}\""
       end
 
@@ -67,12 +67,11 @@ module Hiptest
       all_arguments = all_valued_arguments_for(call)
       inline_parameter_names = []
 
-      chunks = []
       extra_inlined_arguments = []
 
       call_chunks = call.children[:actionword].split("\"", -1)
       call_chunks.each_slice(2) do |text, inline_parameter_name|
-        chunks << {
+        call.chunks << {
           value: text,
           is_argument: false
         }
@@ -82,12 +81,12 @@ module Hiptest
           value = all_arguments[inline_parameter_name]
           inline_parameter_name.replace(value)
 
-          chunks << {
+          call.chunks << {
             value: inline_parameter_name,
             is_argument: true
           }
         else
-         chunks << {
+         call.chunks << {
             value: inline_parameter_name,
             is_argument: false
           } unless inline_parameter_name.nil?
@@ -96,15 +95,12 @@ module Hiptest
 
 
       missing_parameter_names = all_arguments.keys - inline_parameter_names - @special_params
-      extra_inlined_arguments = missing_parameter_names.map do |missing_parameter_name|
+      call.extra_inlined_arguments = missing_parameter_names.map do |missing_parameter_name|
         {
           value: all_arguments[missing_parameter_name],
           is_argument: true
         }
       end
-
-      call.children[:chunks] = chunks
-      call.children[:extra_inlined_arguments] = extra_inlined_arguments
     end
 
     def pattern(actionword)

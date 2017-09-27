@@ -214,10 +214,16 @@ module Hiptest
     end
 
     class Call < Node
+      attr_reader :chunks, :extra_inlined_arguments
+      attr_writer :chunks, :extra_inlined_arguments
+
       def initialize(actionword, arguments = [], annotation = nil)
         super()
         annotation = nil if annotation == ""
         @children = {:actionword => actionword, :arguments => arguments, :all_arguments => arguments, :annotation => annotation}
+
+        @chunks = []
+        @extra_inlined_arguments = []
       end
 
       def free_text_arg
