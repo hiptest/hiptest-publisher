@@ -58,8 +58,9 @@ describe Hiptest::HandlebarsHelper do
   end
 
   context 'register_string_helpers' do
+    before(:each) {instance.register_string_helpers}
+
     it 'register helpers based on our custom string methods' do
-      instance.register_string_helpers
       expect(handlebars.helpers).to include(
         :literate,
         :normalize,
@@ -67,8 +68,17 @@ describe Hiptest::HandlebarsHelper do
         :underscore,
         :camelize,
         :camelize_lower,
-        :clear_extension
+        :clear_extension,
+        :strip
       )
+    end
+
+    it 'defines helpers working with strings' do
+      expect(evaluate('{{strip value}}', {value: "   Something.   "})).to eq('Something.')
+    end
+
+    it 'defines helpers working with blocks' do
+      expect(evaluate('{{#strip}}  This is my {{value}}.    {{/strip}}', {value: "Value"})).to eq('This is my Value.')
     end
   end
 

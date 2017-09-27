@@ -24,11 +24,17 @@ module Hiptest
         :camelize_lower,
         :camelize_upper,
         :clear_extension,
-        :downcase
+        :downcase,
+        :strip
       ]
 
       string_helpers.each do |helper|
-        @handlebars.register_helper(helper) do |context, value|
+        @handlebars.register_helper(helper) do |context, block|
+          if block.is_a? Handlebars::Tree::Block
+            value = block.fn(context)
+          else
+            value = block
+          end
           "#{value.to_s.send(helper)}"
         end
       end
