@@ -126,6 +126,10 @@ describe Hiptest::HandlebarsHelper do
     it 'real use-case' do
       expect(evaluate('{{to_string x}}', {x: 123})).to eq('123')
     end
+
+    it 'also works with blocks' do
+      expect(evaluate('{{#to_string}}{{x}}{{/to_string}}', {x: 123})).to eq('123')
+    end
   end
 
   context 'hh_join' do
@@ -148,6 +152,80 @@ describe Hiptest::HandlebarsHelper do
       expect(evaluate('{{join items "-"}}', {items: [1, 2, 3]})).to eq('1-2-3')
       expect(evaluate('{{#join items "-"}}[{{this}}]{{else}}no items{{/join}}', {items: [1, 2, 3]})).to eq('[1]-[2]-[3]')
       expect(evaluate('{{#join items "-"}}[{{this}}]{{else}}No items{{/join}}', {items: []})).to eq('No items')
+    end
+  end
+
+  context 'hh_with' do
+    it 'allows to keep name in the current context' do
+      data = {
+        items: [
+          {
+            name: 'Plic',
+            subItems: [
+              {name: 1},
+              {name: 2}
+            ]
+          },
+          {
+            name: 'Ploc',
+            subItems: [
+              {name: 3},
+              {name: 4}
+            ]
+          }
+        ]
+      }
+
+      template = [
+        '{{#clear_empty_lines}}{{#each items}}',
+        '  {{#with this.name "name"}}',
+        '    {{#each this.subItems}}',
+        ' - {{name}} {{this.name}}',
+        '    {{/each}}',
+        '  {{/with}}',
+        '{{/each}}{{/clear_empty_lines}}'
+      ].join("\n")
+
+      expect(evaluate(template, data)).to eq([
+        " - Plic 1",
+        " - Plic 2",
+        " - Ploc 3",
+        " - Ploc 4"
+      ].join("\n"))
+    end
+  end
+
+  context 'hh_unless' do
+    it 'runs the block if the condition is not met' do
+      expect(evaluate('{{#unless condition}}Show something{{/unless}}', {condition: false})).to eq('Show something')
+      expect(evaluate('{{#unless condition}}Show something{{/unless}}', {condition: true})).to eq('')
+    end
+
+    it 'supports an else block (well, #if might be beteer for that)' do
+      expect(evaluate('{{#unless condition}}Show something{{else}}Show nothing{{/unless}}', {condition: false})).to eq('Show something')
+      expect(evaluate('{{#unless condition}}Show something{{else}}Show nothing{{/unless}}', {condition: true})).to eq('Show nothing')
+
+    end
+  end
+
+  context 'hh_prepend' do
+    it 'prepends each line with the given character' do
+      expect(instance.hh_prepend(nil, '# ', block)).to eq([
+        '# A single line',
+        '# Two',
+        '# Lines',
+        '# Three',
+        '#   indented',
+        '#     lines'
+      ].join("\n"))
+    end
+
+    it 'real use-case' do
+      expect(evaluate("{{#prepend ' - '}}{{#each items}}{{this}}\n{{/each}}{{/prepend}}", {items: [1, 2, 3]})).to eq([
+        " - 1",
+        " - 2",
+        " - 3"
+      ].join("\n"))
     end
   end
 
@@ -215,87 +293,214 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context 'hh_index' do
+    it 'calls the block with the correct element of the list' do
+      template = '{{#index list index}}- {{this}}{{/index}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- a')
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 2})).to eq('- c')
+    end
+
+    it 'also work when the index is written in the template' do
+      template = '{{#index list "1"}}- {{this}}{{/index}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c']})).to eq('- b')
+    end
+  end
+
+  context 'hh_first' do
+    it 'works like hh_index, with a index set to zero' do
+      template = '{{#first list}}- {{this}}{{/first}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- a')
+    end
+  end
+
+  context 'hh_last' do
+    it 'works like hh_index, but always points to the last element of the list' do
+      template = '{{#last list}}- {{this}}{{/last}}'
+
+      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- c')
+    end
+  end
+
   context 'hh_remove_quotes' do
     it 'removes double quotes from a string' do
-      expect(instance.hh_remove_quotes(nil, 'My "string"', nil)).to eq('My string')
+      expect(evaluate('{{remove_quotes value}}', {value: 'My "string"'})).to eq('My string')
+      expect(evaluate('{{#remove_quotes}}My "string"{{/remove_quotes}}', {})).to eq('My string')
     end
 
     it 'leaves single quotes' do
-      expect(instance.hh_remove_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+      expect(evaluate('{{remove_quotes value}}', {value: "My 'string'"})).to eq("My 'string'")
+      expect(evaluate("{{#remove_quotes}}My 'string'{{/remove_quotes}}", {})).to eq("My 'string'")
     end
 
     it 'returns empty string when nil' do
-      expect(instance.hh_remove_quotes(nil, nil, nil)).to eq("")
+      expect(evaluate('{{remove_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#remove_quotes}}{{value}}{{/remove_quotes}}", {value: nil})).to eq("")
     end
   end
 
   context 'hh_remove_double_quotes' do
     it 'removes double quotes from a string' do
-      expect(instance.hh_remove_double_quotes(nil, 'My "string"', nil)).to eq('My string')
+      expect(evaluate('{{remove_double_quotes value}}', {value: 'My "string"'})).to eq('My string')
+      expect(evaluate('{{#remove_double_quotes}}My "string"{{/remove_double_quotes}}', {})).to eq('My string')
     end
 
     it 'leaves single quotes' do
-      expect(instance.hh_remove_double_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+      expect(evaluate('{{remove_double_quotes value}}', {value: "My 'string'"})).to eq("My 'string'")
+      expect(evaluate("{{#remove_double_quotes}}My 'string'{{/remove_double_quotes}}", {})).to eq("My 'string'")
     end
 
     it 'returns empty string when nil' do
-      expect(instance.hh_remove_double_quotes(nil, nil, nil)).to eq("")
+      expect(evaluate('{{remove_double_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#remove_double_quotes}}{{value}}{{/remove_double_quotes}}", {value: nil})).to eq("")
     end
   end
 
   context 'hh_remove_single_quotes' do
     it 'removes single quotes from a string' do
-      expect(instance.hh_remove_single_quotes(nil, "My 'string'", nil)).to eq('My string')
+      expect(evaluate('{{remove_single_quotes value}}', {value: "My 'string'"})).to eq("My string")
+      expect(evaluate("{{#remove_single_quotes}}My 'string'{{/remove_single_quotes}}", {})).to eq("My string")
     end
 
     it 'leaves double quotes' do
-      expect(instance.hh_remove_single_quotes(nil, 'My "string"', nil)).to eq('My "string"')
+      expect(evaluate('{{remove_single_quotes value}}', {value: 'My "string"'})).to eq('My "string"')
+      expect(evaluate('{{#remove_single_quotes}}My "string"{{/remove_single_quotes}}', {})).to eq('My "string"')
     end
 
     it 'returns empty string when nil' do
-      expect(instance.hh_remove_single_quotes(nil, nil, nil)).to eq("")
+      expect(evaluate('{{remove_single_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#remove_single_quotes}}{{value}}{{/remove_single_quotes}}", {value: nil})).to eq("")
     end
   end
 
   context 'hh_escape_quotes' do
     it 'escapes double quotes' do
-      expect(instance.hh_escape_quotes(nil, 'My "string"', nil)).to eq('My \"string\"')
+      expect(evaluate('{{escape_quotes value}}', {value: 'My "string"'})).to eq('My \"string\"')
+      expect(evaluate('{{#escape_quotes}}My "string"{{/escape_quotes}}', {})).to eq('My \"string\"')
     end
 
     it 'leaves single quotes' do
-      expect(instance.hh_escape_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+      expect(evaluate('{{escape_quotes value}}', {value: "My 'string'"})).to eq("My 'string'")
+      expect(evaluate("{{#escape_quotes}}My 'string'{{/escape_quotes}}", {})).to eq("My 'string'")
     end
 
     it 'returns empty string when nil' do
-      expect(instance.hh_escape_quotes(nil, nil, nil)).to eq("")
+      expect(evaluate('{{escape_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#escape_quotes}}{{value}}{{/escape_quotes}}", {value: nil})).to eq("")
     end
   end
 
   context 'hh_escape_double_quotes' do
     it 'escapes double quotes' do
-      expect(instance.hh_escape_double_quotes(nil, 'My "string"', nil)).to eq('My \"string\"')
+      expect(evaluate('{{escape_double_quotes value}}', {value: 'My "string"'})).to eq('My \"string\"')
+      expect(evaluate('{{#escape_double_quotes}}My "string"{{/escape_double_quotes}}', {})).to eq('My \"string\"')
     end
 
     it 'leaves single quotes' do
-      expect(instance.hh_escape_double_quotes(nil, "My 'string'", nil)).to eq("My 'string'")
+      expect(evaluate('{{escape_double_quotes value}}', {value: "My 'string'"})).to eq("My 'string'")
+      expect(evaluate("{{#escape_double_quotes}}My 'string'{{/escape_double_quotes}}", {})).to eq("My 'string'")
     end
 
     it 'returns empty string when nil' do
-      expect(instance.hh_escape_double_quotes(nil, nil, nil)).to eq("")
+      expect(evaluate('{{escape_double_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#escape_double_quotes}}{{value}}{{/escape_double_quotes}}", {value: nil})).to eq("")
     end
   end
 
   context 'hh_escape_single_quotes' do
     it 'escapes single quotes' do
-      expect(instance.hh_escape_single_quotes(nil, "My 'string'", nil)).to eq("My \\'string\\'")
+      expect(evaluate('{{escape_single_quotes value}}', {value: "My 'string'"})).to eq("My \\'string\\'")
+      expect(evaluate("{{#escape_single_quotes}}My 'string'{{/escape_single_quotes}}", {})).to eq("My \\'string\\'")
     end
 
     it 'leaves double quotes' do
-      expect(instance.hh_escape_single_quotes(nil, 'My "string"', nil)).to eq('My "string"')
+      expect(evaluate('{{escape_single_quotes value}}', {value: 'My "string"'})).to eq('My "string"')
+      expect(evaluate('{{#escape_single_quotes}}My "string"{{/escape_single_quotes}}', {})).to eq('My "string"')
     end
 
     it 'returns empty string when nil' do
-      expect(instance.hh_escape_single_quotes(nil, nil, nil)).to eq("")
+      expect(evaluate('{{escape_single_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#escape_single_quotes}}{{value}}{{/escape_single_quotes}}", {value: nil})).to eq("")
+    end
+  end
+
+  context 'hh_escape_backslashes_and_double_quotes' do
+    it 'escapes double quotes' do
+      simple_template = '{{escape_backslashes_and_double_quotes value}}'
+      block_template = '{{#escape_backslashes_and_double_quotes}}{{value}}{{/escape_backslashes_and_double_quotes}}'
+
+      expect(evaluate(simple_template, {value: 'My "string"'})).to eq('My \"string\"')
+      expect(evaluate(simple_template, {value: 'My \string\\'})).to eq('My \\\\string\\\\')
+      expect(evaluate(simple_template, {value: 'My \"string\"'})).to eq('My \\\\\"string\\\\\"')
+
+      expect(evaluate(block_template, {value: 'My "string"'})).to eq('My \"string\"')
+      expect(evaluate(block_template, {value: 'My \string\\'})).to eq('My \\\\string\\\\')
+      expect(evaluate(block_template, {value: 'My \"string\"'})).to eq('My \\\\\"string\\\\\"')
+
+    end
+
+    it 'returns empty string when nil' do
+      expect(evaluate('{{escape_backslashes_and_double_quotes value}}', {value: nil})).to eq("")
+      expect(evaluate("{{#escape_backslashes_and_double_quotes}}{{value}}{{/escape_backslashes_and_double_quotes}}", {value: nil})).to eq("")
+    end
+  end
+
+  context 'hh_escape_new_line' do
+    it 'escapes new lines' do
+      template = "{{escape_new_line txt}}"
+      expect(evaluate(template, {txt: "my\ntext\non\nmultiple lines"})).to eq("my\\ntext\\non\\nmultiple lines")
+    end
+
+    it 'also works with blocks' do
+      template = "{{#escape_new_line}} I have some \n lines {{/escape_new_line}}"
+      expect(evaluate(template, {})).to eq(" I have some \\n lines ")
+    end
+
+    it 'works with nil' do
+      template = "A{{escape_new_line txt}}Z"
+      expect(evaluate(template, {txt: nil})).to eq("AZ")
+    end
+  end
+
+  context 'hh_remove_surrounding_quotes' do
+    it 'removes simple or double quotes at the beginning or the end of the text' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '"some text"'})).to eq("some text")
+      expect(evaluate(template, {txt: '""'})).to eq("")
+      expect(evaluate(template, {txt: "'some text'"})).to eq("some text")
+      expect(evaluate(template, {txt: "''"})).to eq("")
+    end
+
+    it 'only removes one quote' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '"""some text"""'})).to eq('""some text""')
+    end
+
+    it 'removes quotes only if they are present on both sides' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '\"some text\"'})).to eq('\"some text\"')
+      expect(evaluate(template, {txt: "'hello': 742"})).to eq("'hello': 742")
+    end
+
+    it 'leaves intact quotes inside the text' do
+      template = "{{remove_surrounding_quotes txt}}"
+
+      expect(evaluate(template, {txt: '"some "awesome" text"'})).to eq('some "awesome" text')
+    end
+
+    it 'also works with blocks' do
+      template = '{{#remove_surrounding_quotes}}"This is "my" text"{{/remove_surrounding_quotes}}'
+      expect(evaluate(template, {})).to eq('This is "my" text')
+    end
+
+    it 'works with nil' do
+      template = "A{{remove_surrounding_quotes txt}}Z"
+      expect(evaluate(template, {txt: nil})).to eq("AZ")
     end
   end
 
@@ -351,95 +556,6 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
-  context 'hh_with' do
-    it 'allows to keep name in the current context' do
-      data = {
-        items: [
-          {
-            name: 'Plic',
-            subItems: [
-              {name: 1},
-              {name: 2}
-            ]
-          },
-          {
-            name: 'Ploc',
-            subItems: [
-              {name: 3},
-              {name: 4}
-            ]
-          }
-        ]
-      }
-
-      template = [
-        '{{#clear_empty_lines}}{{#each items}}',
-        '  {{#with this.name "name"}}',
-        '    {{#each this.subItems}}',
-        ' - {{name}} {{this.name}}',
-        '    {{/each}}',
-        '  {{/with}}',
-        '{{/each}}{{/clear_empty_lines}}'
-      ].join("\n")
-
-      expect(evaluate(template, data)).to eq([
-        " - Plic 1",
-        " - Plic 2",
-        " - Ploc 3",
-        " - Ploc 4"
-      ].join("\n"))
-
-    end
-  end
-
-  context 'hh_index' do
-    it 'calls the block with the correct element of the list' do
-      template = '{{#index list index}}- {{this}}{{/index}}'
-
-      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- a')
-      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 2})).to eq('- c')
-    end
-
-    it 'also work when the index is written in the template' do
-      template = '{{#index list "1"}}- {{this}}{{/index}}'
-
-      expect(evaluate(template, {list: ['a', 'b', 'c']})).to eq('- b')
-    end
-  end
-
-  context 'hh_first' do
-    it 'works like hh_index, with a index set to zero' do
-      template = '{{#first list}}- {{this}}{{/first}}'
-
-      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- a')
-    end
-  end
-
-  context 'hh_last' do
-    it 'works like hh_index, but always points to the last element of the list' do
-      template = '{{#last list}}- {{this}}{{/last}}'
-
-      expect(evaluate(template, {list: ['a', 'b', 'c'], index: 0})).to eq('- c')
-    end
-  end
-
-  context 'hh_escape_new_line' do
-    it 'escapes new lines' do
-      template = "{{escape_new_line txt}}"
-      expect(evaluate(template, {txt: "my\ntext\non\nmultiple lines"})).to eq("my\\ntext\\non\\nmultiple lines")
-    end
-
-    it 'also works with blocks' do
-      template = "{{#escape_new_line}} I have some \n lines {{/escape_new_line}}"
-      expect(evaluate(template, {})).to eq(" I have some \\n lines ")
-    end
-
-    it 'works with nil' do
-      template = "A{{escape_new_line txt}}Z"
-      expect(evaluate(template, {txt: nil})).to eq("AZ")
-    end
-  end
-
   context "hh_trim_surrounding_characters" do
     it 'removes the given character around the text' do
       template = '{{#trim_surrounding_characters "#"}}{{txt}}{{/trim_surrounding_characters}}'
@@ -472,46 +588,6 @@ describe Hiptest::HandlebarsHelper do
       template = '{{#replace "plic" "ploc"}}{{txt}}{{/replace}}'
 
       expect(evaluate(template, {txt: 'When I plic'})).to eq("When I ploc")
-    end
-  end
-
-  context 'hh_remove_surrounding_quotes' do
-    it 'removes simple or double quotes at the beginning or the end of the text' do
-      template = "{{remove_surrounding_quotes txt}}"
-
-      expect(evaluate(template, {txt: '"some text"'})).to eq("some text")
-      expect(evaluate(template, {txt: '""'})).to eq("")
-      expect(evaluate(template, {txt: "'some text'"})).to eq("some text")
-      expect(evaluate(template, {txt: "''"})).to eq("")
-    end
-
-    it 'only removes one quote' do
-      template = "{{remove_surrounding_quotes txt}}"
-
-      expect(evaluate(template, {txt: '"""some text"""'})).to eq('""some text""')
-    end
-
-    it 'removes quotes only if they are present on both sides' do
-      template = "{{remove_surrounding_quotes txt}}"
-
-      expect(evaluate(template, {txt: '\"some text\"'})).to eq('\"some text\"')
-      expect(evaluate(template, {txt: "'hello': 742"})).to eq("'hello': 742")
-    end
-
-    it 'leaves intact quotes inside the text' do
-      template = "{{remove_surrounding_quotes txt}}"
-
-      expect(evaluate(template, {txt: '"some "awesome" text"'})).to eq('some "awesome" text')
-    end
-
-    it 'also works with blocks' do
-      template = '{{#remove_surrounding_quotes}}"This is "my" text"{{/remove_surrounding_quotes}}'
-      expect(evaluate(template, {})).to eq('This is "my" text')
-    end
-
-    it 'works with nil' do
-      template = "A{{remove_surrounding_quotes txt}}Z"
-      expect(evaluate(template, {txt: nil})).to eq("AZ")
     end
   end
 end

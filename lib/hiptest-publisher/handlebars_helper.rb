@@ -49,7 +49,12 @@ module Hiptest
       end
     end
 
-    def hh_to_string(context, value, block)
+    def compute_block_value(context, value, block)
+      value.is_a?(Handlebars::Tree::Block) ? value.fn(context) : value
+    end
+
+    def hh_to_string(context, value, block=nil)
+      value = compute_block_value(context, value, block)
       "#{value.to_s}"
     end
 
@@ -137,40 +142,38 @@ module Hiptest
     end
 
     # kept for backward compatibility of customized templates
-    def hh_remove_quotes (context, s, block)
+    def hh_remove_quotes (context, s, block = nil)
       hh_remove_double_quotes(context, s, block)
     end
 
-    def hh_remove_double_quotes (context, s, block)
+    def hh_remove_double_quotes (context, s, block = nil)
+      s = compute_block_value(context,s, block)
       s ? s.gsub('"', '') : ""
     end
 
-    def hh_remove_single_quotes (context, s, block)
+    def hh_remove_single_quotes (context, s, block = nil)
+      s = compute_block_value(context,s, block)
       s ? s.gsub('\'', '') : ""
     end
 
     # kept for backward compatibility of customized templates
-    def hh_escape_quotes (context, s, block)
+    def hh_escape_quotes (context, s, block=nil)
       hh_escape_double_quotes(context, s, block)
     end
 
-    def hh_escape_double_quotes (context, s)
-      if s.is_a? Handlebars::Tree::Block
-        s = s.fn(context)
-      end
-
+    def hh_escape_double_quotes (context, s, block=nil)
+      s = compute_block_value(context, s, block)
       s ? s.gsub('"', '\\"') : ""
     end
 
-    def hh_escape_single_quotes (context, s, block)
+    def hh_escape_single_quotes (context, s, block=nil)
       # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
+      s = compute_block_value(context, s, block)
       s ? s.gsub('\'', "\\\\'") : ""
     end
 
-    def hh_escape_backslashes_and_double_quotes (context, s)
-      if s.is_a? Handlebars::Tree::Block
-        s = s.fn(context)
-      end
+    def hh_escape_backslashes_and_double_quotes (context, s, block=nil)
+      s = compute_block_value(context, s, block)
 
       if s
         s.gsub('\\') { |c| c*2 }.
@@ -181,17 +184,12 @@ module Hiptest
     end
 
     def hh_escape_new_line(context, s, block = nil)
-      if s.is_a? Handlebars::Tree::Block
-        s = s.fn(context)
-      end
-
+      s = compute_block_value(context, s, block)
       s ? s.gsub("\n", '\\n') : ""
     end
 
     def hh_remove_surrounding_quotes(context, s, block = nil)
-      if s.is_a? Handlebars::Tree::Block
-        s = s.fn(context)
-      end
+      s = compute_block_value(context, s, block)
 
       if s.nil?
         ""
@@ -241,11 +239,8 @@ module Hiptest
       name
     end
 
-    def hh_strip_regexp_delimiters(context, regexp)
-      if regexp.is_a? Handlebars::Tree::Block
-        regexp = regexp.fn(context)
-      end
-
+    def hh_strip_regexp_delimiters(context, regexp, block=nil)
+      regexp = compute_block_value(context, regexp, block)
       return regexp.gsub(/(^\^)|(\$$)/, '')
     end
 
