@@ -325,9 +325,15 @@ module Hiptest
     end
 
     class Actionword < Item
+      attr_reader :chunks, :extra_inlined_parameters
+      attr_writer :chunks, :extra_inlined_parameters
+
       def initialize(name, tags = [], parameters = [], body = [], uid = nil, description = '')
         super(name, tags, description, parameters, body)
         @children[:uid] = uid
+
+        @chunks = []
+        @extra_inlined_parameters = []
       end
 
       def must_be_implemented?

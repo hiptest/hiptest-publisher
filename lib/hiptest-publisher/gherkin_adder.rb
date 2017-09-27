@@ -24,6 +24,8 @@ module Hiptest
 
           if actionword = get_actionword(call)
             @annotations_counter.increment(actionword, code_annotation(call))
+            set_actionwords_chunks(actionword)
+
             actionword.children[:gherkin_pattern] ||= pattern(actionword)
             actionword.children[:parameters_ordered_by_pattern] ||= order_parameters_by_pattern(actionword)
           end
@@ -106,27 +108,50 @@ module Hiptest
     end
 
     def pattern(actionword)
+      patterned = actionword.chunks.map {|chunk| chunk[:value]}.join("\"")
+      actionword.extra_inlined_parameters.each do |param|
+        patterned += " #{param[:value]}"
+      end
+
+      "^#{patterned.strip}$"
+    end
+
+    def set_actionwords_chunks(actionword)
       name = actionword.children[:name]
       actionword_parameters = evaluated_map(actionword.children[:parameters])
       name_chunks = name.split("\"", -1)
-      result = []
       inline_parameter_names = []
+
+      actionword.chunks = []
+      actionword.extra_inlined_parameters = []
+
       name_chunks.each_slice(2) do |text, inline_parameter_name|
-        result << text.gsub(/[.|()\\.+*?\[\]{}^$]/) { |c| "\\#{c}" }
+        actionword.chunks << {
+          value: text.gsub(/[.|()\\.+*?\[\]{}^$]/) { |c| "\\#{c}" },
+          is_parameter: false
+        }
+
         inline_parameter_names << inline_parameter_name if inline_parameter_name
         if actionword_parameters.has_key?(inline_parameter_name)
-          result << "(.*)"
+          actionword.chunks << {
+            value: "(.*)",
+            is_parameter: true
+          }
         else
-          result << inline_parameter_name if inline_parameter_name
+          actionword.chunks << {
+            value: inline_parameter_name,
+            is_parameter: false
+          } if inline_parameter_name
         end
       end
       missing_parameter_names = actionword_parameters.keys - inline_parameter_names - @special_params
 
-      patterned = result.join("\"")
       missing_parameter_names.each do |missing_parameter_name|
-        patterned << " \"(.*)\""
+        actionword.extra_inlined_parameters << {
+          value: "\"(.*)\"",
+          is_parameter: true
+        }
       end
-      "^#{patterned.strip}$"
     end
 
     def order_parameters_by_pattern(actionword)
