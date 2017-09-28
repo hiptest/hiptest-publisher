@@ -44,7 +44,7 @@ describe Hiptest::GherkinAdder do
       expect(call.children[:gherkin_text]).to eq("When I say hello world")
     end
 
-    it "adds the correct information in chunks and extra_inlined_parameters" do
+    it "adds the correct information in chunks and extra_inlined_arguments to Call" do
       expect(call.chunks).to eq([{value: "I say hello world", is_argument: false}])
       expect(call.extra_inlined_arguments).to be_empty
     end
@@ -57,11 +57,25 @@ describe Hiptest::GherkinAdder do
       expect(actionword.children[:gherkin_pattern]).to eq("^I say hello world$")
     end
 
+    it "adds the correct informations and extra_inlined_parameters to Actionword" do
+      expect(actionword.chunks).to eq([{value: "I say hello world", is_parameter: false}])
+      expect(actionword.extra_inlined_parameters).to be_empty
+    end
+
     context "with actionword name containing with regex reserved characters" do
       let(:actionword_name) { "Nom. de. Zeués... [|]\\+*?()$^ Marty!?" }
 
       it "escapes the characters in the :gherkin_pattern" do
         expect(gherkin_pattern).to eq("^Nom\\. de\\. Zeués\\.\\.\\. \\[\\|\\]\\\\\\+\\*\\?\\(\\)\\$\\^ Marty!\\?$")
+      end
+
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {
+            value: "Nom\\. de\\. Zeués\\.\\.\\. \\[\\|\\]\\\\\\+\\*\\?\\(\\)\\$\\^ Marty!\\?",
+            is_parameter: false
+          }])
+        expect(actionword.extra_inlined_parameters).to be_empty
       end
     end
 
@@ -70,6 +84,14 @@ describe Hiptest::GherkinAdder do
 
       it "escapes the characters in the :gherkin_pattern" do
         expect(gherkin_pattern).to eq("^hello\\\\world$")
+      end
+
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([{
+          value: "hello\\\\world",
+          is_parameter: false
+        }])
+        expect(actionword.extra_inlined_parameters).to be_empty
       end
     end
 
@@ -85,13 +107,22 @@ describe Hiptest::GherkinAdder do
       end
 
 
-      it "adds the correct information in chunks and extra_inlined_parameters" do
+      it "adds the correct information in chunks and extra_inlined_arguments to Call" do
         expect(call.chunks).to eq([
           {value: "  do things and ", is_argument: false},
           {value: "stuff", is_argument: false},
           {value: " ", is_argument: false}
         ])
         expect(call.extra_inlined_arguments).to be_empty
+      end
+
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "  do things and ", is_parameter: false},
+          {value: "stuff", is_parameter: false},
+          {value: " ", is_parameter: false}
+        ])
+        expect(actionword.extra_inlined_parameters).to be_empty
       end
     end
 
@@ -133,6 +164,15 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_text).to eq("When I say \"hello world\"")
         expect(gherkin_pattern).to eq("^I say \"hello world\"$")
       end
+
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "I say ", is_parameter: false},
+          {value: "hello world", is_parameter: false},
+          {value: "", is_parameter: false}
+        ])
+        expect(actionword.extra_inlined_parameters).to be_empty
+      end
     end
 
     context "but with quoted text, and with a call having a matching argument (which is invalid because actionword has no parameters)" do
@@ -147,13 +187,22 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_pattern).to eq("^I say \"hello\"$")
       end
 
-      it "adds the correct information in chunks and extra_inlined_parameters" do
+      it "adds the correct information in chunks and extra_inlined_arguments to Call" do
         expect(call.chunks).to eq([
           {value: "I say ", is_argument: false},
           {value: "hello", is_argument: false},
           {value: "", is_argument: false}
         ])
         expect(call.extra_inlined_arguments).to be_empty
+      end
+
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "I say ", is_parameter: false},
+          {value: "hello", is_parameter: false},
+          {value: "", is_parameter: false}
+        ])
+        expect(actionword.extra_inlined_parameters).to be_empty
       end
     end
   end
@@ -173,7 +222,7 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_text).to eq("And Hello \"\"")
       end
 
-      it "adds the correct information in chunks and extra_inlined_parameters" do
+      it "adds the correct information in chunks and extra_inlined_arguments to Call" do
         expect(call.chunks).to eq([
           {value: "Hello ", is_argument: false},
           {value: "", is_argument: true},
@@ -198,6 +247,15 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_pattern).to eq("^Hello \"(.*)\"$")
       end
 
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "Hello ", is_parameter: false},
+          {value: "(.*)", is_parameter: true},
+          {value: "", is_parameter: false}
+        ])
+        expect(actionword.extra_inlined_parameters).to be_empty
+      end
+
       context "called with a string argument" do
         let(:call) {
           make_call(actionword_name, annotation: "given", arguments: [
@@ -209,7 +267,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello \"John\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {value: "Hello ", is_argument: false},
             {value: "John", is_argument: true},
@@ -230,7 +288,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello \"<name>\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {value: "Hello ", is_argument: false},
             {value: "<name>", is_argument: true},
@@ -247,7 +305,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello \"World\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {value: "Hello ", is_argument: false},
             {value: "World", is_argument: true},
@@ -265,7 +323,16 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_pattern).to eq("^Hello to all of you \"(.*)\"$")
       end
 
-      it "adds the correct information in chunks and extra_inlined_parameters" do
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "Hello to all of you", is_parameter: false}
+        ])
+        expect(actionword.extra_inlined_parameters).to eq([
+          {value: "(.*)", is_parameter: true}
+        ])
+      end
+
+      it "adds the correct information in chunks and extra_inlined_arguments to Call" do
         expect(call.chunks).to eq([
           {value: "Hello to all of you", is_argument: false}
         ])
@@ -283,7 +350,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello to all of you \"Paul\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {value: "Hello to all of you", is_argument: false}
           ])
@@ -302,7 +369,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello to all of you \"<name>\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {value: "Hello to all of you", is_argument: false}
           ])
@@ -317,7 +384,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello to all of you \"World\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {value: "Hello to all of you", is_argument: false}
           ])
@@ -343,6 +410,19 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_pattern).to eq("^Hello \"(.*)\", \"(.*)\", \"(.*)\"$")
       end
 
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "Hello ", is_parameter: false},
+          {value: "(.*)", is_parameter: true},
+          {value: ", ", is_parameter: false},
+          {value: "(.*)", is_parameter: true},
+          {value: ", ", is_parameter: false},
+          {value: "(.*)", is_parameter: true},
+          {value: "", is_parameter: false},
+        ])
+        expect(actionword.extra_inlined_parameters).to be_empty
+      end
+
       context "called with no arguments" do
         let(:call) { make_call(actionword_name, annotation: "given") }
 
@@ -350,7 +430,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello \"Riri\", \"Fifi\", \"Loulou\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {:value=>"Hello ", :is_argument=>false},
             {:value=>"Riri", :is_argument=>true},
@@ -378,7 +458,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello \"Pierre\", \"Paul\", \"Jacques\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {:value=>"Hello ", :is_argument=>false},
             {:value=>"Pierre", :is_argument=>true},
@@ -400,6 +480,18 @@ describe Hiptest::GherkinAdder do
         expect(gherkin_pattern).to eq("^Hello to all of you \"(.*)\" \"(.*)\" \"(.*)\"$")
       end
 
+      it "adds the correct informations and extra_inlined_parameters to Actionword" do
+        expect(actionword.chunks).to eq([
+          {value: "Hello to all of you", is_parameter: false}
+        ])
+
+        expect(actionword.extra_inlined_parameters).to eq([
+          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", is_parameter: true},
+        ])
+      end
+
       context "called with no arguments" do
         let(:call) { make_call(actionword_name, annotation: "given") }
 
@@ -407,7 +499,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello to all of you \"Riri\" \"Fifi\" \"Loulou\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {:value=>"Hello to all of you", :is_argument=>false}
           ])
@@ -433,7 +525,7 @@ describe Hiptest::GherkinAdder do
           expect(gherkin_text).to eq("Given Hello to all of you \"Pierre\" \"Paul\" \"Jacques\"")
         end
 
-        it "adds the correct information in chunks and extra_inlined_parameters" do
+        it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
             {:value=>"Hello to all of you", :is_argument=>false}
           ])
@@ -480,7 +572,24 @@ describe Hiptest::GherkinAdder do
       expect(gherkin_text).to eq("* good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
     end
 
-    it "adds the correct information in chunks and extra_inlined_parameters" do
+    it "adds the correct informations and extra_inlined_parameters to Actionword" do
+      expect(actionword.chunks).to eq([
+        {value: "good morning ", is_parameter: false},
+        {value: "(.*)", is_parameter: true},
+        {value: ", we are ", is_parameter: false},
+        {value: "(.*)", is_parameter: true},
+        {value: "\\. Say ", is_parameter: false},
+        {value: "something", is_parameter: false},
+        {value: "!", is_parameter: false}
+      ])
+
+      expect(actionword.extra_inlined_parameters).to eq([
+        {value: "(.*)", is_parameter: true},
+        {value: "(.*)", is_parameter: true}
+      ])
+    end
+
+    it "adds the correct information in chunks and extra_inlined_arguments to Call" do
       expect(call.chunks).to eq([
         {value: "good morning ", is_argument: false},
         {value: "Captain obvious", is_argument: true},
@@ -530,7 +639,7 @@ describe Hiptest::GherkinAdder do
       expect(gherkin_text).to eq("* good morning \"Captain obvious\", we are \"Monday\". Say \"something\"! \"25°C\" \"rainy\"")
     end
 
-    it "adds the correct information in chunks and extra_inlined_parameters" do
+    it "adds the correct information in chunks and extra_inlined_arguments to Call" do
       expect(call.chunks).to eq([
         {value: "good morning ", is_argument: false},
         {value: "Captain obvious", is_argument: true},
@@ -648,7 +757,17 @@ describe Hiptest::GherkinAdder do
       expect(gherkin_pattern).to eq("^I open \"(.*)\" and see:$")
     end
 
-    it "adds the correct information in chunks and extra_inlined_parameters" do
+    it "adds the correct informations and extra_inlined_parameters to Actionword" do
+      expect(actionword.chunks).to eq([
+        {value: "I open ", is_parameter: false},
+        {value: "(.*)", is_parameter: true},
+        {value: " and see:", is_parameter: false}
+      ])
+
+      expect(actionword.extra_inlined_parameters).to be_empty
+    end
+
+    it "adds the correct information in chunks and extra_inlined_arguments to Call" do
       expect(call.chunks).to eq([
         {value: "I open ", is_argument: false},
         {value: "Google", is_argument: true},

@@ -110,7 +110,7 @@ module Hiptest
     def pattern(actionword)
       patterned = actionword.chunks.map {|chunk| chunk[:value]}.join("\"")
       actionword.extra_inlined_parameters.each do |param|
-        patterned += " #{param[:value]}"
+        patterned += " \"#{param[:value]}\""
       end
 
       "^#{patterned.strip}$"
@@ -148,7 +148,7 @@ module Hiptest
 
       missing_parameter_names.each do |missing_parameter_name|
         actionword.extra_inlined_parameters << {
-          value: "\"(.*)\"",
+          value: "(.*)",
           is_parameter: true
         }
       end
