@@ -110,6 +110,11 @@ describe 'Specflow rendering' do
         '        public void TheOrderOfParametersIsWeird(string order, string parameters, string p0, string p1) {',
         '            Actionwords.TheOrderOfParametersIsWeird(p0, p1, parameters, order);',
         '        }',
+        '',
+        '        [Given("^I login on \"(.*)\" \"(.*)\"$"), When("^I login on \"(.*)\" \"(.*)\"$"), Then("^I login on \"(.*)\" \"(.*)\"$")]',
+        '        public void ILoginOn(string site, string username) {',
+        '            Actionwords.ILoginOn(site, username);',
+        '        }',
         '    }',
         '}'
       ].join("\n")

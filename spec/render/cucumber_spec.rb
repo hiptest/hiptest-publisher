@@ -42,6 +42,10 @@ describe 'Cucumber rendering' do
         "Given /^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$/ do |order, parameters, p0, p1|",
         "  the_order_of_parameters_is_weird(p0, p1, parameters, order)",
         "end",
+        "",
+        "Given /^I login on \"(.*)\" \"(.*)\"$/ do |site, username|",
+        "  i_login_on(site, username)",
+        "end",
         ""
       ].join("\n")
     }
@@ -124,6 +128,11 @@ describe 'Cucumber/Java rendering' do
         '    @Given("^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"$")',
         '    public void theOrderOfParametersIsWeird(String order, String parameters, String p0, String p1) {',
         '        actionwords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
+        '    }',
+        '',
+        '    @Given("^I login on \"(.*)\" \"(.*)\"$")',
+        '    public void iLoginOn(String site, String username) {',
+        '        actionwords.iLoginOn(site, username);',
         '    }',
         '}'
       ].join("\n")
@@ -261,6 +270,11 @@ describe 'Cucumber/Javascript rendering' do
         '',
         '    this.Given(/^the "(.*)" of "(.*)" is weird "(.*)" "(.*)"$/, function (order, parameters, p0, p1, callback) {',
         '        this.actionwords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
+        '        callback();',
+        '    });',
+        '',
+        '    this.Given(/^I login on "(.*)" "(.*)"$/, function (site, username, callback) {',
+        '        this.actionwords.iLoginOn(site, username);',
         '        callback();',
         '    });',
         '}',

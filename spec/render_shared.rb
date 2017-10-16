@@ -688,6 +688,13 @@ shared_examples "a BDD renderer" do
           make_parameter("parameters"),
           make_parameter("order")
         ]
+      ),
+      make_actionword(
+        "I login on",
+        parameters: [
+          make_parameter("site"),
+          make_parameter("username")
+        ]
       )
     ]
   }
@@ -816,6 +823,20 @@ shared_examples "a BDD renderer" do
           make_argument("parameters", literal("and again another one")),
           make_argument("order", literal("and finally another one"))
         ]
+      ])
+  }
+
+  let(:scenario_calling_actionwords_with_extra_params) {
+    make_scenario("Calling an action word with not inlined parameters",
+      folder: regression_folder,
+      body: [
+        make_call(
+          "I login on",
+          annotation: "given",
+          arguments: [
+            make_argument("site", literal("preview")),
+            make_argument("username", literal("Vincent"))
+          ])
       ])
   }
 
@@ -969,6 +990,7 @@ shared_examples "a BDD renderer" do
         scenario_with_incomplete_datatable,
         scenario_calling_untrimed_actionword,
         scenario_calling_aw_with_incorrect_order,
+        scenario_calling_actionwords_with_extra_params,
         scenario_with_double_quotes_in_datatable,
         scenario_inheriting_tags
       ],
@@ -1312,6 +1334,19 @@ shared_examples "a BDD renderer" do
           ].join("\n"))
         end
       end
+
+      context 'when there are non-inlined parameters' do
+        let(:scenario) {scenario_calling_actionwords_with_extra_params}
+
+        it 'they are rendered at the end' do
+          expect(rendered).to eq([
+           '',
+           'Scenario: Calling an action word with not inlined parameters',
+           '  Given I login on "preview" "Vincent"',
+           ''
+          ].join("\n"))
+        end
+      end
     end
 
     context 'option no-uid' do
@@ -1470,7 +1505,7 @@ shared_examples "a BDD renderer" do
         cool_colors_folder
       }
 
-      it 'produces a correct Gherin file if the scenario inherits tag but does not have its own tags' do
+      it 'produces a correct Gherkin file if the scenario inherits tag but does not have its own tags' do
         root_folder.children[:tags] = [simple_tag]
 
         expect(rendered).to eq([

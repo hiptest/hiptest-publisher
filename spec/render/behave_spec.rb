@@ -60,6 +60,11 @@ describe 'Behave rendering' do
         '@given(r\'the "(.*)" of "(.*)" is weird "(.*)" "(.*)"\')',
         'def impl(context, order, parameters, p0, p1):',
         '    context.actionwords.the_order_of_parameters_is_weird(p0, p1, parameters, order)',
+        '',
+        '',
+        '@given(r\'I login on "(.*)" "(.*)"\')',
+        'def impl(context, site, username):',
+        '    context.actionwords.i_login_on(site, username)',
         ''
       ].join("\n")
     }

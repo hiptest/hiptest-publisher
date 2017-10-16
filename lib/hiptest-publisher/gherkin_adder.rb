@@ -97,7 +97,6 @@ module Hiptest
         end
       end
 
-
       missing_parameter_names = all_arguments.keys - inline_parameter_names - @special_params
       call.extra_inlined_arguments = missing_parameter_names.map do |missing_parameter_name|
         {

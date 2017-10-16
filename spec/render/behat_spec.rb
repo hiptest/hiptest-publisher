@@ -77,6 +77,13 @@ describe 'Behat rendering' do
         '  public function theOrderOfParametersIsWeird($order, $parameters, $p0, $p1){',
         '    $this->actionwords->theOrderOfParametersIsWeird($p0, $p1, $parameters, $order);',
         '  }',
+        '',
+        '  /**',
+        '   * @Given /^I login on "(.*)" "(.*)"$/',
+        '   */',
+        '  public function iLoginOn($site, $username){',
+        '    $this->actionwords->iLoginOn($site, $username);',
+        '  }',
         '}',
         '?>'
       ].join("\n")
