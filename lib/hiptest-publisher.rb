@@ -106,12 +106,7 @@ module Hiptest
     end
 
     def write_to_file(path, message, ask_overwrite: false)
-      if ask_overwrite && File.file?(path) && !@cli_options.force_overwrite
-        puts ""
-        puts "File #{path} exists, do you want to overwrite it? [y/N]"
-        answer = gets.chomp.downcase.strip
-        return unless ['y', 'yes'].include?(answer)
-      end
+      return if ask_overwrite && !overwrite_file?(path)
 
       reporter.with_status_message "#{message}: #{path}" do
         mkdirs_for(path)
@@ -121,6 +116,22 @@ module Hiptest
       end
     rescue Exception => err
       reporter.dump_error(err)
+    end
+
+    def overwrite_file?(path)
+      return true unless File.file?(path)
+      return true if @cli_options.force_overwrite
+
+      if $stdout.isatty
+        puts ""
+        puts "File #{path} exists, do you want to overwrite it? [y/N]"
+        answer = gets.chomp.downcase.strip
+        return ['y', 'yes'].include?(answer)
+      else
+        puts ""
+        puts "File #{path} already exists, skipping. Use --force to overwrite it."
+        return false
+      end
     end
 
     def mkdirs_for(path)
