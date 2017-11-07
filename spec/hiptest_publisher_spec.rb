@@ -449,7 +449,77 @@ describe Hiptest::Publisher do
         end
       end
 
-      context 'when a tty is available'
+      context 'when a tty is available' do
+        before(:each) do
+          allow($stdout).to receive(:isatty).and_return(true)
+        end
+
+        context 'asks user about overwriting action words file' do
+          it 'regenerates the file is user answers "y"' do
+            expect($stdin)
+              .to receive(:gets)
+              .and_return("y")
+
+            File.write("#{output_dir}/actionwords.rb", "This is definitelly not the action words file")
+            run_publisher_command
+            expect(STDOUT).to have_printed("File #{output_dir}/actionwords.rb exists, do you want to overwrite it? [y/N]")
+            expect(File.read("#{output_dir}/actionwords.rb")).not_to eq("This is definitelly not the action words file")
+          end
+
+          it 'leaves it intact otherwise' do
+            expect($stdin)
+              .to receive(:gets)
+              .and_return("nah")
+
+            File.write("#{output_dir}/actionwords.rb", "This is definitelly not the action words file")
+            run_publisher_command
+            expect(STDOUT).to have_printed("File #{output_dir}/actionwords.rb exists, do you want to overwrite it? [y/N]")
+            expect(File.read("#{output_dir}/actionwords.rb")).to eq("This is definitelly not the action words file")
+          end
+        end
+
+        context 'asks user about overwriting action words signature file' do
+          it 'regenerates the file is user answers "y"' do
+            expect($stdin)
+              .to receive(:gets)
+              .and_return("y")
+
+            File.write("#{output_dir}/actionwords_signature.yaml", "This is definitelly not the signature file")
+            run_publisher_command
+            expect(STDOUT).to have_printed("File #{output_dir}/actionwords_signature.yaml exists, do you want to overwrite it? [y/N]")
+            expect(File.read("#{output_dir}/actionwords_signature.yaml")).not_to eq("This is definitelly not the signature file")
+          end
+
+          it 'leaves it intact otherwise' do
+            expect($stdin)
+              .to receive(:gets)
+              .and_return("nah")
+
+            File.write("#{output_dir}/actionwords_signature.yaml", "This is definitelly not the signature file")
+            run_publisher_command
+            expect(STDOUT).to have_printed("File #{output_dir}/actionwords_signature.yaml exists, do you want to overwrite it? [y/N]")
+            expect(File.read("#{output_dir}/actionwords_signature.yaml")).to eq("This is definitelly not the signature file")
+          end
+        end
+
+        context 'when using the --force option' do
+          it 'regenerates action words file' do
+            File.write("#{output_dir}/actionwords.rb", "This is definitelly not the action words file")
+            run_publisher_command('--force')
+            expect(STDOUT).to have_not_printed("File #{output_dir}/actionwords.rb already exists, do you want to overwrite it? [y/N]")
+
+            expect(File.read("#{output_dir}/actionwords.rb")).not_to eq("This is definitelly not the action words file")
+          end
+
+          it 'regenerates the action words signature file' do
+            File.write("#{output_dir}/actionwords_signature.yaml", "This is definitelly not the signature file")
+            run_publisher_command('--force')
+            expect(STDOUT).to have_not_printed("File #{output_dir}/actionwords_signature.yaml already exists, do you want to overwrite it? [y/N]")
+
+            expect(File.read("#{output_dir}/actionwords_signature.yaml")).not_to eq("This is definitelly not the signature file")
+          end
+        end
+      end
     end
   end
 

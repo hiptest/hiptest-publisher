@@ -125,7 +125,7 @@ module Hiptest
       if $stdout.isatty
         puts ""
         STDOUT.print "[#{"?".yellow}] File #{path} exists, do you want to overwrite it? [y/N] "
-        answer = gets.chomp.downcase.strip
+        answer = $stdin.gets.chomp.downcase.strip
         return ['y', 'yes'].include?(answer)
       else
         reporter.notify(:show_status_message, "File #{path} already exists, skipping. Use --force to overwrite it.", :warning)
