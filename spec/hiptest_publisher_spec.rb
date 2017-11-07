@@ -406,6 +406,51 @@ describe Hiptest::Publisher do
         end
       end
     end
+
+
+    describe "Overwriting existing files" do
+      context 'when no tty is available' do
+        before(:each) do
+          allow($stdout).to receive(:isatty).and_return(false)
+        end
+
+        it 'skips actionwords file generation and displays a warning' do
+          File.write("#{output_dir}/actionwords.rb", "This is definitelly not the action words file")
+          run_publisher_command
+          expect(STDOUT).to have_printed("File #{output_dir}/actionwords.rb already exists, skipping. Use --force to overwrite it")
+
+          expect(File.read("#{output_dir}/actionwords.rb")).to eq("This is definitelly not the action words file")
+        end
+
+        it 'skips actionwords signature file generation and displays a warning' do
+          File.write("#{output_dir}/actionwords_signature.yaml", "This is definitelly not the signature file")
+          run_publisher_command
+          expect(STDOUT).to have_printed("File #{output_dir}/actionwords_signature.yaml already exists, skipping. Use --force to overwrite it")
+
+          expect(File.read("#{output_dir}/actionwords_signature.yaml")).to eq("This is definitelly not the signature file")
+        end
+
+        context 'when using the --force option' do
+          it 'regenerates action words file' do
+            File.write("#{output_dir}/actionwords.rb", "This is definitelly not the action words file")
+            run_publisher_command('--force')
+            expect(STDOUT).to have_not_printed("File #{output_dir}/actionwords.rb already exists, skipping. Use --force to overwrite it")
+
+            expect(File.read("#{output_dir}/actionwords.rb")).not_to eq("This is definitelly not the action words file")
+          end
+
+          it 'regenerates the action words signature file' do
+            File.write("#{output_dir}/actionwords_signature.yaml", "This is definitelly not the signature file")
+            run_publisher_command('--force')
+            expect(STDOUT).to have_not_printed("File #{output_dir}/actionwords_signature.yaml already exists, skipping. Use --force to overwrite it")
+
+            expect(File.read("#{output_dir}/actionwords_signature.yaml")).not_to eq("This is definitelly not the signature file")
+          end
+        end
+      end
+
+      context 'when a tty is available'
+    end
   end
 
   def expect_same_files(expected_directory, actual_directory)
