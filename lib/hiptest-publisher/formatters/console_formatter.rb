@@ -41,6 +41,8 @@ class ConsoleFormatter
 
     if status == :success
       status_icon = "v".green
+    elsif status == :warning
+      status_icon = "?".yellow
     elsif status == :failure
       status_icon = "x".red
       output = STDERR
