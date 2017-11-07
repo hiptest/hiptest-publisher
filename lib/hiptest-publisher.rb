@@ -18,7 +18,6 @@ require 'hiptest-publisher/signature_exporter'
 require 'hiptest-publisher/signature_differ'
 require 'hiptest-publisher/items_orderer'
 
-
 module Hiptest
   class Publisher
     attr_reader :reporter
@@ -106,7 +105,14 @@ module Hiptest
       reporter.dump_error(err)
     end
 
-    def write_to_file(path, message)
+    def write_to_file(path, message, ask_overwrite: false)
+      if ask_overwrite && File.file?(path) && !@cli_options.force_overwrite
+        puts ""
+        puts "File #{path} exists, do you want to overwrite it? [y/N]"
+        answer = gets.chomp.downcase.strip
+        return unless ['y', 'yes'].include?(answer)
+      end
+
       reporter.with_status_message "#{message}: #{path}" do
         mkdirs_for(path)
         File.open(path, 'w') do |file|
@@ -127,20 +133,23 @@ module Hiptest
       reporter.add_listener(listener)
     end
 
-    def write_node_to_file(path, node, context, message)
-      write_to_file(path, message) do
+    def write_node_to_file(path, node, context, message, ask_overwrite: false)
+      write_to_file(path, message, ask_overwrite: ask_overwrite) do
         Hiptest::Renderer.render(node, context)
       end
     end
 
     def export_files
       @language_config.language_group_configs.each do |language_group_config|
+        ask_overwrite = language_group_config[:group_name] == 'actionwords'
+
         language_group_config.each_node_rendering_context(@project) do |node_rendering_context|
           write_node_to_file(
             node_rendering_context.path,
             node_rendering_context.node,
             node_rendering_context,
             "Exporting #{node_rendering_context.description}",
+            ask_overwrite: ask_overwrite
           )
         end
       end
@@ -151,7 +160,8 @@ module Hiptest
 
       write_to_file(
         "#{@cli_options.output_directory}/actionwords_signature.yaml",
-        "Exporting actionword signature"
+        "Exporting actionword signature",
+        ask_overwrite: true
       ) { Hiptest::SignatureExporter.export_actionwords(@project).to_yaml }
     end
 

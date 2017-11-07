@@ -242,6 +242,7 @@ class OptionsParser
       Option.new(nil, 'filter-on-status=STATUS', '', String, "Filter on test status in last build (use in conjunction with a test run)", :filter_on_status),
       Option.new(nil, 'not-recursive', false, nil, "Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children", :not_recursive),
       Option.new(nil, 'check-version', false, nil, "Check if a new release of hiptest-publisher is available", :check_version),
+      Option.new(nil, 'force', false, nil, "Force overwrite of existing files (do not apply to test files)", :force_overwrite),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)
     ]
   end
