@@ -217,6 +217,7 @@ class OptionsParser
       Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --only=actionwords", :actionwords_only),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionwords signature", :actionwords_signature),
       Option.new(nil, 'show-actionwords-diff', false, nil, "Show actionwords diff since last update (summary)", :actionwords_diff),
+      Option.new(nil, 'show-actionwords-diff-as-json', false, nil, "Show actionwords diff since last update (JSON output)", :actionwords_diff_json),
       Option.new(nil, 'show-actionwords-deleted', false, nil, "Output signature of deleted action words", :aw_deleted),
       Option.new(nil, 'show-actionwords-created', false, nil, "Output code for new action words", :aw_created),
       Option.new(nil, 'show-actionwords-renamed', false, nil, "Output signatures of renamed action words", :aw_renamed),

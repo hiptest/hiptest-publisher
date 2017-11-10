@@ -70,6 +70,11 @@ module Hiptest
         return
       end
 
+      if @cli_options.actionwords_diff_json?
+        show_actionwords_diff_as_json
+        return
+      end
+
       export
     end
 
@@ -176,7 +181,7 @@ module Hiptest
       ) { Hiptest::SignatureExporter.export_actionwords(@project).to_yaml }
     end
 
-    def show_actionwords_diff
+    def compute_actionwords_diff
       old = nil
       reporter.with_status_message "Loading previous definition" do
         old = YAML.load_file("#{@cli_options.output_directory}/actionwords_signature.yaml")
@@ -186,8 +191,16 @@ module Hiptest
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
       diff =  Hiptest::SignatureDiffer.diff( old, current)
+    end
 
-      Hiptest::DiffDisplayer.new(diff, @cli_options, @language_config).display
+    def show_actionwords_diff
+      Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config).display
+    rescue Exception => err
+      reporter.dump_error(err)
+    end
+
+    def show_actionwords_diff_as_json
+      Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config).display_as_json
     rescue Exception => err
       reporter.dump_error(err)
     end
