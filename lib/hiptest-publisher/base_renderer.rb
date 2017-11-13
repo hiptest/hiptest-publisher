@@ -1,8 +1,6 @@
 require 'ruby-handlebars'
 
-require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/nodes_walker'
-require 'hiptest-publisher/handlebars_helper'
 require 'hiptest-publisher/render_context_maker'
 
 module Hiptest

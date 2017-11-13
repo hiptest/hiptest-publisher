@@ -17,6 +17,9 @@ require 'hiptest-publisher/call_arguments_adder'
 require 'hiptest-publisher/signature_exporter'
 require 'hiptest-publisher/signature_differ'
 require 'hiptest-publisher/items_orderer'
+require 'hiptest-publisher/gherkin_adder'
+require 'hiptest-publisher/handlebars_helper'
+
 
 module Hiptest
   class Publisher
