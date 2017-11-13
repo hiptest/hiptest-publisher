@@ -145,7 +145,7 @@ module Hiptest
 
     def write_node_to_file(path, node, context, message, ask_overwrite: false)
       write_to_file(path, message, ask_overwrite: ask_overwrite) do
-        Hiptest::Renderer.render(node, context)
+        context.get_renderer.render(node, context)
       end
     end
 

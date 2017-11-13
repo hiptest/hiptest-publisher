@@ -11,7 +11,7 @@ module Hiptest
     include RenderContextMaker
 
     def self.render(node, context)
-      renderer = Hiptest::Renderer.new(context)
+      renderer = self.new(context)
       renderer.walk_node(node)
       renderer.rendered[node]
     end
