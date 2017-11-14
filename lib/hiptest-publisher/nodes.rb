@@ -2,7 +2,6 @@ require 'set'
 
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
-require 'hiptest-publisher/renderer'
 
 module Hiptest
   module Nodes
@@ -15,7 +14,7 @@ module Hiptest
       end
 
       def render(rendering_context)
-        return Hiptest::Renderer.render(self, rendering_context)
+        return rendering_context.get_renderer.render(self, rendering_context)
       end
 
       def each_sub_nodes(*types, deep: false)

@@ -663,4 +663,97 @@ describe 'Render as Groovy' do
       ].join("\n"))
     end
   end
+
+
+  context 'Groovy/Spock' do
+    it_behaves_like "a renderer" do
+      let(:language) {'groovy'}
+      let(:framework) {'spock'}
+    end
+
+    it 'handles correctly a unroll-spec for spock' do
+      container = make_folder("Spock Unroll Variants", parent: @root_folder)
+
+      datatable = Hiptest::Nodes::Datatable.new([
+         Hiptest::Nodes::Dataset.new('First line', [
+             Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('1')),
+             Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('2')),
+         ]),
+         Hiptest::Nodes::Dataset.new('Second line', [
+             Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('3')),
+             Hiptest::Nodes::Argument.new('y', Hiptest::Nodes::StringLiteral.new('4')),
+         ])
+      ])
+
+      sc1 = make_scenario("When-Then Scenario",
+        folder: container,
+        body: [
+          make_call("go to page",  annotation: "given"),
+          make_call("some trigger",  annotation: "when"),
+          make_call("the page contains something",  annotation: "then"),
+        ],
+        parameters: [make_parameter('x'), make_parameter('y')],
+        datatable: datatable
+      )
+
+      sc2 = make_scenario("Expect Scenario",
+        folder: container,
+        body: [
+            make_call("go to page",  annotation: "given"),
+            make_call("the page contains something",  annotation: "then"),
+        ],
+        parameters: [make_parameter('x'), make_parameter('y')],
+        datatable: datatable
+      )
+
+      Hiptest::Nodes::ParentAdder.add(@folders_project)
+      render_context = context_for(
+          node: container,
+          # only to select the right config group: we render [actionwords], [tests] and others differently
+          language: 'groovy',
+          framework: 'spock',
+          with_folders: true)
+
+      expect(container.render(render_context)).to eq([
+         'import spock.lang.*',
+         '',
+         'class SpockUnrollVariantsSpec extends Specification {',
+         '  def actionwords = Actionwords.newInstance()',
+         '',
+         '',
+         '',
+         '',
+         '  @Unroll("When-Then Scenario #hiptestUid")',
+         '  def "When-Then Scenario"() {',
+         '',
+         '    given:',
+         '    actionwords.goToPage()',
+         '    when:',
+         '    actionwords.someTrigger()',
+         '    then:',
+         '    actionwords.thePageContainsSomething()',
+         '',
+         '    where:',
+         '    x | y | hiptestUid',
+         '    "1" | "2" | "uid:"',
+         '    "3" | "4" | "uid:"',
+         '  }',
+         '',
+         '  @Unroll("Expect Scenario #hiptestUid")',
+         '  def "Expect Scenario"() {',
+         '',
+         '    given:',
+         '    actionwords.goToPage()',
+         '    expect:',
+         '    actionwords.thePageContainsSomething()',
+         '',
+         '    where:',
+         '    x | y | hiptestUid',
+         '    "1" | "2" | "uid:"',
+         '    "3" | "4" | "uid:"',
+         '  }',
+         '}',
+     ].join("\n"))
+    end
+  end
 end

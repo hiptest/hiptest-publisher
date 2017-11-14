@@ -175,7 +175,6 @@ describe Hiptest::RenderContextMaker do
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => false,
         :has_annotation? => false,
-        :use_main_annotation? => false,
         :in_actionword? => false,
         :in_datatabled_scenario? => false,
         :chunks => [],
@@ -186,7 +185,6 @@ describe Hiptest::RenderContextMaker do
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => true,
         :has_annotation? => false,
-        :use_main_annotation? => false,
         :in_actionword? => false,
         :in_datatabled_scenario? => false,
         :chunks => [],
@@ -197,7 +195,6 @@ describe Hiptest::RenderContextMaker do
       expect(subject.walk_call(node)).to eq({
         :has_arguments? => true,
         :has_annotation? => true,
-        :use_main_annotation? => true,
         :in_actionword? => false,
         :in_datatabled_scenario? => false,
         :chunks => [],

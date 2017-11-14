@@ -18,6 +18,9 @@ require 'hiptest-publisher/signature_exporter'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/xml_parser'
+require 'hiptest-publisher/items_orderer'
+require 'hiptest-publisher/gherkin_adder'
+require 'hiptest-publisher/handlebars_helper'
 
 module Hiptest
   class Publisher
@@ -151,7 +154,7 @@ module Hiptest
 
     def write_node_to_file(path, node, context, message, ask_overwrite: false)
       write_to_file(path, message, ask_overwrite: ask_overwrite) do
-        Hiptest::Renderer.render(node, context)
+        context.get_renderer.render(node, context)
       end
     end
 

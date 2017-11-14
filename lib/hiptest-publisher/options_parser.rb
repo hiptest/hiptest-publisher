@@ -309,7 +309,6 @@ end
 
 
 class NodeRenderingContext
-
   def initialize(properties)
     # should contain  :node, :path, :description, :indentation
     @properties = OpenStruct.new(properties)
@@ -341,6 +340,16 @@ class NodeRenderingContext
 
   def relative_folder
     File.dirname(@properties.relative_path)
+  end
+
+  def get_renderer
+    if @properties.renderer_path.nil?
+      require 'hiptest-publisher/renderer'
+    else
+      require "hiptest-publisher/language_specifics/#{@properties.renderer_path}"
+    end
+
+    Hiptest::Renderer
   end
 end
 
@@ -550,7 +559,8 @@ class LanguageGroupConfig
       call_prefix: @language_group_params[:call_prefix],
       package: @language_group_params[:package],
       namespace: @language_group_params[:namespace],
-      uids: @user_params[:uids]
+      uids: @user_params[:uids],
+      renderer_path: @language_group_params[:custom_renderer]
     )
   end
 
