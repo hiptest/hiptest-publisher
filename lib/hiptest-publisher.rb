@@ -73,11 +73,6 @@ module Hiptest
         return
       end
 
-      if @cli_options.actionwords_diff_json?
-        show_actionwords_diff_as_json
-        return
-      end
-
       export
     end
 
@@ -198,12 +193,6 @@ module Hiptest
 
     def show_actionwords_diff
       Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config).display
-    rescue Exception => err
-      reporter.dump_error(err)
-    end
-
-    def show_actionwords_diff_as_json
-      Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config).display_as_json
     rescue Exception => err
       reporter.dump_error(err)
     end

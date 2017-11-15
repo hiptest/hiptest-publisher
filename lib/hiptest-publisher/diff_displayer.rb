@@ -7,6 +7,11 @@ module Hiptest
     end
 
     def display
+      if @cli_options.actionwords_diff_json
+        display_as_json
+        return
+      end
+
       if @cli_options.aw_deleted
         return if @diff[:deleted].nil?
 
@@ -44,58 +49,52 @@ module Hiptest
     end
 
     def display_as_json
-      puts as_json
+      puts JSON.pretty_generate(as_api)
       puts ""
     end
 
-    def as_json
+    def as_api
       data = {}
 
-      unless @diff[:deleted].nil?
-        data[:deleted] = @diff[:deleted].map {|aw|
-          {
-            name: aw[:name],
-            name_in_code: @language_config.name_action_word(aw[:name])
-          }
-        }
-      end
+      data[:deleted] = @diff[:deleted].map {|aw|
+        puts "Aw: #{aw}"
+        puts "Name: #{aw[:name]}"
 
-      unless @diff[:created].nil?
-        data[:created] = @diff[:created].map {|aw|
-          {
-            name: aw[:name],
-            skeleton: actionword_skeleton(aw)
-          }
+        {
+          name: aw[:name],
+          name_in_code: @language_config.name_action_word(aw[:name])
         }
-      end
+      } unless @diff[:deleted].nil?
 
-      unless @diff[:renamed].nil?
-        data[:renamed] = @diff[:renamed].map {|aw|
-          {
-            name: aw[:name],
-            old_name: @language_config.name_action_word(renamed[:name]),
-            new_name: @language_config.name_action_word(renamed[:new_name])
-          }
+      data[:created] = @diff[:created].map {|aw|
+        {
+          name: aw[:name],
+          skeleton: actionword_skeleton(aw)
         }
-      end
+      } unless @diff[:created].nil?
 
-      unless @diff[:signature_changed].nil?
-        data[:signature_changed] = @diff[:signature_changed].map {|aw|
-          {
-            name: aw[:name],
-            skeleton: actionword_skeleton(aw)
-          }
+      data[:renamed] = @diff[:renamed].map {|aw|
+        {
+          name: aw[:name],
+          old_name: @language_config.name_action_word(aw[:name]),
+          new_name: @language_config.name_action_word(aw[:new_name])
         }
-      end
+      } unless @diff[:renamed].nil?
 
-      unless @diff[:definition_changed].nil?
-        data[:definition_changed] = @diff[:definition_changed].map {|aw|
-          {
-            name: aw[:name],
-            skeleton: actionword_skeleton(aw)
-          }
+      data[:signature_changed] = @diff[:signature_changed].map {|aw|
+        {
+          name: aw[:name],
+          skeleton: actionword_skeleton(aw)
         }
-      end
+      } unless @diff[:signature_changed].nil?
+
+
+      data[:definition_changed] = @diff[:definition_changed].map {|aw|
+        {
+          name: aw[:name],
+          skeleton: actionword_skeleton(aw)
+        }
+      } unless @diff[:definition_changed].nil?
 
       return data
     end

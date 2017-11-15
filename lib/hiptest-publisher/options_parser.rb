@@ -93,7 +93,7 @@ class CliOptions < OpenStruct
   end
 
   def actionwords_diff?
-    actionwords_diff || aw_deleted || aw_created || aw_renamed || aw_signature_changed || aw_definition_changed
+    actionwords_diff || actionwords_diff_json || aw_deleted || aw_created || aw_renamed || aw_signature_changed || aw_definition_changed
   end
 
   def push?
@@ -682,10 +682,14 @@ class LanguageConfigParser
   end
 
   def name_action_word(name)
-    name.send(@config['actionwords']['naming_convention'])
+    name.send(get_key('actionwords', 'naming_convention'))
   end
 
   private
+
+  def get_key_from_group(group, key)
+    @config[group][key] || @config['_common'][key]
+  end
 
   def group_config(group_name)
     if @config[group_name]
