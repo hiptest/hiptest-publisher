@@ -3,22 +3,23 @@ require 'fileutils'
 require 'json'
 require 'yaml'
 
-require 'hiptest-publisher/formatters/reporter'
+require 'hiptest-publisher/call_arguments_adder'
 require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/client'
-require 'hiptest-publisher/string'
-require 'hiptest-publisher/utils'
-require 'hiptest-publisher/options_parser'
-require 'hiptest-publisher/xml_parser'
-require 'hiptest-publisher/parent_adder'
 require 'hiptest-publisher/datatable_fixer'
-require 'hiptest-publisher/parameter_type_adder'
-require 'hiptest-publisher/call_arguments_adder'
-require 'hiptest-publisher/signature_exporter'
-require 'hiptest-publisher/signature_differ'
-require 'hiptest-publisher/items_orderer'
+require 'hiptest-publisher/formatters/reporter'
 require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/handlebars_helper'
+require 'hiptest-publisher/items_orderer'
+require 'hiptest-publisher/options_parser'
+require 'hiptest-publisher/parameter_type_adder'
+require 'hiptest-publisher/parent_adder'
+require 'hiptest-publisher/renderer'
+require 'hiptest-publisher/signature_differ'
+require 'hiptest-publisher/signature_exporter'
+require 'hiptest-publisher/string'
+require 'hiptest-publisher/utils'
+require 'hiptest-publisher/xml_parser'
 
 
 module Hiptest
@@ -126,7 +127,7 @@ module Hiptest
       return true if @cli_options.force_overwrite
 
       if $stdout.isatty
-        puts ""
+        STDOUT.print "\n"
         STDOUT.print "[#{"?".yellow}] File #{path} exists, do you want to overwrite it? [y/N] "
         answer = $stdin.gets.chomp.downcase.strip
         return ['y', 'yes'].include?(answer)
@@ -148,7 +149,7 @@ module Hiptest
 
     def write_node_to_file(path, node, context, message, ask_overwrite: false)
       write_to_file(path, message, ask_overwrite: ask_overwrite) do
-        context.get_renderer.render(node, context)
+        Hiptest::Renderer.render(node, context)
       end
     end
 

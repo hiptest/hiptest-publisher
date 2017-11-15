@@ -1,8 +1,7 @@
 require 'hiptest-publisher/nodes'
-require 'hiptest-publisher/base_renderer'
 
 module Hiptest
-  class Renderer < Hiptest::BaseRenderer
+  module GroovySpockAddon
 
     def walk_call(call)
       base = super(call)

@@ -5,6 +5,7 @@ require 'digest/md5'
 require 'pathname'
 
 require 'hiptest-publisher/formatters/console_formatter'
+require 'hiptest-publisher/renderer_addons'
 require 'hiptest-publisher/utils'
 
 class FileConfigParser
@@ -341,14 +342,11 @@ class NodeRenderingContext
     File.dirname(@properties.relative_path)
   end
 
-  def get_renderer
-    if @properties.renderer_path.nil?
-      require 'hiptest-publisher/renderer'
-    else
-      require "hiptest-publisher/language_specifics/#{@properties.renderer_path}"
+  def renderer_addons
+    addons = @properties.renderer_addons || ""
+    addons.split.map do |addon_name|
+      Hiptest.const_get(addon_name)
     end
-
-    Hiptest::Renderer
   end
 end
 
@@ -559,7 +557,7 @@ class LanguageGroupConfig
       package: @language_group_params[:package],
       namespace: @language_group_params[:namespace],
       uids: @user_params[:uids],
-      renderer_path: @language_group_params[:custom_renderer]
+      renderer_addons: @language_group_params[:renderer_addons],
     )
   end
 
