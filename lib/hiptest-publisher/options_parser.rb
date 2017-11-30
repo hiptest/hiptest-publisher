@@ -7,6 +7,8 @@ require 'pathname'
 require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/renderer_addons'
 require 'hiptest-publisher/utils'
+require 'hiptest-publisher/handlebars_helper'
+
 
 class FileConfigParser
   FALSY_VALUE_PATTERN = /\A(false|no|0)\Z/i
@@ -90,11 +92,12 @@ class CliOptions < OpenStruct
     hash ||= {}
     hash[:language] ||= ""
     hash[:framework] ||= ""
+
     super(__cli_args: Set.new, __config_args: Set.new, **hash)
   end
 
   def actionwords_diff?
-    actionwords_diff || aw_deleted || aw_created || aw_renamed || aw_signature_changed || aw_definition_changed
+    actionwords_diff || actionwords_diff_json || aw_deleted || aw_created || aw_renamed || aw_signature_changed || aw_definition_changed
   end
 
   def push?
@@ -218,6 +221,7 @@ class OptionsParser
       Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --only=actionwords", :actionwords_only),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionwords signature", :actionwords_signature),
       Option.new(nil, 'show-actionwords-diff', false, nil, "Show actionwords diff since last update (summary)", :actionwords_diff),
+      Option.new(nil, 'show-actionwords-diff-as-json', false, nil, "Show actionwords diff since last update (JSON output)", :actionwords_diff_json),
       Option.new(nil, 'show-actionwords-deleted', false, nil, "Output signature of deleted action words", :aw_deleted),
       Option.new(nil, 'show-actionwords-created', false, nil, "Output code for new action words", :aw_created),
       Option.new(nil, 'show-actionwords-renamed', false, nil, "Output signatures of renamed action words", :aw_renamed),
@@ -679,10 +683,14 @@ class LanguageConfigParser
   end
 
   def name_action_word(name)
-    name.send(@config['actionwords']['naming_convention'])
+    name.send(get_key_from_group('actionwords', 'naming_convention'))
   end
 
   private
+
+  def get_key_from_group(group, key)
+    @config[group][key] || @config['_common'][key]
+  end
 
   def group_config(group_name)
     if @config[group_name]

@@ -7,6 +7,7 @@ require 'hiptest-publisher/call_arguments_adder'
 require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/client'
 require 'hiptest-publisher/datatable_fixer'
+require 'hiptest-publisher/diff_displayer'
 require 'hiptest-publisher/formatters/reporter'
 require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/handlebars_helper'
@@ -20,7 +21,6 @@ require 'hiptest-publisher/signature_exporter'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
 require 'hiptest-publisher/xml_parser'
-
 
 module Hiptest
   class Publisher
@@ -179,7 +179,7 @@ module Hiptest
       ) { Hiptest::SignatureExporter.export_actionwords(@project).to_yaml }
     end
 
-    def show_actionwords_diff
+    def compute_actionwords_diff
       old = nil
       reporter.with_status_message "Loading previous definition" do
         old = YAML.load_file("#{@cli_options.output_directory}/actionwords_signature.yaml")
@@ -189,99 +189,12 @@ module Hiptest
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
       diff =  Hiptest::SignatureDiffer.diff( old, current)
-
-      if @cli_options.aw_deleted
-        return if diff[:deleted].nil?
-
-        diff[:deleted].map {|deleted|
-          puts @language_config.name_action_word(deleted[:name])
-        }
-        return
-      end
-
-      if @cli_options.aw_created
-        print_updated_aws(diff[:created])
-        return
-      end
-
-      if @cli_options.aw_renamed
-        return if diff[:renamed].nil?
-
-        diff[:renamed].map {|renamed|
-          puts "#{@language_config.name_action_word(renamed[:name])}\t#{@language_config.name_action_word(renamed[:new_name])}"
-        }
-        return
-      end
-
-      if @cli_options.aw_signature_changed
-        print_updated_aws(diff[:signature_changed])
-        return
-      end
-
-      if @cli_options.aw_definition_changed
-        print_updated_aws(diff[:definition_changed])
-        return
-      end
-
-      command_line = @cli_options.command_line_used(exclude: [:actionwords_diff])
-
-      unless diff[:deleted].nil?
-        puts "#{pluralize(diff[:deleted].length, "action word")} deleted,"
-        puts "run '#{command_line} --show-actionwords-deleted' to list the #{pluralize_word(diff[:deleted].length, "name")} in the code"
-        puts diff[:deleted].map {|d| "- #{d[:name]}"}.join("\n")
-        puts ""
-      end
-
-      unless diff[:created].nil?
-        puts "#{pluralize(diff[:created].length, "action word")} created,"
-        puts "run '#{command_line} --show-actionwords-created' to get the #{pluralize_word(diff[:created].length, "definition")}"
-
-        puts diff[:created].map {|c| "- #{c[:name]}"}.join("\n")
-        puts ""
-      end
-
-      unless diff[:renamed].nil?
-        puts "#{pluralize(diff[:renamed].length, "action word")} renamed,"
-        puts "run '#{command_line} --show-actionwords-renamed' to get the new #{pluralize_word(diff[:renamed].length, "name")}"
-        puts diff[:renamed].map {|r| "- #{r[:name]} => #{r[:new_name]}"}.join("\n")
-        puts ""
-      end
-
-      unless diff[:signature_changed].nil?
-        puts "#{pluralize(diff[:signature_changed].length, "action word")} which signature changed,"
-        puts "run '#{command_line} --show-actionwords-signature-changed' to get the new #{pluralize_word(diff[:signature_changed].length, "signature")}"
-        puts diff[:signature_changed].map {|c| "- #{c[:name]}"}.join("\n")
-        puts ""
-      end
-
-      unless diff[:definition_changed].nil?
-        puts "#{pluralize(diff[:definition_changed].length, "action word")} which definition changed:"
-        puts "run '#{command_line} --show-actionwords-definition-changed' to get the new #{pluralize_word(diff[:definition_changed].length, "definition")}"
-        puts diff[:definition_changed].map {|c| "- #{c[:name]}"}.join("\n")
-        puts ""
-      end
-
-      if diff.empty?
-        puts "No action words changed"
-        puts ""
-      end
-    rescue Exception => err
-      reporter.dump_error(err)
     end
 
-    def print_updated_aws(actionwords)
-        return if actionwords.nil?
-
-        @language_config.language_group_configs.select { |language_group_config|
-          language_group_config[:group_name] == "actionwords"
-        }.each do |language_group_config|
-          actionwords.each do |actionword|
-            node_rendering_context = language_group_config.build_node_rendering_context(actionword[:node])
-            puts actionword[:node].render(node_rendering_context)
-            puts ""
-          end
-        end
-        return
+    def show_actionwords_diff
+      Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config).display
+    rescue Exception => err
+      reporter.dump_error(err)
     end
 
     def analyze_project_data
