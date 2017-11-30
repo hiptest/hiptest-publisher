@@ -6,6 +6,8 @@ require 'pathname'
 
 require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/utils'
+require 'hiptest-publisher/handlebars_helper'
+
 
 class FileConfigParser
   FALSY_VALUE_PATTERN = /\A(false|no|0)\Z/i
@@ -89,6 +91,7 @@ class CliOptions < OpenStruct
     hash ||= {}
     hash[:language] ||= ""
     hash[:framework] ||= ""
+
     super(__cli_args: Set.new, __config_args: Set.new, **hash)
   end
 
@@ -682,7 +685,7 @@ class LanguageConfigParser
   end
 
   def name_action_word(name)
-    name.send(get_key('actionwords', 'naming_convention'))
+    name.send(get_key_from_group('actionwords', 'naming_convention'))
   end
 
   private

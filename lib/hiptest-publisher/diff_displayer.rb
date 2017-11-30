@@ -7,59 +7,52 @@ module Hiptest
     end
 
     def display
-      if @cli_options.actionwords_diff_json
-        display_as_json
-        return
-      end
+      return display_as_json if @cli_options.actionwords_diff_json
+      return display_deleted if @cli_options.aw_deleted
+      return display_created if @cli_options.aw_created
+      return display_renamed if @cli_options.aw_renamed
+      return display_signature_changed if @cli_options.aw_signature_changed
+      return display_definition_changed if @cli_options.aw_definition_changed
 
-      if @cli_options.aw_deleted
-        return if @diff[:deleted].nil?
+      display_summary
+    end
 
-        @diff[:deleted].map {|deleted|
-          puts @language_config.name_action_word(deleted[:name])
-        }
-        return
-      end
+    def display_created
+      return display_skeletons(@diff[:created])
+    end
 
-      if @cli_options.aw_created
-        print_updated_aws(@diff[:created])
-        return
-      end
+    def display_renamed
+      return if @diff[:renamed].nil?
 
-      if @cli_options.aw_renamed
-        return if @diff[:renamed].nil?
+      output(@diff[:renamed].map {|renamed|
+        "#{@language_config.name_action_word(renamed[:name])}\t#{@language_config.name_action_word(renamed[:new_name])}"
+      })
+    end
 
-        @diff[:renamed].map {|renamed|
-          puts "#{@language_config.name_action_word(renamed[:name])}\t#{@language_config.name_action_word(renamed[:new_name])}"
-        }
-        return
-      end
+    def display_signature_changed
+      display_skeletons(@diff[:signature_changed])
+    end
 
-      if @cli_options.aw_signature_changed
-        print_updated_aws(@diff[:signature_changed])
-        return
-      end
+    def display_definition_changed
+      display_skeletons(@diff[:definition_changed])
+    end
 
-      if @cli_options.aw_definition_changed
-        print_updated_aws(@diff[:definition_changed])
-        return
-      end
+    def display_deleted
+      return if @diff[:deleted].nil?
 
-      show_summary
+      output(@diff[:deleted].map {|deleted|
+        @language_config.name_action_word(deleted[:name])
+      })
     end
 
     def display_as_json
-      puts JSON.pretty_generate(as_api)
-      puts ""
+      output(JSON.pretty_generate(as_api))
     end
 
     def as_api
       data = {}
 
       data[:deleted] = @diff[:deleted].map {|aw|
-        puts "Aw: #{aw}"
-        puts "Name: #{aw[:name]}"
-
         {
           name: aw[:name],
           name_in_code: @language_config.name_action_word(aw[:name])
@@ -99,16 +92,14 @@ module Hiptest
       return data
     end
 
-    private
-
-    def show_summary
+    def display_summary
       command_line = @cli_options.command_line_used(exclude: [:actionwords_diff])
 
       unless @diff[:deleted].nil?
         output([
           "#{pluralize(@diff[:deleted].length, "action word")} deleted,",
           "run '#{command_line} --show-actionwords-deleted' to list the #{pluralize_word(@diff[:deleted].length, "name")} in the code",
-          @diff[:deleted].map {|d| "- #{d[:name]}"}.join("\n")
+          displayable_list(@diff[:deleted])
         ])
       end
 
@@ -116,7 +107,7 @@ module Hiptest
         output([
           "#{pluralize(@diff[:created].length, "action word")} created,",
           "run '#{command_line} --show-actionwords-created' to get the #{pluralize_word(@diff[:created].length, "definition")}",
-          @diff[:created].map {|c| "- #{c[:name]}"}.join("\n")
+          displayable_list(@diff[:created])
         ])
       end
 
@@ -124,7 +115,7 @@ module Hiptest
         output([
           "#{pluralize(@diff[:renamed].length, "action word")} renamed,",
           "run '#{command_line} --show-actionwords-renamed' to get the new #{pluralize_word(@diff[:renamed].length, "name")}",
-          @diff[:renamed].map {|r| "- #{r[:name]} => #{r[:new_name]}"}.join("\n")
+          displayable_list(@diff[:renamed])
         ])
       end
 
@@ -132,7 +123,7 @@ module Hiptest
         output([
           "#{pluralize(@diff[:signature_changed].length, "action word")} which signature changed,",
           "run '#{command_line} --show-actionwords-signature-changed' to get the new #{pluralize_word(@diff[:signature_changed].length, "signature")}",
-          @diff[:signature_changed].map {|c| "- #{c[:name]}"}.join("\n")
+          displayable_list(@diff[:signature_changed])
         ])
       end
 
@@ -140,7 +131,7 @@ module Hiptest
         output([
           "#{pluralize(@diff[:definition_changed].length, "action word")} which definition changed:",
           "run '#{command_line} --show-actionwords-definition-changed' to get the new #{pluralize_word(@diff[:definition_changed].length, "definition")}",
-          @diff[:definition_changed].map {|c| "- #{c[:name]}"}.join("\n")
+          displayable_list(@diff[:definition_changed])
         ])
       end
 
@@ -149,11 +140,17 @@ module Hiptest
       end
     end
 
+    private
+
     def output(lines, add_empty_line: true)
       lines = [lines] unless lines.is_a? Array
 
       puts lines.join("\n")
       puts "" if add_empty_line
+    end
+
+    def displayable_list(actionwords)
+      actionwords.map {|c| "- #{c[:name]}"}.join("\n")
     end
 
     def actionword_skeleton(actionword)
@@ -163,7 +160,7 @@ module Hiptest
       actionword[:node].render(node_rendering_context)
     end
 
-    def print_updated_aws(actionwords)
+    def display_skeletons(actionwords)
       return if actionwords.nil?
 
       actionwords.each do |actionword|

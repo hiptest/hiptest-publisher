@@ -345,7 +345,7 @@ describe Hiptest::Publisher do
             "",
             "1 action word renamed,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-renamed' to get the new name",
-            "- Parameters and assinements => Parameters and assignements",
+            "- Parameters and assinements",
             "",
             "1 action word which signature changed,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-signature-changed' to get the new signature",
