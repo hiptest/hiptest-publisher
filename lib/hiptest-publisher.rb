@@ -1,5 +1,4 @@
 require 'colorize'
-require 'fileutils'
 require 'json'
 require 'yaml'
 
@@ -9,6 +8,7 @@ require 'hiptest-publisher/client'
 require 'hiptest-publisher/datatable_fixer'
 require 'hiptest-publisher/diff_displayer'
 require 'hiptest-publisher/formatters/reporter'
+require 'hiptest-publisher/file_writer'
 require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/handlebars_helper'
 require 'hiptest-publisher/items_orderer'
@@ -30,6 +30,8 @@ module Hiptest
       @reporter = Reporter.new(listeners)
       @cli_options = OptionsParser.parse(args, reporter)
       @client = Hiptest::Client.new(@cli_options, reporter)
+      @file_writer = Hiptest::FileWriter.new(@reporter)
+
       # pass false to prevent hiptest-publisher from exiting, useful when used embedded
       @exit_on_bad_arguments = exit_on_bad_arguments
     end
@@ -111,15 +113,7 @@ module Hiptest
 
     def write_to_file(path, message, ask_overwrite: false)
       return if ask_overwrite && !overwrite_file?(path)
-
-      reporter.with_status_message "#{message}: #{path}" do
-        mkdirs_for(path)
-        File.open(path, 'w') do |file|
-          file.write(yield)
-        end
-      end
-    rescue Exception => err
-      reporter.dump_error(err)
+      @file_writer.write_to_file(path, message) { yield }
     end
 
     def overwrite_file?(path)
@@ -134,12 +128,6 @@ module Hiptest
       else
         reporter.notify(:show_status_message, "File #{path} already exists, skipping. Use --force to overwrite it.", :warning)
         return false
-      end
-    end
-
-    def mkdirs_for(path)
-      unless Dir.exists?(File.dirname(path))
-        FileUtils.mkpath(File.dirname(path))
       end
     end
 
