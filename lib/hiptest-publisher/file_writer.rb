@@ -9,8 +9,10 @@ module Hiptest
     def write_to_file(path, message)
       @reporter.with_status_message "#{message}: #{path}" do
         mkdirs_for(path)
+        content = yield
+
         File.open(path, 'w') do |file|
-          file.write(yield)
+          file.write(content)
         end
       end
     rescue Exception => err

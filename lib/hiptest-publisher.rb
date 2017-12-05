@@ -180,7 +180,7 @@ module Hiptest
     end
 
     def show_actionwords_diff
-      Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config).display
+      Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config, @file_writer).display
     rescue Exception => err
       reporter.dump_error(err)
     end

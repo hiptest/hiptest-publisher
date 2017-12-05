@@ -1,12 +1,14 @@
 module Hiptest
   class DiffDisplayer
-    def initialize(diff, cli_options, language_config)
+    def initialize(diff, cli_options, language_config, file_writer)
       @diff = diff
       @cli_options = cli_options
       @language_config = language_config
+      @file_writer = file_writer
     end
 
     def display
+      return export_as_json if @cli_options.actionwords_diff_json && @cli_options.output_directory
       return display_as_json if @cli_options.actionwords_diff_json
       return display_deleted if @cli_options.aw_deleted
       return display_created if @cli_options.aw_created
@@ -43,6 +45,14 @@ module Hiptest
       output(@diff[:deleted].map {|deleted|
         @language_config.name_action_word(deleted[:name])
       })
+    end
+
+    def export_as_json
+      @file_writer.write_to_file(
+        "#{@cli_options.output_directory}/actionwords-diff.json",
+        "Exporting actionwords diff") {
+        JSON.pretty_generate(as_api)
+      }
     end
 
     def display_as_json

@@ -2,6 +2,10 @@ require_relative "spec_helper"
 require_relative "../lib/hiptest-publisher/options_parser"
 require_relative "../lib/hiptest-publisher/signature_differ"
 require_relative "../lib/hiptest-publisher/diff_displayer"
+require_relative "../lib/hiptest-publisher/file_writer"
+require_relative "../lib/hiptest-publisher/formatters/reporter"
+
+
 
 describe Hiptest::DiffDisplayer do
   include HelperFactories
@@ -10,6 +14,10 @@ describe Hiptest::DiffDisplayer do
     options = CliOptions.new(language: "ruby", framework: "rspec")
     options.normalize!
     options
+  }
+
+  let(:file_writer) {
+    Hiptest::FileWriter.new(Reporter.new)
   }
 
   let(:language_group) {
@@ -70,19 +78,19 @@ describe Hiptest::DiffDisplayer do
     }
   }
 
-  let(:subject) {Hiptest::DiffDisplayer.new(diff, cli_options, language_group)}
+  let(:subject) {Hiptest::DiffDisplayer.new(diff, cli_options, language_group, file_writer)}
 
   context 'display' do
     context 'uses display_* depending on the commands in cli_options' do
-      def make_diff_displayer(command = nil)
-        opts = {language: "ruby", framework: "rspec"}
+      def make_diff_displayer(command = nil, extra_opts: {})
+        opts = {language: "ruby", framework: "rspec"}.merge(extra_opts)
         opts[command] = true unless command.nil?
 
         options = CliOptions.new(opts)
         options.normalize!
         lang_grp = LanguageConfigParser.new(options)
 
-        diff_displayer = Hiptest::DiffDisplayer.new(diff, options, lang_grp)
+        diff_displayer = Hiptest::DiffDisplayer.new(diff, options, lang_grp, file_writer)
 
         allow(diff_displayer).to receive(:display_summary)
         allow(diff_displayer).to receive(:display_created)
@@ -91,6 +99,8 @@ describe Hiptest::DiffDisplayer do
         allow(diff_displayer).to receive(:display_definition_changed)
         allow(diff_displayer).to receive(:display_deleted)
         allow(diff_displayer).to receive(:display_as_json)
+        allow(diff_displayer).to receive(:export_as_json)
+
 
         diff_displayer
       end
@@ -103,7 +113,8 @@ describe Hiptest::DiffDisplayer do
           :display_signature_changed,
           :display_definition_changed,
           :display_deleted,
-          :display_as_json
+          :display_as_json,
+          :export_as_json
         ]
 
         expect(diff_displayer).to have_received(called_method).once
@@ -160,6 +171,17 @@ describe Hiptest::DiffDisplayer do
         diff_displayer.display
 
         expect_only_displayer_called(diff_displayer, :display_as_json)
+      end
+
+      it 'calls export_as_json with option --show-actionwords-diff-as-json and --output-directory set' do
+        output_dir = Dir.mktmpdir
+
+        diff_displayer = make_diff_displayer(:actionwords_diff_json, extra_opts: {output_directory: output_dir})
+        diff_displayer.display
+
+        expect_only_displayer_called(diff_displayer, :export_as_json)
+
+        FileUtils.rm_rf(output_dir)
       end
     end
   end
@@ -277,9 +299,70 @@ describe Hiptest::DiffDisplayer do
     end
   end
 
+  context 'export_as_json' do
+    it 'writes the content of "as_api" in a JSON file inside the output directory' do
+      output_dir = Dir.mktmpdir
+      options = CliOptions.new({
+        language: "ruby",
+        framework: "rspec",
+        output_directory: output_dir
+      })
+      options.normalize!
+      lang_grp = LanguageConfigParser.new(options)
+      diff_displayer = Hiptest::DiffDisplayer.new(diff, options, lang_grp, file_writer)
+
+      expect { diff_displayer.export_as_json }.to output('').to_stdout
+      expect(File.read("#{output_dir}/actionwords-diff.json")).to eq([
+       %|{|,
+       %|  "deleted": [|,
+       %|    {|,
+       %|      "name": "a deleted action word",|,
+       %|      "name_in_code": "a_deleted_action_word"|,
+       %|    },|,
+       %|    {|,
+       %|      "name": "and another one who went away",|,
+       %|      "name_in_code": "and_another_one_who_went_away"|,
+       %|    }|,
+       %|  ],|,
+       %|  "created": [|,
+       %|    {|,
+       %|      "name": "My empty new actionword",|,
+       %|      "skeleton": "def my_empty_new_actionword\\n\\nend"|,
+       %|    },|,
+       %|    {|,
+       %|      "name": "My complex new actionword",|,
+       %|      "skeleton": "def my_complex_new_actionword(x, y = 'Hi, I am a valued parameters')\\n  # TODO: Implement action: 'Do something'\\n  raise NotImplementedError\\nend"|,
+       %|    }|,
+       %|  ],|,
+       %|  "renamed": [|,
+       %|    {|,
+       %|      "name": "My old action word",|,
+       %|      "old_name": "my_old_action_word",|,
+       %|      "new_name": "my_brand_new_action_word"|,
+       %|    }|,
+       %|  ],|,
+       %|  "signature_changed": [|,
+       %|    {|,
+       %|      "name": "My action word",|,
+       %|      "skeleton": "def my_action_word(x, y = 'Hi, I am a valued parameters')\\n\\nend"|,
+       %|    }|,
+       %|  ],|,
+       %|  "definition_changed": [|,
+       %|    {|,
+       %|      "name": "My updated actionword",|,
+       %|      "skeleton": "def my_updated_actionword(x, y = 'Hi, I am a valued parameters')\\n  # TODO: Implement action: \\"Do something with\#{x}\\"\\n  raise NotImplementedError\\nend"|,
+       %|    }|,
+       %|  ]|,
+       %|}|
+      ].join("\n"))
+
+      FileUtils.rm_rf(output_dir)
+    end
+  end
+
   context 'display_summary' do
     it 'displays a message when the diff is empty' do
-      expect { Hiptest::DiffDisplayer.new({}, cli_options, language_group).display_summary }.to output([
+      expect { Hiptest::DiffDisplayer.new({}, cli_options, language_group, file_writer).display_summary }.to output([
         'No action words changed',
         '',
         ''
