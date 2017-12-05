@@ -81,7 +81,19 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-scenario-name', 'My scenario']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=My scenario")
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=My%20scenario")
+        end
+
+        it 'escapes the name for the URL' do
+          # args = ['--token', '123', '--filter-on-scenario-name', 'My pouet scenario']
+          args[-1] = %q{It's "escaped"_%42_😎_<>}
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=It%27s%20%22escaped%22_%2542_%F0%9F%98%8E_%3C%3E")
+        end
+
+        it 'escapes accentuated letters for the URL' do
+          # args = ['--token', '123', '--filter-on-scenario-name', 'My pouet scenario']
+          args[-1] = "La qualité est clé"
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=La%20qualit%C3%A9%20est%20cl%C3%A9")
         end
       end
 
@@ -105,14 +117,14 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My super folder")
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My%20super%20folder")
         end
 
         context '--not-recursive' do
           let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder', '--not-recursive']}
 
           it 'allows enabling the not_recursive option' do
-            expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My super folder&not_recursive=true")
+            expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My%20super%20folder&not_recursive=true")
           end
         end
       end
@@ -121,7 +133,7 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-tags', 'tag, another:tag']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_tags=tag,another:tag")
+          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_tags=tag,another%3Atag")
         end
       end
 

@@ -1,3 +1,4 @@
+require 'erb'
 require 'json'
 require 'net/http'
 require 'uri'
@@ -43,15 +44,17 @@ module Hiptest
       options = []
 
       mapping.each do |key, filter_name|
-        value = @cli_options.send(key)
+        value = @cli_options[key]
         next if value.nil? || value.empty?
 
         if [:filter_on_scenario_ids, :filter_on_folder_ids, :filter_on_tags].include?(key)
-          value = value.split(',').map(&:strip).join(',')
+          value = value.split(',').map(&:strip).map{ |s| ERB::Util.url_encode(s) }.join(',')
+        else
+          value = ERB::Util.url_encode(value)
         end
 
         options << "#{filter_name}=#{value}"
-        if [:filter_on_folder_ids, :filter_on_folder_name].include?(key) && @cli_options.send(:not_recursive)
+        if [:filter_on_folder_ids, :filter_on_folder_name].include?(key) && @cli_options[:not_recursive]
           options << "not_recursive=true"
         end
       end
