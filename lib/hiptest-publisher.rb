@@ -96,7 +96,7 @@ module Hiptest
       if @exit_on_bad_arguments == false # means we are embedded in hiptest-publisher
         raise
       end
-    rescue Exception => err
+    rescue => err
       puts ("An error has occured, sorry for the inconvenience.\n" +
         "Try running the command again with --verbose for detailed output").red
       reporter.dump_error(err)
@@ -107,7 +107,7 @@ module Hiptest
         parser = Hiptest::XMLParser.new(xml, reporter)
         return parser.build_project
       end
-    rescue Exception => err
+    rescue => err
       reporter.dump_error(err)
     end
 
@@ -181,7 +181,7 @@ module Hiptest
 
     def show_actionwords_diff
       Hiptest::DiffDisplayer.new(compute_actionwords_diff, @cli_options, @language_config, @file_writer).display
-    rescue Exception => err
+    rescue => err
       reporter.dump_error(err)
     end
 
@@ -269,7 +269,7 @@ module Hiptest
       end
 
       display_empty_push_help if passed_count == 0
-    rescue Exception => err
+    rescue => err
       reporter.dump_error(err)
     end
 

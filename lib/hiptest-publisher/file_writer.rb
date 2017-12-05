@@ -15,7 +15,7 @@ module Hiptest
           file.write(content)
         end
       end
-    rescue Exception => err
+    rescue => err
       reporter.dump_error(err)
     end
 
