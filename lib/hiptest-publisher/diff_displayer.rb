@@ -153,9 +153,7 @@ module Hiptest
     private
 
     def output(lines, add_empty_line: true)
-      lines = [lines] unless lines.is_a? Array
-
-      puts lines.join("\n")
+      puts Array(lines).join("\n")
       puts "" if add_empty_line
     end
 
