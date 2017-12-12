@@ -341,12 +341,12 @@ describe Hiptest::XMLParser do
         expect(node.children[:arguments][0].children[:name]).to eq('x')
         expect(node.children[:arguments][0].children[:value]).to be_a(Hiptest::Nodes::Template)
         expect(node.children[:arguments][0].children[:value].children[:chunks]).to contain_exactly(
-          an_instance_of(Hiptest::Nodes::Variable).and having_attributes(:children => {:name => "my_var"}))
+          an_instance_of(Hiptest::Nodes::Variable).and having_attributes(children: {name: "my_var"}))
         expect(node.children[:arguments][1]).to be_a(Hiptest::Nodes::Argument)
         expect(node.children[:arguments][1].children[:name]).to eq('y')
         expect(node.children[:arguments][1].children[:value]).to be_a(Hiptest::Nodes::Template)
         expect(node.children[:arguments][1].children[:value].children[:chunks]).to contain_exactly(
-          an_instance_of(Hiptest::Nodes::NumericLiteral).and having_attributes(:children => {:value => "0"}))
+          an_instance_of(Hiptest::Nodes::NumericLiteral).and having_attributes(children: {value: "0"}))
       end
 
       it 'with annotation' do

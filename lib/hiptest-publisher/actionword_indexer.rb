@@ -17,8 +17,8 @@ module Hiptest
         end
 
         @indexed[aw_name] = {
-          :actionword => aw,
-          :parameters => indexed_parameters
+          actionword: aw,
+          parameters: indexed_parameters
         }
 
       end

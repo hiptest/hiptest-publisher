@@ -94,7 +94,7 @@ module Hiptest
     class Literal < Node
       def initialize(value)
         super()
-        @children = {:value => value}
+        @children = {value: value}
       end
     end
 
@@ -117,91 +117,91 @@ module Hiptest
     class Variable < Node
       def initialize(name)
         super()
-        @children = {:name => name}
+        @children = {name: name}
       end
     end
 
     class Symbol < Node
       def initialize(value, delimiter)
         super()
-        @children = {:delimiter => delimiter, :value => value}
+        @children = {delimiter: delimiter, value: value}
       end
     end
 
     class Property < Node
       def initialize(key, value)
         super()
-        @children = {:key => key, :value => value}
+        @children = {key: key, value: value}
       end
     end
 
     class Field < Node
       def initialize(base, name)
         super()
-        @children = {:base => base, :name => name}
+        @children = {base: base, name: name}
       end
     end
 
     class Index < Node
       def initialize(base, expression)
         super()
-        @children = {:base => base, :expression => expression}
+        @children = {base: base, expression: expression}
       end
     end
 
     class BinaryExpression < Node
       def initialize(left, operator, right)
         super()
-        @children = {:operator => operator, :left => left, :right => right}
+        @children = {operator: operator, left: left, right: right}
       end
     end
 
     class UnaryExpression < Node
       def initialize(operator, expression)
         super()
-        @children = {:operator => operator, :expression => expression}
+        @children = {operator: operator, expression: expression}
       end
     end
 
     class Parenthesis < Node
       def initialize(content)
         super()
-        @children = {:content => content}
+        @children = {content: content}
       end
     end
 
     class List < Node
       def initialize(items)
         super()
-        @children = {:items => items}
+        @children = {items: items}
       end
     end
 
     class Dict < Node
       def initialize(items)
         super()
-        @children = {:items => items}
+        @children = {items: items}
       end
     end
 
     class Template < Node
       def initialize(chunks)
         super()
-        @children = {:chunks => chunks}
+        @children = {chunks: chunks}
       end
     end
 
     class Assign < Node
       def initialize(to, value)
         super()
-        @children = {:to => to, :value => value}
+        @children = {to: to, value: value}
       end
     end
 
     class Argument < Node
       def initialize(name, value)
         super()
-        @children = {:name => name, :value => value}
+        @children = {name: name, value: value}
       end
 
       def free_text?
@@ -220,7 +220,7 @@ module Hiptest
       def initialize(actionword, arguments = [], annotation = nil)
         super()
         annotation = nil if annotation == ""
-        @children = {:actionword => actionword, :arguments => arguments, :all_arguments => arguments, :annotation => annotation}
+        @children = {actionword: actionword, arguments: arguments, all_arguments: arguments, annotation: annotation}
 
         @chunks = []
         @extra_inlined_arguments = []
@@ -238,28 +238,28 @@ module Hiptest
     class IfThen < Node
       def initialize(condition, then_, else_ = [])
         super()
-        @children = {:condition => condition, :then => then_, :else => else_}
+        @children = {condition: condition, then: then_, else: else_}
       end
     end
 
     class Step < Node
       def initialize(key, value)
         super()
-        @children = {:key => key, :value => value}
+        @children = {key: key, value: value}
       end
     end
 
     class While < Node
       def initialize(condition, body)
         super()
-        @children = {:condition => condition, :body => body}
+        @children = {condition: condition, body: body}
       end
     end
 
     class Tag < Node
       def initialize(key, value = nil)
         super()
-        @children = {:key => key, :value => value}
+        @children = {key: key, value: value}
       end
 
       def to_s
@@ -270,7 +270,7 @@ module Hiptest
     class Parameter < Node
       def initialize(name, default = nil)
         super()
-        @children = {:name => name, :default => default}
+        @children = {name: name, default: default}
       end
 
       def type
@@ -296,11 +296,11 @@ module Hiptest
       def initialize(name, tags = [], description = '', parameters = [], body = [])
         super()
         @children = {
-          :name => name,
-          :tags => tags,
-          :description => description,
-          :parameters => parameters,
-          :body => body
+          name: name,
+          tags: tags,
+          description: description,
+          parameters: parameters,
+          body: body
         }
       end
 
@@ -366,10 +366,10 @@ module Hiptest
         super()
 
         @children = {
-          :name => name,
-          :description => description,
-          :tags => tags,
-          :body => body
+          name: name,
+          description: description,
+          tags: tags,
+          body: body
         }
       end
 
@@ -383,7 +383,7 @@ module Hiptest
         super()
 
         @children = {
-          :datasets => datasets
+          datasets: datasets
         }
       end
     end
@@ -393,8 +393,8 @@ module Hiptest
         super()
 
         @children = {
-          :name => name,
-          :arguments => arguments
+          name: name,
+          arguments: arguments
         }
       end
 
@@ -407,7 +407,7 @@ module Hiptest
       attr_reader :to_implement, :no_implement
       def initialize(actionwords = [])
         super()
-        @children = {:actionwords => actionwords}
+        @children = {actionwords: actionwords}
         mark_actionwords_for_implementation
         index_actionwords
       end
@@ -442,7 +442,7 @@ module Hiptest
     class Scenarios < Node
       def initialize(scenarios = [])
         super()
-        @children = {:scenarios => scenarios}
+        @children = {scenarios: scenarios}
         scenarios.each {|sc| sc.parent = self}
       end
     end
@@ -450,7 +450,7 @@ module Hiptest
     class Tests < Node
       def initialize(tests = [])
         super()
-        @children = {:tests => tests}
+        @children = {tests: tests}
         tests.each {|test| test.parent = self}
       end
     end
@@ -466,12 +466,12 @@ module Hiptest
         @order_in_parent = order_in_parent
 
         @children = {
-          :name => name,
-          :description => description,
-          :subfolders => [],
-          :scenarios => [],
-          :tags => tags,
-          :body => body
+          name: name,
+          description: description,
+          subfolders: [],
+          scenarios: [],
+          tags: tags,
+          body: body
         }
       end
 
@@ -501,8 +501,8 @@ module Hiptest
         super()
         @uids_mapping = {}
         @children = {
-          :root_folder => nil,
-          :folders => folders
+          root_folder: nil,
+          folders: folders
         }
       end
 
@@ -536,12 +536,12 @@ module Hiptest
         tests.parent = self
 
         @children = {
-          :name => name,
-          :description => description,
-          :test_plan => test_plan,
-          :scenarios => scenarios,
-          :actionwords => actionwords,
-          :tests => tests
+          name: name,
+          description: description,
+          test_plan: test_plan,
+          scenarios: scenarios,
+          actionwords: actionwords,
+          tests: tests
         }
       end
 

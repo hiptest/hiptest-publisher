@@ -336,7 +336,7 @@ describe Hiptest::GherkinAdder do
         expect(call.chunks).to eq([
           {value: "Hello to all of you", is_argument: false}
         ])
-        expect(call.extra_inlined_arguments).to eq([{:value=>"John", :is_argument=>true}])
+        expect(call.extra_inlined_arguments).to eq([{value: "John", is_argument: true}])
       end
 
       context "called with an argument" do
@@ -354,7 +354,7 @@ describe Hiptest::GherkinAdder do
           expect(call.chunks).to eq([
             {value: "Hello to all of you", is_argument: false}
           ])
-          expect(call.extra_inlined_arguments).to eq([{:value=>"Paul", :is_argument=>true}])
+          expect(call.extra_inlined_arguments).to eq([{value: "Paul", is_argument: true}])
         end
       end
 
@@ -373,7 +373,7 @@ describe Hiptest::GherkinAdder do
           expect(call.chunks).to eq([
             {value: "Hello to all of you", is_argument: false}
           ])
-          expect(call.extra_inlined_arguments).to eq([{:value=>"<name>", :is_argument=>true}])
+          expect(call.extra_inlined_arguments).to eq([{value: "<name>", is_argument: true}])
         end
       end
 
@@ -388,7 +388,7 @@ describe Hiptest::GherkinAdder do
           expect(call.chunks).to eq([
             {value: "Hello to all of you", is_argument: false}
           ])
-          expect(call.extra_inlined_arguments).to eq([{:value=>"World", :is_argument=>true}])
+          expect(call.extra_inlined_arguments).to eq([{value: "World", is_argument: true}])
         end
       end
     end
@@ -432,13 +432,13 @@ describe Hiptest::GherkinAdder do
 
         it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
-            {:value=>"Hello ", :is_argument=>false},
-            {:value=>"Riri", :is_argument=>true},
-            {:value=>", ", :is_argument=>false},
-            {:value=>"Fifi", :is_argument=>true},
-            {:value=>", ", :is_argument=>false},
-            {:value=>"Loulou", :is_argument=>true},
-            {:value=>"", :is_argument=>false}
+            {value: "Hello ", is_argument: false},
+            {value: "Riri", is_argument: true},
+            {value: ", ", is_argument: false},
+            {value: "Fifi", is_argument: true},
+            {value: ", ", is_argument: false},
+            {value: "Loulou", is_argument: true},
+            {value: "", is_argument: false}
           ])
           expect(call.extra_inlined_arguments).to be_empty
         end
@@ -460,13 +460,13 @@ describe Hiptest::GherkinAdder do
 
         it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
-            {:value=>"Hello ", :is_argument=>false},
-            {:value=>"Pierre", :is_argument=>true},
-            {:value=>", ", :is_argument=>false},
-            {:value=>"Paul", :is_argument=>true},
-            {:value=>", ", :is_argument=>false},
-            {:value=>"Jacques", :is_argument=>true},
-            {:value=>"", :is_argument=>false}
+            {value: "Hello ", is_argument: false},
+            {value: "Pierre", is_argument: true},
+            {value: ", ", is_argument: false},
+            {value: "Paul", is_argument: true},
+            {value: ", ", is_argument: false},
+            {value: "Jacques", is_argument: true},
+            {value: "", is_argument: false}
           ])
           expect(call.extra_inlined_arguments).to be_empty
         end
@@ -501,7 +501,7 @@ describe Hiptest::GherkinAdder do
 
         it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
-            {:value=>"Hello to all of you", :is_argument=>false}
+            {value: "Hello to all of you", is_argument: false}
           ])
           expect(call.extra_inlined_arguments).to eq([
             {value: "Riri", is_argument: true},
@@ -527,7 +527,7 @@ describe Hiptest::GherkinAdder do
 
         it "adds the correct information in chunks and extra_inlined_arguments to Call" do
           expect(call.chunks).to eq([
-            {:value=>"Hello to all of you", :is_argument=>false}
+            {value: "Hello to all of you", is_argument: false}
           ])
           expect(call.extra_inlined_arguments).to eq([
             {value: "Pierre", is_argument: true},

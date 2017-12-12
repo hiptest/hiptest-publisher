@@ -1291,7 +1291,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       context 'With double quotes in datatable' do
         let(:scenario) {scenario_with_double_quotes_in_datatable}
 
-        it "the double quotes should be displayed", :current => true do
+        it "the double quotes should be displayed", current: true do
           expect(rendered).to eq([
             '',
             "Scenario Outline: Double quote in datatable#{outline_title_ending}",

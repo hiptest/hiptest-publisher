@@ -41,7 +41,7 @@ task :simplecov do
   Rake::Task['test'].execute
 end
 
-task :default => :test
+task default: :test
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|

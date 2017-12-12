@@ -704,13 +704,13 @@ class LanguageConfigParser
   def make_language_group_config group_name
     # List of options that can be set in the config file but not in command line
     non_visible_options = {
-      :package => @cli_options.package,
-      :namespace => @cli_options.namespace,
-      :test_export_dir => @cli_options.test_export_dir,
-      :tests_ouput_dir => @cli_options.tests_ouput_dir,
-      :features_output_directory => @cli_options.features_output_directory,
-      :step_definitions_output_directory => @cli_options.step_definitions_output_directory,
-      :actionwords_output_directory => @cli_options.actionwords_output_directory
+      package: @cli_options.package,
+      namespace: @cli_options.namespace,
+      test_export_dir: @cli_options.test_export_dir,
+      tests_ouput_dir: @cli_options.tests_ouput_dir,
+      features_output_directory: @cli_options.features_output_directory,
+      step_definitions_output_directory: @cli_options.step_definitions_output_directory,
+      actionwords_output_directory: @cli_options.actionwords_output_directory
     }
 
     language_group_params = group_config('_common')

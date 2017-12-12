@@ -2,14 +2,14 @@ module Hiptest
   module RenderContextMaker
     def walk_item(item)
       {
-        :has_description? => !item.children[:description].nil? && !item.children[:description].empty?,
-        :has_parameters? => !item.children[:parameters].empty?,
-        :has_tags? => !item.children[:tags].empty?,
-        :has_step? => has_step?(item),
-        :is_empty? => item.children[:body].empty?,
-        :declared_variables => item.declared_variables_names,
-        :raw_parameter_names => item.children[:parameters].map {|p| p.children[:name] },
-        :self_name => item.children[:name],
+        has_description?: !item.children[:description].nil? && !item.children[:description].empty?,
+        has_parameters?: !item.children[:parameters].empty?,
+        has_tags?: !item.children[:tags].empty?,
+        has_step?: has_step?(item),
+        is_empty?: item.children[:body].empty?,
+        declared_variables: item.declared_variables_names,
+        raw_parameter_names: item.children[:parameters].map {|p| p.children[:name] },
+        self_name: item.children[:name],
       }
     end
 
@@ -17,117 +17,117 @@ module Hiptest
       relative_package = @context.relative_path.split('/')[0...-1].join('.')
       relative_package = ".#{relative_package}" unless relative_package.empty?
       {
-        :needs_to_import_actionwords? => @context.relative_path.count('/') > 0,
-        :relative_package => relative_package,
+        needs_to_import_actionwords?: @context.relative_path.count('/') > 0,
+        relative_package: relative_package,
       }
     end
 
     def walk_actionword(aw)
       walk_item(aw).merge(
-        :chunks => aw.chunks || [],
-        :extra_inlined_parameters => aw.extra_inlined_parameters || []
+        chunks: aw.chunks || [],
+        extra_inlined_parameters: aw.extra_inlined_parameters || []
       )
     end
 
     def walk_folder(folder)
       walk_relative_item(folder).merge(
-        :self_name => folder.children[:name],
-        :has_tags? => !folder.children[:tags].empty?,
-        :has_step? => has_step?(folder),
-        :is_empty? => folder.children[:body].empty?,
-        :datatables_present? => datatable_present?(folder)
+        self_name: folder.children[:name],
+        has_tags?: !folder.children[:tags].empty?,
+        has_step?: has_step?(folder),
+        is_empty?: folder.children[:body].empty?,
+        datatables_present?: datatable_present?(folder)
       )
     end
 
     def walk_scenario(scenario)
       walk_item(scenario).merge(walk_relative_item(scenario)).merge(
-        :project_name => scenario.parent.parent.children[:name],
-        :has_datasets? => has_datasets?(scenario),
-        :has_annotations? => has_annotations?(scenario)
+        project_name: scenario.parent.parent.children[:name],
+        has_datasets?: has_datasets?(scenario),
+        has_annotations?: has_annotations?(scenario)
       )
     end
 
     def walk_dataset(dataset)
       datatable = dataset.parent
       {
-        :scenario_name => datatable.parent.children[:name]
+        scenario_name: datatable.parent.children[:name]
       }
     end
 
     def walk_scenarios(scenarios)
       project = scenarios.parent
       {
-        :project_name => project.children[:name],
-        :self_name => project.children[:name],
-        :datatables_present? => datatable_present?(scenarios)
+        project_name: project.children[:name],
+        self_name: project.children[:name],
+        datatables_present?: datatable_present?(scenarios)
       }
     end
 
     def walk_test(test)
       {
-        :has_description? => !test.children[:description].nil? && !test.children[:description].empty?,
-        :has_parameters? => false,
-        :has_tags? => !test.children[:tags].empty?,
-        :has_step? => has_step?(test),
-        :is_empty? => test.children[:body].empty?,
-        :has_datasets? => false,
-        :project_name => test.parent.parent.children[:name],
-        :self_name => test.children[:name],
+        has_description?: !test.children[:description].nil? && !test.children[:description].empty?,
+        has_parameters?: false,
+        has_tags?: !test.children[:tags].empty?,
+        has_step?: has_step?(test),
+        is_empty?: test.children[:body].empty?,
+        has_datasets?: false,
+        project_name: test.parent.parent.children[:name],
+        self_name: test.children[:name],
       }
     end
 
     def walk_tests(tests)
       project = tests.parent
       {
-        :project_name => project.children[:name],
-        :self_name => project.children[:name]
+        project_name: project.children[:name],
+        self_name: project.children[:name]
       }
     end
 
     def walk_call(c)
       {
-        :has_arguments? => !c.children[:arguments].empty?,
-        :has_annotation? => !c.children[:annotation].nil?,
-        :in_actionword? => c.parent.is_a?(Hiptest::Nodes::Actionword),
-        :in_datatabled_scenario? => c.parent.is_a?(Hiptest::Nodes::Scenario) && has_datasets?(c.parent),
-        :chunks => c.chunks || [],
-        :extra_inlined_arguments => c.extra_inlined_arguments || []
+        has_arguments?: !c.children[:arguments].empty?,
+        has_annotation?: !c.children[:annotation].nil?,
+        in_actionword?: c.parent.is_a?(Hiptest::Nodes::Actionword),
+        in_datatabled_scenario?: c.parent.is_a?(Hiptest::Nodes::Scenario) && has_datasets?(c.parent),
+        chunks: c.chunks || [],
+        extra_inlined_arguments: c.extra_inlined_arguments || []
       }
     end
 
     def walk_ifthen(it)
       {
-        :has_else? => !it.children[:else].empty?
+        has_else?: !it.children[:else].empty?
       }
     end
 
     def walk_parameter(p)
       {
-        :is_free_text? => p.free_text?,
-        :is_datatable? => p.datatable?,
-        :is_bool? => p.children[:type] == :bool,
-        :has_default_value? => !p.children[:default].nil?
+        is_free_text?: p.free_text?,
+        is_datatable?: p.datatable?,
+        is_bool?: p.children[:type] == :bool,
+        has_default_value?: !p.children[:default].nil?
       }
     end
 
     def walk_tag(t)
       {
-        :has_value? => !t.children[:value].nil?
+        has_value?: !t.children[:value].nil?
       }
     end
 
     def walk_template(t)
       treated = t.children[:chunks].map do |chunk|
         {
-          :is_variable? => chunk.is_a?(Hiptest::Nodes::Variable),
-          :raw => chunk
+          is_variable?: chunk.is_a?(Hiptest::Nodes::Variable),
+          raw: chunk
         }
       end
       variable_names = treated.map {|item| item[:raw].children[:name] if item[:is_variable?]}.compact
 
       {
-        :treated_chunks => treated,
-        :variable_names => variable_names
+        treated_chunks: treated,
+        variable_names: variable_names
       }
     end
 

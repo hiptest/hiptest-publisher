@@ -161,7 +161,7 @@ describe Hiptest::RenderContextMaker do
 
     it 'gives the project name' do
       expect(subject.walk_scenarios(node)).to eq({
-        :datatables_present? => false,
+        datatables_present?: false,
         project_name: 'Another project',
         self_name: 'Another project',
       })
@@ -173,32 +173,32 @@ describe Hiptest::RenderContextMaker do
 
     it 'tells if there is arguments' do
       expect(subject.walk_call(node)).to eq({
-        :has_arguments? => false,
-        :has_annotation? => false,
-        :in_actionword? => false,
-        :in_datatabled_scenario? => false,
-        :chunks => [],
-        :extra_inlined_arguments => []
+        has_arguments?: false,
+        has_annotation?: false,
+        in_actionword?: false,
+        in_datatabled_scenario?: false,
+        chunks: [],
+        extra_inlined_arguments: []
       })
 
       node.children[:arguments] << 'x'
       expect(subject.walk_call(node)).to eq({
-        :has_arguments? => true,
-        :has_annotation? => false,
-        :in_actionword? => false,
-        :in_datatabled_scenario? => false,
-        :chunks => [],
-        :extra_inlined_arguments => []
+        has_arguments?: true,
+        has_annotation?: false,
+        in_actionword?: false,
+        in_datatabled_scenario?: false,
+        chunks: [],
+        extra_inlined_arguments: []
       })
 
       node.children[:annotation] = 'Given'
       expect(subject.walk_call(node)).to eq({
-        :has_arguments? => true,
-        :has_annotation? => true,
-        :in_actionword? => false,
-        :in_datatabled_scenario? => false,
-        :chunks => [],
-        :extra_inlined_arguments => []
+        has_arguments?: true,
+        has_annotation?: true,
+        in_actionword?: false,
+        in_datatabled_scenario?: false,
+        chunks: [],
+        extra_inlined_arguments: []
       })
     end
 
@@ -227,12 +227,12 @@ describe Hiptest::RenderContextMaker do
       node = Hiptest::Nodes::IfThen.new(nil, nil)
 
       expect(subject.walk_ifthen(node)).to eq({
-        :has_else? => false
+        has_else?: false
       })
 
       node.children[:else] << 'Something'
       expect(subject.walk_ifthen(node)).to eq({
-        :has_else? => true
+        has_else?: true
       })
     end
   end
@@ -242,21 +242,21 @@ describe Hiptest::RenderContextMaker do
       node = Hiptest::Nodes::Parameter.new('My parameter')
 
       expect(subject.walk_parameter(node)).to match(a_hash_including({
-        :has_default_value? => false
+        has_default_value?: false
       }))
 
       node.children[:default] = 'Tralala'
       expect(subject.walk_parameter(node)).to match(a_hash_including({
-        :has_default_value? => true
+        has_default_value?: true
       }))
     end
 
     it 'tells if the parameter is a free text parameter' do
       expect(subject.walk_parameter(Hiptest::Nodes::Parameter.new('param'))).to match(a_hash_including({
-        :is_free_text? => false
+        is_free_text?: false
       }))
       expect(subject.walk_parameter(Hiptest::Nodes::Parameter.new('__free_text'))).to match(a_hash_including({
-        :is_free_text? => true
+        is_free_text?: true
       }))
     end
   end
@@ -266,12 +266,12 @@ describe Hiptest::RenderContextMaker do
       node = Hiptest::Nodes::Tag.new('mytag')
 
       expect(subject.walk_tag(node)).to eq({
-        :has_value? => false
+        has_value?: false
       })
 
       node.children[:value] = '123'
       expect(subject.walk_tag(node)).to eq({
-        :has_value? => true
+        has_value?: true
       })
     end
   end

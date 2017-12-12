@@ -7,7 +7,7 @@ require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
 
 CodeClimate::TestReporter.start
-WebMock.disable_net_connect!(:allow => "codeclimate.com")
+WebMock.disable_net_connect!(allow: "codeclimate.com")
 
 class ErrorListener
   def dump_error(error, message)

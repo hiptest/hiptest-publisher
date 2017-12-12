@@ -401,10 +401,10 @@ describe Hiptest::Nodes do
         Hiptest::Nodes::ParameterTypeAdder.add(project)
 
         expect(parameters_mapping).to eq([
-          {:name=>"aw1", :parameters=>[{:name => 'p1', :type => :int}]},
-          {:name=>"aw2", :parameters=>[{:name => 'p2', :type => :bool}]},
-          {:name=>"aw3", :parameters=>[{:name => 'p3', :type => :int}]},
-          {:name=>"aw4", :parameters=>[{:name => 'p4', :type => :bool}]}])
+          {name: "aw1", parameters: [{name: 'p1', type: :int}]},
+          {name: "aw2", parameters: [{name: 'p2', type: :bool}]},
+          {name: "aw3", parameters: [{name: 'p3', type: :int}]},
+          {name: "aw4", parameters: [{name: 'p4', type: :bool}]}])
 
       end
     end
