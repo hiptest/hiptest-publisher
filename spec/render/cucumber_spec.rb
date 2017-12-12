@@ -1,8 +1,8 @@
 require_relative '../spec_helper'
 require_relative '../render_shared'
 
-describe 'Cucumber rendering' do
-  it_behaves_like 'a BDD renderer' do
+describe 'Cucumber/Ruby rendering' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: false do
     let(:language) {'cucumber'}
     let(:rendered_actionwords) {
       [
@@ -65,7 +65,7 @@ describe 'Cucumber rendering' do
 end
 
 describe 'Cucumber/Java rendering' do
-  it_behaves_like 'a BDD renderer' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
     let(:language) {'cucumber'}
     let(:framework) {'java'}
 
@@ -206,7 +206,7 @@ describe 'Cucumber/Java rendering' do
 end
 
 describe 'Cucumber/Javascript rendering' do
-  it_behaves_like 'a BDD renderer' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
     let(:language) {'cucumber'}
     let(:framework) {'javascript'}
 

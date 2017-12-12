@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 require_relative '../render_shared'
 
 describe 'Behat rendering' do
-  it_behaves_like 'a BDD renderer' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: false do
     let(:language) {'behat'}
 
     let(:rendered_actionwords) {

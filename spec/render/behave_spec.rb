@@ -4,7 +4,7 @@ require_relative '../render_shared'
 describe 'Behave rendering' do
   include HelperFactories
 
-  it_behaves_like 'a BDD renderer' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
     let(:language) {'behave'}
     let(:rendered_actionwords) {
       [

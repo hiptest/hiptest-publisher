@@ -616,7 +616,7 @@ shared_examples "a renderer" do
   end
 end
 
-shared_examples "a BDD renderer" do
+shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
   include HelperFactories
 
@@ -625,6 +625,8 @@ shared_examples "a BDD renderer" do
   # You have to define language and framework.
   let(:language) { "" }
   let(:framework) { "" }
+
+  let(:outline_title_ending) { uid_should_be_in_outline ? ' (<hiptest-uid>)' : '' }
 
   let(:root_folder) { make_folder("Colors") }
   let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
@@ -1148,7 +1150,7 @@ shared_examples "a BDD renderer" do
       it 'generates a feature file with an Examples section' do
         expect(rendered).to eq([
           "",
-          "Scenario Outline: Create secondary colors",
+          "Scenario Outline: Create secondary colors#{outline_title_ending}",
           "  # This scenario has a datatable and a description",
           "  Given the color \"<first_color>\"",
           "  And the color \"<second_color>\"",
@@ -1164,28 +1166,53 @@ shared_examples "a BDD renderer" do
         ].join("\n"))
       end
 
-      it 'adds dataset UID as parameters if set (so they appear in output)' do
-        scenario.children[:uid] = 'abcd-efgh'
-        datasets = scenario.children[:datatable].children[:datasets]
-        datasets.first.children[:uid] = '1234'
-        datasets.last.children[:uid] = '5678'
+      context 'when UID is set on scenario and datasets' do
+        before do
+          scenario.children[:uid] = 'abcd-efgh'
+          datasets = scenario.children[:datatable].children[:datasets]
+          datasets.first.children[:uid] = '1234'
+          datasets.last.children[:uid] = '5678'
+        end
 
-        expect(rendered).to eq([
-          "",
-          "Scenario Outline: Create secondary colors (uid:abcd-efgh)",
-          "  # This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
-          "",
-          "  Examples:",
-          "    | first_color | second_color | got_color | priority | hiptest-uid |",
-          "    | blue | yellow | green | -1 | uid:1234 |",
-          "    | yellow | red | orange | 1 |  |",
-          "    | red | blue | purple | true | uid:5678 |",
-          "",
-        ].join("\n"))
+        if uid_should_be_in_outline
+          it 'adds dataset UID in example table and a placeholder in outline title so they appear in output' do
+            expect(rendered).to eq([
+              "",
+              "Scenario Outline: Create secondary colors (<hiptest-uid>)",
+              "  # This scenario has a datatable and a description",
+              "  Given the color \"<first_color>\"",
+              "  And the color \"<second_color>\"",
+              "  When you mix colors",
+              "  Then you obtain \"<got_color>\"",
+              "",
+              "  Examples:",
+              "    | first_color | second_color | got_color | priority | hiptest-uid |",
+              "    | blue | yellow | green | -1 | uid:1234 |",
+              "    | yellow | red | orange | 1 |  |",
+              "    | red | blue | purple | true | uid:5678 |",
+              "",
+            ].join("\n"))
+          end
+        else
+          it 'adds dataset UID in example table and the scenario UID in outline title' do
+            expect(rendered).to eq([
+              "",
+              "Scenario Outline: Create secondary colors (uid:abcd-efgh)",
+              "  # This scenario has a datatable and a description",
+              "  Given the color \"<first_color>\"",
+              "  And the color \"<second_color>\"",
+              "  When you mix colors",
+              "  Then you obtain \"<got_color>\"",
+              "",
+              "  Examples:",
+              "    | first_color | second_color | got_color | priority | hiptest-uid |",
+              "    | blue | yellow | green | -1 | uid:1234 |",
+              "    | yellow | red | orange | 1 |  |",
+              "    | red | blue | purple | true | uid:5678 |",
+              "",
+            ].join("\n"))
+          end
+        end
       end
     end
 
@@ -1232,7 +1259,7 @@ shared_examples "a BDD renderer" do
         it "is rendered using the <> notation" do
           expect(rendered).to eq([
             '',
-            'Scenario Outline: Check users',
+            "Scenario Outline: Check users#{outline_title_ending}",
             '  When I login as',
             '    | <username> |',
             '  Then I am logged in as',
@@ -1267,7 +1294,7 @@ shared_examples "a BDD renderer" do
         it "the double quotes should be displayed", :current => true do
           expect(rendered).to eq([
             '',
-            'Scenario Outline: Double quote in datatable',
+            "Scenario Outline: Double quote in datatable#{outline_title_ending}",
             '  Given the color "<color_definition>"',
             '',
             '  Examples:',
@@ -1287,7 +1314,7 @@ shared_examples "a BDD renderer" do
         it 'the capitals are also kept in the datatable headers' do
           expect(rendered).to eq([
             '',
-            'Scenario Outline: Validate Nav',
+            "Scenario Outline: Validate Nav#{outline_title_ending}",
             '  Given I am on the "<SITE_NAME>" home page',
             '',
             '  Examples:',
@@ -1306,7 +1333,7 @@ shared_examples "a BDD renderer" do
         it 'even if a data is missing, that is fixed during export' do
           expect(rendered).to eq([
             '',
-            'Scenario Outline: Incomplete datatable',
+            "Scenario Outline: Incomplete datatable#{outline_title_ending}",
             '  Given the color "<first_color>"',
             '  And the color "<second_color>"',
             '  When you mix colors',
@@ -1426,7 +1453,7 @@ shared_examples "a BDD renderer" do
         '    Given I have colors to mix',
         '    And I know the expected color',
         '',
-        '  Scenario Outline: Create secondary colors',
+        "  Scenario Outline: Create secondary colors#{outline_title_ending}",
         '    # This scenario has a datatable and a description',
         '    Given the color "<first_color>"',
         '    And the color "<second_color>"',
