@@ -16,7 +16,7 @@ module Hiptest
         end
       end
     rescue => err
-      reporter.dump_error(err)
+      @reporter.dump_error(err)
     end
 
     private
