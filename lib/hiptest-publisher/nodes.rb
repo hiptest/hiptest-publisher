@@ -389,11 +389,12 @@ module Hiptest
     end
 
     class Dataset < Node
-      def initialize(name, arguments = [])
+      def initialize(name, arguments = [], uid = nil)
         super()
 
         @children = {
           name: name,
+          uid: uid,
           arguments: arguments
         }
       end

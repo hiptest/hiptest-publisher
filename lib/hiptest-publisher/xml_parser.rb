@@ -233,10 +233,11 @@ module Hiptest
         scenario.set_uid(css_first_content(scs, ' > uid'))
 
         scs.css('testSnapshot').each do |testSnapshot|
-          uid = css_first_content(testSnapshot, '> uid')
-          index = css_first_content(testSnapshot, '> index').to_i
+          test_snapshot_uid = css_first_content(testSnapshot, '> uid')
+          dataset_uid = css_first_content(testSnapshot, '> datasetUid')
 
-          datasets[index].set_test_snapshot_uid(uid) unless index >= datasets.length
+          dataset = datasets.find { |ds| ds.children[:uid] == dataset_uid }
+          dataset.set_test_snapshot_uid(test_snapshot_uid) if dataset
         end
       end
       scenario
@@ -249,7 +250,8 @@ module Hiptest
     def build_dataset(dataset)
       Hiptest::Nodes::Dataset.new(
         css_first_content(dataset, '> name'),
-        build_node_list(dataset.css('> arguments argument')))
+        build_node_list(dataset.css('> arguments argument')),
+        css_first_content(dataset, '> datasetUid'))
     end
 
     def build_actionwords(actionwords, actionwords_query = '> actionword')

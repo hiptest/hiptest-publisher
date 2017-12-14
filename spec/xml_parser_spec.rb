@@ -577,6 +577,7 @@ describe Hiptest::XMLParser do
       node = build_node([
         '<dataset>',
         '  <name>My second set</name>',
+        '  <datasetUid>24680</datasetUid>',
         '  <arguments>',
         '    <argument>',
         '      <name>x</name>',
@@ -596,6 +597,7 @@ describe Hiptest::XMLParser do
 
       expect(node).to be_a(Hiptest::Nodes::Dataset)
       expect(node.children[:name]).to eq('My second set')
+      expect(node.children[:uid]).to eq('24680')
       args = node.children[:arguments]
 
       expect(args.length).to eq(2)
@@ -715,6 +717,34 @@ describe Hiptest::XMLParser do
 
           expect(datasets.first.children[:test_snapshot_uid]).to eq('8765')
           expect(datasets.last.children[:test_snapshot_uid]).to eq('4321')
+        end
+
+        it 'works at dataset level even if some test snapshots are filtered out' do
+          scenario = build_node([
+            '<scenarioSnapshot>',
+            '  <name>My scenario</name>',
+            '  <uid>1234</uid>',
+            '  <datatable>',
+            '    <dataset>',
+            '      <name>My second set</name>',
+            '      <datasetUid>def</datasetUid>',
+            '    </dataset>',
+            '  </datatable>',
+            '  <testSnapshots>',
+            '    <testSnapshot>',
+            '      <index>1</index>',
+            '      <uid>4321</uid>',
+            '      <datasetUid>def</datasetUid>',
+            '      <datasetName>My second set</datasetName>',
+            '    </testSnapshot>',
+            '  </testSnapshots>',
+            '</scenarioSnapshot>'
+          ].join("\n"))
+
+          expect(scenario.children[:uid]).to eq('1234')
+          datasets = scenario.children[:datatable].children[:datasets]
+
+          expect(datasets.first.children[:test_snapshot_uid]).to eq('4321')
         end
       end
     end
