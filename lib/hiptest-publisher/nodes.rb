@@ -398,8 +398,8 @@ module Hiptest
         }
       end
 
-      def set_uid(uid)
-        @children[:uid] = uid
+      def set_test_snapshot_uid(uid)
+        @children[:test_snapshot_uid] = uid
       end
     end
 

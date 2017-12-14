@@ -533,10 +533,10 @@ shared_examples "a renderer" do
         expect(rendering(@full_scenario)).to eq(@full_scenario_with_uid_rendered)
       end
 
-      it 'when the uid is set at the dataset level, it is rendered in the dataset export name' do
+      it 'when the test snapshot uid is set at the dataset level, it is rendered in the dataset export name' do
         uids = ['a-123', 'b-456', 'c-789']
         @scenario_with_datatable.children[:datatable].children[:datasets].each_with_index do |dataset, index|
-          dataset.set_uid(uids[index])
+          dataset.set_test_snapshot_uid(uids[index])
         end
 
         expect(rendering(@scenario_with_datatable)).to eq(
@@ -1170,8 +1170,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         before do
           scenario.children[:uid] = 'abcd-efgh'
           datasets = scenario.children[:datatable].children[:datasets]
-          datasets.first.children[:uid] = '1234'
-          datasets.last.children[:uid] = '5678'
+          datasets.first.children[:test_snapshot_uid] = '1234'
+          datasets.last.children[:test_snapshot_uid] = '5678'
         end
 
         if uid_should_be_in_outline

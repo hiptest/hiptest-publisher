@@ -686,19 +686,25 @@ describe Hiptest::XMLParser do
             '  <datatable>',
             '    <dataset>',
             '      <name>My first set</name>',
+            '      <datasetUid>abc</datasetUid>',
             '    </dataset>',
             '    <dataset>',
             '      <name>My second set</name>',
+            '      <datasetUid>def</datasetUid>',
             '    </dataset>',
             '  </datatable>',
             '  <testSnapshots>',
             '    <testSnapshot>',
             '      <index>1</index>',
             '      <uid>4321</uid>',
+            '      <datasetUid>def</datasetUid>',
+            '      <datasetName>My second set</datasetName>',
             '    </testSnapshot>',
             '    <testSnapshot>',
             '      <index>0</index>',
             '      <uid>8765</uid>',
+            '      <datasetUid>abc</datasetUid>',
+            '      <datasetName>My first set</datasetName>',
             '    </testSnapshot>',
             '  </testSnapshots>',
             '</scenarioSnapshot>'
@@ -707,8 +713,8 @@ describe Hiptest::XMLParser do
           expect(scenario.children[:uid]).to eq('1234')
           datasets = scenario.children[:datatable].children[:datasets]
 
-          expect(datasets.first.children[:uid]).to eq('8765')
-          expect(datasets.last.children[:uid]).to eq('4321')
+          expect(datasets.first.children[:test_snapshot_uid]).to eq('8765')
+          expect(datasets.last.children[:test_snapshot_uid]).to eq('4321')
         end
       end
     end

@@ -236,7 +236,7 @@ module Hiptest
           uid = css_first_content(testSnapshot, '> uid')
           index = css_first_content(testSnapshot, '> index').to_i
 
-          datasets[index].set_uid(uid) unless index >= datasets.length
+          datasets[index].set_test_snapshot_uid(uid) unless index >= datasets.length
         end
       end
       scenario
