@@ -172,6 +172,12 @@ module Hiptest
       s ? s.gsub('\'', "\\\\'") : ""
     end
 
+    def hh_unescape_single_quotes (context, s, block=nil)
+      # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
+      s = compute_block_value(context, s, block)
+      s ? s.gsub("\\'", "'") : ""
+    end
+
     def hh_escape_backslashes_and_double_quotes (context, s, block=nil)
       s = compute_block_value(context, s, block)
 

@@ -426,6 +426,13 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context 'hh_unescape_single_quotes' do
+    it 'removes backslashe before single quotes' do
+      expect(evaluate('{{unescape_single_quotes value}}', {value: "My \\'string\\'"})).to eq("My 'string'")
+      expect(evaluate("{{#unescape_single_quotes}}My \\'string\\'{{/unescape_single_quotes}}", {})).to eq("My 'string'")
+    end
+  end
+
   context 'hh_escape_backslashes_and_double_quotes' do
     it 'escapes double quotes' do
       simple_template = '{{escape_backslashes_and_double_quotes value}}'
