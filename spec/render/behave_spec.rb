@@ -10,11 +10,11 @@ describe 'Behave rendering' do
       [
         'from behave import *',
         '',
-        '# This should be added to environments.py',
+        '# This should be added to environment.py',
         '# from steps.actionwords import Actionwords',
         '#',
         '# def before_scenario(context, scenario):',
-        '#     context.actionwords = Actionwords.new(nil)',
+        '#     context.actionwords = Actionwords()',
         '',
         'use_step_matcher(\'re\')',
         '',
