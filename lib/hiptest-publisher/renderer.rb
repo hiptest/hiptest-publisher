@@ -99,6 +99,7 @@ module Hiptest
               scenario_name: @rendered[sc.children[:name]],
               name: @rendered[dataset.children[:name]],
               uid: @rendered[dataset.children[:uid]],
+              test_snapshot_uid: @rendered[dataset.children[:test_snapshot_uid]],
               arguments: @rendered[dataset.children[:arguments]]
             }
           },
