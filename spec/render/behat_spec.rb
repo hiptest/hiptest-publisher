@@ -44,7 +44,7 @@ describe 'Behat rendering' do
         '',
         '',
         '  /**',
-        '   * @But /^you cannot play croquet$/',
+        '   * @Then /^you cannot play croquet$/',
         '   */',
         '  public function youCannotPlayCroquet(){',
         '    $this->actionwords->youCannotPlayCroquet();',

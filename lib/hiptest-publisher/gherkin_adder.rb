@@ -49,7 +49,7 @@ module Hiptest
     def code_annotation(call)
       call_annotation = annotation(call)
       if call_annotation
-        if call_annotation == "And"
+        if ["And", "But"].include?(call_annotation)
           call_annotation = @last_annotation || "Given"
         end
         @last_annotation = call_annotation

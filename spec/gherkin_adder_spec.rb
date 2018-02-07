@@ -679,6 +679,19 @@ describe Hiptest::GherkinAdder do
       end
     end
 
+    context "with But annotation" do
+      let(:scenario) {
+        make_scenario("My scenario", body: [
+          make_call(actionword_hello.children[:name], annotation: "when"),
+          make_call(actionword_bonjour.children[:name], annotation: "and"),
+        ])
+      }
+
+      it "picks the last meaningful annotation" do
+        expect(actionword_bonjour.children[:gherkin_annotation]).to eq("When")
+      end
+    end
+
     context "with And annotation as first step" do
       let(:other_scenario) {
         make_scenario("My scenario", body: [
