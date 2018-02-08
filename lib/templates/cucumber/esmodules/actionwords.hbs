@@ -1,5 +1,5 @@
 import {{#curly}} Given, When, Then {{/curly}} from 'cucumber';
-import * as actionwords from './actionwords';
+import * as {{context.call_prefix}} from './{{context.call_prefix}}';
 
 {{#each rendered_children.actionwords}}{{{this}}}
 {{/each}}
