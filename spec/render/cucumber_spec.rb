@@ -285,3 +285,68 @@ describe 'Cucumber/Javascript rendering' do
     let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 end
+
+describe 'Cucumber/ECMAScript 2015 Modules rendering' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
+    let(:language) {'cucumber'}
+    let(:framework) {'esmodules'}
+
+    let(:rendered_free_texted_actionword) {[
+      'export async function theFollowingUsersAreAvailable (__free_text) {',
+      '',
+      '}'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'export async function theFollowingUsersAreAvailable (__datatable) {',
+      '',
+      '}'].join("\n")}
+
+    let(:rendered_actionwords) {
+      [
+        'import { Given, When, Then } from \'cucumber\';',
+        'import * as actionwords from \'./actionwords\';',
+        '',
+        '',
+        'Given(/^the color "(.*)"$/, function (color) {',
+        '    return actionwords.theColorColor(color);',
+        '});',
+        '',
+        'When(/^you mix colors$/, function () {',
+        '    return actionwords.youMixColors();',
+        '});',
+        '',
+        'Then(/^you obtain "(.*)"$/, function (color) {',
+        '    return actionwords.youObtainColor(color);',
+        '});',
+        '',
+        '',
+        'Then(/^you cannot play croquet$/, function () {',
+        '    return actionwords.youCannotPlayCroquet();',
+        '});',
+        '',
+        'Given(/^I am on the "(.*)" home page$/, function (site, __free_text) {',
+        '    return actionwords.iAmOnTheSiteHomePage(site, __free_text);',
+        '});',
+        '',
+        'When(/^the following users are available on "(.*)"$/, function (site, __datatable) {',
+        '    return actionwords.theFollowingUsersAreAvailableOnSite(site, __datatable);',
+        '});',
+        '',
+        'Given(/^an untrimed action word$/, function () {',
+        '    return actionwords.anUntrimedActionWord();',
+        '});',
+        '',
+        'Given(/^the "(.*)" of "(.*)" is weird "(.*)" "(.*)"$/, function (order, parameters, p0, p1) {',
+        '    return actionwords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
+        '});',
+        '',
+        'Given(/^I login on "(.*)" "(.*)"$/, function (site, username) {',
+        '    return actionwords.iLoginOn(site, username);',
+        '});',
+        ''
+      ].join("\n")
+    }
+
+    let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
+  end
+end
