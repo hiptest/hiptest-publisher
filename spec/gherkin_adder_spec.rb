@@ -683,7 +683,7 @@ describe Hiptest::GherkinAdder do
       let(:scenario) {
         make_scenario("My scenario", body: [
           make_call(actionword_hello.children[:name], annotation: "when"),
-          make_call(actionword_bonjour.children[:name], annotation: "and"),
+          make_call(actionword_bonjour.children[:name], annotation: "but"),
         ])
       }
 
