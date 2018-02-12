@@ -36,7 +36,7 @@ describe 'Behave rendering' do
         '',
         '',
         '',
-        '@but(r\'you cannot play croquet\')',
+        '@then(r\'you cannot play croquet\')',
         'def impl(context):',
         '    context.actionwords.you_cannot_play_croquet()',
         '',
