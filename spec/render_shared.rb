@@ -1374,6 +1374,39 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
           ].join("\n"))
         end
       end
+
+      context 'when a pipe is escaed in the datatable' do
+        let(:scenario) {
+          scenario = create_secondary_colors_scenario
+          scenario
+            .children[:datatable]
+            .children[:datasets].first
+            .children[:arguments].first
+            .children[:value] = template_of_literals('Blue \| ish')
+          scenario
+        }
+
+        it 'should not double-escape them' do
+
+          expect(rendered).to eq([
+            '',
+            'Scenario Outline: Create secondary colors',
+            '  # This scenario has a datatable and a description',
+            '  Given the color "<first_color>"',
+            '  And the color "<second_color>"',
+            '  When you mix colors',
+            '  Then you obtain "<got_color>"',
+            '',
+            '  Examples:',
+            '    | first_color | second_color | got_color | priority | hiptest-uid |',
+            '    | Blue \| ish | yellow | green | -1 |  |',
+            '    | yellow | red | orange | 1 |  |',
+            '    | red | blue | purple | true |  |',
+            ''
+          ].join("\n"))
+        end
+      end
+#scenario_with_datatable_argument
     end
 
     context 'option no-uid' do
