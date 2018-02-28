@@ -1,0 +1,31 @@
+require_relative '../spec_helper'
+require_relative '../render_shared'
+
+describe '<your language> rendering' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: false do
+    let(:language) {'<your language>'}
+
+    # Describe here how steps definitions should be rendered.
+    # The list of steps defined in the project are:
+    #  - the color "(.*)"
+    #  - you mix colors
+    #  - you obtain "(.*)"
+    #  - you cannot play croquet
+    #  - I am on the "(.*)" home page
+    #  - the following users are available on "(.*)"
+    #  - an untrimed action word
+    #  - the "(.*)" of "(.*)" is weird "(.*)" "(.*)"
+    #  - I login on "(.*)" "(.*)"
+
+    let(:rendered_actionwords) { [].join("\n") }
+
+    # This is only needed to be uncommented if the language uses special types for doc strings / """ """ notation
+    # let(:rendered_free_texted_actionword) { [].join("\n")}
+
+    # This is only needed to be uncommented if the language uses special types for steps datatables
+    # let(:rendered_datatabled_actionword) {[].join("\n")}
+
+    # This only needs to be uncommented if you have special needs about empty scenarios
+    # let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
+  end
+end

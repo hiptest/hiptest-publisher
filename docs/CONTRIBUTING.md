@@ -18,6 +18,7 @@ Run the following command line:
 rspec spec/render/scala_spec.rb -f d
 ```
 
+Note for Gherkin based languages (such as Cucumber, Specflow, Behave, Behat, Lettuce and so on): those languages have another list of tests. If you want to add support for this kind of language, use ``spec/render__gherkin_template_spec.rb.sample`` file as a template instead. Good news, there are way less parts to complete for those languages :)
 
 Normally, you should see a lot of tests failing and that's totally normal (only 5 tests should pass).
 Now you have to update the expected output when exporting in Scala. That is the variables ``@<some name, mainly about the Foo Fighters>`` declared in the ``before(:each)`` block. For all expected output, we also added the corresponding text in Hiptest test description language.
