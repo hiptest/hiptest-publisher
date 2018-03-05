@@ -2,6 +2,7 @@ require 'colorize'
 require 'json'
 require 'yaml'
 
+require 'hiptest-publisher/actionword_uniq_renamer'
 require 'hiptest-publisher/call_arguments_adder'
 require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/client'
@@ -193,6 +194,7 @@ module Hiptest
         Hiptest::Nodes::ParentAdder.add(@project)
         Hiptest::Nodes::ParameterTypeAdder.add(@project)
         Hiptest::DefaultArgumentAdder.add(@project)
+        Hiptest::ActionwordUniqRenamer.add(@project)
         Hiptest::GherkinAdder.add(@project)
         Hiptest::ItemsOrderer.add(@project, @cli_options.sort)
       end

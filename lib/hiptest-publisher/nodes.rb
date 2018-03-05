@@ -338,8 +338,8 @@ module Hiptest
     end
 
     class Actionword < Item
-      attr_reader :chunks, :extra_inlined_parameters
-      attr_writer :chunks, :extra_inlined_parameters
+      attr_reader :chunks, :extra_inlined_parameters, :uniq_name
+      attr_writer :chunks, :extra_inlined_parameters, :uniq_name
 
       def initialize(name, tags = [], parameters = [], body = [], uid = nil, description = '')
         super(name, tags, description, parameters, body)
@@ -347,6 +347,7 @@ module Hiptest
 
         @chunks = []
         @extra_inlined_parameters = []
+        @uniq_name = name
       end
 
       def must_be_implemented?

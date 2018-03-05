@@ -25,7 +25,8 @@ module Hiptest
     def walk_actionword(aw)
       walk_item(aw).merge(
         chunks: aw.chunks || [],
-        extra_inlined_parameters: aw.extra_inlined_parameters || []
+        extra_inlined_parameters: aw.extra_inlined_parameters || [],
+        uniq_name: aw.uniq_name
       )
     end
 
@@ -43,7 +44,8 @@ module Hiptest
       walk_item(scenario).merge(walk_relative_item(scenario)).merge(
         project_name: scenario.parent.parent.children[:name],
         has_datasets?: has_datasets?(scenario),
-        has_annotations?: has_annotations?(scenario)
+        has_annotations?: has_annotations?(scenario),
+        uniq_name: scenario.children[:name]
       )
     end
 
