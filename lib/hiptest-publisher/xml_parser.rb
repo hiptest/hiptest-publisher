@@ -122,6 +122,13 @@ module Hiptest
         css_first_content(call, '> annotation'))
     end
 
+    def build_uidcall(uid_call)
+      Hiptest::Nodes::UIDCall.new(
+        css_first_content(uid_call, '> uid'),
+        build_arguments(uid_call),
+        css_first_content(uid_call, '> annotation'))
+    end
+
     def build_arguments(arguments)
       build_node_list(arguments.css('> arguments > argument'))
     end
@@ -198,6 +205,7 @@ module Hiptest
         css_first_content(actionword, '> uid'),
         css_first_content(actionword, '> description'))
     end
+    alias :build_libraryActionword :build_actionword
 
     def build_actionwordSnapshot(actionword)
       Hiptest::Nodes::Actionword.new(
@@ -303,6 +311,13 @@ module Hiptest
       return tp
     end
 
+    def build_actionwordLibrary(library)
+      Hiptest::Nodes::Library.new(
+        css_first_content(library, '> name'),
+        build_node_list(library.css('> libraryActionword'))
+      )
+    end
+
     def build_folderSnapshots(folder_snapshots)
       build_testPlan(folder_snapshots, '> folderSnapshot')
     end
@@ -327,7 +342,9 @@ module Hiptest
         build_node(test_plan_node, Hiptest::Nodes::TestPlan),
         build_node(scenarios_node, Hiptest::Nodes::Scenarios),
         build_node(actionwords_node, Hiptest::Nodes::Actionwords),
-        build_node(css_first(project, '> tests'), Hiptest::Nodes::Tests))
+        build_node(css_first(project, '> tests'), Hiptest::Nodes::Tests),
+        build_node_list(project.css('actionwordLibrary'))
+      )
 
       @project.assign_scenarios_to_folders
       return @project

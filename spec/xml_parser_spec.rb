@@ -368,6 +368,55 @@ describe Hiptest::XMLParser do
       end
     end
 
+    context 'UIDCall' do
+      let(:uid) { '12345678-1234-12345-1234-123456789012'}
+
+      it 'builds the node' do
+        node = build_node("<uidcall>
+          <annotation>Given</annotation>
+          <uid>#{uid}</uid>
+        </uidcall>")
+
+        expect(node).to be_a(Hiptest::Nodes::UIDCall)
+        expect(node.children[:annotation]).to eq('Given')
+        expect(node.children[:uid]).to eq(uid)
+      end
+
+      it 'does not keep empty annotations' do
+        node = build_node("<uidcall>
+          <annotation></annotation>
+          <uid>#{uid}</uid>
+        </uidcall>")
+
+        expect(node.children[:annotation]).to be_nil
+      end
+
+      it 'supports arguments' do
+        node = build_node("
+          <uidcall>
+            <uid>#{uid}</actionword>
+            <arguments>
+              <argument>
+                <name>x</name>
+                <value>
+                  <template>#{@my_var}</template>
+                </value>
+              </argument>
+              <argument>
+                <name>y</name>
+                  <value>
+                    <template>#{@zero}</template>
+                  </value>
+              </argument>
+            </arguments>
+          </uidcall>")
+
+        expect(node.children[:arguments].length).to eq(2)
+        expect(node.children[:arguments].first.children[:name]).to eq('x')
+        expect(node.children[:arguments].last.children[:name]).to eq('y')
+      end
+    end
+
     context 'step' do
 
       it 'action step' do
@@ -801,6 +850,36 @@ describe Hiptest::XMLParser do
       let(:folder_container) {'folderSnapshots'}
 
       it_behaves_like 'folder structure'
+    end
+
+    context 'library' do
+      it 'builds the node' do
+        node = build_node("<actionwordLibrary>
+          <name>My library</name>
+        </actionwordLibrary>")
+
+        expect(node).to be_a(Hiptest::Nodes::Library)
+        expect(node.children[:name]).to eq('My library')
+      end
+
+      it 'supports nested action words' do
+        node = build_node("<actionwordLibrary>
+          <name>My library</name>
+          <libraryActionword>
+            <name>My first action word</name>
+          </libraryActionword>
+          <libraryActionword>
+            <name>My second action word</name>
+          </libraryActionword>
+        </actionwordLibrary>")
+
+        expect(node.children[:actionwords].length).to eq(2)
+        expect(node.children[:actionwords].first).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:actionwords].first.children[:name]).to eq('My first action word')
+
+        expect(node.children[:actionwords].last).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:actionwords].last.children[:name]).to eq('My second action word')
+      end
     end
 
     context 'project' do

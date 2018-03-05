@@ -235,6 +235,19 @@ module Hiptest
       end
     end
 
+    class UIDCall < Node
+      def initialize(uid, arguments = [], annotation = nil)
+        super()
+        annotation = nil if annotation == ""
+
+        @children = {
+          uid: uid,
+          arguments: arguments,
+          annotation: annotation
+        }
+      end
+    end
+
     class IfThen < Node
       def initialize(condition, then_, else_ = [])
         super()
@@ -529,8 +542,18 @@ module Hiptest
       end
     end
 
+    class Library < Node
+      def initialize(name = 'default_library', actionwords = [])
+        super()
+        @children = {
+          name: name,
+          actionwords: actionwords
+        }
+      end
+    end
+
     class Project < Node
-      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new)
+      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new, libraries = [])
         super()
         test_plan.parent = self if test_plan.respond_to?(:parent=)
         scenarios.parent = self
@@ -542,7 +565,8 @@ module Hiptest
           test_plan: test_plan,
           scenarios: scenarios,
           actionwords: actionwords,
-          tests: tests
+          tests: tests,
+          libraries: libraries
         }
       end
 
