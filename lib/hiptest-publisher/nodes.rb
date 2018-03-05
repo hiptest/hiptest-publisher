@@ -542,6 +542,15 @@ module Hiptest
       end
     end
 
+    class Libraries < Node
+      def initialize(libraries = [])
+        super()
+        @children = {
+          libraries: libraries
+        }
+      end
+    end
+
     class Library < Node
       def initialize(name = 'default_library', actionwords = [])
         super()
@@ -553,7 +562,7 @@ module Hiptest
     end
 
     class Project < Node
-      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new, libraries = [])
+      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new, libraries = Libraries.new)
         super()
         test_plan.parent = self if test_plan.respond_to?(:parent=)
         scenarios.parent = self

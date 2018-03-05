@@ -865,12 +865,14 @@ describe Hiptest::XMLParser do
       it 'supports nested action words' do
         node = build_node("<actionwordLibrary>
           <name>My library</name>
-          <libraryActionword>
-            <name>My first action word</name>
-          </libraryActionword>
-          <libraryActionword>
-            <name>My second action word</name>
-          </libraryActionword>
+          <libraryActionwords>
+            <libraryActionword>
+              <name>My first action word</name>
+            </libraryActionword>
+            <libraryActionword>
+              <name>My second action word</name>
+            </libraryActionword>
+          </libraryActionwords>
         </actionwordLibrary>")
 
         expect(node.children[:actionwords].length).to eq(2)
@@ -942,6 +944,32 @@ describe Hiptest::XMLParser do
         expect(folder.children[:scenarios]).to eq([scenarios.first])
       end
     end
+
+    context 'actionwordLibraries' do
+      it 'stores all libraries inside a Library node' do
+        node = TestParser.new("<?xml version=\"1.0\"?>
+          <project>
+            <name>My project</name>
+            <description>A description</description>
+            <actionwordLibraries>
+              <actionwordLibrary>
+                <name>First library</name>
+                <libraryActionword>
+                  <name>First action wprd</name>
+                </libraryActionword>
+              </actionwordLibrary>
+              <actionwordLibrary>
+                <name>Second library</name>
+                <libraryActionword>
+                  <name>Second action word</name>
+                </libraryActionword>
+              </actionwordLibrary>
+            </actionwordLibraries>
+          </project>").build_project
+
+        expect(node.children[:libraries]).to be_a(Hiptest::Nodes::Libraries)
+      end
+    end
   end
 
   context 'error during parsing' do
@@ -971,7 +999,7 @@ describe Hiptest::XMLParser do
       project = parser.build_project
 
       expect(project.children[:name]).to eq('Hiptest publisher')
-      expect(project.each_sub_nodes(deep: true).count).to eq(95)
+      expect(project.each_sub_nodes(deep: true).count).to eq(96)
       expect(project.each_sub_nodes(Hiptest::Nodes::Folder).count).to eq(4)
       expect(project.each_sub_nodes(Hiptest::Nodes::Scenario).count).to eq(2)
       expect(project.each_sub_nodes(Hiptest::Nodes::Actionword).count).to eq(4)

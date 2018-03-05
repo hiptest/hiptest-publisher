@@ -311,10 +311,16 @@ module Hiptest
       return tp
     end
 
+    def build_actionwordLibraries(libraries)
+      Hiptest::Nodes::Libraries.new(
+        build_node_list(libraries.css('> actionwordLibrary'))
+      )
+    end
+
     def build_actionwordLibrary(library)
       Hiptest::Nodes::Library.new(
         css_first_content(library, '> name'),
-        build_node_list(library.css('> libraryActionword'))
+        build_node_list(library.css('> libraryActionwords libraryActionword'))
       )
     end
 
@@ -343,7 +349,7 @@ module Hiptest
         build_node(scenarios_node, Hiptest::Nodes::Scenarios),
         build_node(actionwords_node, Hiptest::Nodes::Actionwords),
         build_node(css_first(project, '> tests'), Hiptest::Nodes::Tests),
-        build_node_list(project.css('actionwordLibrary'))
+        build_node(css_first(project, '> actionwordLibraries'), Hiptest::Nodes::Library)
       )
 
       @project.assign_scenarios_to_folders

@@ -483,7 +483,7 @@ class LanguageGroupConfig
 
   def nodes(project)
     case node_name
-    when :tests, :scenarios, :actionwords
+    when :tests, :scenarios, :actionwords, :libraries
       if splitted_files?
         project.children[node_name].children[node_name]
       elsif with_folders?
@@ -605,6 +605,8 @@ class LanguageGroupConfig
       @leafless_export ? :tests : :scenarios
     elsif self[:node_name] == "actionwords" || self[:group_name] == "actionwords"
       :actionwords
+    elsif self[:node_name] == "libraries" || self[:group_name] == "libraries"
+      :libraries
     elsif self[:node_name] == "folders"
       :folders
     else
