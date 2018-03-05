@@ -1035,8 +1035,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     [
       '@myTag @myTag-some_value @JIRA-CW-6',
       'Feature: Cool colors',
-      '    Cool colors calm and relax.',
-      '    They are the hues from blue green through blue violet, most grays included.',
+      '    # Cool colors calm and relax.',
+      '    # They are the hues from blue green through blue violet, most grays included.',
       '',
       '  Scenario: Create green',
       '    # You can create green by mixing other colors',
@@ -1538,8 +1538,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         expect(rendered).to eq([
           '@myTag ',
           'Feature: Cool colors',
-          '    Cool colors calm and relax.',
-          '    They are the hues from blue green through blue violet, most grays included.',
+          '    # Cool colors calm and relax.',
+          '    # They are the hues from blue green through blue violet, most grays included.',
           '',
           '  Scenario: Create green',
           '    # You can create green by mixing other colors',
