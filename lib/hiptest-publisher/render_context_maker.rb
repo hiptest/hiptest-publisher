@@ -31,8 +31,9 @@ module Hiptest
     end
 
     def walk_actionwords(aws)
+      project = aws.parent
       {
-        uses_library?: aws.parent&.has_libraries?
+        uses_library?: project.nil? ? false : project.has_libraries?
       }
     end
 

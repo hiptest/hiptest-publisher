@@ -109,7 +109,7 @@ module HelperFactories
       Hiptest::Nodes::Scenarios.new(scenarios),
       Hiptest::Nodes::Actionwords.new(actionwords),
       Hiptest::Nodes::Tests.new(tests),
-      libraries
+      libraries || Hiptest::Nodes::Libraries.new()
     )
   end
 
