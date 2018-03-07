@@ -1,4 +1,4 @@
-require 'hiptest-publisher/actionword_indexer'
+require 'hiptest-publisher/indexers/actionword_indexer'
 require 'hiptest-publisher/nodes'
 
 module Hiptest

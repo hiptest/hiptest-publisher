@@ -111,6 +111,10 @@ module HelperFactories
       Hiptest::Nodes::Tests.new(tests)
     )
   end
+
+  def make_library(name, actionwords)
+    Hiptest::Nodes::Library.new('First library', actionwords)
+  end
 end
 
 def language_group_config_for(properties)

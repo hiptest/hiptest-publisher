@@ -1,5 +1,5 @@
-require_relative 'spec_helper'
-require_relative '../lib/hiptest-publisher/actionword_indexer'
+require_relative '../spec_helper'
+require_relative '../../lib/hiptest-publisher/indexers/actionword_indexer'
 
 describe Hiptest::ActionwordIndexer do
   include HelperFactories
