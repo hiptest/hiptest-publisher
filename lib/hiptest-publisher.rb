@@ -2,15 +2,7 @@ require 'colorize'
 require 'json'
 require 'yaml'
 
-require 'hiptest-publisher/node_modifiers/actionword_uniq_renamer'
-require 'hiptest-publisher/node_modifiers/call_arguments_adder'
-require 'hiptest-publisher/node_modifiers/datatable_fixer'
-require 'hiptest-publisher/node_modifiers/gherkin_adder'
-require 'hiptest-publisher/node_modifiers/items_orderer'
-require 'hiptest-publisher/node_modifiers/parameter_type_adder'
-require 'hiptest-publisher/node_modifiers/parent_adder'
-require 'hiptest-publisher/node_modifiers/uid_call_reference_adder'
-
+require 'hiptest-publisher/node_modifiers/add_all'
 require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/client'
 require 'hiptest-publisher/diff_displayer'
@@ -193,14 +185,7 @@ module Hiptest
       return if @project_data_analyzed
       reporter.with_status_message "Analyzing data" do
         @language_config = LanguageConfigParser.new(@cli_options)
-        Hiptest::NodeModifiers::DatatableFixer.add(@project)
-        Hiptest::NodeModifiers::ParentAdder.add(@project)
-        Hiptest::NodeModifiers::ParameterTypeAdder.add(@project)
-        Hiptest::NodeModifiers::DefaultArgumentAdder.add(@project)
-        Hiptest::NodeModifiers::ActionwordUniqRenamer.add(@project)
-        Hiptest::NodeModifiers::GherkinAdder.add(@project)
-        Hiptest::NodeModifiers::UidCallReferencerAdder.add(@project)
-        Hiptest::NodeModifiers::ItemsOrderer.add(@project, @cli_options.sort)
+        Hiptest::NodeModifiers.add_all(@project, @cli_options.sort)
       end
       @project_data_analyzed = true
     end

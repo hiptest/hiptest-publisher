@@ -94,7 +94,7 @@ describe 'Behave rendering' do
       ],
       actionwords: [aw]
     )
-    Hiptest::NodeModifiers::GherkinAdder.add(project)
+    Hiptest::NodeModifiers.add_all(project)
 
     options =  context_for(only: "step_definitions", language: 'behave')
     expect(aw.render(options)).to eq([
