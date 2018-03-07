@@ -1,6 +1,6 @@
 package {{{ context.package }}};
 
-public class {{camelize rendered_children.name}}Library {{#curly}}{{#indent}}
+public class {{camelize rendered_children.name}}Library extends ActionwordLibrary {{#curly}}{{#indent}}
 {{#each rendered_children.actionwords}}
 {{{this}}}
 {{/each}}

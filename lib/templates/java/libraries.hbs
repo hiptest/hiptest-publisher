@@ -1,0 +1,11 @@
+package {{{ context.package }}};
+
+public class ActionwordLibrary {{#curly}}{{#indent}}
+public static CoffeeMachine sut = new CoffeeMachine();
+
+{{#each library_names}}public {{camelize this}}Library get{{camelize this}}Library() {{#curly}}{{#indent}}
+return new {{camelize this}}Library();
+{{/indent}}
+{{/curly}}
+{{/each}}{{/indent}}
+{{/curly}}

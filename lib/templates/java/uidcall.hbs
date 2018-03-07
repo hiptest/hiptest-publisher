@@ -1,1 +1,1 @@
-{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}getLibrary("{{{ rendered_children.library_name}}}").{{{ camelize_lower rendered_children.actionword_name }}}();
+{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}get{{{camelize rendered_children.library_name}}}Library().{{{ camelize_lower rendered_children.actionword_name }}}();

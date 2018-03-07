@@ -133,6 +133,12 @@ module Hiptest
       }
     end
 
+    def walk_libraries(libraries)
+      {
+        library_names: libraries.children[:libraries].map {|lib| lib.children[:name]}
+      }
+    end
+
     private
 
     def has_step?(item)

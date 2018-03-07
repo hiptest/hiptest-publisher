@@ -491,6 +491,8 @@ class LanguageGroupConfig
       else
         [project.children[node_name]]
       end
+    when :library
+      [project.children[:libraries]]
     when :folders
       get_folder_nodes(project)
     end
@@ -607,6 +609,8 @@ class LanguageGroupConfig
       :actionwords
     elsif self[:node_name] == "libraries" || self[:group_name] == "libraries"
       :libraries
+    elsif self[:node_name] == "library" || self[:group_name] == "library"
+      :library
     elsif self[:node_name] == "folders"
       :folders
     else
