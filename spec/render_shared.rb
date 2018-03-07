@@ -346,7 +346,7 @@ shared_context "shared render" do
       Hiptest::Nodes::Actionword.new('Page "url" should be opened', [], [Hiptest::Nodes::Parameter.new('url')], [])
     ])
     @bdd_project.children[:scenarios] = Hiptest::Nodes::Scenarios.new([@bdd_scenario])
-    Hiptest::NodeModifiers::add_all@bdd_project)
+    Hiptest::NodeModifiers::add_all(@bdd_project)
   end
 
   def rendering(node)
@@ -607,7 +607,7 @@ shared_examples "a renderer" do
     end
 
     it 'Actionwords with parameters of different types' do
-      Hiptest::NodeModifiers::ParameterTypeAdder.add_all(@project)
+      Hiptest::NodeModifiers::ParameterTypeAdder.add(@project)
       expect(rendering(@project.children[:actionwords])).to eq(@actionwords_with_params_rendered)
     end
   end

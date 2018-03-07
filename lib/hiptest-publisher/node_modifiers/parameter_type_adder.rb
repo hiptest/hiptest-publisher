@@ -72,7 +72,7 @@ module Hiptest
       def get_type(value, context = nil)
         case value
           when Hiptest::Nodes::StringLiteral, Hiptest::Nodes::Template then :String
-          when Hiptest::Nodes::NumericLiteral then value.children[:value].include?(".") ? :float : :int
+          when Hiptest::Nodes::NumericLiteral then value.children[:value].to_s.include?(".") ? :float : :int
           when Hiptest::Nodes::BooleanLiteral then :bool
           when Hiptest::Nodes::Variable then get_var_value(value.children[:name], context)
           else :null

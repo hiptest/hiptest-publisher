@@ -55,6 +55,10 @@ module HelperFactories
     Hiptest::Nodes::Call.new(actionword, arguments, annotation)
   end
 
+  def make_uidcall(uid, arguments: [], annotation: nil)
+    Hiptest::Nodes::UIDCall.new(uid, arguments, annotation)
+  end
+
   def make_parameter(name, default: nil)
     Hiptest::Nodes::Parameter.new(name, default)
   end
