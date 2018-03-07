@@ -1,12 +1,13 @@
 require_relative 'spec_helper'
 
 require_relative '../lib/hiptest-publisher'
-require_relative '../lib/hiptest-publisher/datatable_fixer'
-require_relative '../lib/hiptest-publisher/gherkin_adder'
-require_relative '../lib/hiptest-publisher/parameter_type_adder'
+require_relative '../lib/hiptest-publisher/node_modifiers/datatable_fixer'
+require_relative '../lib/hiptest-publisher/node_modifiers/gherkin_adder'
+require_relative '../lib/hiptest-publisher/node_modifiers/parameter_type_adder'
+require_relative '../lib/hiptest-publisher/node_modifiers/uid_call_reference_adder'
+
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
-require_relative '../lib/hiptest-publisher/uid_call_reference_adder'
 
 shared_context "shared render" do
 
@@ -348,8 +349,8 @@ shared_context "shared render" do
       Hiptest::Nodes::Actionword.new('Page "url" should be opened', [], [Hiptest::Nodes::Parameter.new('url')], [])
     ])
     @bdd_project.children[:scenarios] = Hiptest::Nodes::Scenarios.new([@bdd_scenario])
-    Hiptest::Nodes::ParentAdder.add(@bdd_project)
-    Hiptest::GherkinAdder.add(@bdd_project)
+    Hiptest::NodeModifiers::ParentAdder.add(@bdd_project)
+    Hiptest::NodeModifiers::GherkinAdder.add(@bdd_project)
   end
 
   def rendering(node)
@@ -610,7 +611,7 @@ shared_examples "a renderer" do
     end
 
     it 'Actionwords with parameters of different types' do
-      Hiptest::Nodes::ParameterTypeAdder.add(@project)
+      Hiptest::NodeModifiers::ParameterTypeAdder.add(@project)
       expect(rendering(@project.children[:actionwords])).to eq(@actionwords_with_params_rendered)
     end
   end
@@ -641,8 +642,8 @@ shared_examples "a renderer handling libraries" do
       scenarios: [scenario],
       libraries: libraries
     ).tap do |p|
-      Hiptest::Nodes::ParentAdder.add(p)
-      Hiptest::UidCallReferencerAdder.add(p)
+      Hiptest::NodeModifiers::ParentAdder.add(p)
+      Hiptest::NodeModifiers::UidCallReferencerAdder.add(p)
     end
   }
 
@@ -1076,9 +1077,9 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
     ).tap do |p|
-      Hiptest::Nodes::DatatableFixer.add(p)
-      Hiptest::Nodes::ParentAdder.add(p)
-      Hiptest::GherkinAdder.add(p)
+      Hiptest::NodeModifiers::DatatableFixer.add(p)
+      Hiptest::NodeModifiers::ParentAdder.add(p)
+      Hiptest::NodeModifiers::GherkinAdder.add(p)
     end
   }
 

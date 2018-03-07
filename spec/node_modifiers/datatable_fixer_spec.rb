@@ -1,7 +1,7 @@
-require "spec_helper"
-require_relative "../lib/hiptest-publisher/datatable_fixer"
+require_relative "../spec_helper"
+require_relative "../../lib/hiptest-publisher/node_modifiers/datatable_fixer"
 
-describe Hiptest::Nodes::DatatableFixer do
+describe Hiptest::NodeModifiers::DatatableFixer do
   include HelperFactories
 
   let(:scenario) {
@@ -68,7 +68,7 @@ describe Hiptest::Nodes::DatatableFixer do
   }
 
   it 'fills unset cells with an empty string' do
-    Hiptest::Nodes::DatatableFixer.new.walk_scenario(scenario)
+    Hiptest::NodeModifiers::DatatableFixer.new.walk_scenario(scenario)
 
     expected = [
       [
@@ -105,7 +105,7 @@ describe Hiptest::Nodes::DatatableFixer do
   end
 
   it 'reorders arguments if needed' do
-    Hiptest::Nodes::DatatableFixer.new.walk_scenario(bad_order)
+    Hiptest::NodeModifiers::DatatableFixer.new.walk_scenario(bad_order)
 
     bad_order.children[:datatable].children[:datasets].map do |dataset|
       expect(dataset.children[:arguments].map {|arg| arg.children[:name]}).to eq(['first_color', 'second_color', 'got_color'])

@@ -1,7 +1,7 @@
-require_relative 'spec_helper'
-require_relative '../lib/hiptest-publisher/call_arguments_adder'
+require_relative '../spec_helper'
+require_relative '../../lib/hiptest-publisher/node_modifiers/call_arguments_adder'
 
-describe Hiptest::DefaultArgumentAdder do
+describe Hiptest::NodeModifiers::DefaultArgumentAdder do
   include HelperFactories
 
   let(:aw) {
@@ -49,7 +49,7 @@ describe Hiptest::DefaultArgumentAdder do
   }
 
   before(:each) do
-    Hiptest::DefaultArgumentAdder.add(project)
+    Hiptest::NodeModifiers::DefaultArgumentAdder.add(project)
   end
 
   def get_all_arguments_for_call(call)

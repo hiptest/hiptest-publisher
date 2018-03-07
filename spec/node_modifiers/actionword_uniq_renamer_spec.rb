@@ -1,11 +1,11 @@
-require_relative 'spec_helper'
-require_relative '../lib/hiptest-publisher/actionword_uniq_renamer'
+require_relative '../spec_helper'
+require_relative '../../lib/hiptest-publisher/node_modifiers/actionword_uniq_renamer'
 
-describe Hiptest::ActionwordUniqRenamer do
+describe Hiptest::NodeModifiers::ActionwordUniqRenamer do
   include HelperFactories
 
   context 'find_uniq_name' do
-    let(:subject) { Hiptest::ActionwordUniqRenamer.new(nil) }
+    let(:subject) { Hiptest::NodeModifiers::ActionwordUniqRenamer.new(nil) }
 
     it 'returns the original one if it does not belong to the list' do
       expect(subject.find_uniq_name('Plop', [])).to eq('Plop')
@@ -34,7 +34,7 @@ describe Hiptest::ActionwordUniqRenamer do
     }
 
     let(:subject) {
-      Hiptest::ActionwordUniqRenamer.new(project)
+      Hiptest::NodeModifiers::ActionwordUniqRenamer.new(project)
     }
 
     it 'renames action words if needed' do

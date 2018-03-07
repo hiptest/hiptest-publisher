@@ -2,21 +2,22 @@ require 'colorize'
 require 'json'
 require 'yaml'
 
-require 'hiptest-publisher/actionword_uniq_renamer'
-require 'hiptest-publisher/uid_call_reference_adder'
-require 'hiptest-publisher/call_arguments_adder'
+require 'hiptest-publisher/node_modifiers/actionword_uniq_renamer'
+require 'hiptest-publisher/node_modifiers/call_arguments_adder'
+require 'hiptest-publisher/node_modifiers/datatable_fixer'
+require 'hiptest-publisher/node_modifiers/gherkin_adder'
+require 'hiptest-publisher/node_modifiers/items_orderer'
+require 'hiptest-publisher/node_modifiers/parameter_type_adder'
+require 'hiptest-publisher/node_modifiers/parent_adder'
+require 'hiptest-publisher/node_modifiers/uid_call_reference_adder'
+
 require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/client'
-require 'hiptest-publisher/datatable_fixer'
 require 'hiptest-publisher/diff_displayer'
 require 'hiptest-publisher/formatters/reporter'
 require 'hiptest-publisher/file_writer'
-require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/handlebars_helper'
-require 'hiptest-publisher/items_orderer'
 require 'hiptest-publisher/options_parser'
-require 'hiptest-publisher/parameter_type_adder'
-require 'hiptest-publisher/parent_adder'
 require 'hiptest-publisher/renderer'
 require 'hiptest-publisher/signature_differ'
 require 'hiptest-publisher/signature_exporter'
@@ -192,14 +193,14 @@ module Hiptest
       return if @project_data_analyzed
       reporter.with_status_message "Analyzing data" do
         @language_config = LanguageConfigParser.new(@cli_options)
-        Hiptest::Nodes::DatatableFixer.add(@project)
-        Hiptest::Nodes::ParentAdder.add(@project)
-        Hiptest::Nodes::ParameterTypeAdder.add(@project)
-        Hiptest::DefaultArgumentAdder.add(@project)
-        Hiptest::ActionwordUniqRenamer.add(@project)
-        Hiptest::GherkinAdder.add(@project)
-        Hiptest::UidCallReferencerAdder.add(@project)
-        Hiptest::ItemsOrderer.add(@project, @cli_options.sort)
+        Hiptest::NodeModifiers::DatatableFixer.add(@project)
+        Hiptest::NodeModifiers::ParentAdder.add(@project)
+        Hiptest::NodeModifiers::ParameterTypeAdder.add(@project)
+        Hiptest::NodeModifiers::DefaultArgumentAdder.add(@project)
+        Hiptest::NodeModifiers::ActionwordUniqRenamer.add(@project)
+        Hiptest::NodeModifiers::GherkinAdder.add(@project)
+        Hiptest::NodeModifiers::UidCallReferencerAdder.add(@project)
+        Hiptest::NodeModifiers::ItemsOrderer.add(@project, @cli_options.sort)
       end
       @project_data_analyzed = true
     end

@@ -623,7 +623,7 @@ describe 'Render as Groovy' do
         ])
       )
 
-      Hiptest::Nodes::ParentAdder.add(@folders_project)
+      Hiptest::NodeModifiers::ParentAdder.add(@folders_project)
       render_context = context_for(
         node: container,
         # only to select the right config group: we render [actionwords], [tests] and others differently
@@ -706,7 +706,7 @@ describe 'Render as Groovy' do
         datatable: datatable
       )
 
-      Hiptest::Nodes::ParentAdder.add(@folders_project)
+      Hiptest::NodeModifiers::ParentAdder.add(@folders_project)
       render_context = context_for(
           node: container,
           # only to select the right config group: we render [actionwords], [tests] and others differently

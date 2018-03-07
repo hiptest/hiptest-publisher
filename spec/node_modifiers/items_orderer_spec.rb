@@ -1,7 +1,7 @@
-require "spec_helper"
-require_relative "../lib/hiptest-publisher/items_orderer"
+require_relative "../spec_helper"
+require_relative "../../lib/hiptest-publisher/node_modifiers/items_orderer"
 
-describe Hiptest::ItemsOrderer do
+describe Hiptest::NodeModifiers::ItemsOrderer do
   context 'orders items inside folders based on' do
     let(:project) {
       p = Hiptest::Nodes::Project.new(
@@ -37,19 +37,19 @@ describe Hiptest::ItemsOrderer do
     }
 
     it 'its position in the XML file (using sort="id")' do
-      Hiptest::ItemsOrderer.add(project, 'id')
+      Hiptest::NodeModifiers::ItemsOrderer.add(project, 'id')
       expect(root_folder_subfolders_names).to eq(['First folder', 'Second folder', 'Ah ah third folder'])
       expect(root_folder_scenarios_names).to eq(['First scenario', 'Das scenario', 'My scenario', 'Another scenario'])
     end
 
     it 'its name (using sort="alpha")' do
-      Hiptest::ItemsOrderer.add(project, 'alpha')
+      Hiptest::NodeModifiers::ItemsOrderer.add(project, 'alpha')
       expect(root_folder_subfolders_names).to eq(['Ah ah third folder', 'First folder', 'Second folder'])
       expect(root_folder_scenarios_names).to eq(['Another scenario', 'Das scenario', 'First scenario', 'My scenario'])
     end
 
     it 'its order in Hiptest (using sort="order")' do
-      Hiptest::ItemsOrderer.add(project, 'order')
+      Hiptest::NodeModifiers::ItemsOrderer.add(project, 'order')
       expect(root_folder_subfolders_names).to eq(['Second folder', 'First folder', 'Ah ah third folder'])
       expect(root_folder_scenarios_names).to eq(['Das scenario', 'Another scenario', 'First scenario', 'My scenario'])
     end
@@ -58,7 +58,7 @@ describe Hiptest::ItemsOrderer do
       expect(project.children[:scenarios].children[:scenarios].map {|sc| sc.children[:name]}).to eq([
         "First scenario", "Das scenario", "My scenario", "Another scenario"
       ])
-      Hiptest::ItemsOrderer.add(project, 'alpha')
+      Hiptest::NodeModifiers::ItemsOrderer.add(project, 'alpha')
 
       expect(project.children[:scenarios].children[:scenarios].map {|sc| sc.children[:name]}).to eq([
         "Another scenario", "Das scenario", "First scenario", "My scenario"

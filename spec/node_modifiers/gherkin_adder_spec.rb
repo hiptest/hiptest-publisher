@@ -1,7 +1,7 @@
-require_relative "spec_helper"
-require_relative "../lib/hiptest-publisher/gherkin_adder"
+require_relative "../spec_helper"
+require_relative "../../lib/hiptest-publisher/node_modifiers/gherkin_adder"
 
-describe Hiptest::GherkinAdder do
+describe Hiptest::NodeModifiers::GherkinAdder do
   include HelperFactories
 
   let(:actionword_name) { "Hello \"name\"" }
@@ -32,7 +32,7 @@ describe Hiptest::GherkinAdder do
   subject(:gherkin_pattern) { actionword.children[:gherkin_pattern] }
 
   before(:each) {
-    Hiptest::GherkinAdder.add(project)
+    Hiptest::NodeModifiers::GherkinAdder.add(project)
   }
 
   context "actionword without parameters" do

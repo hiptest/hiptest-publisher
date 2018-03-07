@@ -164,8 +164,8 @@ describe 'Cucumber/Java rendering' do
         scenarios: [scenario],
         actionwords: actionwords,
       ).tap do |p|
-        Hiptest::Nodes::ParentAdder.add(p)
-        Hiptest::GherkinAdder.add(p)
+        Hiptest::NodeModifiers::ParentAdder.add(p)
+        Hiptest::NodeModifiers::GherkinAdder.add(p)
       end
     }
 
