@@ -828,6 +828,8 @@ describe LanguageGroupConfig do
             language_config = LanguageConfigParser.new(cli_options)
             filenames = []
             language_config.language_group_configs.each do |language_group_config|
+              next if ['library', 'libraries'].include?(language_group_config[:group_name])
+
               filenames << "[#{language_group_config[:group_name]}]"
               filenames << language_group_config.each_node_rendering_context(project).map(&:path)
             end

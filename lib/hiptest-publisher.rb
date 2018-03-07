@@ -145,6 +145,7 @@ module Hiptest
 
     def export_files
       @language_config.language_group_configs.each do |language_group_config|
+        next if ['library', 'libraries'].include?(language_group_config[:group_name]) && !@project.has_libraries?
         ask_overwrite = ['actionwords', 'libraries'].include?(language_group_config[:group_name])
 
         language_group_config.each_node_rendering_context(@project) do |node_rendering_context|

@@ -580,6 +580,10 @@ module Hiptest
         }
       end
 
+      def has_libraries?
+        !children[:libraries].children[:libraries].empty?
+      end
+
       def assign_scenarios_to_folders
         @children[:scenarios].children[:scenarios].each do |scenario|
           folder = @children[:test_plan].find_folder_by_uid(scenario.folder_uid)

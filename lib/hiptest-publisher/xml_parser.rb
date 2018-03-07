@@ -349,7 +349,7 @@ module Hiptest
         build_node(scenarios_node, Hiptest::Nodes::Scenarios),
         build_node(actionwords_node, Hiptest::Nodes::Actionwords),
         build_node(css_first(project, '> tests'), Hiptest::Nodes::Tests),
-        build_node(css_first(project, '> actionwordLibraries'), Hiptest::Nodes::Library)
+        build_node(css_first(project, '> actionwordLibraries'), Hiptest::Nodes::Libraries)
       )
 
       @project.assign_scenarios_to_folders

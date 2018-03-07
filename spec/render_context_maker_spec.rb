@@ -106,7 +106,8 @@ describe Hiptest::RenderContextMaker do
         :relative_package,
         :project_name,
         :has_datasets?,
-        :has_annotations?
+        :has_annotations?,
+        :uniq_name
       ])
 
       expect(subject.walk_scenario(node)[:project_name]).to eq('A project')

@@ -30,6 +30,12 @@ module Hiptest
       )
     end
 
+    def walk_actionwords(aws)
+      {
+        uses_library?: aws.parent&.has_libraries?
+      }
+    end
+
     def walk_folder(folder)
       walk_relative_item(folder).merge(
         self_name: folder.children[:name],
