@@ -6,7 +6,7 @@ require_relative '../lib/hiptest-publisher/gherkin_adder'
 require_relative '../lib/hiptest-publisher/parameter_type_adder'
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
-
+require_relative '../lib/hiptest-publisher/uid_call_reference_adder'
 
 shared_context "shared render" do
 
@@ -612,6 +612,82 @@ shared_examples "a renderer" do
     it 'Actionwords with parameters of different types' do
       Hiptest::Nodes::ParameterTypeAdder.add(@project)
       expect(rendering(@project.children[:actionwords])).to eq(@actionwords_with_params_rendered)
+    end
+  end
+end
+
+shared_examples "a renderer handling libraries" do
+  include HelperFactories
+
+  let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
+  let(:first_actionword) { make_actionword('My first action word', uid: first_actionword_uid)}
+  let(:first_lib) { make_library('Default', [first_actionword])}
+
+  let(:second_actionword_uid) {'87654321-4321-4321-4321-098765432121'}
+  let(:second_actionword) { make_actionword('My second action word', uid: second_actionword_uid)}
+  let(:second_lib) { make_library('Web', [second_actionword])}
+
+  let(:libraries) { Hiptest::Nodes::Libraries.new([first_lib, second_lib]) }
+
+  let(:scenario) {
+    make_scenario('My calling scenario', body: [
+      Hiptest::Nodes::UIDCall.new(first_actionword_uid),
+      Hiptest::Nodes::UIDCall.new(second_actionword_uid)
+    ])
+  }
+
+  let(:project) {
+    make_project('My project',
+      scenarios: [scenario],
+      libraries: libraries
+    ).tap do |p|
+      Hiptest::Nodes::ParentAdder.add(p)
+      Hiptest::UidCallReferencerAdder.add(p)
+    end
+  }
+
+  let(:split_scenarios) { false }
+  let(:with_folders) { false }
+  let(:namespace) { nil }
+  let(:package) { nil }
+
+  let(:libraries_rendered) { 'TO IMPLEMENT' }
+  let(:first_lib_rendered) { '' }
+  let(:second_lib_rendered) { '' }
+  let(:actionwords_rendered) { '' }
+  let(:scenarios_rendered) { '' }
+
+  context '[library]' do
+    let(:only) { 'library' }
+
+    it 'generates a super class allowing to get the different libraries' do
+      expect(rendering(libraries)).to eq(libraries_rendered)
+    end
+  end
+
+  context '[libraries]' do
+    let(:only) { 'libraries' }
+
+    it 'generates a file for each libraries with the actionwords definitions inside' do
+      expect(rendering(first_lib)).to eq(first_lib_rendered)
+      expect(rendering(second_lib)).to eq(second_lib_rendered)
+
+    end
+  end
+
+  context '[actionwords]' do
+    let(:only) { 'actionwords' }
+
+    it 'uses the class/getter for other libraries' do
+      expect(rendering(project.children[:actionwords])).to eq(actionwords_rendered)
+    end
+  end
+
+  context '[tests]' do
+    let(:only) { 'tests' }
+
+    it 'correctly calls the action words' do
+      expect(rendering(project.children[:scenarios])).to eq(scenarios_rendered)
     end
   end
 end

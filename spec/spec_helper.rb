@@ -103,17 +103,18 @@ module HelperFactories
     folder
   end
 
-  def make_project(name, scenarios: [], tests: [], actionwords: [], folders: [])
+  def make_project(name, scenarios: [], tests: [], actionwords: [], folders: [], libraries: nil)
     Hiptest::Nodes::Project.new(name, '',
       Hiptest::Nodes::TestPlan.new(folders).tap { |tp| tp.organize_folders },
       Hiptest::Nodes::Scenarios.new(scenarios),
       Hiptest::Nodes::Actionwords.new(actionwords),
-      Hiptest::Nodes::Tests.new(tests)
+      Hiptest::Nodes::Tests.new(tests),
+      libraries
     )
   end
 
   def make_library(name, actionwords)
-    Hiptest::Nodes::Library.new('First library', actionwords)
+    Hiptest::Nodes::Library.new(name, actionwords)
   end
 end
 
