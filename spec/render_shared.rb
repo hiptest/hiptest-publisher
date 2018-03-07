@@ -1,10 +1,7 @@
 require_relative 'spec_helper'
 
 require_relative '../lib/hiptest-publisher'
-require_relative '../lib/hiptest-publisher/node_modifiers/datatable_fixer'
-require_relative '../lib/hiptest-publisher/node_modifiers/gherkin_adder'
-require_relative '../lib/hiptest-publisher/node_modifiers/parameter_type_adder'
-require_relative '../lib/hiptest-publisher/node_modifiers/uid_call_reference_adder'
+require_relative '../lib/hiptest-publisher/node_modifiers/add_all'
 
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
@@ -349,8 +346,7 @@ shared_context "shared render" do
       Hiptest::Nodes::Actionword.new('Page "url" should be opened', [], [Hiptest::Nodes::Parameter.new('url')], [])
     ])
     @bdd_project.children[:scenarios] = Hiptest::Nodes::Scenarios.new([@bdd_scenario])
-    Hiptest::NodeModifiers::ParentAdder.add(@bdd_project)
-    Hiptest::NodeModifiers::GherkinAdder.add(@bdd_project)
+    Hiptest::NodeModifiers::add_all@bdd_project)
   end
 
   def rendering(node)
@@ -611,7 +607,7 @@ shared_examples "a renderer" do
     end
 
     it 'Actionwords with parameters of different types' do
-      Hiptest::NodeModifiers::ParameterTypeAdder.add(@project)
+      Hiptest::NodeModifiers::ParameterTypeAdder.add_all(@project)
       expect(rendering(@project.children[:actionwords])).to eq(@actionwords_with_params_rendered)
     end
   end
@@ -642,8 +638,7 @@ shared_examples "a renderer handling libraries" do
       scenarios: [scenario],
       libraries: libraries
     ).tap do |p|
-      Hiptest::NodeModifiers::ParentAdder.add(p)
-      Hiptest::NodeModifiers::UidCallReferencerAdder.add(p)
+      Hiptest::NodeModifiers.add_all(p)
     end
   }
 
@@ -1077,9 +1072,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       actionwords: actionwords,
       folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
     ).tap do |p|
-      Hiptest::NodeModifiers::DatatableFixer.add(p)
-      Hiptest::NodeModifiers::ParentAdder.add(p)
-      Hiptest::NodeModifiers::GherkinAdder.add(p)
+      Hiptest::NodeModifiers.add_all(p)
     end
   }
 
