@@ -169,6 +169,31 @@ describe Hiptest::RenderContextMaker do
     end
   end
 
+  context 'walk_actionwords' do
+    let(:node) {
+      Hiptest::Nodes::Actionwords.new
+    }
+
+    let(:project) {Hiptest::Nodes::Project.new('My project')}
+
+    context 'uses_library?' do
+      it 'returns false if there is no project for the node' do
+        expect(subject.walk_actionwords(node)[:uses_library?]).to be false
+      end
+
+      it 'returns false when the project does not have any library' do
+        node.parent = project
+        expect(subject.walk_actionwords(node)[:uses_library?]).to be false
+      end
+
+      it 'returns true otherwise' do
+        project.children[:libraries].children[:libraries] << Hiptest::Nodes::Library.new('default')
+        node.parent = project
+        expect(subject.walk_actionwords(node)[:uses_library?]).to be true
+      end
+    end
+  end
+
   context 'walk_call' do
     let(:node) {node = Hiptest::Nodes::Call.new('my_action_word')}
 
