@@ -652,6 +652,8 @@ shared_examples "a renderer handling libraries" do
   let(:second_lib_rendered) { '' }
   let(:actionwords_rendered) { '' }
   let(:scenarios_rendered) { '' }
+  let(:scenario_using_default_parameter_rendered) { ''}
+  let(:library_with_typed_parameters_rendered) { ''}
 
   context '[library]' do
     let(:only) { 'library' }
@@ -684,6 +686,46 @@ shared_examples "a renderer handling libraries" do
 
     it 'correctly calls the action words' do
       expect(rendering(project.children[:scenarios])).to eq(scenarios_rendered)
+    end
+  end
+
+  context 'calling actionwords with parameters' do
+    context 'when rendering scenarios' do
+      let(:only) { 'tests' }
+
+      it 'correctly sets the default values' do
+        first_lib.children[:actionwords] << make_actionword(
+          'my actionword with default value',
+          parameters: [make_parameter('some_param', default: literal('My default value'))],
+          uid: 'some-really-uniq-uid'
+        )
+        scenario.children[:body] = [
+          make_uidcall('some-really-uniq-uid')
+        ]
+
+        Hiptest::NodeModifiers.add_all(project)
+        expect(rendering(project.children[:scenarios])).to eq(scenario_using_default_parameter_rendered)
+      end
+    end
+
+    context 'when rendering libraries' do
+      let(:only) { 'libraries' }
+
+      it 'correctly handles types for languages needing it' do
+        first_lib.children[:actionwords] << make_actionword(
+          'my typed action word',
+          parameters: [make_parameter('some_param')],
+          uid: 'some-really-uniq-uid'
+        )
+        scenario.children[:body] = [
+          make_uidcall('some-really-uniq-uid', arguments: [
+            make_argument('some_param', literal(12))
+          ])
+        ]
+
+        Hiptest::NodeModifiers.add_all(project)
+        expect(rendering(first_lib)).to eq(library_with_typed_parameters_rendered)
+      end
     end
   end
 end

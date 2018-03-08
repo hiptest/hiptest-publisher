@@ -668,6 +668,34 @@ describe 'Render as Java' do
         '}'
       ].join("\n")}
 
+      let(:scenario_using_default_parameter_rendered) {[
+        'package com.example;',
+        '',
+        'import junit.framework.TestCase;',
+        '',
+        'public class ProjectTest extends TestCase {',
+        '',
+        '    public Actionwords actionwords = new Actionwords();',
+        '',
+        '    public void testMyCallingScenario() {',
+        '        actionwords.getDefaultLibrary().myActionwordWithDefaultValue("My default value");',
+        '    }',
+        '}',
+      ].join("\n")}
+
+      let(:library_with_typed_parameters_rendered) {[
+        'package com.example;',
+        '',
+        'public class DefaultLibrary extends ActionwordLibrary {',
+        '    public void myFirstActionWord() {',
+        '',
+        '    }',
+        '',
+        '    public void myTypedActionWord(int someParam) {',
+        '',
+        '    }',
+        '}',
+      ].join("\n")}
     end
   end
 
