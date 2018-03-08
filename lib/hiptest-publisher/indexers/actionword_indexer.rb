@@ -3,6 +3,7 @@ module Hiptest
     def initialize(project)
       @project = project
       @indexed = {}
+      @uid_indexed = {}
       index_actionwords
     end
 
@@ -16,16 +17,22 @@ module Hiptest
           indexed_parameters[param_name] = param.children[:default]
         end
 
-        @indexed[aw_name] = {
+        data = {
           actionword: aw,
           parameters: indexed_parameters
         }
 
+        @indexed[aw_name] = data
+        @uid_indexed[aw.children[:uid]] = data
       end
     end
 
     def get_index(name)
       @indexed[name]
+    end
+
+    def get_uid_index(uid)
+      @uid_indexed[uid]
     end
   end
 end
