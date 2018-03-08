@@ -112,6 +112,18 @@ describe Hiptest::SignatureDiffer do
     })
   end
 
+  it 'does not mind libraries being exported at the same level than actionwords' do
+    current = exporter.export_actionwords(
+      make_project('My project',
+        actionwords: [aw1v1],
+        libraries: Hiptest::Nodes::Libraries.new([
+          make_library('my library', [make_actionword('My new action word')])
+        ])), true
+    )
+
+    expect(differ.diff(v1, current)).to be_empty
+  end
+
   context 'it does not display the same action words in multiple categories' do
     let(:aw3v1) {
       make_actionword('I do "p1"', uid: 'id1', parameters: [

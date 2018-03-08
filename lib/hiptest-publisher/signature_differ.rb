@@ -88,8 +88,8 @@ module Hiptest
       end.compact
     end
 
-    def map_by_uid(actionwords)
-      Hash[actionwords.collect { |aw| [aw['uid'], aw] }]
+    def map_by_uid(items)
+      Hash[items.reject {|item| item['type'] == 'library'}.collect { |aw| [aw['uid'], aw] }]
     end
   end
 end
