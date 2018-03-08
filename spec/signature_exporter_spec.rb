@@ -90,9 +90,9 @@ describe Hiptest::SignatureExporter do
     end
   end
 
-  describe 'export_item' do
+  describe 'export_actionword' do
     it 'exports usefull data an item (scenario, actionword)' do
-      expect(exporter.export_item(aw)).to eq({
+      expect(exporter.export_actionword(aw)).to eq({
         "name" => "my action word",
         "parameters" => [{"name"=>"x"}, {"name"=>"y"}],
         "body_hash" => "d41d8cd98f00b204e9800998ecf8427e",
