@@ -12,11 +12,11 @@ module Hiptest
     def self.add_all(project, sort_method = nil)
       DatatableFixer.add(project)
       ParentAdder.add(project)
+      UidCallReferencerAdder.add(project)
       ParameterTypeAdder.add(project)
       DefaultArgumentAdder.add(project)
       ActionwordUniqRenamer.add(project)
       GherkinAdder.add(project)
-      UidCallReferencerAdder.add(project)
       ItemsOrderer.add(project, sort_method) unless sort_method.nil?
     end
   end

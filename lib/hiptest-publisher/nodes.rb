@@ -243,6 +243,7 @@ module Hiptest
         @children = {
           uid: uid,
           arguments: arguments,
+          all_arguments: arguments,
           annotation: annotation
         }
       end
