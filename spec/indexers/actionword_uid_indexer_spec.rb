@@ -12,8 +12,11 @@ describe Hiptest::ActionwordUidIndexer do
   let(:second_actionword) { make_actionword('My second action word', uid: second_actionword_uid)}
   let(:second_lib) { make_library('My second library', [second_actionword])}
 
+  let(:project_actionword_uid) {'ABCDABCDABCD-ABCD-ABCD-ABCD-ABCDABCDABCDABCD'}
+  let(:project_actionword) { make_actionword('My project action word', uid: project_actionword_uid) }
+
   let(:project) {
-    p = make_project('My project')
+    p = make_project('My project', actionwords: [project_actionword])
     p.children[:libraries] = Hiptest::Nodes::Libraries.new([first_lib, second_lib])
     p
   }
@@ -29,6 +32,13 @@ describe Hiptest::ActionwordUidIndexer do
     expect(subject.get_index(second_actionword_uid)).to eq({
       actionword: second_actionword,
       library: second_lib
+    })
+  end
+
+  it 'can also index actionwords that do not belong to a library' do
+    expect(subject.get_index(project_actionword_uid)).to eq({
+      actionword: project_actionword,
+      library: nil
     })
   end
 
