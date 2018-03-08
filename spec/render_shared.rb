@@ -624,18 +624,23 @@ shared_examples "a renderer handling libraries" do
   let(:second_actionword) { make_actionword('My second action word', uid: second_actionword_uid)}
   let(:second_lib) { make_library('Web', [second_actionword])}
 
+  let(:project_actionword_uid) {'ABCDABCD-ABCD-ABCD-ABCD-ABCDABCDABCD'}
+  let(:project_actionword) { make_actionword('My project action word', uid: project_actionword_uid)}
+
   let(:libraries) { Hiptest::Nodes::Libraries.new([first_lib, second_lib]) }
 
   let(:scenario) {
     make_scenario('My calling scenario', body: [
       Hiptest::Nodes::UIDCall.new(first_actionword_uid),
-      Hiptest::Nodes::UIDCall.new(second_actionword_uid)
+      Hiptest::Nodes::UIDCall.new(second_actionword_uid),
+      Hiptest::Nodes::UIDCall.new(project_actionword_uid)
     ])
   }
 
   let(:project) {
     make_project('My project',
       scenarios: [scenario],
+      actionwords: [project_actionword],
       libraries: libraries
     ).tap do |p|
       Hiptest::NodeModifiers.add_all(p)

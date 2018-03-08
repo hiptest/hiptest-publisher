@@ -649,6 +649,10 @@ describe 'Render as Java' do
         'package com.example;',
         '',
         'public class Actionwords extends ActionwordLibrary {',
+        '',
+        '    public void myProjectActionWord() {',
+        '',
+        '    }',
         '}'
       ].join("\n")}
 
@@ -664,6 +668,7 @@ describe 'Render as Java' do
         '    public void testMyCallingScenario() {',
         '        actionwords.getDefaultLibrary().myFirstActionWord();',
         '        actionwords.getWebLibrary().mySecondActionWord();',
+        '        actionwords.myProjectActionWord();',
         '    }',
         '}'
       ].join("\n")}

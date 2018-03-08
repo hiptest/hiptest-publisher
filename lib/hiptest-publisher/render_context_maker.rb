@@ -104,6 +104,12 @@ module Hiptest
       }
     end
 
+    def walk_uidcall(uidcall)
+      {
+        has_library?: !uidcall.children[:library_name].nil?
+      }
+    end
+
     def walk_ifthen(it)
       {
         has_else?: !it.children[:else].empty?
