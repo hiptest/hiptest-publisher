@@ -5,11 +5,27 @@ module Hiptest
   class SignatureExporter
     def self.export_actionwords(project, export_nodes = false)
       exporter = SignatureExporter.new
-      exporter.export_actionwords(project.children[:actionwords], export_nodes)
+
+      [
+        exporter.export_actionwords(project.children[:actionwords], export_nodes),
+        exporter.export_libraries(project.children[:libraries], export_nodes)
+      ].flatten
     end
 
     def export_actionwords(aws, export_nodes = false)
       aws.children[:actionwords].map {|aw| export_actionword(aw, export_nodes)}
+    end
+
+    def export_libraries(libraries, export_nodes = false)
+      libraries.children[:libraries].map {|lib| export_library(lib, export_nodes)}
+    end
+
+    def export_library(library, export_nodes = false)
+      {
+        'name' => library.children[:name],
+        'type' => 'library',
+        'actionwords' => library.children[:actionwords].map {|aw| export_actionword(aw, export_nodes) }
+      }
     end
 
     def export_actionword(item, export_node = false)
