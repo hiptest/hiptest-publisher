@@ -19,7 +19,7 @@ module Hiptest
           next if index.nil?
 
           uid_call.children[:actionword_name] = index[:actionword].children[:name]
-          uid_call.children[:library_name] = index[:library].children[:name]
+          uid_call.children[:library_name] = index[:library].children[:name] unless index[:library].nil?
         end
       end
     end
