@@ -2,9 +2,12 @@ require 'colorize'
 
 require_relative '../spec_helper'
 require_relative '../../lib/hiptest-publisher/nodes'
+
+require_relative '../../lib/hiptest-publisher/node_modifiers/uid_call_reference_adder'
 require_relative '../../lib/hiptest-publisher/node_modifiers/parameter_type_adder'
 
 describe Hiptest::NodeModifiers::ParameterTypeAdder do
+  include HelperFactories
 
   describe '.add' do
     it 'adds parameter type information to all parameters of all actionwords' do
@@ -405,6 +408,28 @@ describe Hiptest::NodeModifiers::ParameterTypeAdder do
         {name: "aw3", parameters: [{name: 'p3', type: :int}]},
         {name: "aw4", parameters: [{name: 'p4', type: :bool}]}])
 
+    end
+  end
+
+  context 'UID calls' do
+    let(:actionword_uid) {'87654321-4321-4321-4321-098765432121'}
+    let(:actionword) {
+      make_actionword('My second action word', uid: actionword_uid, parameters: [make_parameter('some_param')])
+    }
+    let(:scenario) {
+      make_scenario('My calling scenario',
+        body: [make_uidcall(actionword_uid, arguments: [make_argument('some_param', literal(42))])]
+      )
+    }
+    let(:project) {
+      make_project('My project', scenarios: [scenario], actionwords: [actionword])
+    }
+
+    it 'are also taken into account when typing the actionword parameters' do
+      Hiptest::NodeModifiers::UidCallReferencerAdder.add(project)
+      Hiptest::NodeModifiers::ParameterTypeAdder.add(project)
+
+      expect(actionword.children[:parameters].first.children[:type]).to eq(:int)
     end
   end
 end
