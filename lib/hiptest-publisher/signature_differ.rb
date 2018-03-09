@@ -1,7 +1,7 @@
 module Hiptest
   class SignatureDiffer
-    def self.diff(old, current)
-      SignatureDiffer.new(old, current).compute_diff
+    def self.diff(old, current, library_name: nil)
+      SignatureDiffer.new(old, current).compute_diff(library_name)
     end
 
     def initialize(old, current)
@@ -9,9 +9,14 @@ module Hiptest
       @current = current
     end
 
-    def compute_diff
-      @old_uid = map_by_uid(@old)
-      @current_uid = map_by_uid(@current)
+    def compute_diff(library_name = nil)
+      if library_name.nil?
+        @old_uid = map_by_uid(@old)
+        @current_uid = map_by_uid(@current)
+      else
+        @old_uid = map_by_uid(get_library_actionwords(@old, library_name))
+        @current_uid = map_by_uid(get_library_actionwords(@current, library_name))
+      end
 
       compute_created
       compute_deleted
@@ -86,6 +91,11 @@ module Hiptest
         @definition_changed_uids << uid
         {name: aw['name'], node: aw['node']}
       end.compact
+    end
+
+    def get_library_actionwords(data, library_name)
+      library = data.select {|item| item['type'] == 'library' && item['name'] == library_name}.first
+      library.nil? ? [] : library['actionwords']
     end
 
     def map_by_uid(items)
