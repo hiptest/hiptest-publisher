@@ -1,5 +1,3 @@
-
-
 class Reporter
   def initialize(listeners = nil)
     @listeners = listeners || []
