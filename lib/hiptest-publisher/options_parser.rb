@@ -227,6 +227,7 @@ class OptionsParser
       Option.new(nil, 'show-actionwords-renamed', false, nil, "Output signatures of renamed action words", :aw_renamed),
       Option.new(nil, 'show-actionwords-signature-changed', false, nil, "Output signatures of action words for which signature changed", :aw_signature_changed),
       Option.new(nil, 'show-actionwords-definition-changed', false, nil, "Output action words for which definition changed", :aw_definition_changed),
+      Option.new(nil, 'library-name=LIBRARY_NAME', nil, String, "Use in conjunction with show-actionwords-*: show the diff for the specified library", :library_name),
       Option.new(nil, 'with-folders', false, nil, "Use folders hierarchy to export files in respective directories", :with_folders),
       Option.new(nil, 'empty-folders', false, nil, "Export empty folders", :empty_folders),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file (except for Gherkin based languages)", :split_scenarios),

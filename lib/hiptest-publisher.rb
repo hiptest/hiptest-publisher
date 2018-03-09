@@ -172,7 +172,7 @@ module Hiptest
       analyze_project_data
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
-      diff =  Hiptest::SignatureDiffer.diff( old, current)
+      diff =  Hiptest::SignatureDiffer.diff(old, current, library_name: @cli_options.library_name)
     end
 
     def show_actionwords_diff
