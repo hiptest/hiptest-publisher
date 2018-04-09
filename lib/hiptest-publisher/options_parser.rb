@@ -231,7 +231,7 @@ class OptionsParser
       Option.new(nil, 'empty-folders', false, nil, "Export empty folders", :empty_folders),
       Option.new(nil, 'split-scenarios', false, nil, "Export each scenario in a single file (except for Gherkin based languages)", :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, "Use only last level action word", :leafless_export),
-      Option.new('s', 'site=SITE', 'https://hiptest.net', String, "Site to fetch from", :site),
+      Option.new('s', 'site=SITE', 'https://app.hiptest.com', String, "Site to fetch from", :site),
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
       Option.new(nil, 'global-failure-on-missing-reports', false, nil, "When there is no results file to push, report a global failure", :global_failure_on_missing_reports),
       Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (junit, nunit, tap, robot)", :push_format),

@@ -70,4 +70,4 @@ Then run `gem update --system` to upgrade RubyGems to its latest version which i
 Notes
 -----
 
-We tested this solution on a fresh Windows 10 install. If you encounter any issues, do not hesitate to contact us at support@hiptest.net so we can fix them.
+We tested this solution on a fresh Windows 10 install. If you encounter any issues, do not hesitate to contact us at support@hiptest.com so we can fix them.

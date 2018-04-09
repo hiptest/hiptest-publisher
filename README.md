@@ -45,7 +45,7 @@ Note: for Windows users, take a look at [this Windows installation guide](docs/I
 Exporting a project
 -------------------
 
-Go to one of your [Hiptest projects](https://hiptest.net/#/projects) and select the Settings tab.
+Go to one of your [Hiptest projects](https://app.hiptest.com/projects) and select the Settings tab.
 This tab is available only for projects you own.
 From there, copy the secret token and run this command line:
 
@@ -74,7 +74,7 @@ When publishing, you'll notice a file called ``actionwords_signature.yaml``. Sto
 Exporting a test run
 --------------------
 
-You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `http://hiptest.net/app#/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
+You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `https://app.hiptest.com/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
 
 ```shell
 hiptest-publisher --token=<YOUR TOKEN> --test-run-id=6941
@@ -121,7 +121,7 @@ Specific options:
         --empty-folders              Export empty folders (default: false)
         --split-scenarios            Export each scenario in a single file (except for Gherkin based languages) (default: false)
         --leafless-export            Use only last level action word (default: false)
-    -s, --site=SITE                  Site to fetch from (default: https://hiptest.net)
+    -s, --site=SITE                  Site to fetch from (default: https://app.hiptest.com)
     -p, --push=FILE.TAP              Push a results file to the server
         --push-format=tap            Format of the test results (junit, nunit, tap, robot) (default: tap)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)

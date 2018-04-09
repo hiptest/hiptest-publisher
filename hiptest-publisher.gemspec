@@ -455,4 +455,3 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
   end
 end
-

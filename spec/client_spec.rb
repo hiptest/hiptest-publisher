@@ -30,7 +30,7 @@ describe Hiptest::Client do
 
   def stub_available_test_runs(test_runs:, token: "123456789")
     test_runs_json = { test_runs: test_runs }.to_json
-    stub_request(:get, "https://hiptest.net/publication/#{token}/test_runs").
+    stub_request(:get, "https://app.hiptest.com/publication/#{token}/test_runs").
       to_return(body: test_runs_json,
                 headers: {'Content-Type' => 'application/json'})
   end
@@ -40,7 +40,7 @@ describe Hiptest::Client do
       let(:args) { ["--token", "1234"] }
 
       it 'creates url for tests generation' do
-        expect(client.url).to eq("https://hiptest.net/publication/1234/project")
+        expect(client.url).to eq("https://app.hiptest.com/publication/1234/project")
       end
 
       context "and with --test-run-id" do
@@ -48,7 +48,7 @@ describe Hiptest::Client do
 
         it 'creates url for tests generation from a test run id' do
           stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "1234")
-          expect(client.url).to eq("https://hiptest.net/publication/1234/test_run/98")
+          expect(client.url).to eq("https://app.hiptest.com/publication/1234/test_run/98")
         end
 
         context 'and with --filter-on-status' do
@@ -56,7 +56,7 @@ describe Hiptest::Client do
 
           it 'creates a url to download only tests matching the status' do
             stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "1234")
-            expect(client.url).to eq("https://hiptest.net/publication/1234/test_run/98?filter_status=passed")
+            expect(client.url).to eq("https://app.hiptest.com/publication/1234/test_run/98?filter_status=passed")
           end
         end
       end
@@ -65,7 +65,7 @@ describe Hiptest::Client do
         let(:args) { ["--token", "1234", "--push", "myfile.tap"] }
 
         it 'creates url to push results' do
-          expect(client.url).to eq("https://hiptest.net/import_test_results/1234/tap")
+          expect(client.url).to eq("https://app.hiptest.com/import_test_results/1234/tap")
         end
       end
 
@@ -73,7 +73,7 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-scenario-ids', '1, 3, 4']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_ids=1,3,4")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_scenario_ids=1,3,4")
         end
       end
 
@@ -81,19 +81,19 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-scenario-name', 'My scenario']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=My%20scenario")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_scenario_name=My%20scenario")
         end
 
         it 'escapes the name for the URL' do
           # args = ['--token', '123', '--filter-on-scenario-name', 'My pouet scenario']
           args[-1] = %q{It's "escaped"_%42_😎_<>}
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=It%27s%20%22escaped%22_%2542_%F0%9F%98%8E_%3C%3E")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_scenario_name=It%27s%20%22escaped%22_%2542_%F0%9F%98%8E_%3C%3E")
         end
 
         it 'escapes accentuated letters for the URL' do
           # args = ['--token', '123', '--filter-on-scenario-name', 'My pouet scenario']
           args[-1] = "La qualité est clé"
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_scenario_name=La%20qualit%C3%A9%20est%20cl%C3%A9")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_scenario_name=La%20qualit%C3%A9%20est%20cl%C3%A9")
         end
       end
 
@@ -101,14 +101,14 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-folder-ids', '7, 8, 10']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_ids=7,8,10")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_folder_ids=7,8,10")
         end
 
         context '--not-recursive' do
           let(:args) {['--token', '123', '--filter-on-folder-ids', '7, 8, 10', '--not-recursive']}
 
           it 'allows enabling the not_recursive option' do
-            expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_ids=7,8,10&not_recursive=true")
+            expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_folder_ids=7,8,10&not_recursive=true")
           end
         end
       end
@@ -117,14 +117,14 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My%20super%20folder")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_folder_name=My%20super%20folder")
         end
 
         context '--not-recursive' do
           let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder', '--not-recursive']}
 
           it 'allows enabling the not_recursive option' do
-            expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_folder_name=My%20super%20folder&not_recursive=true")
+            expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_folder_name=My%20super%20folder&not_recursive=true")
           end
         end
       end
@@ -133,7 +133,7 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-tags', 'tag, another:tag']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://hiptest.net/publication/123/project?filter_tags=tag,another%3Atag")
+          expect(client.url).to eq("https://app.hiptest.com/publication/123/project?filter_tags=tag,another%3Atag")
         end
       end
 
@@ -154,7 +154,7 @@ describe Hiptest::Client do
 
     it 'fetches the project xml from Hiptest server' do
       sent_xml = "<xml_everywhere/>"
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(body: sent_xml)
       got_xml = client.fetch_project_export
       expect(got_xml).to eq(sent_xml)
@@ -164,7 +164,7 @@ describe Hiptest::Client do
       let(:args) { ["--token", "987654321"] }
 
       it "raises a ClientError exception with a message" do
-        stub_request(:get, "https://hiptest.net/publication/987654321/project").
+        stub_request(:get, "https://app.hiptest.com/publication/987654321/project").
           to_return(status: 404)
         expect {
           client.fetch_project_export
@@ -176,7 +176,7 @@ describe Hiptest::Client do
 
         it "raises a ClientError exception with a message" do
           stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "987654321")
-          stub_request(:get, "https://hiptest.net/publication/987654321/test_run/98").
+          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_run/98").
             to_return(status: 404)
           expect {
             client.fetch_project_export
@@ -184,9 +184,9 @@ describe Hiptest::Client do
         end
 
         it "raises a ClientError exception with a message (return 404 at another level)" do
-          stub_request(:get, "https://hiptest.net/publication/987654321/test_runs").
+          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_runs").
             to_return(status: 404)
-          stub_request(:get, "https://hiptest.net/publication/987654321/test_run/98").
+          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_run/98").
             to_return(status: 404)
           expect {
             client.fetch_project_export
@@ -198,7 +198,7 @@ describe Hiptest::Client do
         let(:args) { ["--token", "987654321", "--test-run-name", "plop"] }
 
         it "raises a ClientError exception with a message" do
-          stub_request(:get, "https://hiptest.net/publication/987654321/test_runs").
+          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_runs").
             to_return(status: 404)
           expect {
             client.fetch_project_export
@@ -213,7 +213,7 @@ describe Hiptest::Client do
       it "fetches the test run xml from Hiptest server" do
         stub_available_test_runs(test_runs: [tr_98__Sprint_13])
         sent_xml = "<xml_everywhere/>"
-        stub_request(:get, "https://hiptest.net/publication/123456789/test_run/98").
+        stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
           to_return(body: sent_xml)
         got_xml = client.fetch_project_export
         expect(got_xml).to eq(sent_xml)
@@ -244,10 +244,10 @@ describe Hiptest::Client do
 
       context "on old Hiptest version (no /publication/<token>/test_runs API)" do
         it "uses the given test run id and ignores that the API does not exist" do
-          stub_request(:get, "https://hiptest.net/publication/123456789/test_runs").
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/test_runs").
             to_return(status: 404)
           sent_xml = "<xml_everywhere/>"
-          stub_request(:get, "https://hiptest.net/publication/123456789/test_run/98").
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
             to_return(body: sent_xml)
           got_xml = client.fetch_project_export
           expect(got_xml).to eq(sent_xml)
@@ -261,7 +261,7 @@ describe Hiptest::Client do
       it "first fetches the test runs list to get the id, then the test run xml" do
         stub_available_test_runs(test_runs: [tr_89__Sprint_12])
         sent_xml = "<xml_everywhere/>"
-        stub_request(:get, "https://hiptest.net/publication/123456789/test_run/89").
+        stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/89").
           to_return(body: sent_xml)
         got_xml = client.fetch_project_export
         expect(got_xml).to eq(sent_xml)
