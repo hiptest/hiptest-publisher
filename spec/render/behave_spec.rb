@@ -104,4 +104,26 @@ describe 'Behave rendering' do
       "    context.actionwords.i_do_something()"
     ].join("\n"))
   end
+
+  it 'escapes single quotes' do
+    aw = make_actionword("It's working")
+    project = make_project("Colors",
+      scenarios: [
+        make_scenario('My scenario',
+          body: [
+            make_call("It's working",  annotation: "when")
+          ])
+      ],
+      actionwords: [aw]
+    )
+    Hiptest::GherkinAdder.add(project)
+
+    options =  context_for(only: "step_definitions", language: 'behave')
+    expect(aw.render(options)).to eq([
+      "",
+      "@when(r'It\\'s working')",
+      "def impl(context):",
+      "    context.actionwords.its_working()"
+    ].join("\n"))
+  end
 end
