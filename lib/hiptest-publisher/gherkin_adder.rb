@@ -34,7 +34,7 @@ module Hiptest
 
       @annotations_counter.actionwords.each do |actionword|
         actionword.children[:gherkin_annotation] = @annotations_counter.most_used_annotation(actionword) || "Given"
-        actionword.children[:gherkin_used_annotations] = @annotations_counter.all_used_annotations(actionword) || ['Given']
+        actionword.children[:gherkin_used_annotations] = @annotations_counter.all_used_annotations(actionword).any? ? @annotations_counter.all_used_annotations(actionword) :['Given']
       end
     end
 
