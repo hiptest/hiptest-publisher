@@ -25,7 +25,9 @@ module Hiptest
     def walk_actionword(aw)
       walk_item(aw).merge(
         chunks: aw.chunks || [],
-        extra_inlined_parameters: aw.extra_inlined_parameters || []
+        extra_inlined_parameters: aw.extra_inlined_parameters || [],
+        has_free_text_parameter?: aw.children[:parameters].select(&:free_text?).count > 0,
+        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0
       )
     end
 
