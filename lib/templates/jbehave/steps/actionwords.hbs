@@ -1,0 +1,18 @@
+package {{{ context.package }}};
+
+import org.jbehave.core.annotations.*;
+import org.jbehave.core.model.ExamplesTable;
+
+public class StepDefinitions {{#curly}}{{#indent}}
+public Actionwords {{{ context.call_prefix }}};
+
+@BeforeScenario
+public void beforeEachScenario() {{#curly}}{{#indent}}
+actionwords = new Actionwords();
+{{/indent}}
+{{/curly}}
+
+{{#each rendered_children.actionwords}}{{{this}}}
+{{/each}}
+{{/indent}}
+{{/curly}}
