@@ -250,7 +250,7 @@ describe Hiptest::GherkinAdder do
       it "adds the correct informations and extra_inlined_parameters to Actionword" do
         expect(actionword.chunks).to eq([
           {value: "Hello ", is_parameter: false},
-          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", name: "name", is_parameter: true},
           {value: "", is_parameter: false}
         ])
         expect(actionword.extra_inlined_parameters).to be_empty
@@ -328,7 +328,7 @@ describe Hiptest::GherkinAdder do
           {value: "Hello to all of you", is_parameter: false}
         ])
         expect(actionword.extra_inlined_parameters).to eq([
-          {value: "(.*)", is_parameter: true}
+          {value: "(.*)", name: "name", is_parameter: true}
         ])
       end
 
@@ -413,11 +413,11 @@ describe Hiptest::GherkinAdder do
       it "adds the correct informations and extra_inlined_parameters to Actionword" do
         expect(actionword.chunks).to eq([
           {value: "Hello ", is_parameter: false},
-          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", name: "name1", is_parameter: true},
           {value: ", ", is_parameter: false},
-          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", name: "name2", is_parameter: true},
           {value: ", ", is_parameter: false},
-          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", name: "name3", is_parameter: true},
           {value: "", is_parameter: false},
         ])
         expect(actionword.extra_inlined_parameters).to be_empty
@@ -486,9 +486,9 @@ describe Hiptest::GherkinAdder do
         ])
 
         expect(actionword.extra_inlined_parameters).to eq([
-          {value: "(.*)", is_parameter: true},
-          {value: "(.*)", is_parameter: true},
-          {value: "(.*)", is_parameter: true},
+          {value: "(.*)", name: "name1", is_parameter: true},
+          {value: "(.*)", name: "name2", is_parameter: true},
+          {value: "(.*)", name: "name3", is_parameter: true},
         ])
       end
 
@@ -575,17 +575,17 @@ describe Hiptest::GherkinAdder do
     it "adds the correct informations and extra_inlined_parameters to Actionword" do
       expect(actionword.chunks).to eq([
         {value: "good morning ", is_parameter: false},
-        {value: "(.*)", is_parameter: true},
+        {value: "(.*)", name: "name", is_parameter: true},
         {value: ", we are ", is_parameter: false},
-        {value: "(.*)", is_parameter: true},
+        {value: "(.*)", name: "day", is_parameter: true},
         {value: "\\. Say ", is_parameter: false},
         {value: "something", is_parameter: false},
         {value: "!", is_parameter: false}
       ])
 
       expect(actionword.extra_inlined_parameters).to eq([
-        {value: "(.*)", is_parameter: true},
-        {value: "(.*)", is_parameter: true}
+        {value: "(.*)", name: "temperature", is_parameter: true},
+        {value: "(.*)", name: "weather", is_parameter: true}
       ])
     end
 
@@ -773,7 +773,7 @@ describe Hiptest::GherkinAdder do
     it "adds the correct informations and extra_inlined_parameters to Actionword" do
       expect(actionword.chunks).to eq([
         {value: "I open ", is_parameter: false},
-        {value: "(.*)", is_parameter: true},
+        {value: "(.*)", name: "site", is_parameter: true},
         {value: " and see:", is_parameter: false}
       ])
 

@@ -134,6 +134,7 @@ module Hiptest
         if actionword_parameters.has_key?(inline_parameter_name)
           actionword.chunks << {
             value: "(.*)",
+            name: inline_parameter_name,
             is_parameter: true
           }
         else
@@ -148,6 +149,7 @@ module Hiptest
       missing_parameter_names.each do |missing_parameter_name|
         actionword.extra_inlined_parameters << {
           value: "(.*)",
+          name: missing_parameter_name,
           is_parameter: true
         }
       end
