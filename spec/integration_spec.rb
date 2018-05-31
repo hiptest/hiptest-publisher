@@ -56,6 +56,7 @@ describe Hiptest::Publisher do
           %w"specflow",
           %w"php phpunit",
           %w"behave",
+          %w"jbehave",
           %w"behat"
         ].each do |language, framework|
           assertion_text = "--language=#{language}"
