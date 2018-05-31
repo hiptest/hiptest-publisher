@@ -5,5 +5,5 @@ Scenario: {{{ rendered_children.name }}}{{#if context.uids}}{{#if rendered_child
 {{/if}}{{#each rendered_children.body}}{{{ this }}}
 {{/each}}{{#if has_datasets?}}
 Examples:
-| {{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid |{{/if}}
+{{#if context.with_dataset_names}}| dataset name {{/if}}| {{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid |{{/if}}
 {{{rendered_children.datatable}}}{{/if}}

@@ -212,6 +212,24 @@ describe 'JBehave rendering' do
         ].join("\n")
       }
 
+      let(:scenario_with_datatable_and_dataset_names_rendered) {
+        [
+          "Scenario: Create secondary colors#{outline_title_ending}",
+          "# This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
+          "Examples:",
+          "| dataset name | first_color | second_color | got_color | priority | hiptest-uid |",
+          "| Mix to green | blue | yellow | green | -1 |  |",
+          "| Mix to orange | yellow | red | orange | 1 |  |",
+          "| Mix to purple | red | blue | purple | true |  |",
+          "",
+        ].join("\n")
+      }
+
       let(:scenario_with_datatable_rendered_with_uids_in_outline) {
         [
           "Scenario: Create secondary colors (<hiptest-uid>)",

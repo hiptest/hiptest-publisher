@@ -238,6 +238,7 @@ class OptionsParser
       Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (junit, nunit, tap, robot)", :push_format),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
       Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
+      Option.new(nil, 'with-dataset-names', false, nil, 'Export dataset name when creating feature files (note: available only for Gherkin-based exports)', :with_dataset_names),
       Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in Hiptest for the test files (note: may cause encoding issues)", :keep_filenames),
       Option.new(nil, 'keep-foldernames', false, nil, "Keep the same name as in Hiptest for the folders (note: may cause encoding issues)", :keep_foldernames),
       Option.new(nil, 'filter-on-scenario-ids=IDS', '', String, "Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)", :filter_on_scenario_ids),
@@ -562,7 +563,8 @@ class LanguageGroupConfig
       package: @language_group_params[:package],
       namespace: @language_group_params[:namespace],
       uids: @user_params[:uids],
-      renderer_addons: @language_group_params[:renderer_addons],
+      with_dataset_names: @user_params[:with_dataset_names],
+      renderer_addons: @language_group_params[:renderer_addons]
     )
   end
 
