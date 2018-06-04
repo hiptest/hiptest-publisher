@@ -65,6 +65,10 @@ module Hiptest
       }
     end
 
+    def walk_actionwords(aws)
+      {}
+    end
+
     def walk_test(test)
       {
         has_description?: !test.children[:description].nil? && !test.children[:description].empty?,
