@@ -6,7 +6,6 @@ Hiptest Publisher
 [![Gem Version](https://badge.fury.io/rb/hiptest-publisher.svg)](http://badge.fury.io/rb/hiptest-publisher)
 [![Code Climate](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/gpa.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
 [![Test Coverage](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/coverage.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
-[![Dependency Status](https://gemnasium.com/hiptest/hiptest-publisher.svg)](https://gemnasium.com/hiptest/hiptest-publisher)
 
 
 Installing
@@ -93,6 +92,7 @@ You could obtain for example:
 
 ```shell
 Exports tests from Hiptest for automation.
+
 Specific options:
     -t, --token=TOKEN                Secret token (available in your project settings)
     -l, --language=LANG              Target language (default: ruby)
@@ -110,6 +110,8 @@ Specific options:
         --actionwords-only           (deprecated) alias for --only=actionwords (default: false)
         --actionwords-signature      Export actionwords signature (default: false)
         --show-actionwords-diff      Show actionwords diff since last update (summary) (default: false)
+        --show-actionwords-diff-as-json
+                                     Show actionwords diff since last update (JSON output) (default: false)
         --show-actionwords-deleted   Output signature of deleted action words (default: false)
         --show-actionwords-created   Output code for new action words (default: false)
         --show-actionwords-renamed   Output signatures of renamed action words (default: false)
@@ -123,6 +125,8 @@ Specific options:
         --leafless-export            Use only last level action word (default: false)
     -s, --site=SITE                  Site to fetch from (default: https://app.hiptest.com)
     -p, --push=FILE.TAP              Push a results file to the server
+        --global-failure-on-missing-reports
+                                     When there is no results file to push, report a global failure (default: false)
         --push-format=tap            Format of the test results (junit, nunit, tap, robot) (default: tap)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
@@ -137,6 +141,7 @@ Specific options:
         --filter-on-status=STATUS    Filter on test status in last build (use in conjunction with a test run)
         --not-recursive              Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children (default: false)
         --check-version              Check if a new release of hiptest-publisher is available (default: false)
+        --force                      Force overwrite of existing files (do not apply to test files) (default: false)
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -h, --help                       Show this message
