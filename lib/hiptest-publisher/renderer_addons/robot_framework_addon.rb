@@ -2,7 +2,6 @@ require 'hiptest-publisher/nodes'
 
 module Hiptest
   module RobotFrameworkAddon
-
     def walk_folder(folder)
       walk_scenario_container(folder)
       super(folder)

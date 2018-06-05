@@ -36,11 +36,6 @@ module Hiptest
       super(call)
     end
 
-    def walk_actionword(aw)
-      add_splitted_tags(aw)
-      super(aw)
-    end
-
     def walk_folder(folder)
       ancestor_tags = folder.ancestors.map {|f| f.children[:tags]}.flatten.uniq
       @rendered_children[:ancestor_tags] = ancestor_tags.map {|t| Hiptest::Renderer.render(t, @context)}
@@ -68,14 +63,6 @@ module Hiptest
       render_context[:context] = @context
 
       @template_finder.get_compiled_handlebars(node.kind).call(render_context)
-    end
-
-    private
-
-    def add_splitted_tags(context)
-      @rendered_children[:splitted_tags] = context.children[:tags].map do |tag|
-        @rendered[tag]
-      end
     end
   end
 end
