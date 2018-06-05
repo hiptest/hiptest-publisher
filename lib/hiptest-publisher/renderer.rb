@@ -23,26 +23,6 @@ module Hiptest
       @template_finder = context.template_finder
     end
 
-    def walk_call(call)
-      # For Gherkin, we need the special arguments rendered.
-      if call.free_text_arg
-        @rendered_children[:free_text_arg] = @rendered[call.free_text_arg.children[:value]]
-      end
-
-      if call.datatable_arg
-        @rendered_children[:datatable_arg] = @rendered[call.datatable_arg.children[:value]]
-      end
-
-      super(call)
-    end
-
-    def walk_folder(folder)
-      ancestor_tags = folder.ancestors.map {|f| f.children[:tags]}.flatten.uniq
-      @rendered_children[:ancestor_tags] = ancestor_tags.map {|t| Hiptest::Renderer.render(t, @context)}
-
-      super(folder)
-    end
-
     def call_node_walker(node)
       if node.is_a? Hiptest::Nodes::Node
         @rendered_children = {}
