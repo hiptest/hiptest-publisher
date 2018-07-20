@@ -127,7 +127,7 @@ Specific options:
     -p, --push=FILE.TAP              Push a results file to the server
         --global-failure-on-missing-reports
                                      When there is no results file to push, report a global failure (default: false)
-        --push-format=tap            Format of the test results (junit, nunit, tap, robot) (default: tap)
+        --push-format=tap            Format of the test results (cucumber-json, junit, nunit, robot, tap) (default: tap)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
         --keep-filenames             Keep the same name as in Hiptest for the test files (note: may cause encoding issues) (default: false)
@@ -182,7 +182,7 @@ The tests must then generate a test report that is supported by Hiptest. Current
  - [TAP (Test Anything Protocol)](https://testanything.org/)
  - Robot framework XML output
 
-You can specify the type of export when pushing by using the option "--push-format=[junit|nunit|tap|robot]" or specifying it in the config file.
+You can specify the type of export when pushing by using the option "--push-format=[cucumber-json|junit|nunit|robot|tap]" or specifying it in the config file.
 
 You can push multiple files at once (using wildcard) but in that case, do not forget to add quotes. For examples:
 

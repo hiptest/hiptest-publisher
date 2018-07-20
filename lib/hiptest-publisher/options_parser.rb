@@ -235,7 +235,7 @@ class OptionsParser
       Option.new('s', 'site=SITE', 'https://app.hiptest.com', String, "Site to fetch from", :site),
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
       Option.new(nil, 'global-failure-on-missing-reports', false, nil, "When there is no results file to push, report a global failure", :global_failure_on_missing_reports),
-      Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (junit, nunit, tap, robot)", :push_format),
+      Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (cucumber-json, junit, nunit, robot, tap)", :push_format),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
       Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
       Option.new(nil, 'with-dataset-names', false, nil, 'Export dataset name when creating feature files (note: available only for Gherkin-based exports)', :with_dataset_names),
