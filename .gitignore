@@ -25,3 +25,7 @@
 
 # Ignore gem
 /*.gem
+/hps-cucumber-groovy/target/
+
+# Ignore Mac files
+.DS_Store

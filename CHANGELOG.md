@@ -1,6 +1,11 @@
 Hiptest publisher changelog
 ===========================
 
+1.13.0
+------
+
+ - Add Cucumber/Groovy support [#54]
+
 1.12.0
 ------
 

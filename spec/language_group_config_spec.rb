@@ -870,7 +870,64 @@ describe LanguageGroupConfig do
                                                       "[actionwords]",
                                                       "/Actionwords.java"
                                                     ]
-      }
+      },
+      "cucumber-groovy" => {
+        []                                       => [ "[features]",
+                                                      "/BuyGoods.feature",
+                                                      "/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]", "/Actionwords.groovy"
+                                                    ],
+        ["--split-scenarios"]                    => [ "[features]",
+                                                      "/BuyGoods.feature",
+                                                      "/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]",
+                                                      "/Actionwords.groovy"
+                                                    ],
+        ["--with-folders"]                       => [ "[features]",
+                                                      "/global_trades/BuyGoods.feature",
+                                                      "/global_trades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]",
+                                                      "/Actionwords.groovy"
+                                                    ],
+        ["--split-scenarios", "--with-folders"]  => [ "[features]",
+                                                      "/global_trades/BuyGoods.feature",
+                                                      "/global_trades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]", "/Actionwords.groovy"
+                                                    ],
+        ["--keep-filenames"]                      => ["[features]",
+                                                      "/Buy goods.feature",
+                                                      "/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]",
+                                                      "/Actionwords.groovy"
+                                                    ],
+        ["--with-folders", "--keep-foldernames"]  => ["[features]",
+                                                      "/Global trades/BuyGoods.feature",
+                                                      "/Global trades/SellGoods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]",
+                                                      "/Actionwords.groovy"
+                                                    ],
+        ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
+                                                      "[features]",
+                                                      "/Global trades/Buy goods.feature",
+                                                      "/Global trades/Sell goods.feature",
+                                                      "[step_definitions]",
+                                                      "/StepDefinitions.groovy",
+                                                      "[actionwords]",
+                                                      "/Actionwords.groovy"
+                                                    ]
+      },
     }.each do |dialect, output_files_for_options|
       context dialect do
         output_files_for_options.each do |options, output_files|
