@@ -352,4 +352,57 @@ describe 'Cucumber/Groovy rendering' do
 
     let(:rendered_empty_scenario) { "" }
   end
+
+  context "special cases in Actionwords.groovy file" do
+    include HelperFactories
+
+    let(:actionwords) {
+      [
+        make_actionword("An actionword"),
+        make_actionword("Another actionword"),
+      ]
+    }
+
+    let(:scenario) {
+      make_scenario("A scenario",
+        body: [
+          make_call("An actionword",      annotation: "given"),
+          make_call("Another actionword", annotation: "and"),
+        ])
+    }
+
+    let!(:project) {
+      make_project("Prohject",
+        scenarios: [scenario],
+        actionwords: actionwords,
+      ).tap do |p|
+        Hiptest::Nodes::ParentAdder.add(p)
+        Hiptest::GherkinAdder.add(p)
+      end
+    }
+
+    let(:options) {
+      context_for(
+        only: 'actionwords',
+        language: 'cucumber',
+        framework: 'groovy',
+      )
+    }
+
+    it "add package to the top of Actionwords.groovy file" do
+      rendered = project.children[:actionwords].render(options)
+      expect(rendered).to eq([
+        'package com.example',
+        '',
+        'class Actionwords {',
+        '    def anActionword() {',
+        '    }',
+        '',
+        '    def anotherActionword() {',
+        '    }',
+        '}',
+      ].join("\n")
+      )
+    end
+  end
 end
