@@ -3,7 +3,7 @@ Contributing
 
 Do not hesitate to contribute to the project by adding support for your favorite language or test framework as explained below. This tool was built to be configurable and have the possibility to export tests in any language.
 
-We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [Hiptest test description language](https://hiptest.net/tdl_documentation.html) is needed to add support for new languages/frameworks.
+We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [Hiptest test description language](https://app.hiptest.com/tdl_documentation.html) is needed to add support for new languages/frameworks.
 
 Adding support for a new language
 ---------------------------------

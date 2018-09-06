@@ -2,7 +2,6 @@ require 'hiptest-publisher/nodes'
 
 module Hiptest
   module GroovySpockAddon
-
     def walk_call(call)
       base = super(call)
       base[:use_expect_annotation] = needs_fixing?(call)

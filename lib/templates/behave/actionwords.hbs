@@ -7,6 +7,6 @@ from behave import *
 #     context.actionwords = Actionwords()
 
 use_step_matcher('re')
-{{#each rendered_children.actionwords}}
+{{#each rendered_children.sorted_actionwords}}
 {{{this}}}
 {{/each}}

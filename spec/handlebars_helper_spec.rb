@@ -155,6 +155,12 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context 'hh_join_gherkin_dataset' do
+    it 'datatable use case' do
+      expect(evaluate('{{join_gherkin_dataset items}}', {items: ['John Connor', 'Sarah Connor', 'T-|000']})).to eq('John Connor | Sarah Connor | T-\|000')
+    end
+  end
+
   context 'hh_with' do
     it 'allows to keep name in the current context' do
       data = {

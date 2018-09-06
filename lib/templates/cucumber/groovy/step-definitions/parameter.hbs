@@ -1,0 +1,1 @@
+{{#if is_datatable?}}DataTable{{else}}{{#if is_bool?}}boolean{{else}}{{{ node.type }}}{{/if}}{{/if}} {{{ camelize_lower rendered_children.name }}}

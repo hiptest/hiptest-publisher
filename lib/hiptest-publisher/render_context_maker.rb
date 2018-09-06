@@ -26,7 +26,8 @@ module Hiptest
       walk_item(aw).merge(
         chunks: aw.chunks || [],
         extra_inlined_parameters: aw.extra_inlined_parameters || [],
-        uniq_name: aw.uniq_name
+        has_free_text_parameter?: aw.children[:parameters].select(&:free_text?).count > 0,
+        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0
       )
     end
 
@@ -70,6 +71,10 @@ module Hiptest
         self_name: project.children[:name],
         datatables_present?: datatable_present?(scenarios)
       }
+    end
+
+    def walk_actionwords(aws)
+      {}
     end
 
     def walk_test(test)

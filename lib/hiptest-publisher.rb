@@ -279,7 +279,7 @@ module Hiptest
         "",
         "  * Did you specify the correct push format ?",
         "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
-        "    Available formats are: tap, junit, robot, nunit",
+        "    Available formats are: cucumber-json, junit, nunit, robot, tap",
         ""
       ].join("\n")
     end

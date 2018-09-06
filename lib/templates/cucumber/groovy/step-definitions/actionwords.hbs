@@ -1,0 +1,10 @@
+package {{{ context.package }}}
+
+import cucumber.api.DataTable
+
+this.metaClass.mixin(cucumber.api.groovy.EN)
+
+Actionwords {{{ context.call_prefix }}} = new Actionwords()
+
+{{#each rendered_children.actionwords}}{{{this}}}
+{{/each}}

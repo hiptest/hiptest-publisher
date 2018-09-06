@@ -90,9 +90,9 @@ describe Hiptest::Publisher do
 
   describe "--language=ruby" do
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
       args = [
         "--language", "ruby",
@@ -104,7 +104,7 @@ describe Hiptest::Publisher do
     end
 
     it "exports correctly in the golden case" do
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       args = [
         "--language", "ruby",
@@ -117,7 +117,7 @@ describe Hiptest::Publisher do
     end
 
     it "can handle bad URL" do
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_raise(StandardError)
       args = [
         "--language", "ruby",
@@ -131,7 +131,7 @@ describe Hiptest::Publisher do
     end
 
     it "can handle 404 Not Found errors" do
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(status: 404)
       args = [
         "--language", "ruby",
@@ -546,7 +546,7 @@ describe Hiptest::Publisher do
     end
 
     before do
-      stub_request(:post, "https://hiptest.net/import_test_results/123/tap").
+      stub_request(:post, "https://app.hiptest.com/import_test_results/123/tap").
           to_return(status: 200,
                     body: '{"test_import": [{"name": "my test", "status": "passed"}]}')
     end
@@ -557,13 +557,13 @@ describe Hiptest::Publisher do
       publisher = Hiptest::Publisher.new(["--token", "123", "--push", result_file], listeners: listeners)
       publisher.run
 
-      expect(a_request(:post, "https://hiptest.net/import_test_results/123/tap").
+      expect(a_request(:post, "https://app.hiptest.com/import_test_results/123/tap").
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.tap"/)
           expect(req.headers).to include('Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost')
         }
       ).to have_been_made
-      expect(STDOUT).to have_printed("Posting #{result_file} to https://hiptest.net")
+      expect(STDOUT).to have_printed("Posting #{result_file} to https://app.hiptest.com")
     end
 
     it "support globbing to push multiple files" do
@@ -574,7 +574,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(a_request(:post, "https://hiptest.net/import_test_results/123/tap").
+      expect(a_request(:post, "https://app.hiptest.com/import_test_results/123/tap").
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result1.tap"/).
                           and match(/Content-Disposition: form-data;.+ filename="result2.tap"/)
@@ -592,7 +592,7 @@ describe Hiptest::Publisher do
       expect(STDOUT).to have_printed("1 test imported\n")
 
       # multiple passed
-      stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+      stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": [{"name": "test1", "status": "passed"}, {"name": "test2", "status": "passed"}]}')
       publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
@@ -604,7 +604,7 @@ describe Hiptest::Publisher do
 
     it "should display an error if no tests have been imported" do
       result_file = create_file('result.tap')
-      stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+      stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": []}')
       publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
@@ -616,7 +616,7 @@ describe Hiptest::Publisher do
 
     it "displays names of passed tests with --verbose" do
       result_file = create_file('result.tap')
-      stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+      stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": [{"name": "test1", "status": "passed"}, {"name": "test2", "status": "passed"}]}')
 
@@ -629,7 +629,7 @@ describe Hiptest::Publisher do
 
     context 'when no results have been imported' do
       before do
-        stub_request(:post, "https://hiptest.net/import_test_results/456/tap").
+        stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
             to_return(status: 200,
                       body: '{"test_import": []}')
       end
@@ -649,7 +649,7 @@ describe Hiptest::Publisher do
           "",
           "  * Did you specify the correct push format ?",
           "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
-          "    Available formats are: tap, junit, robot, nunit",
+          "    Available formats are: cucumber-json, junit, nunit, robot, tap",
           ""
         ].join("\n")).to_stdout
       end
@@ -673,7 +673,7 @@ describe Hiptest::Publisher do
             "",
             "  * Did you specify the correct push format ?",
             "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
-            "    Available formats are: tap, junit, robot, nunit",
+            "    Available formats are: cucumber-json, junit, nunit, robot, tap",
             ""
           ].join("\n")).to_stdout
         end
@@ -691,7 +691,7 @@ describe Hiptest::Publisher do
             "",
             "  * Did you specify the correct push format ?",
             "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
-            "    Available formats are: tap, junit, robot, nunit",
+            "    Available formats are: cucumber-json, junit, nunit, robot, tap",
             ""
           ].join("\n")).to_stdout
         end
@@ -952,7 +952,7 @@ describe Hiptest::Publisher do
 
       context "with option global_failure_on_missing_reports on" do
         before(:each) {
-          stub_request(:post, "https://hiptest.net/report_global_failure/123/456/").
+          stub_request(:post, "https://app.hiptest.com/report_global_failure/123/456/").
             to_return(body: '{"test_import": [{"name": "Simple use", "status": "failed"}]}')
         }
 
@@ -978,7 +978,7 @@ describe Hiptest::Publisher do
 
     context "--output-directory" do
       before(:each) {
-        stub_request(:get, "https://hiptest.net/publication/123/project").
+        stub_request(:get, "https://app.hiptest.com/publication/123/project").
           to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       }
 
@@ -1116,9 +1116,9 @@ describe Hiptest::Publisher do
 
   describe "--language=seleniumide" do
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-      stub_request(:get, "https://hiptest.net/publication/123456789/leafless_tests").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
       args = [
         "--language", "seleniumide",
@@ -1139,7 +1139,7 @@ describe Hiptest::Publisher do
   describe "--filename-pattern" do
     # Only works --with-folders
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://hiptest.net/publication/123456789/project").
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/cash_withdrawal.xml'))
       args = [
         "--language", "javascript",

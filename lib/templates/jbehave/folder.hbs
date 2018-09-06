@@ -1,0 +1,14 @@
+{{{ rendered_children.name }}}
+{{#if rendered_children.ancestor_tags}}Meta:
+{{rendered_children.ancestor_tags}}{{/if}}{{#if has_tags?}}{{#if rendered_children.ancestor_tags}} {{else}}Meta:
+{{/if}}{{join rendered_children.tags " "}}
+{{/if}}{{#if rendered_children.description}}
+Narrative:
+{{rendered_children.description}}{{/if}}
+{{#unless is_empty?}}
+Lifecycle:
+Before:
+Scope: SCENARIO
+{{#each rendered_children.body}}{{{ this }}}
+{{/each}}{{/unless}}{{#each rendered_children.scenarios}}
+{{{this}}}{{/each}}

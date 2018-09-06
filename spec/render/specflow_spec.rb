@@ -24,8 +24,8 @@ describe 'Specflow rendering' do
       [
         '@myTag @myTag_some_value @JIRA_CW6',
         'Feature: Cool colors',
-        '    Cool colors calm and relax.',
-        '    They are the hues from blue green through blue violet, most grays included.',
+        '    # Cool colors calm and relax.',
+        '    # They are the hues from blue green through blue violet, most grays included.',
         '',
         '  Scenario: Create green',
         '    # You can create green by mixing other colors',

@@ -284,3 +284,124 @@ describe 'Cucumber/Javascript rendering' do
     let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
   end
 end
+
+describe 'Cucumber/Groovy rendering' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
+    let(:language) {'cucumber'}
+    let(:framework) {'groovy'}
+
+    let(:rendered_free_texted_actionword) {[
+      'def theFollowingUsersAreAvailable(freeText = "") {',
+      '}'].join("\n")}
+
+    let(:rendered_datatabled_actionword) {[
+      'def theFollowingUsersAreAvailable(datatable = "") {',
+      '}'].join("\n")}
+
+    let(:rendered_actionwords) {
+      [
+        'package com.example',
+        '',
+        'import cucumber.api.DataTable',
+        '',
+        'this.metaClass.mixin(cucumber.api.groovy.EN)',
+        '',
+        'Actionwords actionwords = new Actionwords()',
+        '',
+        'Given(~"^the color \"(.*)\"\$") { String color ->',
+        '    actionwords.theColorColor(color)',
+        '}',
+        '',
+        'When(~"^you mix colors\$") {  ->',
+        '    actionwords.youMixColors()',
+        '}',
+        '',
+        'Then(~"^you obtain \"(.*)\"\$") { String color ->',
+        '    actionwords.youObtainColor(color)',
+        '}',
+        '',
+        '',
+        'Then(~"^you cannot play croquet\$") {  ->',
+        '    actionwords.youCannotPlayCroquet()',
+        '}',
+        '',
+        'Given(~"^I am on the \"(.*)\" home page\$") { String site, String freeText ->',
+        '    actionwords.iAmOnTheSiteHomePage(site, freeText)',
+        '}',
+        '',
+        'When(~"^the following users are available on \"(.*)\"\$") { String site, DataTable datatable ->',
+        '    actionwords.theFollowingUsersAreAvailableOnSite(site, datatable)',
+        '}',
+        '',
+        'Given(~"^an untrimed action word\$") {  ->',
+        '    actionwords.anUntrimedActionWord()',
+        '}',
+        '',
+        'Given(~"^the \"(.*)\" of \"(.*)\" is weird \"(.*)\" \"(.*)\"\$") { String order, String parameters, String p0, String p1 ->',
+        '    actionwords.theOrderOfParametersIsWeird(p0, p1, parameters, order)',
+        '}',
+        '',
+        'Given(~"^I login on \"(.*)\" \"(.*)\"\$") { String site, String username ->',
+        '    actionwords.iLoginOn(site, username)',
+        '}',
+        '',
+        ''
+      ].join("\n")
+    }
+
+    let(:rendered_empty_scenario) { "" }
+  end
+
+  context "special cases in Actionwords.groovy file" do
+    include HelperFactories
+
+    let(:actionwords) {
+      [
+        make_actionword("An actionword"),
+        make_actionword("Another actionword"),
+      ]
+    }
+
+    let(:scenario) {
+      make_scenario("A scenario",
+        body: [
+          make_call("An actionword",      annotation: "given"),
+          make_call("Another actionword", annotation: "and"),
+        ])
+    }
+
+    let!(:project) {
+      make_project("Prohject",
+        scenarios: [scenario],
+        actionwords: actionwords,
+      ).tap do |p|
+        Hiptest::Nodes::ParentAdder.add(p)
+        Hiptest::GherkinAdder.add(p)
+      end
+    }
+
+    let(:options) {
+      context_for(
+        only: 'actionwords',
+        language: 'cucumber',
+        framework: 'groovy',
+      )
+    }
+
+    it "add package to the top of Actionwords.groovy file" do
+      rendered = project.children[:actionwords].render(options)
+      expect(rendered).to eq([
+        'package com.example',
+        '',
+        'class Actionwords {',
+        '    def anActionword() {',
+        '    }',
+        '',
+        '    def anotherActionword() {',
+        '    }',
+        '}',
+      ].join("\n")
+      )
+    end
+  end
+end

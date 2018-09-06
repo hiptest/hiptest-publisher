@@ -1,0 +1,9 @@
+Scenario: {{{ rendered_children.name }}}{{#if context.uids}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{/if}}
+{{#if has_tags?}}Meta:
+{{join rendered_children.tags ' '}}
+{{/if}}{{#if has_description?}}{{#comment '#'}}{{rendered_children.description}}{{/comment}}
+{{/if}}{{#each rendered_children.body}}{{{ this }}}
+{{/each}}{{#if has_datasets?}}
+Examples:
+{{#if context.with_dataset_names}}| dataset name {{/if}}| {{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid |{{/if}}
+{{{rendered_children.datatable}}}{{/if}}

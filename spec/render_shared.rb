@@ -1123,9 +1123,11 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     end
   }
 
+  let(:features_option_name) { "features" }
+
   let(:options) {
     context_for(
-      only: "features",
+      only: features_option_name,
       language: language,
       framework: framework
     )
@@ -1152,8 +1154,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     [
       '@myTag @myTag-some_value @JIRA-CW-6',
       'Feature: Cool colors',
-      '    Cool colors calm and relax.',
-      '    They are the hues from blue green through blue violet, most grays included.',
+      '    # Cool colors calm and relax.',
+      '    # They are the hues from blue green through blue violet, most grays included.',
       '',
       '  Scenario: Create green',
       '    # You can create green by mixing other colors',
@@ -1187,6 +1189,326 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     ].join("\n")
   }
 
+  let(:test_rendered) {
+    [
+      "Scenario: Create white",
+      "  Given the color \"blue\"",
+      "  And the color \"red\"",
+      "  And the color \"green\"",
+      "  When you mix colors",
+      "  Then you obtain \"white\"",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_rendered) {
+    [
+      "",
+      "Scenario: Create green",
+      '  # You can create green by mixing other colors',
+      "  Given the color \"blue\"",
+      "  And the color \"yellow\"",
+      "  When you mix colors",
+      "  Then you obtain \"green\"",
+      "  But you cannot play croquet",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_with_uid_rendered) {
+    [
+      "",
+      "Scenario: Create green (uid:1234-4567)",
+      '  # You can create green by mixing other colors',
+      "  Given the color \"blue\"",
+      "  And the color \"yellow\"",
+      "  When you mix colors",
+      "  Then you obtain \"green\"",
+      "  But you cannot play croquet",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_without_annotations_rendered) {
+    [
+      "",
+      "Scenario: Create orange",
+      "  * the color \"red\"",
+      "  * the color \"yellow\"",
+      "  * you mix colors",
+      "  * you obtain \"orange\"",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_with_datatable_rendered) {
+    [
+      "",
+      "Scenario Outline: Create secondary colors#{outline_title_ending}",
+      "  # This scenario has a datatable and a description",
+      "  Given the color \"<first_color>\"",
+      "  And the color \"<second_color>\"",
+      "  When you mix colors",
+      "  Then you obtain \"<got_color>\"",
+      "",
+      "  Examples:",
+      "    | first_color | second_color | got_color | priority | hiptest-uid |",
+      "    | blue | yellow | green | -1 |  |",
+      "    | yellow | red | orange | 1 |  |",
+      "    | red | blue | purple | true |  |",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_with_datatable_and_dataset_names_rendered) {
+    [
+      "",
+      "Scenario Outline: Create secondary colors#{outline_title_ending}",
+      "  # This scenario has a datatable and a description",
+      "  Given the color \"<first_color>\"",
+      "  And the color \"<second_color>\"",
+      "  When you mix colors",
+      "  Then you obtain \"<got_color>\"",
+      "",
+      "  Examples:",
+      "    | dataset name | first_color | second_color | got_color | priority | hiptest-uid |",
+      "    | Mix to green | blue | yellow | green | -1 |  |",
+      "    | Mix to orange | yellow | red | orange | 1 |  |",
+      "    | Mix to purple | red | blue | purple | true |  |",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_with_datatable_rendered_with_uids_in_outline) {
+    [
+      "",
+      "Scenario Outline: Create secondary colors (<hiptest-uid>)",
+      "  # This scenario has a datatable and a description",
+      "  Given the color \"<first_color>\"",
+      "  And the color \"<second_color>\"",
+      "  When you mix colors",
+      "  Then you obtain \"<got_color>\"",
+      "",
+      "  Examples:",
+      "    | first_color | second_color | got_color | priority | hiptest-uid |",
+      "    | blue | yellow | green | -1 | uid:1234 |",
+      "    | yellow | red | orange | 1 |  |",
+      "    | red | blue | purple | true | uid:5678 |",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_with_datatable_rendered_with_uids) {
+    [
+      "",
+      "Scenario Outline: Create secondary colors (uid:abcd-efgh)",
+      "  # This scenario has a datatable and a description",
+      "  Given the color \"<first_color>\"",
+      "  And the color \"<second_color>\"",
+      "  When you mix colors",
+      "  Then you obtain \"<got_color>\"",
+      "",
+      "  Examples:",
+      "    | first_color | second_color | got_color | priority | hiptest-uid |",
+      "    | blue | yellow | green | -1 | uid:1234 |",
+      "    | yellow | red | orange | 1 |  |",
+      "    | red | blue | purple | true | uid:5678 |",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_with_freetext_argument_rendered) {
+    [
+      '',
+      'Scenario: Open a site with comments',
+      '  When I am on the "http://google.com" home page',
+      '    """',
+      "    Some explanations when opening the site:",
+      "     - for example one explanation",
+      "     - and another one",
+      '    """',
+      '  Then stuff happens',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_with_datatable_argument_rendered) {
+    [
+      '',
+      'Scenario: Check users',
+      '  When the following users are available on "http://google.com"',
+      '    | name  | password |',
+      '    | bob   | plopi    |',
+      '    | alice | dou      |',
+      '  Then stuff happens',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_using_variables_in_step_datatables_rendered) {
+    [
+      '',
+      "Scenario Outline: Check users#{outline_title_ending}",
+      '  When I login as',
+      '    | <username> |',
+      '  Then I am logged in as',
+      '    """',
+      '     -: <username> :- ',
+      '    """',
+      '',
+      '  Examples:',
+      '    | username | hiptest-uid |',
+      '    | user@example.com |  |',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_with_double_quotes_in_datatable_rendered) {
+    [
+      '',
+      "Scenario Outline: Double quote in datatable#{outline_title_ending}",
+      '  Given the color "<color_definition>"',
+      '',
+      '  Examples:',
+      '    | color_definition | hiptest-uid |',
+      '    | {"html": ["#008000", "#50D050"]} |  |',
+      '    | {"html": ["#D14FD1"]} |  |',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_with_capital_parameters_rendered) {
+    [
+      '',
+      "Scenario Outline: Validate Nav#{outline_title_ending}",
+      '  Given I am on the "<SITE_NAME>" home page',
+      '',
+      '  Examples:',
+      '    | SITE_NAME | hiptest-uid |',
+      '    | http://google.com |  |',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_with_incomplete_datatable_rendered) {
+    [
+      '',
+      "Scenario Outline: Incomplete datatable#{outline_title_ending}",
+      '  Given the color "<first_color>"',
+      '  And the color "<second_color>"',
+      '  When you mix colors',
+      '  Then you obtain "<got_color>"',
+      '',
+      '  Examples:',
+      '    | first_color | second_color | got_color | hiptest-uid |',
+      '    | blue | yellow | green |  |',
+      '    | yellow | red |  |  |',
+      '    | red |  |  |  |',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_calling_untrimed_actionword_rendered) {
+    [
+     '',
+     'Scenario: Calling an untrimed action word',
+     '  Given an untrimed action word',
+     ''
+    ].join("\n")
+  }
+
+  let(:scenario_calling_actionwords_with_extra_params_rendered) {
+    [
+     '',
+     'Scenario: Calling an action word with not inlined parameters',
+     '  Given I login on "preview" "Vincent"',
+     ''
+    ].join("\n")
+  }
+
+  let(:feature_rendered_with_option_no_uid) {
+    [
+      "",
+      "Scenario Outline: Create secondary colors",
+      "  # This scenario has a datatable and a description",
+      "  Given the color \"<first_color>\"",
+      "  And the color \"<second_color>\"",
+      "  When you mix colors",
+      "  Then you obtain \"<got_color>\"",
+      "",
+      "  Examples:",
+      "    | first_color | second_color | got_color | priority |",
+      "    | blue | yellow | green | -1 |",
+      "    | yellow | red | orange | 1 |",
+      "    | red | blue | purple | true |",
+      "",
+    ].join("\n")
+  }
+
+  let(:scenario_rendered_with_option_no_uid) {
+    [
+      "",
+      "Scenario: Create secondary colors",
+      "  # This scenario has a datatable and a description",
+      "  Given the color \"<first_color>\"",
+      "  And the color \"<second_color>\"",
+      "  When you mix colors",
+      "  Then you obtain \"<got_color>\"",
+      "",
+    ].join("\n")
+  }
+
+  let(:feature_with_setup_rendered) {
+    [
+      'Feature: Other colors',
+      '',
+      '',
+      '  Background:',
+      '    Given I have colors to mix',
+      '    And I know the expected color',
+      '',
+      "  Scenario Outline: Create secondary colors#{outline_title_ending}",
+      '    # This scenario has a datatable and a description',
+      '    Given the color "<first_color>"',
+      '    And the color "<second_color>"',
+      '    When you mix colors',
+      '    Then you obtain "<got_color>"',
+      '',
+      '    Examples:',
+      '      | first_color | second_color | got_color | priority | hiptest-uid |',
+      '      | blue | yellow | green | -1 |  |',
+      '      | yellow | red | orange | 1 |  |',
+      '      | red | blue | purple | true |  |',
+      ''
+    ].join("\n")
+  }
+
+  let(:feature_with_scenario_tag_rendered) {
+    [
+      '@myTag ',
+      'Feature: Cool colors',
+      '    # Cool colors calm and relax.',
+      '    # They are the hues from blue green through blue violet, most grays included.',
+      '',
+      '  Scenario: Create green',
+      '    # You can create green by mixing other colors',
+      '    Given the color "blue"',
+      '    And the color "yellow"',
+      '    When you mix colors',
+      '    Then you obtain "green"',
+      '    But you cannot play croquet',
+      '',
+      '  Scenario: Create purple',
+      '    # You can have a description',
+      '    # on multiple lines',
+      '    Given the color "blue"',
+      '    And the color "red"',
+      '    When you mix colors',
+      '    Then you obtain "purple"',
+      ''
+    ].join("\n")
+  }
+
   context 'Argument with a nil value' do
     let(:node_to_render) { make_argument("first_color", nil) }
 
@@ -1199,15 +1521,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     let(:node_to_render) { create_white_test }
 
     it 'generates a feature file' do
-      expect(rendered).to eq([
-        "Scenario: Create white",
-        "  Given the color \"blue\"",
-        "  And the color \"red\"",
-        "  And the color \"green\"",
-        "  When you mix colors",
-        "  Then you obtain \"white\"",
-        "",
-      ].join("\n"))
+      expect(rendered).to eq(test_rendered)
     end
   end
 
@@ -1216,48 +1530,20 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     let(:scenario) { create_green_scenario }
 
     it 'generates a feature file' do
-      expect(rendered).to eq([
-        "",
-        "Scenario: Create green",
-        '  # You can create green by mixing other colors',
-        "  Given the color \"blue\"",
-        "  And the color \"yellow\"",
-        "  When you mix colors",
-        "  Then you obtain \"green\"",
-        "  But you cannot play croquet",
-        "",
-      ].join("\n"))
+      expect(rendered).to eq(scenario_rendered)
     end
 
     it 'appends the UID if known' do
       scenario.children[:uid] = '1234-4567'
 
-      expect(rendered).to eq([
-        "",
-        "Scenario: Create green (uid:1234-4567)",
-        '  # You can create green by mixing other colors',
-        "  Given the color \"blue\"",
-        "  And the color \"yellow\"",
-        "  When you mix colors",
-        "  Then you obtain \"green\"",
-        "  But you cannot play croquet",
-        "",
-      ].join("\n"))
+      expect(rendered).to eq(scenario_with_uid_rendered)
     end
 
     context 'without annotated calls' do
       let(:scenario) { unannotated_create_orange_scenario }
 
       it 'generates a feature file with bullet points steps' do
-        expect(rendered).to eq([
-          "",
-          "Scenario: Create orange",
-          "  * the color \"red\"",
-          "  * the color \"yellow\"",
-          "  * you mix colors",
-          "  * you obtain \"orange\"",
-          "",
-        ].join("\n"))
+        expect(rendered).to eq(scenario_without_annotations_rendered)
       end
     end
 
@@ -1265,22 +1551,22 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       let(:scenario) { create_secondary_colors_scenario }
 
       it 'generates a feature file with an Examples section' do
-        expect(rendered).to eq([
-          "",
-          "Scenario Outline: Create secondary colors#{outline_title_ending}",
-          "  # This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
-          "",
-          "  Examples:",
-          "    | first_color | second_color | got_color | priority | hiptest-uid |",
-          "    | blue | yellow | green | -1 |  |",
-          "    | yellow | red | orange | 1 |  |",
-          "    | red | blue | purple | true |  |",
-          "",
-        ].join("\n"))
+        expect(rendered).to eq(scenario_with_datatable_rendered)
+      end
+
+      context 'when option with_dataset_names is set' do
+        let(:options) {
+          context_for(
+            only: features_option_name,
+            language: language,
+            framework: framework,
+            with_dataset_names: true
+          )
+        }
+
+        it 'exports the dataset names as the first column' do
+          expect(rendered).to eq(scenario_with_datatable_and_dataset_names_rendered)
+        end
       end
 
       context 'when UID is set on scenario and datasets' do
@@ -1293,41 +1579,11 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
         if uid_should_be_in_outline
           it 'adds dataset UID in example table and a placeholder in outline title so they appear in output' do
-            expect(rendered).to eq([
-              "",
-              "Scenario Outline: Create secondary colors (<hiptest-uid>)",
-              "  # This scenario has a datatable and a description",
-              "  Given the color \"<first_color>\"",
-              "  And the color \"<second_color>\"",
-              "  When you mix colors",
-              "  Then you obtain \"<got_color>\"",
-              "",
-              "  Examples:",
-              "    | first_color | second_color | got_color | priority | hiptest-uid |",
-              "    | blue | yellow | green | -1 | uid:1234 |",
-              "    | yellow | red | orange | 1 |  |",
-              "    | red | blue | purple | true | uid:5678 |",
-              "",
-            ].join("\n"))
+            expect(rendered).to eq(scenario_with_datatable_rendered_with_uids_in_outline)
           end
         else
           it 'adds dataset UID in example table and the scenario UID in outline title' do
-            expect(rendered).to eq([
-              "",
-              "Scenario Outline: Create secondary colors (uid:abcd-efgh)",
-              "  # This scenario has a datatable and a description",
-              "  Given the color \"<first_color>\"",
-              "  And the color \"<second_color>\"",
-              "  When you mix colors",
-              "  Then you obtain \"<got_color>\"",
-              "",
-              "  Examples:",
-              "    | first_color | second_color | got_color | priority | hiptest-uid |",
-              "    | blue | yellow | green | -1 | uid:1234 |",
-              "    | yellow | red | orange | 1 |  |",
-              "    | red | blue | purple | true | uid:5678 |",
-              "",
-            ].join("\n"))
+            expect(rendered).to eq(scenario_with_datatable_rendered_with_uids)
           end
         end
       end
@@ -1338,18 +1594,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_with_freetext_argument}
 
         it "is rendered when the argument is called '__free_text'" do
-          expect(rendered).to eq([
-            '',
-            'Scenario: Open a site with comments',
-            '  When I am on the "http://google.com" home page',
-            '    """',
-            "    Some explanations when opening the site:",
-            "     - for example one explanation",
-            "     - and another one",
-            '    """',
-            '  Then stuff happens',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_with_freetext_argument_rendered)
         end
       end
 
@@ -1357,16 +1602,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_with_datatable_argument}
 
         it "is rendered when the argument is called '__datatable'" do
-          expect(rendered).to eq([
-            '',
-            'Scenario: Check users',
-            '  When the following users are available on "http://google.com"',
-            '    | name  | password |',
-            '    | bob   | plopi    |',
-            '    | alice | dou      |',
-            '  Then stuff happens',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_with_datatable_argument_rendered)
         end
       end
 
@@ -1374,21 +1610,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_using_variables_in_step_datatables}
 
         it "is rendered using the <> notation" do
-          expect(rendered).to eq([
-            '',
-            "Scenario Outline: Check users#{outline_title_ending}",
-            '  When I login as',
-            '    | <username> |',
-            '  Then I am logged in as',
-            '    """',
-            '     -: <username> :- ',
-            '    """',
-            '',
-            '  Examples:',
-            '    | username | hiptest-uid |',
-            '    | user@example.com |  |',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_using_variables_in_step_datatables_rendered)
         end
       end
     end
@@ -1409,17 +1631,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_with_double_quotes_in_datatable}
 
         it "the double quotes should be displayed", current: true do
-          expect(rendered).to eq([
-            '',
-            "Scenario Outline: Double quote in datatable#{outline_title_ending}",
-            '  Given the color "<color_definition>"',
-            '',
-            '  Examples:',
-            '    | color_definition | hiptest-uid |',
-            '    | {"html": ["#008000", "#50D050"]} |  |',
-            '    | {"html": ["#D14FD1"]} |  |',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_with_double_quotes_in_datatable_rendered)
         end
       end
     end
@@ -1429,16 +1641,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_with_capital_parameters}
 
         it 'the capitals are also kept in the datatable headers' do
-          expect(rendered).to eq([
-            '',
-            "Scenario Outline: Validate Nav#{outline_title_ending}",
-            '  Given I am on the "<SITE_NAME>" home page',
-            '',
-            '  Examples:',
-            '    | SITE_NAME | hiptest-uid |',
-            '    | http://google.com |  |',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_with_capital_parameters_rendered)
         end
 
       context 'when some datatable rows are incomplete' do
@@ -1448,21 +1651,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_with_incomplete_datatable}
 
         it 'even if a data is missing, that is fixed during export' do
-          expect(rendered).to eq([
-            '',
-            "Scenario Outline: Incomplete datatable#{outline_title_ending}",
-            '  Given the color "<first_color>"',
-            '  And the color "<second_color>"',
-            '  When you mix colors',
-            '  Then you obtain "<got_color>"',
-            '',
-            '  Examples:',
-            '    | first_color | second_color | got_color | hiptest-uid |',
-            '    | blue | yellow | green |  |',
-            '    | yellow | red |  |  |',
-            '    | red |  |  |  |',
-            ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_with_incomplete_datatable_rendered)
         end
       end
 
@@ -1470,12 +1659,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_calling_untrimed_actionword}
 
         it 'renders the call trimmed' do
-          expect(rendered).to eq([
-           '',
-           'Scenario: Calling an untrimed action word',
-           '  Given an untrimed action word',
-           ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_calling_untrimed_actionword_rendered)
         end
       end
 
@@ -1483,12 +1667,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         let(:scenario) {scenario_calling_actionwords_with_extra_params}
 
         it 'they are rendered at the end' do
-          expect(rendered).to eq([
-           '',
-           'Scenario: Calling an action word with not inlined parameters',
-           '  Given I login on "preview" "Vincent"',
-           ''
-          ].join("\n"))
+          expect(rendered).to eq(scenario_calling_actionwords_with_extra_params_rendered)
         end
       end
     end
@@ -1496,7 +1675,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     context 'option no-uid' do
       let(:options) {
         context_for(
-          only: "features",
+          only: features_option_name,
           language: language,
           framework: framework,
           uids: false,
@@ -1512,38 +1691,14 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         datasets.first.children[:uid] = '1234'
         datasets.last.children[:uid] = '5678'
 
-        expect(rendered).to eq([
-          "",
-          "Scenario Outline: Create secondary colors",
-          "  # This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
-          "",
-          "  Examples:",
-          "    | first_color | second_color | got_color | priority |",
-          "    | blue | yellow | green | -1 |",
-          "    | yellow | red | orange | 1 |",
-          "    | red | blue | purple | true |",
-          "",
-        ].join("\n"))
+        expect(rendered).to eq(feature_rendered_with_option_no_uid)
       end
 
       it 'also works when scenario has no datatable' do
         scenario.children[:uid] = 'abcd-efgh'
         scenario.children[:datatable].children[:datasets] = []
 
-        expect(rendered).to eq([
-          "",
-          "Scenario: Create secondary colors",
-          "  # This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
-          "",
-        ].join("\n"))
+        expect(rendered).to eq(scenario_rendered_with_option_no_uid)
       end
     end
   end
@@ -1551,7 +1706,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   context 'Folders' do
     let(:options) {
       context_for(
-        only: "features",
+        only: features_option_name,
         language: language,
         framework: framework
       )
@@ -1562,28 +1717,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     }
 
     it 'definition is exported as background' do
-      expect(rendered).to eq([
-        'Feature: Other colors',
-        '',
-        '',
-        '  Background:',
-        '    Given I have colors to mix',
-        '    And I know the expected color',
-        '',
-        "  Scenario Outline: Create secondary colors#{outline_title_ending}",
-        '    # This scenario has a datatable and a description',
-        '    Given the color "<first_color>"',
-        '    And the color "<second_color>"',
-        '    When you mix colors',
-        '    Then you obtain "<got_color>"',
-        '',
-        '    Examples:',
-        '      | first_color | second_color | got_color | priority | hiptest-uid |',
-        '      | blue | yellow | green | -1 |  |',
-        '      | yellow | red | orange | 1 |  |',
-        '      | red | blue | purple | true |  |',
-        ''
-      ].join("\n"))
+      expect(rendered).to eq(feature_with_setup_rendered)
     end
   end
 
@@ -1602,7 +1736,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
     let(:options) {
       context_for(
-        only: "features",
+        only: features_option_name,
         language: language,
         framework: framework
       )
@@ -1652,29 +1786,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       it 'produces a correct Gherkin file if the scenario inherits tag but does not have its own tags' do
         root_folder.children[:tags] = [simple_tag]
 
-        expect(rendered).to eq([
-          '@myTag ',
-          'Feature: Cool colors',
-          '    Cool colors calm and relax.',
-          '    They are the hues from blue green through blue violet, most grays included.',
-          '',
-          '  Scenario: Create green',
-          '    # You can create green by mixing other colors',
-          '    Given the color "blue"',
-          '    And the color "yellow"',
-          '    When you mix colors',
-          '    Then you obtain "green"',
-          '    But you cannot play croquet',
-          '',
-          '  Scenario: Create purple',
-          '    # You can have a description',
-          '    # on multiple lines',
-          '    Given the color "blue"',
-          '    And the color "red"',
-          '    When you mix colors',
-          '    Then you obtain "purple"',
-          ''
-        ].join("\n"))
+        expect(rendered).to eq(feature_with_scenario_tag_rendered)
       end
     end
   end
@@ -1683,7 +1795,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     let(:node_to_render) { project.children[:scenarios] }
     let(:options) {
       context_for(
-        only: "features",
+        only: features_option_name,
         language: language,
         framework: framework
       )
