@@ -352,6 +352,47 @@ describe 'Cucumber/Groovy rendering' do
     let(:rendered_empty_scenario) { "" }
   end
 
+  it_behaves_like 'a renderer handling libraries' do
+    let(:language) {'cucumber'}
+    let(:framework) {'groovy'}
+
+    let(:libraries_rendered) {
+      [
+        'package com.example;',
+        '',
+        'class ActionwordLibrary {',
+        '    def DefaultLibrary getDefaultLibrary() {',
+        '        return new DefaultLibrary();',
+        '    }',
+        '',
+        '    def WebLibrary getWebLibrary() {',
+        '        return new WebLibrary();',
+        '    }',
+        '}'
+      ].join("\n")
+    }
+
+    let(:first_lib_rendered) {[
+      'package com.example;',
+      '',
+      'class DefaultLibrary extends ActionwordLibrary {',
+      '    def myFirstActionWord() {',
+      '',
+      '    }',
+      '}'
+    ].join("\n")}
+
+    let(:second_lib_rendered) {[
+      'package com.example;',
+      '',
+      'class WebLibrary extends ActionwordLibrary {',
+      '    def mySecondActionWord() {',
+      '',
+      '    }',
+      '}'
+    ].join("\n")}
+  end
+
   context "special cases in Actionwords.groovy file" do
     include HelperFactories
 

@@ -672,6 +672,7 @@ shared_examples "a renderer handling libraries" do
     let(:only) { 'libraries' }
 
     it 'generates a file for each libraries with the actionwords definitions inside' do
+      binding.pry
       expect(rendering(first_lib)).to eq(first_lib_rendered)
       expect(rendering(second_lib)).to eq(second_lib_rendered)
 
