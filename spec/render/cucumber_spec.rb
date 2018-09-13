@@ -286,9 +286,11 @@ describe 'Cucumber/Javascript rendering' do
 end
 
 describe 'Cucumber/Groovy rendering' do
+  include_context "shared render"
   it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
     let(:language) {'cucumber'}
     let(:framework) {'groovy'}
+    let(:with_folders) { true }
 
     let(:rendered_free_texted_actionword) {[
       'def theFollowingUsersAreAvailable(freeText = "") {',
@@ -361,12 +363,12 @@ describe 'Cucumber/Groovy rendering' do
         'package com.example;',
         '',
         'class ActionwordLibrary {',
-        '    def DefaultLibrary getDefaultLibrary() {',
-        '        return new DefaultLibrary();',
+        '    DefaultLibrary getDefaultLibrary() {',
+        '        return DefaultLibrary.instance;',
         '    }',
         '',
-        '    def WebLibrary getWebLibrary() {',
-        '        return new WebLibrary();',
+        '    WebLibrary getWebLibrary() {',
+        '        return WebLibrary.instance;',
         '    }',
         '}'
       ].join("\n")
@@ -375,9 +377,9 @@ describe 'Cucumber/Groovy rendering' do
     let(:first_lib_rendered) {[
       'package com.example;',
       '',
-      'class DefaultLibrary extends ActionwordLibrary {',
+      '@Singleton',
+      'class DefaultLibrary {',
       '    def myFirstActionWord() {',
-      '',
       '    }',
       '}'
     ].join("\n")}
@@ -385,9 +387,9 @@ describe 'Cucumber/Groovy rendering' do
     let(:second_lib_rendered) {[
       'package com.example;',
       '',
-      'class WebLibrary extends ActionwordLibrary {',
+      '@Singleton',
+      'class WebLibrary {',
       '    def mySecondActionWord() {',
-      '',
       '    }',
       '}'
     ].join("\n")}
@@ -416,8 +418,8 @@ describe 'Cucumber/Groovy rendering' do
         scenarios: [scenario],
         actionwords: actionwords,
       ).tap do |p|
-        Hiptest::Nodes::ParentAdder.add(p)
-        Hiptest::GherkinAdder.add(p)
+        Hiptest::NodeModifiers::ParentAdder.add(p)
+        Hiptest::NodeModifiers::GherkinAdder.add(p)
       end
     }
 

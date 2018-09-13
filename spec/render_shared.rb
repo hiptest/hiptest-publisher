@@ -672,66 +672,9 @@ shared_examples "a renderer handling libraries" do
     let(:only) { 'libraries' }
 
     it 'generates a file for each libraries with the actionwords definitions inside' do
-      binding.pry
       expect(rendering(first_lib)).to eq(first_lib_rendered)
       expect(rendering(second_lib)).to eq(second_lib_rendered)
 
-    end
-  end
-
-  context '[actionwords]' do
-    let(:only) { 'actionwords' }
-
-    it 'uses the class/getter for other libraries' do
-      expect(rendering(project.children[:actionwords])).to eq(actionwords_rendered)
-    end
-  end
-
-  context '[tests]' do
-    let(:only) { 'tests' }
-
-    it 'correctly calls the action words' do
-      expect(rendering(project.children[:scenarios])).to eq(scenarios_rendered)
-    end
-  end
-
-  context 'calling actionwords with parameters' do
-    context 'when rendering scenarios' do
-      let(:only) { 'tests' }
-
-      it 'correctly sets the default values' do
-        first_lib.children[:actionwords] << make_actionword(
-          'my actionword with default value',
-          parameters: [make_parameter('some_param', default: literal('My default value'))],
-          uid: 'some-really-uniq-uid'
-        )
-        scenario.children[:body] = [
-          make_uidcall('some-really-uniq-uid')
-        ]
-
-        Hiptest::NodeModifiers.add_all(project)
-        expect(rendering(project.children[:scenarios])).to eq(scenario_using_default_parameter_rendered)
-      end
-    end
-
-    context 'when rendering libraries' do
-      let(:only) { 'libraries' }
-
-      it 'correctly handles types for languages needing it' do
-        first_lib.children[:actionwords] << make_actionword(
-          'my typed action word',
-          parameters: [make_parameter('some_param')],
-          uid: 'some-really-uniq-uid'
-        )
-        scenario.children[:body] = [
-          make_uidcall('some-really-uniq-uid', arguments: [
-            make_argument('some_param', literal(12))
-          ])
-        ]
-
-        Hiptest::NodeModifiers.add_all(project)
-        expect(rendering(first_lib)).to eq(library_with_typed_parameters_rendered)
-      end
     end
   end
 end

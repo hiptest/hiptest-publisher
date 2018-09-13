@@ -30,7 +30,7 @@ module Hiptest
         has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0,
         uniq_name: aw.uniq_name,
         has_library?: (aw.parent.is_a? Hiptest::Nodes::Library) ? true : false,
-        library_name: aw.parent.children[:name] || ''
+        library_name: aw.parent.nil? ? '' : aw.parent.children[:name]
       )
     end
 
