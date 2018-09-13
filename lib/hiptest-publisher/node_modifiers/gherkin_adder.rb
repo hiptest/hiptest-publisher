@@ -19,7 +19,7 @@ module Hiptest
       def update_calls
         @project.each_sub_nodes(Hiptest::Nodes::Scenario, Hiptest::Nodes::Actionword, Hiptest::Nodes::Test, Hiptest::Nodes::Folder) do |item|
           @last_annotation = nil
-          item.each_sub_nodes(Hiptest::Nodes::Call) do |call|
+          item.each_sub_nodes(Hiptest::Nodes::Call, Hiptest::Nodes::UIDCall) do |call|
             set_call_chunks(call)
             call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
 
@@ -74,7 +74,12 @@ module Hiptest
         call.chunks = []
         call.extra_inlined_arguments = []
 
-        call_chunks = call.children[:actionword].split("\"", -1)
+        if call.is_a? Hiptest::Nodes::Call
+          call_chunks = call.children[:actionword].split("\"", -1)
+        else
+          call_chunks = call.children[:actionword_name].split("\"", -1)
+        end
+
         call_chunks.each_slice(2) do |text, inline_parameter_name|
           call.chunks << {
             value: text,
@@ -183,7 +188,11 @@ module Hiptest
       end
 
       def get_actionword(call)
-        actionword = @indexer.get_index(call.children[:actionword])
+        if call.is_a? Hiptest::Nodes::UIDCall
+          actionword = @indexer.get_uid_index(call.children[:uid])
+        else
+          actionword = @indexer.get_index(call.children[:actionword])
+        end
         actionword && actionword[:actionword] || nil
       end
 

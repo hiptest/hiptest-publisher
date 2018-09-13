@@ -9,7 +9,7 @@ module Hiptest
         is_empty?: item.children[:body].empty?,
         declared_variables: item.declared_variables_names,
         raw_parameter_names: item.children[:parameters].map {|p| p.children[:name] },
-        self_name: item.children[:name],
+        self_name: item.children[:name]
       }
     end
 
@@ -27,7 +27,10 @@ module Hiptest
         chunks: aw.chunks || [],
         extra_inlined_parameters: aw.extra_inlined_parameters || [],
         has_free_text_parameter?: aw.children[:parameters].select(&:free_text?).count > 0,
-        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0
+        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0,
+        uniq_name: aw.uniq_name,
+        has_library?: (aw.parent.is_a? Hiptest::Nodes::Library) ? true : false,
+        library_name: aw.parent.children[:name] || ''
       )
     end
 
@@ -71,10 +74,6 @@ module Hiptest
         self_name: project.children[:name],
         datatables_present?: datatable_present?(scenarios)
       }
-    end
-
-    def walk_actionwords(aws)
-      {}
     end
 
     def walk_test(test)

@@ -236,6 +236,9 @@ module Hiptest
     end
 
     class UIDCall < Node
+      attr_reader :chunks, :extra_inlined_arguments
+      attr_writer :chunks, :extra_inlined_arguments
+
       def initialize(uid, arguments = [], annotation = nil)
         super()
         annotation = nil if annotation == ""
@@ -246,6 +249,9 @@ module Hiptest
           all_arguments: arguments,
           annotation: annotation
         }
+
+        @chunks = []
+        @extra_inlined_arguments = []
       end
     end
 
