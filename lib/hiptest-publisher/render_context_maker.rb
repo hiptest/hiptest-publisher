@@ -110,7 +110,8 @@ module Hiptest
 
     def walk_uidcall(uidcall)
       {
-        has_library?: !uidcall.children[:library_name].nil?
+        has_library?: !uidcall.children[:library_name].nil?,
+        chunks: uidcall.chunks || []
       }
     end
 
