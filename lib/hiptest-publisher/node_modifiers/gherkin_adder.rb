@@ -74,11 +74,7 @@ module Hiptest
         call.chunks = []
         call.extra_inlined_arguments = []
 
-        if call.is_a? Hiptest::Nodes::Call
-          call_chunks = call.children[:actionword].split("\"", -1)
-        else
-          call_chunks = call.children[:actionword_name].split("\"", -1)
-        end
+        call_chunks = call.is_a?(Hiptest::Nodes::Call) ? call.children[:actionword].split("\"", -1) : call.children[:actionword_name].split("\"", -1)
 
         call_chunks.each_slice(2) do |text, inline_parameter_name|
           call.chunks << {
@@ -140,6 +136,7 @@ module Hiptest
           if actionword_parameters.has_key?(inline_parameter_name)
             actionword.chunks << {
               value: "(.*)",
+              name: inline_parameter_name,
               is_parameter: true
             }
           else
@@ -154,6 +151,7 @@ module Hiptest
         missing_parameter_names.each do |missing_parameter_name|
           actionword.extra_inlined_parameters << {
             value: "(.*)",
+            name: missing_parameter_name,
             is_parameter: true
           }
         end
@@ -188,11 +186,9 @@ module Hiptest
       end
 
       def get_actionword(call)
-        if call.is_a? Hiptest::Nodes::UIDCall
-          actionword = @indexer.get_uid_index(call.children[:uid])
-        else
-          actionword = @indexer.get_index(call.children[:actionword])
-        end
+
+        actionword = call.is_a?(Hiptest::Nodes::UIDCall) ? @indexer.get_uid_index(call.children[:uid]) : @indexer.get_index(call.children[:actionword])
+
         actionword && actionword[:actionword] || nil
       end
 

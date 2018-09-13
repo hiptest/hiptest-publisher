@@ -877,6 +877,7 @@ describe LanguageGroupConfig do
                                                       "/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]", "/Actionwords.groovy"
                                                     ],
         ["--split-scenarios"]                    => [ "[features]",
@@ -884,6 +885,7 @@ describe LanguageGroupConfig do
                                                       "/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -892,6 +894,7 @@ describe LanguageGroupConfig do
                                                       "/global_trades/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -900,6 +903,7 @@ describe LanguageGroupConfig do
                                                       "/global_trades/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]", "/Actionwords.groovy"
                                                     ],
         ["--keep-filenames"]                      => ["[features]",
@@ -907,6 +911,7 @@ describe LanguageGroupConfig do
                                                       "/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -915,6 +920,7 @@ describe LanguageGroupConfig do
                                                       "/Global trades/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -924,6 +930,7 @@ describe LanguageGroupConfig do
                                                       "/Global trades/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ]
