@@ -1,0 +1,9 @@
+package {{{ context.package }}};
+
+class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names}}
+{{camelize this}}Library get{{camelize this}}Library() {{#curly}}{{#indent}}
+return {{camelize this}}Library.instance;
+{{/indent}}
+{{/curly}}
+{{/each}}{{/indent}}
+{{/curly}}
