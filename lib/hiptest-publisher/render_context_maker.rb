@@ -85,7 +85,7 @@ module Hiptest
         is_empty?: test.children[:body].empty?,
         has_datasets?: false,
         project_name: test.parent.parent.children[:name],
-        self_name: test.children[:name],
+        self_name: test.children[:name]
       }
     end
 

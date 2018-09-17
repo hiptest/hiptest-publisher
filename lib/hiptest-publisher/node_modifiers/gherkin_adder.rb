@@ -118,7 +118,7 @@ module Hiptest
       end
 
       def set_actionwords_chunks(actionword)
-        name = actionword.children[:name]
+        name = actionword.uniq_name
         actionword_parameters = evaluated_map(actionword.children[:parameters])
         name_chunks = name.split("\"", -1)
         inline_parameter_names = []
