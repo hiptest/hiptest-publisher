@@ -36,18 +36,18 @@ shared_context "shared render" do
     @parenthesis_foo = Hiptest::Nodes::Parenthesis.new(@foo_variable)
 
     @foo_list = Hiptest::Nodes::List.new([@foo_variable, @fighters])
-    @foo_dict =  Hiptest::Nodes::Dict.new([@foo_fighters_prop,
-      Hiptest::Nodes::Property.new('Alt', 'J')
-    ])
+    @foo_dict = Hiptest::Nodes::Dict.new([@foo_fighters_prop,
+                                          Hiptest::Nodes::Property.new('Alt', 'J')
+                                         ])
 
     @simple_template = Hiptest::Nodes::Template.new([
-      Hiptest::Nodes::StringLiteral.new('A simple template')
-    ])
+                                                      Hiptest::Nodes::StringLiteral.new('A simple template')
+                                                    ])
 
     @foo_template = Hiptest::Nodes::Template.new([@foo_variable, @fighters])
     @double_quotes_template = Hiptest::Nodes::Template.new([
-      Hiptest::Nodes::StringLiteral.new('Fighters said "Foo !"')
-    ])
+                                                             Hiptest::Nodes::StringLiteral.new('Fighters said "Foo !"')
+                                                           ])
     @empty_template = Hiptest::Nodes::Template.new([])
 
     @assign_fighters_to_foo = Hiptest::Nodes::Assign.new(@foo_variable, @fighters)
@@ -61,14 +61,14 @@ shared_context "shared render" do
     @call_foo_bar_with_fighters = Hiptest::Nodes::Call.new('foo bar', [@argument])
     @call_with_special_characters_in_value = Hiptest::Nodes::Call.new('my call with weird arguments', [
       Hiptest::Nodes::Argument.new('__free_text', Hiptest::Nodes::Template.new([
-        Hiptest::Nodes::StringLiteral.new([
-          "{",
-          "  this: 'is',",
-          "  some: ['JSON', 'outputed'],",
-          "  as: 'a string'",
-          "}"
-        ].join("\n"))
-      ]))
+                                                                                 Hiptest::Nodes::StringLiteral.new([
+                                                                                                                     "{",
+                                                                                                                     "  this: 'is',",
+                                                                                                                     "  some: ['JSON', 'outputed'],",
+                                                                                                                     "  as: 'a string'",
+                                                                                                                     "}"
+                                                                                                                   ].join("\n"))
+                                                                               ]))
     ])
 
     @simple_tag = Hiptest::Nodes::Tag.new('myTag')
@@ -126,7 +126,7 @@ shared_context "shared render" do
         [
           Hiptest::Nodes::Step.new('result', "x is lower than Pi\non two lines")
         ])
-      ]
+    ]
 
     @full_actionword = Hiptest::Nodes::Actionword.new(
       'compare to pi',
@@ -142,7 +142,7 @@ shared_context "shared render" do
 
     @full_scenario = Hiptest::Nodes::Scenario.new(
       'compare to pi',
-       "This is a scenario which description \nis on two lines",
+      "This is a scenario which description \nis on two lines",
       [@simple_tag],
       [@x_param],
       full_body)
@@ -168,7 +168,7 @@ shared_context "shared render" do
       Hiptest::Nodes::Argument.new('expected', Hiptest::Nodes::NullLiteral.new())
     ])
     @datatable = Hiptest::Nodes::Datatable.new([@dataset1, @dataset2, @dataset3])
-    [@dataset1, @dataset2, @dataset3].each {|dt| dt.parent = @datatable }
+    [@dataset1, @dataset2, @dataset3].each {|dt| dt.parent = @datatable}
 
     @scenario_with_datatable = Hiptest::Nodes::Scenario.new(
       'check login',
@@ -198,52 +198,52 @@ shared_context "shared render" do
     @scenario_with_datatable.parent.parent = Hiptest::Nodes::Project.new('A project with datatables')
 
     @actionwords = Hiptest::Nodes::Actionwords.new([
-      Hiptest::Nodes::Actionword.new('first action word'),
-      Hiptest::Nodes::Actionword.new(
-        'second action word', [], [], [
-          Hiptest::Nodes::Call.new('first action word')
-        ])
-    ])
+                                                     Hiptest::Nodes::Actionword.new('first action word'),
+                                                     Hiptest::Nodes::Actionword.new(
+                                                       'second action word', [], [], [
+                                                       Hiptest::Nodes::Call.new('first action word')
+                                                     ])
+                                                   ])
 
     @scenarios = Hiptest::Nodes::Scenarios.new([
-      Hiptest::Nodes::Scenario.new('first scenario'),
-      Hiptest::Nodes::Scenario.new(
-        'second scenario', '', [], [], [
-          Hiptest::Nodes::Call.new('my action word')
-        ])
-    ])
+                                                 Hiptest::Nodes::Scenario.new('first scenario'),
+                                                 Hiptest::Nodes::Scenario.new(
+                                                   'second scenario', '', [], [], [
+                                                   Hiptest::Nodes::Call.new('my action word')
+                                                 ])
+                                               ])
     @scenarios.parent = Hiptest::Nodes::Project.new("Mike's project")
 
     @actionwords_with_parameters = Hiptest::Nodes::Actionwords.new([
-      Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
-      Hiptest::Nodes::Actionword.new('aw with float param', [], [Hiptest::Nodes::Parameter.new('x')], []),
-      Hiptest::Nodes::Actionword.new('aw with boolean param', [], [Hiptest::Nodes::Parameter.new('x')], []),
-      Hiptest::Nodes::Actionword.new('aw with null param', [], [Hiptest::Nodes::Parameter.new('x')], []),
-      Hiptest::Nodes::Actionword.new('aw with string param', [], [Hiptest::Nodes::Parameter.new('x')], []),
-      Hiptest::Nodes::Actionword.new('aw with template param', [], [Hiptest::Nodes::Parameter.new('x')], [])
-    ])
+                                                                     Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                     Hiptest::Nodes::Actionword.new('aw with float param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                     Hiptest::Nodes::Actionword.new('aw with boolean param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                     Hiptest::Nodes::Actionword.new('aw with null param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                     Hiptest::Nodes::Actionword.new('aw with string param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                     Hiptest::Nodes::Actionword.new('aw with template param', [], [Hiptest::Nodes::Parameter.new('x')], [])
+                                                                   ])
 
     @scenarios_with_many_calls = Hiptest::Nodes::Scenarios.new([
-      Hiptest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
-        Hiptest::Nodes::Call.new('aw with int param', [
-          Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::NumericLiteral.new('3'))]),
-        Hiptest::Nodes::Call.new('aw with float param', [
-          Hiptest::Nodes::Argument.new('x',
-            Hiptest::Nodes::NumericLiteral.new('4.2')
-          )]),
-        Hiptest::Nodes::Call.new('aw with boolean param', [
-          Hiptest::Nodes::Argument.new('x',
-            Hiptest::Nodes::BooleanLiteral.new(true)
-          )]),
-        Hiptest::Nodes::Call.new('aw_with_null_param', [
-          Hiptest::Nodes::Argument.new('x',
-            Hiptest::Nodes::NullLiteral.new
-          )]),
-        Hiptest::Nodes::Call.new('aw with string param', [
-          Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('toto'))]),
-        Hiptest::Nodes::Call.new('aw with string param', [
-          Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::Template.new(Hiptest::Nodes::StringLiteral.new('toto')))])
-      ])])
+                                                                 Hiptest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
+                                                                   Hiptest::Nodes::Call.new('aw with int param', [
+                                                                     Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::NumericLiteral.new('3'))]),
+                                                                   Hiptest::Nodes::Call.new('aw with float param', [
+                                                                     Hiptest::Nodes::Argument.new('x',
+                                                                                                  Hiptest::Nodes::NumericLiteral.new('4.2')
+                                                                     )]),
+                                                                   Hiptest::Nodes::Call.new('aw with boolean param', [
+                                                                     Hiptest::Nodes::Argument.new('x',
+                                                                                                  Hiptest::Nodes::BooleanLiteral.new(true)
+                                                                     )]),
+                                                                   Hiptest::Nodes::Call.new('aw_with_null_param', [
+                                                                     Hiptest::Nodes::Argument.new('x',
+                                                                                                  Hiptest::Nodes::NullLiteral.new
+                                                                     )]),
+                                                                   Hiptest::Nodes::Call.new('aw with string param', [
+                                                                     Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::StringLiteral.new('toto'))]),
+                                                                   Hiptest::Nodes::Call.new('aw with string param', [
+                                                                     Hiptest::Nodes::Argument.new('x', Hiptest::Nodes::Template.new(Hiptest::Nodes::StringLiteral.new('toto')))])
+                                                                 ])])
 
     @project = Hiptest::Nodes::Project.new("Mike's project", "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
 
@@ -266,7 +266,7 @@ shared_context "shared render" do
         ]),
         Hiptest::Nodes::Call.new('checkUrl', [
           Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('/welcome')
-        )])
+          )])
       ])
 
     @second_test = Hiptest::Nodes::Test.new(
@@ -288,7 +288,7 @@ shared_context "shared render" do
         ]),
         Hiptest::Nodes::Call.new('checkUrl', [
           Hiptest::Nodes::Argument.new('path', Hiptest::Nodes::StringLiteral.new('/login')
-        )])
+          )])
       ])
 
     @tests = Hiptest::Nodes::Tests.new([@first_test, @second_test])
@@ -341,10 +341,10 @@ shared_context "shared render" do
       ])
     @bdd_project = Hiptest::Nodes::Project.new('My BDD project')
     @bdd_project.children[:actionwords] = Hiptest::Nodes::Actionwords.new([
-      Hiptest::Nodes::Actionword.new('Page "url" is opened', [], [Hiptest::Nodes::Parameter.new('url')], []),
-      Hiptest::Nodes::Actionword.new('I click on "link"', [], [Hiptest::Nodes::Parameter.new('link')], []),
-      Hiptest::Nodes::Actionword.new('Page "url" should be opened', [], [Hiptest::Nodes::Parameter.new('url')], [])
-    ])
+                                                                            Hiptest::Nodes::Actionword.new('Page "url" is opened', [], [Hiptest::Nodes::Parameter.new('url')], []),
+                                                                            Hiptest::Nodes::Actionword.new('I click on "link"', [], [Hiptest::Nodes::Parameter.new('link')], []),
+                                                                            Hiptest::Nodes::Actionword.new('Page "url" should be opened', [], [Hiptest::Nodes::Parameter.new('url')], [])
+                                                                          ])
     @bdd_project.children[:scenarios] = Hiptest::Nodes::Scenarios.new([@bdd_scenario])
     Hiptest::NodeModifiers::add_all(@bdd_project)
   end
@@ -368,13 +368,13 @@ end
 
 shared_examples "a renderer" do
 
-  let(:split_scenarios) { nil }
-  let(:with_folders) { nil }
-  let(:package) { nil } # only used for Java
-  let(:namespace) { nil } # only used for C#
+  let(:split_scenarios) {nil}
+  let(:with_folders) {nil}
+  let(:package) {nil} # only used for Java
+  let(:namespace) {nil} # only used for C#
 
   context "[tests] group" do
-    let(:only) { 'tests' }
+    let(:only) {'tests'}
 
     it 'NullLiteral' do
       expect(rendering(@null)).to eq(@null_rendered)
@@ -506,7 +506,7 @@ shared_examples "a renderer" do
       end
 
       context 'with splitted files' do
-        let(:split_scenarios) { true }
+        let(:split_scenarios) {true}
 
         it 'can also be rendered so it will be in a single file' do
           expect(rendering(@full_scenario)).to eq(@full_scenario_rendered_for_single_file)
@@ -518,7 +518,7 @@ shared_examples "a renderer" do
       end
 
       context 'with splitted files' do
-        let(:split_scenarios) { true }
+        let(:split_scenarios) {true}
 
         it 'can be rendered with its datatable in a single file' do
           expect(rendering(@scenario_with_datatable)).to eq(@scenario_with_datatable_rendered_in_single_file)
@@ -536,8 +536,7 @@ shared_examples "a renderer" do
           dataset.set_test_snapshot_uid(uids[index])
         end
 
-        expect(rendering(@scenario_with_datatable)).to eq(
-          @scenario_with_datatable_rendered_with_uids)
+        expect(rendering(@scenario_with_datatable)).to eq(@scenario_with_datatable_rendered_with_uids)
       end
 
       it 'shows BDD annotations when present' do
@@ -556,7 +555,7 @@ shared_examples "a renderer" do
       end
 
       context 'with splitted files' do
-        let(:split_scenarios) { true }
+        let(:split_scenarios) {true}
 
         it 'can also be rendered so it will be in a single file' do
           expect(rendering(@first_test)).to eq(@first_test_rendered_for_single_file)
@@ -569,11 +568,11 @@ shared_examples "a renderer" do
     end
 
     context 'with folders' do
-      let(:with_folders) { true }
+      let(:with_folders) {true}
 
       context 'Scenarios' do
         context 'with splitted files' do
-          let(:split_scenarios) { true }
+          let(:split_scenarios) {true}
 
           it 'is rendered in a single file' do
             expect(rendering(@grand_child_scenario)).to eq(@grand_child_scenario_rendered_for_single_file)
@@ -582,7 +581,7 @@ shared_examples "a renderer" do
       end
 
       context 'Folders' do
-        let(:split_scenarios) { false }
+        let(:split_scenarios) {false}
 
         it 'renders all scenarios in a single file' do
           expect(rendering(@root_folder)).to eq(@root_folder_rendered)
@@ -600,7 +599,7 @@ shared_examples "a renderer" do
   end
 
   context '[actionwords] group' do
-    let(:only) { "actionwords" }
+    let(:only) {"actionwords"}
 
     it 'Actionwords' do
       expect(rendering(@actionwords)).to eq(@actionwords_rendered)
@@ -617,17 +616,17 @@ shared_examples "a renderer handling libraries" do
   include HelperFactories
 
   let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
-  let(:first_actionword) { make_actionword('My first action word', uid: first_actionword_uid)}
-  let(:first_lib) { make_library('Default', [first_actionword])}
+  let(:first_actionword) {make_actionword('My first action word', uid: first_actionword_uid)}
+  let(:first_lib) {make_library('Default', [first_actionword])}
 
   let(:second_actionword_uid) {'87654321-4321-4321-4321-098765432121'}
-  let(:second_actionword) { make_actionword('My second action word', uid: second_actionword_uid)}
-  let(:second_lib) { make_library('Web', [second_actionword])}
+  let(:second_actionword) {make_actionword('My second action word', uid: second_actionword_uid)}
+  let(:second_lib) {make_library('Web', [second_actionword])}
 
   let(:project_actionword_uid) {'ABCDABCD-ABCD-ABCD-ABCD-ABCDABCDABCD'}
-  let(:project_actionword) { make_actionword('My project action word', uid: project_actionword_uid)}
+  let(:project_actionword) {make_actionword('My project action word', uid: project_actionword_uid)}
 
-  let(:libraries) { Hiptest::Nodes::Libraries.new([first_lib, second_lib]) }
+  let(:libraries) {Hiptest::Nodes::Libraries.new([first_lib, second_lib])}
 
   let(:scenario) {
     make_scenario('My calling scenario', body: [
@@ -639,29 +638,29 @@ shared_examples "a renderer handling libraries" do
 
   let(:project) {
     make_project('My project',
-      scenarios: [scenario],
-      actionwords: [project_actionword],
-      libraries: libraries
+                 scenarios: [scenario],
+                 actionwords: [project_actionword],
+                 libraries: libraries
     ).tap do |p|
       Hiptest::NodeModifiers.add_all(p)
     end
   }
 
-  let(:split_scenarios) { false }
-  let(:with_folders) { false }
-  let(:namespace) { nil }
-  let(:package) { nil }
+  let(:split_scenarios) {false}
+  let(:with_folders) {false}
+  let(:namespace) {nil}
+  let(:package) {nil}
 
-  let(:libraries_rendered) { 'TO IMPLEMENT' }
-  let(:first_lib_rendered) { '' }
-  let(:second_lib_rendered) { '' }
-  let(:actionwords_rendered) { '' }
-  let(:scenarios_rendered) { '' }
-  let(:scenario_using_default_parameter_rendered) { ''}
-  let(:library_with_typed_parameters_rendered) { ''}
+  let(:libraries_rendered) {'TO IMPLEMENT'}
+  let(:first_lib_rendered) {''}
+  let(:second_lib_rendered) {''}
+  let(:actionwords_rendered) {''}
+  let(:scenarios_rendered) {''}
+  let(:scenario_using_default_parameter_rendered) {''}
+  let(:library_with_typed_parameters_rendered) {''}
 
   context '[library]' do
-    let(:only) { 'library' }
+    let(:only) {'library'}
 
     it 'generates a super class allowing to get the different libraries' do
       expect(rendering(libraries)).to eq(libraries_rendered)
@@ -669,7 +668,7 @@ shared_examples "a renderer handling libraries" do
   end
 
   context '[libraries]' do
-    let(:only) { 'libraries' }
+    let(:only) {'libraries'}
 
     it 'generates a file for each libraries with the actionwords definitions inside' do
       expect(rendering(first_lib)).to eq(first_lib_rendered)
@@ -686,18 +685,18 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   # Note: we do not want to test everything as we'll only render
   # tests and calls.
   # You have to define language and framework.
-  let(:language) { "" }
-  let(:framework) { "" }
+  let(:language) {""}
+  let(:framework) {""}
 
-  let(:outline_title_ending) { uid_should_be_in_outline ? ' (<hiptest-uid>)' : '' }
+  let(:outline_title_ending) {uid_should_be_in_outline ? ' (<hiptest-uid>)' : ''}
 
-  let(:root_folder) { make_folder("Colors") }
-  let(:warm_colors_folder) { make_folder("Warm colors", parent: root_folder) }
-  let(:cool_colors_folder) { make_folder("Cool colors", parent: root_folder, description: "Cool colors calm and relax.\nThey are the hues from blue green through blue violet, most grays included.") }
+  let(:root_folder) {make_folder("Colors")}
+  let(:warm_colors_folder) {make_folder("Warm colors", parent: root_folder)}
+  let(:cool_colors_folder) {make_folder("Cool colors", parent: root_folder, description: "Cool colors calm and relax.\nThey are the hues from blue green through blue violet, most grays included.")}
   let(:other_colors_folder) {
     make_folder("Other colors", parent: root_folder, body: [
-      make_call("I have colors to mix",  annotation: "given"),
-      make_call("I know the expected color",  annotation: "and"),
+      make_call("I have colors to mix", annotation: "given"),
+      make_call("I know the expected color", annotation: "and"),
     ])
   }
 
@@ -766,308 +765,307 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
   let(:create_white_test) {
     make_test("Create white", body: [
-      make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
-      make_call("the color \"color\"",  annotation:   "and", arguments: [make_argument("color", template_of_literals("red"))]),
-      make_call("the color \"color\"",  annotation:   "and", arguments: [make_argument("color", template_of_literals("green"))]),
-      make_call("you mix colors",       annotation:  "when"),
-      make_call("you obtain \"color\"", annotation:  "then", arguments: [make_argument("color", template_of_literals("white"))])
+      make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+      make_call("the color \"color\"", annotation: "and", arguments: [make_argument("color", template_of_literals("red"))]),
+      make_call("the color \"color\"", annotation: "and", arguments: [make_argument("color", template_of_literals("green"))]),
+      make_call("you mix colors", annotation: "when"),
+      make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("white"))])
     ])
   }
 
   let(:create_green_scenario) {
     make_scenario("Create green",
-      description: "You can create green by mixing other colors",
-      folder: cool_colors_folder,
-      body: [
-        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
-        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
-        make_call("you mix colors",       annotation: "when"),
-        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("green"))]),
-        make_call("you cannot play croquet", annotation:  "but", arguments: []),
-      ])
+                  description: "You can create green by mixing other colors",
+                  folder: cool_colors_folder,
+                  body: [
+                    make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+                    make_call("the color \"color\"", annotation: "and", arguments: [make_argument("color", template_of_literals("yellow"))]),
+                    make_call("you mix colors", annotation: "when"),
+                    make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("green"))]),
+                    make_call("you cannot play croquet", annotation: "but", arguments: []),
+                  ])
   }
 
   let(:create_purple_scenario) {
     make_scenario("Create purple",
-      description: "You can have a description\non multiple lines",
-      folder: cool_colors_folder,
-      body: [
-        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
-        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", template_of_literals("red"))]),
-        make_call("you mix colors",       annotation: "when"),
-        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("purple"))]),
-      ])
+                  description: "You can have a description\non multiple lines",
+                  folder: cool_colors_folder,
+                  body: [
+                    make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", template_of_literals("blue"))]),
+                    make_call("the color \"color\"", annotation: "and", arguments: [make_argument("color", template_of_literals("red"))]),
+                    make_call("you mix colors", annotation: "when"),
+                    make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", template_of_literals("purple"))]),
+                  ])
   }
 
   let(:unannotated_create_orange_scenario) {
     make_scenario("Create orange",
-      folder: warm_colors_folder,
-      body: [
-        make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("red"))]),
-        make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("yellow"))]),
-        make_call("you mix colors"),
-        make_call("you obtain \"color\"", arguments: [make_argument("color", template_of_literals("orange"))])
-      ])
+                  folder: warm_colors_folder,
+                  body: [
+                    make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("red"))]),
+                    make_call("the color \"color\"", arguments: [make_argument("color", template_of_literals("yellow"))]),
+                    make_call("you mix colors"),
+                    make_call("you obtain \"color\"", arguments: [make_argument("color", template_of_literals("orange"))])
+                  ])
   }
 
   let(:empty_scenario) {
     make_scenario('Empty Scenario',
-      folder: root_folder,
-      body: [],
+                  folder: root_folder,
+                  body: [],
     )
   }
 
   let(:create_secondary_colors_scenario) {
     make_scenario("Create secondary colors",
-      description: "This scenario has a datatable and a description",
-      folder: other_colors_folder,
-      parameters: [
-        make_parameter("first_color"),
-        make_parameter("second_color"),
-        make_parameter("got_color"),
-        make_parameter("priority"),
-      ],
-      body: [
-        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
-        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
-        make_call("you mix colors",       annotation: "when"),
-        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
-      ],
-      datatable: Hiptest::Nodes::Datatable.new([
-        Hiptest::Nodes::Dataset.new("Mix to green", [
-          make_argument("first_color", template_of_literals("blue")),
-          make_argument("second_color", template_of_literals("yellow")),
-          make_argument("got_color", template_of_literals("green")),
-          make_argument("priority", Hiptest::Nodes::UnaryExpression.new('-', Hiptest::Nodes::NumericLiteral.new(1))),
-        ]),
-        Hiptest::Nodes::Dataset.new("Mix to orange", [
-          make_argument("first_color", template_of_literals("yellow")),
-          make_argument("second_color", template_of_literals("red")),
-          make_argument("got_color", template_of_literals("orange")),
-          make_argument("priority", Hiptest::Nodes::NumericLiteral.new(1)),
-        ]),
-        Hiptest::Nodes::Dataset.new("Mix to purple", [
-          make_argument("first_color", literal("red")),
-          make_argument("second_color", literal("blue")),
-          make_argument("got_color", literal("purple")),
-          make_argument("priority", Hiptest::Nodes::BooleanLiteral.new(true)),
-        ]),
-      ]))
+                  description: "This scenario has a datatable and a description",
+                  folder: other_colors_folder,
+                  parameters: [
+                    make_parameter("first_color"),
+                    make_parameter("second_color"),
+                    make_parameter("got_color"),
+                    make_parameter("priority"),
+                  ],
+                  body: [
+                    make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
+                    make_call("the color \"color\"", annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
+                    make_call("you mix colors", annotation: "when"),
+                    make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
+                  ],
+                  datatable: Hiptest::Nodes::Datatable.new([
+                                                             Hiptest::Nodes::Dataset.new("Mix to green", [
+                                                               make_argument("first_color", template_of_literals("blue")),
+                                                               make_argument("second_color", template_of_literals("yellow")),
+                                                               make_argument("got_color", template_of_literals("green")),
+                                                               make_argument("priority", Hiptest::Nodes::UnaryExpression.new('-', Hiptest::Nodes::NumericLiteral.new(1))),
+                                                             ]),
+                                                             Hiptest::Nodes::Dataset.new("Mix to orange", [
+                                                               make_argument("first_color", template_of_literals("yellow")),
+                                                               make_argument("second_color", template_of_literals("red")),
+                                                               make_argument("got_color", template_of_literals("orange")),
+                                                               make_argument("priority", Hiptest::Nodes::NumericLiteral.new(1)),
+                                                             ]),
+                                                             Hiptest::Nodes::Dataset.new("Mix to purple", [
+                                                               make_argument("first_color", literal("red")),
+                                                               make_argument("second_color", literal("blue")),
+                                                               make_argument("got_color", literal("purple")),
+                                                               make_argument("priority", Hiptest::Nodes::BooleanLiteral.new(true)),
+                                                             ]),
+                                                           ]))
   }
 
   let(:scenario_with_capital_parameters) {
     make_scenario("Validate Nav",
-      folder: regression_folder,
-      parameters: [make_parameter("SITE_NAME")],
-      body: [
-        make_call("I am on the \"site\" home page",  annotation: "given", arguments: [make_argument("site", variable("SITE_NAME"))])
-      ],
-      datatable: Hiptest::Nodes::Datatable.new([
-        Hiptest::Nodes::Dataset.new("Open Google", [
-          make_argument("SITE_NAME", template_of_literals("http://google.com"))
-        ])
-      ]))
+                  folder: regression_folder,
+                  parameters: [make_parameter("SITE_NAME")],
+                  body: [
+                    make_call("I am on the \"site\" home page", annotation: "given", arguments: [make_argument("site", variable("SITE_NAME"))])
+                  ],
+                  datatable: Hiptest::Nodes::Datatable.new([
+                                                             Hiptest::Nodes::Dataset.new("Open Google", [
+                                                               make_argument("SITE_NAME", template_of_literals("http://google.com"))
+                                                             ])
+                                                           ]))
   }
 
   let(:scenario_calling_untrimed_actionword) {
     make_scenario("Calling an untrimed action word",
-      folder: regression_folder,
-      body: [
-        make_call("  an untrimed action word  ",  annotation: "given")
-      ])
+                  folder: regression_folder,
+                  body: [
+                    make_call("  an untrimed action word  ", annotation: "given")
+                  ])
   }
 
   let(:scenario_calling_aw_with_incorrect_order) {
     make_scenario("Calling an action word with weird parameter order",
-      folder: regression_folder,
-      body: [
-        make_call("the \"order\" of \"parameters\" is weird",  annotation: "given"),
-        arguments: [
-          make_argument("p0", literal("some value")),
-          make_argument("p1", literal("some other value")),
-          make_argument("parameters", literal("and again another one")),
-          make_argument("order", literal("and finally another one"))
-        ]
-      ])
+                  folder: regression_folder,
+                  body: [
+                    make_call("the \"order\" of \"parameters\" is weird", annotation: "given"),
+                    arguments: [
+                      make_argument("p0", literal("some value")),
+                      make_argument("p1", literal("some other value")),
+                      make_argument("parameters", literal("and again another one")),
+                      make_argument("order", literal("and finally another one"))
+                    ]
+                  ])
   }
 
   let(:scenario_calling_actionwords_with_extra_params) {
     make_scenario("Calling an action word with not inlined parameters",
-      folder: regression_folder,
-      body: [
-        make_call(
-          "I login on",
-          annotation: "given",
-          arguments: [
-            make_argument("site", literal("preview")),
-            make_argument("username", literal("Vincent"))
-          ])
-      ])
+                  folder: regression_folder,
+                  body: [
+                    make_call(
+                      "I login on",
+                      annotation: "given",
+                      arguments: [
+                        make_argument("site", literal("preview")),
+                        make_argument("username", literal("Vincent"))
+                      ])
+                  ])
   }
 
   let(:scenario_with_incomplete_datatable) {
     make_scenario("Incomplete datatable",
-      folder: regression_folder,
-      parameters: [
-        make_parameter("first_color"),
-        make_parameter("second_color"),
-        make_parameter("got_color"),
-      ],
-      body: [
-        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
-        make_call("the color \"color\"",  annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
-        make_call("you mix colors",       annotation: "when"),
-        make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
-      ],
-      datatable: Hiptest::Nodes::Datatable.new([
-        Hiptest::Nodes::Dataset.new("Mix to green", [
-          make_argument("first_color", template_of_literals("blue")),
-          make_argument("second_color", template_of_literals("yellow")),
-          make_argument("got_color", template_of_literals("green")),
-        ]),
-        Hiptest::Nodes::Dataset.new("Mix to orange", [
-          make_argument("first_color", template_of_literals("yellow")),
-          make_argument("second_color", template_of_literals("red"))
-        ]),
-        Hiptest::Nodes::Dataset.new("Mix to purple", [
-          make_argument("first_color", literal("red"))
-        ]),
-      ]))
+                  folder: regression_folder,
+                  parameters: [
+                    make_parameter("first_color"),
+                    make_parameter("second_color"),
+                    make_parameter("got_color"),
+                  ],
+                  body: [
+                    make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", variable("first_color"))]),
+                    make_call("the color \"color\"", annotation: "and", arguments: [make_argument("color", variable("second_color"))]),
+                    make_call("you mix colors", annotation: "when"),
+                    make_call("you obtain \"color\"", annotation: "then", arguments: [make_argument("color", variable("got_color"))]),
+                  ],
+                  datatable: Hiptest::Nodes::Datatable.new([
+                                                             Hiptest::Nodes::Dataset.new("Mix to green", [
+                                                               make_argument("first_color", template_of_literals("blue")),
+                                                               make_argument("second_color", template_of_literals("yellow")),
+                                                               make_argument("got_color", template_of_literals("green")),
+                                                             ]),
+                                                             Hiptest::Nodes::Dataset.new("Mix to orange", [
+                                                               make_argument("first_color", template_of_literals("yellow")),
+                                                               make_argument("second_color", template_of_literals("red"))
+                                                             ]),
+                                                             Hiptest::Nodes::Dataset.new("Mix to purple", [
+                                                               make_argument("first_color", literal("red"))
+                                                             ]),
+                                                           ]))
   }
 
   let(:scenario_with_double_quotes_in_datatable) {
     make_scenario("Double quote in datatable",
-      folder: regression_folder,
-      parameters: [
-        make_parameter("color_definition")
-      ],
-      body: [
-        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("color_definition"))])
-      ],
-      datatable: Hiptest::Nodes::Datatable.new([
-        Hiptest::Nodes::Dataset.new("Mix to green", [
-          make_argument("color_definition", template_of_literals('{"html": ["#008000", "#50D050"]}'))
-        ]),
-        Hiptest::Nodes::Dataset.new("Mix to purple", [
-          make_argument("color_definition", template_of_literals('{"html": ["#D14FD1"]}'))
-        ])
-      ]))
+                  folder: regression_folder,
+                  parameters: [
+                    make_parameter("color_definition")
+                  ],
+                  body: [
+                    make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", variable("color_definition"))])
+                  ],
+                  datatable: Hiptest::Nodes::Datatable.new([
+                                                             Hiptest::Nodes::Dataset.new("Mix to green", [
+                                                               make_argument("color_definition", template_of_literals('{"html": ["#008000", "#50D050"]}'))
+                                                             ]),
+                                                             Hiptest::Nodes::Dataset.new("Mix to purple", [
+                                                               make_argument("color_definition", template_of_literals('{"html": ["#D14FD1"]}'))
+                                                             ])
+                                                           ]))
   }
 
   let(:scenario_with_freetext_argument) {
     make_scenario("Open a site with comments",
-      folder: gherkin_special_arguments_folder,
-      parameters: [],
-      body: [
-        make_call("I am on the \"site\" home page", annotation: "when", arguments: [
-          make_argument('site', template_of_literals("http://google.com")),
-          make_argument('__free_text', template_of_literals([
-            "Some explanations when opening the site:",
-            " - for example one explanation",
-            " - and another one"
-          ].join("\n")))
-        ]),
-        make_call("stuff happens", annotation: 'then')
-      ])
+                  folder: gherkin_special_arguments_folder,
+                  parameters: [],
+                  body: [
+                    make_call("I am on the \"site\" home page", annotation: "when", arguments: [
+                      make_argument('site', template_of_literals("http://google.com")),
+                      make_argument('__free_text', template_of_literals([
+                                                                          "Some explanations when opening the site:",
+                                                                          " - for example one explanation",
+                                                                          " - and another one"
+                                                                        ].join("\n")))
+                    ]),
+                    make_call("stuff happens", annotation: 'then')
+                  ])
   }
 
   let(:scenario_with_datatable_argument) {
     make_scenario("Check users",
-      folder: gherkin_special_arguments_folder,
-      parameters: [],
-      body: [
-        make_call(
-          "the following users are available on \"site\"",
-          annotation: "when",
-          arguments: [
-          make_argument('site', template_of_literals("http://google.com")),
-            make_argument('__datatable', template_of_literals([
-              "| name  | password |",
-              "| bob   | plopi    |",
-              "| alice | dou      |"
-            ].join("\n")))
-          ]
-        ),
-        make_call("stuff happens", annotation: 'then')
-      ])
+                  folder: gherkin_special_arguments_folder,
+                  parameters: [],
+                  body: [
+                    make_call(
+                      "the following users are available on \"site\"",
+                      annotation: "when",
+                      arguments: [
+                        make_argument('site', template_of_literals("http://google.com")),
+                        make_argument('__datatable', template_of_literals([
+                                                                            "| name  | password |",
+                                                                            "| bob   | plopi    |",
+                                                                            "| alice | dou      |"
+                                                                          ].join("\n")))
+                      ]
+                    ),
+                    make_call("stuff happens", annotation: 'then')
+                  ])
   }
 
   let(:scenario_using_variables_in_step_datatables) {
     make_scenario("Check users",
-      folder: gherkin_special_arguments_folder,
-      parameters: [
-        make_parameter("username")
-      ],
-      body: [
-        make_call(
-          "I login as",
-          annotation: "when",
-          arguments: [
-            make_argument('__datatable', Hiptest::Nodes::Template.new([
-              Hiptest::Nodes::StringLiteral.new("| "),
-              Hiptest::Nodes::Variable.new('username'),
-              Hiptest::Nodes::StringLiteral.new(" |"),
-            ]))
-          ]
-        ),
-        make_call(
-          "I am logged in as",
-          annotation: "then",
-          arguments: [
-            make_argument('__free_text', Hiptest::Nodes::Template.new([
-              Hiptest::Nodes::StringLiteral.new(" -: "),
-              Hiptest::Nodes::Variable.new('username'),
-              Hiptest::Nodes::StringLiteral.new(" :- "),
-            ]))
-          ]
-        ),
-      ],
-      datatable: Hiptest::Nodes::Datatable.new([
-        Hiptest::Nodes::Dataset.new("First user", [
-          make_argument("username", template_of_literals('user@example.com'))
-        ])
-      ])
+                  folder: gherkin_special_arguments_folder,
+                  parameters: [
+                    make_parameter("username")
+                  ],
+                  body: [
+                    make_call(
+                      "I login as",
+                      annotation: "when",
+                      arguments: [
+                        make_argument('__datatable', Hiptest::Nodes::Template.new([
+                                                                                    Hiptest::Nodes::StringLiteral.new("| "),
+                                                                                    Hiptest::Nodes::Variable.new('username'),
+                                                                                    Hiptest::Nodes::StringLiteral.new(" |"),
+                                                                                  ]))
+                      ]
+                    ),
+                    make_call(
+                      "I am logged in as",
+                      annotation: "then",
+                      arguments: [
+                        make_argument('__free_text', Hiptest::Nodes::Template.new([
+                                                                                    Hiptest::Nodes::StringLiteral.new(" -: "),
+                                                                                    Hiptest::Nodes::Variable.new('username'),
+                                                                                    Hiptest::Nodes::StringLiteral.new(" :- "),
+                                                                                  ]))
+                      ]
+                    ),
+                  ],
+                  datatable: Hiptest::Nodes::Datatable.new([
+                                                             Hiptest::Nodes::Dataset.new("First user", [
+                                                               make_argument("username", template_of_literals('user@example.com'))
+                                                             ])
+                                                           ])
     )
   }
 
   let(:scenario_inheriting_tags) {
     make_scenario('Inherit tags',
-      folder: subsubreg_folder,
-      tags: [make_tag('my', 'own')],
-      body: [
-        make_call("the color \"color\"",  annotation: "given", arguments: [make_argument("color", variable("color_definition"))])
-      ]
+                  folder: subsubreg_folder,
+                  tags: [make_tag('my', 'own')],
+                  body: [
+                    make_call("the color \"color\"", annotation: "given", arguments: [make_argument("color", variable("color_definition"))])
+                  ]
     )
   }
 
   let!(:project) {
     make_project("Colors",
-      scenarios: [
-        create_green_scenario,
-        create_secondary_colors_scenario,
-        unannotated_create_orange_scenario,
-        create_purple_scenario,
-        empty_scenario,
-        scenario_with_capital_parameters,
-        scenario_with_freetext_argument,
-        scenario_with_datatable_argument,
-        scenario_using_variables_in_step_datatables,
-        scenario_with_incomplete_datatable,
-        scenario_calling_untrimed_actionword,
-        scenario_calling_aw_with_incorrect_order,
-        scenario_calling_actionwords_with_extra_params,
-        scenario_with_double_quotes_in_datatable,
-        scenario_inheriting_tags
-      ],
-      tests: [create_white_test],
-      actionwords: actionwords,
-      folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder],
-    ).tap do |p|
+                 scenarios: [
+                   create_green_scenario,
+                   create_secondary_colors_scenario,
+                   unannotated_create_orange_scenario,
+                   create_purple_scenario,
+                   empty_scenario,
+                   scenario_with_capital_parameters,
+                   scenario_with_freetext_argument,
+                   scenario_with_datatable_argument,
+                   scenario_using_variables_in_step_datatables,
+                   scenario_with_incomplete_datatable,
+                   scenario_calling_untrimed_actionword,
+                   scenario_calling_aw_with_incorrect_order,
+                   scenario_calling_actionwords_with_extra_params,
+                   scenario_with_double_quotes_in_datatable,
+                   scenario_inheriting_tags
+                 ],
+                 tests: [create_white_test],
+                 actionwords: actionwords,
+                 folders: [root_folder, warm_colors_folder, cool_colors_folder, other_colors_folder]).tap do |p|
       Hiptest::NodeModifiers.add_all(p)
     end
   }
 
-  let(:features_option_name) { "features" }
+  let(:features_option_name) {"features"}
 
   let(:options) {
     context_for(
@@ -1077,7 +1075,9 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     )
   }
 
-  subject(:rendered) { node_to_render.render(options) }
+  subject(:rendered) do
+    node_to_render.render(options)
+  end
 
   let(:scenario_tag_rendered) {
     [
@@ -1354,19 +1354,19 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
   let(:scenario_calling_untrimed_actionword_rendered) {
     [
-     '',
-     'Scenario: Calling an untrimed action word',
-     '  Given an untrimed action word',
-     ''
+      '',
+      'Scenario: Calling an untrimed action word',
+      '  Given an untrimed action word',
+      ''
     ].join("\n")
   }
 
   let(:scenario_calling_actionwords_with_extra_params_rendered) {
     [
-     '',
-     'Scenario: Calling an action word with not inlined parameters',
-     '  Given I login on "preview" "Vincent"',
-     ''
+      '',
+      'Scenario: Calling an action word with not inlined parameters',
+      '  Given I login on "preview" "Vincent"',
+      ''
     ].join("\n")
   }
 
@@ -1454,7 +1454,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   }
 
   context 'Argument with a nil value' do
-    let(:node_to_render) { make_argument("first_color", nil) }
+    let(:node_to_render) {make_argument("first_color", nil)}
 
     it 'renders as empty string' do
       expect(rendered).to eq('')
@@ -1462,7 +1462,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   end
 
   context 'Test' do
-    let(:node_to_render) { create_white_test }
+    let(:node_to_render) {create_white_test}
 
     it 'generates a feature file' do
       expect(rendered).to eq(test_rendered)
@@ -1470,8 +1470,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   end
 
   context 'Scenario' do
-    let(:node_to_render) { scenario }
-    let(:scenario) { create_green_scenario }
+    let(:node_to_render) {scenario}
+    let(:scenario) {create_green_scenario}
 
     it 'generates a feature file' do
       expect(rendered).to eq(scenario_rendered)
@@ -1484,7 +1484,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     end
 
     context 'without annotated calls' do
-      let(:scenario) { unannotated_create_orange_scenario }
+      let(:scenario) {unannotated_create_orange_scenario}
 
       it 'generates a feature file with bullet points steps' do
         expect(rendered).to eq(scenario_without_annotations_rendered)
@@ -1492,7 +1492,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     end
 
     context 'with datatable' do
-      let(:scenario) { create_secondary_colors_scenario }
+      let(:scenario) {create_secondary_colors_scenario}
 
       it 'generates a feature file with an Examples section' do
         expect(rendered).to eq(scenario_with_datatable_rendered)
@@ -1560,7 +1560,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     end
 
     context 'empty' do
-      let(:scenario) { empty_scenario }
+      let(:scenario) {empty_scenario}
 
       it 'generates Scenario section depending on the language' do
         if !defined?(rendered_empty_scenario)
@@ -1582,11 +1582,11 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
     context 'Regression tests:' do
       context 'when a scenario parameter is capitalized'
-        let(:scenario) {scenario_with_capital_parameters}
+      let(:scenario) {scenario_with_capital_parameters}
 
-        it 'the capitals are also kept in the datatable headers' do
-          expect(rendered).to eq(scenario_with_capital_parameters_rendered)
-        end
+      it 'the capitals are also kept in the datatable headers' do
+        expect(rendered).to eq(scenario_with_capital_parameters_rendered)
+      end
 
       context 'when some datatable rows are incomplete' do
         # That one is a bit weird, but we found some examples where the XML
@@ -1626,7 +1626,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         )
       }
 
-      let(:scenario) { create_secondary_colors_scenario }
+      let(:scenario) {create_secondary_colors_scenario}
 
 
       it 'does not export the hiptest-uid column, nor the scenario uid' do
@@ -1736,7 +1736,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   end
 
   context 'Scenarios with split_scenarios = false' do
-    let(:node_to_render) { project.children[:scenarios] }
+    let(:node_to_render) {project.children[:scenarios]}
     let(:options) {
       context_for(
         only: features_option_name,
@@ -1747,10 +1747,10 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
     it 'generates a features.feature file asking to use --split-scenarios' do
       expect(rendered).to eq([
-        "# To export your project to Gherkin correctly, you can add the option",
-        "# --with-folders when calling hiptest-publisher. It will keep the",
-        "#  Hiptest folders hierarchy of your project."
-      ].join("\n"))
+                               "# To export your project to Gherkin correctly, you can add the option",
+                               "# --with-folders when calling hiptest-publisher. It will keep the",
+                               "#  Hiptest folders hierarchy of your project."
+                             ].join("\n"))
     end
   end
 
@@ -1762,7 +1762,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         framework: framework
       )
     }
-    let(:node_to_render) { project.children[:actionwords] }
+    let(:node_to_render) {project.children[:actionwords]}
 
     it 'generates a steps definitions mapping' do
       expect(rendered).to eq(rendered_actionwords)
@@ -1812,3 +1812,60 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     end
   end
 end
+
+shared_examples 'a BDD renderer with library actionwords' do
+  include HelperFactories
+
+  let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
+  let(:another_actionword_uid) {'12345678-1234-1234-1234-1234567890123'}
+  let(:first_actionword) {make_actionword('My first action word', uid: first_actionword_uid)}
+  let(:another_actionword) {make_actionword('another action word', uid: another_actionword_uid)}
+  let(:first_lib) {make_library('Default', [first_actionword, another_actionword])}
+
+  let(:second_actionword_uid) {'87654321-4321-4321-4321-098765432121'}
+  let(:second_actionword) {make_actionword('My second action word', uid: second_actionword_uid)}
+  let(:second_lib) {make_library('Web', [second_actionword])}
+
+  let(:libraries) {Hiptest::Nodes::Libraries.new([first_lib, second_lib])}
+
+  let(:create_scenario_with_library_actionwords) {
+    make_scenario("Create scenario with library actionwords",
+                  description: "This scenario contains library actionwords",
+                  body: [
+                    make_uidcall(first_actionword_uid, annotation: "given"),
+                    make_uidcall(second_actionword_uid, annotation: "when"),
+                  ])
+  }
+
+  let!(:project) {
+    make_project("Colors",
+                 scenarios: [
+                   create_scenario_with_library_actionwords
+                 ],libraries: libraries).tap do |p|
+      Hiptest::NodeModifiers.add_all(p)
+    end
+  }
+
+  context 'Library actionwords as step definitions' do
+    let(:options) {
+      context_for(
+        only: "step_definitions_library",
+        language: language,
+        framework: framework
+      )
+    }
+
+    let(:rendered) do
+      project.children[:libraries].children[:libraries].first.render(options)
+    end
+
+    it 'generates a steps definitions mapping' do
+      expect(rendered).to eq(rendered_library_actionwords)
+    end
+
+    it 'should not export unused library action words' do
+      expect(rendered.downcase).not_to include('another action word')
+    end
+  end
+end
+
