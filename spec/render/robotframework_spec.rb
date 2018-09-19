@@ -617,7 +617,7 @@ describe 'Render as Robot framework' do
         folder.children[:scenarios] << sc1_no_datatable
         folder.children[:scenarios] << sc2_no_datatable
 
-        Hiptest::Nodes::ParentAdder.add(project)
+        Hiptest::NodeModifiers.add_all(project)
         expect(folder.render(render_context)).to eq([
           "*** Settings ***",
           "Documentation",
@@ -642,7 +642,7 @@ describe 'Render as Robot framework' do
         folder.children[:scenarios] << sc2_with_datatable
         folder.children[:scenarios] << sc1_with_incompatible_datatable
 
-        Hiptest::Nodes::ParentAdder.add(project)
+        Hiptest::NodeModifiers.add_all(project)
         expect(folder.render(render_context)).to eq([
           "*** Settings ***",
           "Documentation",

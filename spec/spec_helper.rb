@@ -55,6 +55,10 @@ module HelperFactories
     Hiptest::Nodes::Call.new(actionword, arguments, annotation)
   end
 
+  def make_uidcall(uid, arguments: [], annotation: nil)
+    Hiptest::Nodes::UIDCall.new(uid, arguments, annotation)
+  end
+
   def make_parameter(name, default: nil)
     Hiptest::Nodes::Parameter.new(name, default)
   end
@@ -103,13 +107,18 @@ module HelperFactories
     folder
   end
 
-  def make_project(name, scenarios: [], tests: [], actionwords: [], folders: [])
+  def make_project(name, scenarios: [], tests: [], actionwords: [], folders: [], libraries: nil)
     Hiptest::Nodes::Project.new(name, '',
       Hiptest::Nodes::TestPlan.new(folders).tap { |tp| tp.organize_folders },
       Hiptest::Nodes::Scenarios.new(scenarios),
       Hiptest::Nodes::Actionwords.new(actionwords),
-      Hiptest::Nodes::Tests.new(tests)
+      Hiptest::Nodes::Tests.new(tests),
+      libraries || Hiptest::Nodes::Libraries.new()
     )
+  end
+
+  def make_library(name, actionwords)
+    Hiptest::Nodes::Library.new(name, actionwords)
   end
 end
 

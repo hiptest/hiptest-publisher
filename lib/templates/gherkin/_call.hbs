@@ -1,0 +1,5 @@
+{{> gherkin_text}}{{#if rendered_children.free_text_arg}}{{#indent}}
+"""
+{{remove_surrounding_quotes rendered_children.free_text_arg }}
+"""{{/indent}}{{/if}}{{#if rendered_children.datatable_arg}}{{#indent}}
+{{remove_surrounding_quotes rendered_children.datatable_arg }}{{/indent}}{{/if}}

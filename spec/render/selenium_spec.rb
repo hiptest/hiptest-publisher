@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 require_relative '../../lib/hiptest-publisher/nodes'
-require_relative '../../lib/hiptest-publisher/call_arguments_adder'
+require_relative '../../lib/hiptest-publisher/node_modifiers/add_all'
 
 describe 'Selenium IDE rendering' do
   include HelperFactories
@@ -44,7 +44,7 @@ describe 'Selenium IDE rendering' do
   }
 
   before(:each) do
-    Hiptest::DefaultArgumentAdder.add(project)
+    Hiptest::NodeModifiers.add_all(project)
   end
 
   def rendering(node)

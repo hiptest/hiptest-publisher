@@ -14,11 +14,22 @@ describe Hiptest::SignatureExporter do
       ]
     )
   }
-
   let(:aw2) { make_actionword('plic') }
 
   let(:aws) {
     Hiptest::Nodes::Actionwords.new([aw, aw2])
+  }
+
+  let(:first_library) {
+    make_library('default library', [
+      make_actionword('My first lib actionword', uid: 'aw-lib-uid'),
+      make_actionword('My second lib actionword', uid: 'aw1-lib-uid')]
+  )}
+
+  let(:second_library) {
+    make_library('second library', [
+      make_actionword('Another lib actionword', uid: 'aw2-lib-uid'),
+    ])
   }
 
   let(:project) {
@@ -66,6 +77,59 @@ describe Hiptest::SignatureExporter do
         }
       ])
     end
+
+    it 'also exports libraries when available' do
+      project.children[:libraries].children[:libraries] << first_library
+      project.children[:libraries].children[:libraries] << second_library
+
+      expect(Hiptest::SignatureExporter.export_actionwords(project)).to eq([
+        {
+          "name" => "my action word",
+          "uid" => "1234-5678",
+          "parameters" => [
+            {"name" => "x"},
+            {"name" => "y"}
+          ],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "name" => "plic",
+          "uid" => nil,
+          "parameters" => [],
+          "body_hash" => "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "name" => "default library",
+          "type" => "library",
+          "actionwords" => [
+            {
+              "name" => "My first lib actionword",
+              "uid" => 'aw-lib-uid',
+              "parameters" => [],
+              "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
+            },
+            {
+              "name" => "My second lib actionword",
+              "uid" => 'aw1-lib-uid',
+              "parameters" => [],
+              "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
+            }
+          ]
+        },
+        {
+          "name" => "second library",
+          "type" => "library",
+          "actionwords" => [
+            {
+              "name" => "Another lib actionword",
+              "uid" => 'aw2-lib-uid',
+              "parameters" => [],
+              "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
+            }
+          ]
+        }
+      ])
+    end
   end
 
   describe 'export_actionwords' do
@@ -90,9 +154,49 @@ describe Hiptest::SignatureExporter do
     end
   end
 
-  describe 'export_item' do
+  context 'export_libraries' do
+    it 'export actionwords in a list inside hash for each library' do
+      project.children[:libraries].children[:libraries] << first_library
+      project.children[:libraries].children[:libraries] << second_library
+
+      expect(exporter.export_libraries(project.children[:libraries])).to eq([
+        {
+          "name" => "default library",
+          "type" => "library",
+          "actionwords" => [
+            {
+              "name" => "My first lib actionword",
+              "uid" => 'aw-lib-uid',
+              "parameters" => [],
+              "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
+            },
+            {
+              "name" => "My second lib actionword",
+              "uid" => 'aw1-lib-uid',
+              "parameters" => [],
+              "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
+            }
+          ]
+        },
+        {
+          "name" => "second library",
+          "type" => "library",
+          "actionwords" => [
+            {
+              "name" => "Another lib actionword",
+              "uid" => 'aw2-lib-uid',
+              "parameters" => [],
+              "body_hash"=>"d41d8cd98f00b204e9800998ecf8427e"
+            }
+          ]
+        },
+      ])
+    end
+  end
+
+  describe 'export_actionword' do
     it 'exports usefull data an item (scenario, actionword)' do
-      expect(exporter.export_item(aw)).to eq({
+      expect(exporter.export_actionword(aw)).to eq({
         "name" => "my action word",
         "parameters" => [{"name"=>"x"}, {"name"=>"y"}],
         "body_hash" => "d41d8cd98f00b204e9800998ecf8427e",

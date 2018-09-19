@@ -368,6 +368,55 @@ describe Hiptest::XMLParser do
       end
     end
 
+    context 'UIDCall' do
+      let(:uid) { '12345678-1234-12345-1234-123456789012'}
+
+      it 'builds the node' do
+        node = build_node("<uidcall>
+          <annotation>Given</annotation>
+          <uid>#{uid}</uid>
+        </uidcall>")
+
+        expect(node).to be_a(Hiptest::Nodes::UIDCall)
+        expect(node.children[:annotation]).to eq('Given')
+        expect(node.children[:uid]).to eq(uid)
+      end
+
+      it 'does not keep empty annotations' do
+        node = build_node("<uidcall>
+          <annotation></annotation>
+          <uid>#{uid}</uid>
+        </uidcall>")
+
+        expect(node.children[:annotation]).to be_nil
+      end
+
+      it 'supports arguments' do
+        node = build_node("
+          <uidcall>
+            <uid>#{uid}</actionword>
+            <arguments>
+              <argument>
+                <name>x</name>
+                <value>
+                  <template>#{@my_var}</template>
+                </value>
+              </argument>
+              <argument>
+                <name>y</name>
+                  <value>
+                    <template>#{@zero}</template>
+                  </value>
+              </argument>
+            </arguments>
+          </uidcall>")
+
+        expect(node.children[:arguments].length).to eq(2)
+        expect(node.children[:arguments].first.children[:name]).to eq('x')
+        expect(node.children[:arguments].last.children[:name]).to eq('y')
+      end
+    end
+
     context 'step' do
 
       it 'action step' do
@@ -803,6 +852,38 @@ describe Hiptest::XMLParser do
       it_behaves_like 'folder structure'
     end
 
+    context 'library' do
+      it 'builds the node' do
+        node = build_node("<actionwordLibrary>
+          <name>My library</name>
+        </actionwordLibrary>")
+
+        expect(node).to be_a(Hiptest::Nodes::Library)
+        expect(node.children[:name]).to eq('My library')
+      end
+
+      it 'supports nested action words' do
+        node = build_node("<actionwordLibrary>
+          <name>My library</name>
+          <libraryActionwords>
+            <libraryActionword>
+              <name>My first action word</name>
+            </libraryActionword>
+            <libraryActionword>
+              <name>My second action word</name>
+            </libraryActionword>
+          </libraryActionwords>
+        </actionwordLibrary>")
+
+        expect(node.children[:actionwords].length).to eq(2)
+        expect(node.children[:actionwords].first).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:actionwords].first.children[:name]).to eq('My first action word')
+
+        expect(node.children[:actionwords].last).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:actionwords].last.children[:name]).to eq('My second action word')
+      end
+    end
+
     context 'project' do
       it 'empty project' do
         node = TestParser.new("<?xml version=\"1.0\"?>
@@ -863,6 +944,32 @@ describe Hiptest::XMLParser do
         expect(folder.children[:scenarios]).to eq([scenarios.first])
       end
     end
+
+    context 'actionwordLibraries' do
+      it 'stores all libraries inside a Library node' do
+        node = TestParser.new("<?xml version=\"1.0\"?>
+          <project>
+            <name>My project</name>
+            <description>A description</description>
+            <actionwordLibraries>
+              <actionwordLibrary>
+                <name>First library</name>
+                <libraryActionword>
+                  <name>First action wprd</name>
+                </libraryActionword>
+              </actionwordLibrary>
+              <actionwordLibrary>
+                <name>Second library</name>
+                <libraryActionword>
+                  <name>Second action word</name>
+                </libraryActionword>
+              </actionwordLibrary>
+            </actionwordLibraries>
+          </project>").build_project
+
+        expect(node.children[:libraries]).to be_a(Hiptest::Nodes::Libraries)
+      end
+    end
   end
 
   context 'error during parsing' do
@@ -892,7 +999,7 @@ describe Hiptest::XMLParser do
       project = parser.build_project
 
       expect(project.children[:name]).to eq('Hiptest publisher')
-      expect(project.each_sub_nodes(deep: true).count).to eq(95)
+      expect(project.each_sub_nodes(deep: true).count).to eq(96)
       expect(project.each_sub_nodes(Hiptest::Nodes::Folder).count).to eq(4)
       expect(project.each_sub_nodes(Hiptest::Nodes::Scenario).count).to eq(2)
       expect(project.each_sub_nodes(Hiptest::Nodes::Actionword).count).to eq(4)

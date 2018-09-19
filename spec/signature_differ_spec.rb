@@ -171,4 +171,43 @@ describe Hiptest::SignatureDiffer do
       })
     end
   end
+
+  it 'does not mind libraries being exported at the same level than actionwords' do
+    current = exporter.export_actionwords(
+      make_project('My project',
+        actionwords: [aw1v1],
+        libraries: Hiptest::Nodes::Libraries.new([
+          make_library('my library', [make_actionword('My new action word')])
+        ])), true
+    )
+
+    expect(differ.diff(v1, current)).to be_empty
+  end
+
+  it 'uses the actionwords from the library to compute the diff when argument library_name is provided' do
+    old = exporter.export_actionwords(
+      make_project('My project',
+        actionwords: [make_actionword('My old action word')],
+        libraries: Hiptest::Nodes::Libraries.new([
+          make_library('my library', [aw1v1])
+        ])), true
+    )
+
+    current = exporter.export_actionwords(
+      make_project('My project',
+        actionwords: [make_actionword('My new action word'), aw2v1],
+        libraries: Hiptest::Nodes::Libraries.new([
+          make_library('my library', [aw1v2])
+        ])), true
+    )
+
+    expect(differ.diff(old, current, library_name: 'my library')).to eq({
+      :signature_changed => [
+        {
+          name: aw1v2.children[:name],
+          node: aw1v2
+        }
+      ]
+    })
+  end
 end

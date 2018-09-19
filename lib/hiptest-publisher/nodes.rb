@@ -235,6 +235,26 @@ module Hiptest
       end
     end
 
+    class UIDCall < Node
+      attr_reader :chunks, :extra_inlined_arguments
+      attr_writer :chunks, :extra_inlined_arguments
+
+      def initialize(uid, arguments = [], annotation = nil)
+        super()
+        annotation = nil if annotation == ""
+
+        @children = {
+          uid: uid,
+          arguments: arguments,
+          all_arguments: arguments,
+          annotation: annotation
+        }
+
+        @chunks = []
+        @extra_inlined_arguments = []
+      end
+    end
+
     class IfThen < Node
       def initialize(condition, then_, else_ = [])
         super()
@@ -325,8 +345,8 @@ module Hiptest
     end
 
     class Actionword < Item
-      attr_reader :chunks, :extra_inlined_parameters
-      attr_writer :chunks, :extra_inlined_parameters
+      attr_reader :chunks, :extra_inlined_parameters, :uniq_name
+      attr_writer :chunks, :extra_inlined_parameters, :uniq_name
 
       def initialize(name, tags = [], parameters = [], body = [], uid = nil, description = '')
         super(name, tags, description, parameters, body)
@@ -334,6 +354,7 @@ module Hiptest
 
         @chunks = []
         @extra_inlined_parameters = []
+        @uniq_name = name
       end
 
       def must_be_implemented?
@@ -529,8 +550,27 @@ module Hiptest
       end
     end
 
+    class Libraries < Node
+      def initialize(libraries = [])
+        super()
+        @children = {
+          libraries: libraries
+        }
+      end
+    end
+
+    class Library < Node
+      def initialize(name = 'default_library', actionwords = [])
+        super()
+        @children = {
+          name: name,
+          actionwords: actionwords
+        }
+      end
+    end
+
     class Project < Node
-      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new)
+      def initialize(name, description = '', test_plan = TestPlan.new, scenarios = Scenarios.new, actionwords = Actionwords.new, tests = Tests.new, libraries = Libraries.new)
         super()
         test_plan.parent = self if test_plan.respond_to?(:parent=)
         scenarios.parent = self
@@ -542,8 +582,13 @@ module Hiptest
           test_plan: test_plan,
           scenarios: scenarios,
           actionwords: actionwords,
-          tests: tests
+          tests: tests,
+          libraries: libraries
         }
+      end
+
+      def has_libraries?
+        !children[:libraries].children[:libraries].empty?
       end
 
       def assign_scenarios_to_folders

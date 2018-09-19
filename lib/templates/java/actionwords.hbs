@@ -1,6 +1,6 @@
 package {{{ context.package }}};
 
-public class Actionwords {{#curly}}{{#indent}}
+public class Actionwords {{#if uses_library?}}extends ActionwordLibrary {{/if}}{{#curly}}{{#indent}}
 {{#each rendered_children.actionwords}}
 {{{this}}}
 {{/each}}

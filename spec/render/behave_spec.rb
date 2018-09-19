@@ -94,7 +94,7 @@ describe 'Behave rendering' do
       ],
       actionwords: [aw]
     )
-    Hiptest::GherkinAdder.add(project)
+    Hiptest::NodeModifiers.add_all(project)
 
     options =  context_for(only: "step_definitions", language: 'behave')
     expect(aw.render(options)).to eq([
@@ -116,7 +116,7 @@ describe 'Behave rendering' do
       ],
       actionwords: [aw]
     )
-    Hiptest::GherkinAdder.add(project)
+    Hiptest::NodeModifiers::GherkinAdder.add(project)
 
     options =  context_for(only: "step_definitions", language: 'behave')
     expect(aw.render(options)).to eq([
@@ -147,8 +147,8 @@ describe 'Behave rendering' do
       ]
     )
 
-    Hiptest::Nodes::ParentAdder.add(project)
-    Hiptest::GherkinAdder.add(project)
+    Hiptest::NodeModifiers::ParentAdder.add(project)
+    Hiptest::NodeModifiers::GherkinAdder.add(project)
 
     options = context_for(only: "step_definitions", language: 'behave')
 

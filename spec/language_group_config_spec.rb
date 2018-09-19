@@ -877,6 +877,7 @@ describe LanguageGroupConfig do
                                                       "/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]", "/Actionwords.groovy"
                                                     ],
         ["--split-scenarios"]                    => [ "[features]",
@@ -884,6 +885,7 @@ describe LanguageGroupConfig do
                                                       "/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -892,6 +894,7 @@ describe LanguageGroupConfig do
                                                       "/global_trades/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -900,6 +903,7 @@ describe LanguageGroupConfig do
                                                       "/global_trades/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]", "/Actionwords.groovy"
                                                     ],
         ["--keep-filenames"]                      => ["[features]",
@@ -907,6 +911,7 @@ describe LanguageGroupConfig do
                                                       "/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -915,6 +920,7 @@ describe LanguageGroupConfig do
                                                       "/Global trades/SellGoods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ],
@@ -924,6 +930,7 @@ describe LanguageGroupConfig do
                                                       "/Global trades/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/StepDefinitions.groovy",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/Actionwords.groovy"
                                                     ]
@@ -942,6 +949,8 @@ describe LanguageGroupConfig do
             language_config = LanguageConfigParser.new(cli_options)
             filenames = []
             language_config.language_group_configs.each do |language_group_config|
+              next if ['library', 'libraries'].include?(language_group_config[:group_name])
+
               filenames << "[#{language_group_config[:group_name]}]"
               filenames << language_group_config.each_node_rendering_context(project).map(&:path)
             end

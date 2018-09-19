@@ -1,10 +1,10 @@
 require 'hiptest-publisher/nodes_walker'
 
 module Hiptest
-  module Nodes
-    class DatatableFixer < Walker
+  module NodeModifiers
+    class DatatableFixer < Nodes::Walker
       def self.add(project)
-        Hiptest::Nodes::DatatableFixer.new.walk_node(project)
+        self.new.walk_node(project)
       end
 
       def walk_scenario(scenario)

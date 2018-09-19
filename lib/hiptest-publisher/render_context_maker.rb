@@ -9,7 +9,7 @@ module Hiptest
         is_empty?: item.children[:body].empty?,
         declared_variables: item.declared_variables_names,
         raw_parameter_names: item.children[:parameters].map {|p| p.children[:name] },
-        self_name: item.children[:name],
+        self_name: item.children[:name]
       }
     end
 
@@ -27,8 +27,18 @@ module Hiptest
         chunks: aw.chunks || [],
         extra_inlined_parameters: aw.extra_inlined_parameters || [],
         has_free_text_parameter?: aw.children[:parameters].select(&:free_text?).count > 0,
-        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0
+        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0,
+        uniq_name: aw.uniq_name,
+        has_library?: (aw.parent.is_a? Hiptest::Nodes::Library) ? true : false,
+        library_name: aw.parent.nil? ? '' : aw.parent.children[:name]
       )
+    end
+
+    def walk_actionwords(aws)
+      project = aws.parent
+      {
+        uses_library?: project.nil? ? false : project.has_libraries?
+      }
     end
 
     def walk_folder(folder)
@@ -45,7 +55,8 @@ module Hiptest
       walk_item(scenario).merge(walk_relative_item(scenario)).merge(
         project_name: scenario.parent.parent.children[:name],
         has_datasets?: has_datasets?(scenario),
-        has_annotations?: has_annotations?(scenario)
+        has_annotations?: has_annotations?(scenario),
+        uniq_name: scenario.children[:name]
       )
     end
 
@@ -65,10 +76,6 @@ module Hiptest
       }
     end
 
-    def walk_actionwords(aws)
-      {}
-    end
-
     def walk_test(test)
       {
         has_description?: !test.children[:description].nil? && !test.children[:description].empty?,
@@ -78,7 +85,7 @@ module Hiptest
         is_empty?: test.children[:body].empty?,
         has_datasets?: false,
         project_name: test.parent.parent.children[:name],
-        self_name: test.children[:name],
+        self_name: test.children[:name]
       }
     end
 
@@ -98,6 +105,13 @@ module Hiptest
         in_datatabled_scenario?: c.parent.is_a?(Hiptest::Nodes::Scenario) && has_datasets?(c.parent),
         chunks: c.chunks || [],
         extra_inlined_arguments: c.extra_inlined_arguments || []
+      }
+    end
+
+    def walk_uidcall(uidcall)
+      {
+        has_library?: !uidcall.children[:library_name].nil?,
+        chunks: uidcall.chunks || []
       }
     end
 
@@ -134,6 +148,12 @@ module Hiptest
       {
         treated_chunks: treated,
         variable_names: variable_names
+      }
+    end
+
+    def walk_libraries(libraries)
+      {
+        library_names: libraries.children[:libraries].map {|lib| lib.children[:name]}
       }
     end
 

@@ -1,11 +1,9 @@
-require_relative "spec_helper"
-require_relative "../lib/hiptest-publisher/options_parser"
-require_relative "../lib/hiptest-publisher/signature_differ"
-require_relative "../lib/hiptest-publisher/diff_displayer"
-require_relative "../lib/hiptest-publisher/file_writer"
-require_relative "../lib/hiptest-publisher/formatters/reporter"
-
-
+require_relative "../spec_helper"
+require_relative "../../lib/hiptest-publisher/options_parser"
+require_relative "../../lib/hiptest-publisher/signature_differ"
+require_relative "../../lib/hiptest-publisher/file_writer"
+require_relative "../../lib/hiptest-publisher/formatters/reporter"
+require_relative "../../lib/hiptest-publisher/formatters/diff_displayer"
 
 describe Hiptest::DiffDisplayer do
   include HelperFactories

@@ -2,19 +2,14 @@ require 'colorize'
 require 'json'
 require 'yaml'
 
-require 'hiptest-publisher/call_arguments_adder'
+require 'hiptest-publisher/node_modifiers/add_all'
 require 'hiptest-publisher/cli_options_checker'
 require 'hiptest-publisher/client'
-require 'hiptest-publisher/datatable_fixer'
-require 'hiptest-publisher/diff_displayer'
+require 'hiptest-publisher/formatters/diff_displayer'
 require 'hiptest-publisher/formatters/reporter'
 require 'hiptest-publisher/file_writer'
-require 'hiptest-publisher/gherkin_adder'
 require 'hiptest-publisher/handlebars_helper'
-require 'hiptest-publisher/items_orderer'
 require 'hiptest-publisher/options_parser'
-require 'hiptest-publisher/parameter_type_adder'
-require 'hiptest-publisher/parent_adder'
 require 'hiptest-publisher/renderer'
 require 'hiptest-publisher/signature_differ'
 require 'hiptest-publisher/signature_exporter'
@@ -143,7 +138,8 @@ module Hiptest
 
     def export_files
       @language_config.language_group_configs.each do |language_group_config|
-        ask_overwrite = language_group_config[:group_name] == 'actionwords'
+        next if ['library', 'libraries'].include?(language_group_config[:group_name]) && !@project.has_libraries?
+        ask_overwrite = ['actionwords', 'libraries'].include?(language_group_config[:group_name])
 
         language_group_config.each_node_rendering_context(@project) do |node_rendering_context|
           write_node_to_file(
@@ -176,7 +172,7 @@ module Hiptest
       analyze_project_data
 
       current = Hiptest::SignatureExporter.export_actionwords(@project, true)
-      diff =  Hiptest::SignatureDiffer.diff( old, current)
+      diff =  Hiptest::SignatureDiffer.diff(old, current, library_name: @cli_options.library_name)
     end
 
     def show_actionwords_diff
@@ -189,12 +185,7 @@ module Hiptest
       return if @project_data_analyzed
       reporter.with_status_message "Analyzing data" do
         @language_config = LanguageConfigParser.new(@cli_options)
-        Hiptest::Nodes::DatatableFixer.add(@project)
-        Hiptest::Nodes::ParentAdder.add(@project)
-        Hiptest::Nodes::ParameterTypeAdder.add(@project)
-        Hiptest::DefaultArgumentAdder.add(@project)
-        Hiptest::GherkinAdder.add(@project)
-        Hiptest::ItemsOrderer.add(@project, @cli_options.sort)
+        Hiptest::NodeModifiers.add_all(@project, @cli_options.sort)
       end
       @project_data_analyzed = true
     end

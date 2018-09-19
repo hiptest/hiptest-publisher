@@ -106,7 +106,8 @@ describe Hiptest::RenderContextMaker do
         :relative_package,
         :project_name,
         :has_datasets?,
-        :has_annotations?
+        :has_annotations?,
+        :uniq_name
       ])
 
       expect(subject.walk_scenario(node)[:project_name]).to eq('A project')
@@ -165,6 +166,31 @@ describe Hiptest::RenderContextMaker do
         project_name: 'Another project',
         self_name: 'Another project',
       })
+    end
+  end
+
+  context 'walk_actionwords' do
+    let(:node) {
+      Hiptest::Nodes::Actionwords.new
+    }
+
+    let(:project) {Hiptest::Nodes::Project.new('My project')}
+
+    context 'uses_library?' do
+      it 'returns false if there is no project for the node' do
+        expect(subject.walk_actionwords(node)[:uses_library?]).to be false
+      end
+
+      it 'returns false when the project does not have any library' do
+        node.parent = project
+        expect(subject.walk_actionwords(node)[:uses_library?]).to be false
+      end
+
+      it 'returns true otherwise' do
+        project.children[:libraries].children[:libraries] << Hiptest::Nodes::Library.new('default')
+        node.parent = project
+        expect(subject.walk_actionwords(node)[:uses_library?]).to be true
+      end
     end
   end
 
