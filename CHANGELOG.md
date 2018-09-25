@@ -1,6 +1,11 @@
 Hiptest publisher changelog
 ===========================
 
+1.14.0
+------
+
+ - Shared actionwords handling for cucumber/groovy
+
 1.13.0
 ------
 
