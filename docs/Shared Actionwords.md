@@ -46,7 +46,6 @@ class Actionwords extends ActionwordLibrary {
 
 ## Diffs
 
-
 Options *--show-actionwords-{
   diff,
   diff-as-json,
@@ -55,9 +54,7 @@ Options *--show-actionwords-{
   renamed,
   signature-changed,
   definition-changed
-}* are not compatible with shared actionwords at the moment.
-
-Every shared actionwords update must be carefuly managed.
+}* can be used in conjunction with *--library-name=default*
 
 <br/>
 
