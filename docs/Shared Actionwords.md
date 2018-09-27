@@ -170,3 +170,8 @@ class Actionwords extends ActionwordLibrary {
   }
 }
 ```
+
+<br/><br/>
+---
+## Notes:
+Exporting from a test run is not yet available.
