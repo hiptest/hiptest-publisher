@@ -884,6 +884,34 @@ describe Hiptest::XMLParser do
       end
     end
 
+    context 'librarySnapshots' do
+      let(:actionword_library_snapshots_xml) {
+        [
+          '<actionwordLibrarySnapshots>',
+          '  <actionwordLibrarySnapshot>',
+          '    <name>default</name>',
+          '    <libraryActionwordSnapshots>',
+          '      <actionwordSnapshot>',
+          '        <name>My first shared actionword</name>',
+          '        <uid>87ebb48d-841b-4853-aac2-18fecb6d2efd</uid>',
+          '        <actionwordUid>76fbd028-76a2-4856-b265-85eed3e710ed</actionwordUid>',
+          '      </actionwordSnapshot>',
+          '    </libraryActionwordSnapshots>',
+          '  </actionwordLibrarySnapshot>',
+          '</actionwordLibrarySnapshots>'
+        ].join("\n")
+      }
+
+      it 'builds the node' do
+        node = build_node(actionword_library_snapshots_xml)
+
+        expect(node.children[:libraries].count).to eq(1)
+        expect(node.children[:libraries].first.children[:name]).to eq('default')
+        expect(node.children[:libraries].first.children[:actionwords].count).to eq(1)
+        expect(node.children[:libraries].first.children[:actionwords].first.children[:name]).to eq('My first shared actionword')
+      end
+    end
+
     context 'project' do
       it 'empty project' do
         node = TestParser.new("<?xml version=\"1.0\"?>
@@ -1032,7 +1060,9 @@ describe Hiptest::XMLParser do
       # And not four as previously, folder without scenarios are not added in a test run
       expect(project.each_sub_nodes(Hiptest::Nodes::Folder).count).to eq(3)
       expect(project.each_sub_nodes(Hiptest::Nodes::Scenario).count).to eq(2)
-      expect(project.each_sub_nodes(Hiptest::Nodes::Actionword).count).to eq(4)
+      expect(project.each_sub_nodes(Hiptest::Nodes::Actionword).count).to eq(5)
+      expect(project.each_sub_nodes(Hiptest::Nodes::Library).count).to eq(1)
+      expect(project.each_sub_nodes(Hiptest::Nodes::Library).map { |i| i }.last.children[:actionwords].count).to eq(1)
     end
   end
 end

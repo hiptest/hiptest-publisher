@@ -312,6 +312,27 @@
           </parameters>
         </actionwordSnapshot>
       </actionwordSnapshots>
+      <actionwordLibrarySnapshots>
+      <actionwordLibrarySnapshot>
+        <name>default</name>
+        <libraryActionwordSnapshots>
+          <actionwordSnapshot>
+            <name>a shared actionword</name>
+            <uid>87ebb48d-841b-4853-aac2-18fecb6d2efd</uid>
+            <actionwordUid>76fbd028-76a2-4856-b265-85eed3e710ed</actionwordUid>
+            <steps>
+              <step>
+                <action>
+                  <template>
+                    <stringliteral>a shared actionword</stringliteral>
+                  </template>
+                </action>
+              </step>
+            </steps>
+          </actionwordSnapshot>
+        </libraryActionwordSnapshots>
+      </actionwordLibrarySnapshot>
+      </actionwordLibrarySnapshots>
     </testRun>
   </testRuns>
 </project>
