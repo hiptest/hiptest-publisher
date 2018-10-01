@@ -355,29 +355,29 @@ describe 'Cucumber/Groovy rendering' do
   end
 
   it_behaves_like 'a BDD renderer with library actionwords', uid_should_be_in_outline: true do
-  let(:language) {'cucumber'}
-  let(:framework) {'groovy'}
-  let(:with_folders) {true}
+    let(:language) {'cucumber'}
+    let(:framework) {'groovy'}
+    let(:with_folders) {true}
 
-  let(:rendered_library_actionwords) {
-    [
-      'package com.example',
-      '',
-      'import cucumber.api.DataTable',
-      '',
-      'this.metaClass.mixin(cucumber.api.groovy.EN)',
-      '',
-      'Actionwords actionwords = new Actionwords()',
-      '',
-      'Given(~"^My first action word\$") {  ->',
-      '    actionwords.getDefaultLibrary().myFirstActionWord()',
-      '}',
-      '',
-      '',
-      ''
-    ].join("\n")
-  }
-end
+    let(:rendered_library_actionwords) {
+      [
+        'package com.example',
+        '',
+        'import cucumber.api.DataTable',
+        '',
+        'this.metaClass.mixin(cucumber.api.groovy.EN)',
+        '',
+        'Actionwords actionwords = new Actionwords()',
+        '',
+        'Given(~"^My first action word\$") {  ->',
+        '    actionwords.getDefaultLibrary().myFirstActionWord()',
+        '}',
+        '',
+        '',
+        ''
+      ].join("\n")
+    }
+  end
 
   it_behaves_like 'a renderer handling libraries' do
     let(:language) {'cucumber'}
@@ -385,22 +385,22 @@ end
 
     let(:libraries_rendered) {
       [
-        'package com.example;',
+        'package com.example',
         '',
         'class ActionwordLibrary {',
         '    DefaultLibrary getDefaultLibrary() {',
-        '        return DefaultLibrary.instance;',
+        '        return DefaultLibrary.instance',
         '    }',
         '',
         '    WebLibrary getWebLibrary() {',
-        '        return WebLibrary.instance;',
+        '        return WebLibrary.instance',
         '    }',
         '}'
       ].join("\n")
     }
 
     let(:first_lib_rendered) {[
-      'package com.example;',
+      'package com.example',
       '',
       '@Singleton',
       'class DefaultLibrary {',
@@ -410,7 +410,7 @@ end
     ].join("\n")}
 
     let(:second_lib_rendered) {[
-      'package com.example;',
+      'package com.example',
       '',
       '@Singleton',
       'class WebLibrary {',

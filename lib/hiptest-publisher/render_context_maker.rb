@@ -111,6 +111,8 @@ module Hiptest
     def walk_uidcall(uidcall)
       {
         has_library?: !uidcall.children[:library_name].nil?,
+        has_annotation?: !uidcall.children[:annotation].nil?,
+        in_actionword?: uidcall.parent.is_a?(Hiptest::Nodes::Actionword),
         chunks: uidcall.chunks || []
       }
     end

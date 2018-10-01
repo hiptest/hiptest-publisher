@@ -1868,4 +1868,3 @@ shared_examples 'a BDD renderer with library actionwords' do
     end
   end
 end
-
