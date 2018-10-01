@@ -1,6 +1,10 @@
 Hiptest publisher changelog
 ===========================
 
+1.15.0
+------
+  - Shared actionwords handling for groovy/spock
+
 1.14.0
 ------
 
