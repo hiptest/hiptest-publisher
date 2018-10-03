@@ -705,7 +705,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ],
         ["--split-scenarios"]                    => [ "[features]",
                                                       "/buy_goods.feature",
@@ -713,7 +714,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ],
         ["--with-folders"]                       => [ "[features]",
                                                       "/global_trades/buy_goods.feature",
@@ -721,7 +723,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ],
         ["--split-scenarios", "--with-folders"]  => [ "[features]",
                                                       "/global_trades/buy_goods.feature",
@@ -729,7 +732,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ],
         ["--keep-filenames"]                      => ["[features]",
                                                       "/Buy goods.feature",
@@ -737,7 +741,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ],
         ["--with-folders", "--keep-foldernames"]  => ["[features]",
                                                       "/Global trades/buy_goods.feature",
@@ -745,7 +750,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ],
         ["--with-folders", "--keep-filenames", "--keep-foldernames"]  => [
                                                       "[features]",
@@ -754,7 +760,8 @@ describe LanguageGroupConfig do
                                                       "[step_definitions]",
                                                       "/FeatureContext.php",
                                                       "[actionwords]",
-                                                      "/Actionwords.php"
+                                                      "/Actionwords.php",
+                                                      "[step_definitions_library]"
                                                     ]
       },
       "cucumber-javascript" => {

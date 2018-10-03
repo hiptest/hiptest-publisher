@@ -2,6 +2,7 @@ require_relative '../spec_helper'
 require_relative '../render_shared'
 
 describe 'Behat rendering' do
+  include_context "shared render"
   it_behaves_like 'a BDD renderer', uid_should_be_in_outline: false do
     let(:language) {'behat'}
 
@@ -100,5 +101,99 @@ describe 'Behat rendering' do
       '}'].join("\n")}
 
     let(:rendered_empty_scenario) { "\nScenario: Empty Scenario\n" }
+  end
+
+  it_behaves_like 'a BDD renderer with library actionwords', uid_should_be_in_outline: true do
+    let(:language) {'behat'}
+    let(:framework) {''}
+
+    let(:rendered_library_actionwords) {
+      [
+        '<?php',
+        'use Behat\Behat\Tester\Exception\PendingException;',
+        'use Behat\Behat\Context\SnippetAcceptingContext;',
+        'use Behat\Gherkin\Node\PyStringNode;',
+        'use Behat\Gherkin\Node\TableNode;',
+        '',
+        'require_once(\'Actionwords.php\');',
+        '',
+        'class DefaultFeatureContext implements SnippetAcceptingContext {',
+        '  public function __construct() {',
+        '    $this->actionwords = new Actionwords();',
+        '  }',
+        '',
+        '',
+        '  /**',
+        '   * @Given /^My first action word$/',
+        '   */',
+        '  public function myFirstActionWord(){',
+        '    $this->actionwords->getDefaultLibrary()->myFirstActionWord();',
+        '  }',
+        '}',
+        '?>'
+      ].join("\n")
+    }
+  end
+
+  it_behaves_like 'a renderer handling libraries' do
+    let(:language) {'behat'}
+    let(:framework) {''}
+
+    let(:libraries_rendered) {
+      [
+        '<?php',
+        'require_once(\'DefaultLibrary.php\');',
+        'require_once(\'WebLibrary.php\');',
+        '',
+        'class ActionwordLibrary {',
+        '  public function getDefaultLibrary() {',
+        '    return DefaultLibrary::getInstance();',
+        '  }',
+        '',
+        '  public function getWebLibrary() {',
+        '    return WebLibrary::getInstance();',
+        '  }',
+        '}',
+        '?>'
+      ].join("\n")
+    }
+
+    let(:first_lib_rendered) {
+      [
+        '<?php',
+        'class DefaultLibrary {',
+        '  private static $_instance = null;',
+        '',
+        '  private function __construct(){}',
+        '',
+        '  public static function getInstance(){',
+        '    if (is_null(self::$_instance)) {',
+        '      self::$_instance = new DefaultLibrary();',
+        '    }',
+        '    return self::$_instance;',
+        '  }',
+        '}',
+        '?>'
+      ].join("\n")
+    }
+
+    let(:second_lib_rendered) {
+      [
+        '<?php',
+        'class WebLibrary {',
+        '  private static $_instance = null;',
+        '',
+        '  private function __construct(){}',
+        '',
+        '  public static function getInstance(){',
+        '    if (is_null(self::$_instance)) {',
+        '      self::$_instance = new WebLibrary();',
+        '    }',
+        '    return self::$_instance;',
+        '  }',
+        '}',
+        '?>'
+      ].join("\n")
+    }
   end
 end

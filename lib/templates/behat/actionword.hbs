@@ -3,6 +3,6 @@
  * @{{{ rendered_children.gherkin_annotation }}} /{{> gherkin_pattern}}/
  */
 public function {{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{{ join rendered_children.parameters_ordered_by_pattern ', '}}}{{/if}}){{#curly}}{{#indent}}
-$this->actionwords->{{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}${{{underscore this}}}{{/join}}{{/if}});
+$this->actionwords->{{#if has_library?}}get{{{camelize library_name}}}Library()->{{/if}}{{{ camelize_lower rendered_children.name }}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}${{{underscore this}}}{{/join}}{{/if}});
 {{/indent}}
 {{/curly}}{{/if}}

@@ -1,0 +1,16 @@
+<?php
+use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
+
+require_once('Actionwords.php');
+
+class {{camelize rendered_children.name}}FeatureContext implements SnippetAcceptingContext {{#curly}}{{#indent}}
+public function __construct() {{#curly}}{{#indent}}
+$this->actionwords = new Actionwords();{{/indent}}
+{{/curly}}
+{{#each rendered_children.actionwords}}
+{{{this}}}{{/each}}{{/indent}}
+{{/curly}}
+?>

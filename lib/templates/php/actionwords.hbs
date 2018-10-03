@@ -1,5 +1,7 @@
 <?php
-class Actionwords {{#curly}}{{#indent}}{{#each rendered_children.actionwords}}
+{{#if uses_library?}}require_once('ActionwordLibrary.php');{{/if}}
+
+class Actionwords {{#if uses_library?}}extends ActionwordLibrary {{/if}}{{#curly}}{{#indent}}{{#each rendered_children.actionwords}}
 {{{this}}}
 {{/each}}
 {{/indent}}

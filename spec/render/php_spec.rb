@@ -75,10 +75,10 @@ describe 'Render as PHP' do
     #   foo := 'fighters'
     #end
     @if_then_rendered = [
-        "if (true) {",
-        "  $foo = 'fighters';",
-        "}\n"
-      ].join("\n")
+      "if (true) {",
+      "  $foo = 'fighters';",
+      "}\n"
+    ].join("\n")
 
     # In Hiptest:
     # if (true)
@@ -87,12 +87,12 @@ describe 'Render as PHP' do
     #   fighters := 'foo'
     #end
     @if_then_else_rendered = [
-        "if (true) {",
-        "  $foo = 'fighters';",
-        "} else {",
-        "  $fighters = 'foo';",
-        "}\n"
-      ].join("\n")
+      "if (true) {",
+      "  $foo = 'fighters';",
+      "} else {",
+      "  $fighters = 'foo';",
+      "}\n"
+    ].join("\n")
 
     # In Hiptest:
     # while (foo)
@@ -100,11 +100,11 @@ describe 'Render as PHP' do
     #   foo('fighters')
     # end
     @while_loop_rendered = [
-        "while ($foo) {",
-        "  $fighters = 'foo';",
-        "  $this->actionwords->foo('fighters');",
-        "}\n"
-      ].join("\n")
+      "while ($foo) {",
+      "  $fighters = 'foo';",
+      "  $this->actionwords->foo('fighters');",
+      "}\n"
+    ].join("\n")
 
     # In Hiptest: @myTag
     @simple_tag_rendered = 'myTag'
@@ -187,6 +187,8 @@ describe 'Render as PHP' do
     # end
     @actionwords_rendered = [
       "<?php",
+      "",
+      "",
       "class Actionwords {",
       "  public function firstActionWord() {",
       "",
@@ -215,6 +217,8 @@ describe 'Render as PHP' do
     #   call 'aw with template param'(x = "toto")
     @actionwords_with_params_rendered = [
       "<?php",
+      "",
+      "",
       "class Actionwords {",
       "  public function awWithIntParam($x) {",
       "",
@@ -450,37 +454,37 @@ describe 'Render as PHP' do
       "?>"].join("\n")
 
     @tests_rendered = [
-       "<?php",
-       "require_once('Actionwords.php');",
-       "",
-       "class ProjectTest extends PHPUnit_Framework_TestCase {",
+      "<?php",
+      "require_once('Actionwords.php');",
+      "",
+      "class ProjectTest extends PHPUnit_Framework_TestCase {",
       "  public $actionwords;",
       "  public function setUp() {",
       "    $this->actionwords = new Actionwords();",
       "  }",
-       "",
-       "  public function testLogin() {",
-       "    // The description is on ",
-       "    // two lines",
-       "    // Tags: myTag myTag:somevalue",
-       "    $this->actionwords->visit('/login');",
-       "    $this->actionwords->fill('user@example.com');",
-       "    $this->actionwords->fill('s3cret');",
-       "    $this->actionwords->click('.login-form input[type=submit]');",
-       "    $this->actionwords->checkUrl('/welcome');",
-       "  }",
-       "",
-       "  public function testFailedLogin() {",
-       "    // Tags: myTag:somevalue",
-       "    $this->actionwords->visit('/login');",
-       "    $this->actionwords->fill('user@example.com');",
-       "    $this->actionwords->fill('notTh4tS3cret');",
-       "    $this->actionwords->click('.login-form input[type=submit]');",
-       "    $this->actionwords->checkUrl('/login');",
-       "  }",
-       "}",
-       "?>"
-      ].join("\n")
+      "",
+      "  public function testLogin() {",
+      "    // The description is on ",
+      "    // two lines",
+      "    // Tags: myTag myTag:somevalue",
+      "    $this->actionwords->visit('/login');",
+      "    $this->actionwords->fill('user@example.com');",
+      "    $this->actionwords->fill('s3cret');",
+      "    $this->actionwords->click('.login-form input[type=submit]');",
+      "    $this->actionwords->checkUrl('/welcome');",
+      "  }",
+      "",
+      "  public function testFailedLogin() {",
+      "    // Tags: myTag:somevalue",
+      "    $this->actionwords->visit('/login');",
+      "    $this->actionwords->fill('user@example.com');",
+      "    $this->actionwords->fill('notTh4tS3cret');",
+      "    $this->actionwords->click('.login-form input[type=submit]');",
+      "    $this->actionwords->checkUrl('/login');",
+      "  }",
+      "}",
+      "?>"
+    ].join("\n")
 
     @first_test_rendered = [
       "public function testLogin() {",
@@ -596,6 +600,30 @@ describe 'Render as PHP' do
     it_behaves_like "a renderer" do
       let(:language) {'php'}
       let(:framework) {'phpunit'}
+    end
+
+    it 'Actionwords must extend ActionwordLibrary if there are libraries' do
+      aws = Hiptest::Nodes::Actionwords.new([make_actionword('aw')])
+      libraries = Hiptest::Nodes::Libraries.new([make_library('default', [])])
+      project = Hiptest::Nodes::Project.new(
+        'project',
+        '',
+        Hiptest::Nodes::TestPlan.new,
+        Hiptest::Nodes::Scenarios.new,
+        aws,
+        Hiptest::Nodes::Tests.new,
+        libraries
+      )
+
+      Hiptest::NodeModifiers.add_all(project)
+
+      context = context_for(
+        only: 'actionwords',
+        language: 'behat',
+        framework: ''
+      )
+
+      expect(aws.render(context)).to include('class Actionwords extends ActionwordLibrary')
     end
   end
 end

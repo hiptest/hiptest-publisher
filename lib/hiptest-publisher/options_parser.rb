@@ -44,7 +44,7 @@ class FileConfigParser
   def self.update_path!(param, config, options)
     path = Pathname.new(config[param])
     return unless path.relative?
-    config_path =  Pathname.new(options.config)
+    config_path = Pathname.new(options.config)
     config_absolute_path = config_path.relative? ? Pathname.pwd + config_path : config_path
     resolved_path = config_absolute_path.cleanpath.dirname + path
     options[param] = resolved_path.cleanpath.to_path
@@ -88,7 +88,7 @@ class Option
 end
 
 class CliOptions < OpenStruct
-  def initialize(hash=nil)
+  def initialize(hash = nil)
     hash ||= {}
     hash[:language] ||= ""
     hash[:framework] ||= ""
@@ -134,7 +134,7 @@ class CliOptions < OpenStruct
   end
 
   def normalize!(reporter = nil)
-    self.no_uids = !uids  # silent normalization
+    self.no_uids = !uids # silent normalization
     modified_options = self.clone
     if actionwords_only
       modified_options.only = 'actionwords'
@@ -362,12 +362,12 @@ class TemplateFinder
   attr_reader :template_dirs, :overriden_templates, :forced_templates, :fallback_template
 
   def initialize(
-      template_dirs: nil,
-      overriden_templates: nil,
-      indentation: '  ',
-      forced_templates: nil,
-      fallback_template: nil,
-      **)
+    template_dirs: nil,
+    overriden_templates: nil,
+    indentation: '  ',
+    forced_templates: nil,
+    fallback_template: nil,
+    **)
     @template_dirs = template_dirs || []
     @overriden_templates = overriden_templates
     @compiled_handlebars = {}
@@ -382,7 +382,7 @@ class TemplateFinder
       search_dirs = []
       # search in overriden template base dir first
       search_dirs << overriden_templates if overriden_templates
-      template_dirs.each { |template_dir|
+      template_dirs.each {|template_dir|
         # search template paths in overriden_templates
         search_dirs << "#{overriden_templates}/#{template_dir}" if overriden_templates
         # search template paths in hiptest_publisher
@@ -656,10 +656,10 @@ class LanguageConfigParser
 
   def self.config_path_for(cli_options)
     config_name = if cli_options.framework.empty?
-      "#{cli_options.language}.conf"
-    else
-      "#{cli_options.language}-#{cli_options.framework}.conf"
-    end
+                    "#{cli_options.language}.conf"
+                  else
+                    "#{cli_options.language}-#{cli_options.framework}.conf"
+                  end
     config_path = File.expand_path("#{hiptest_publisher_path}/lib/config/#{config_name.downcase}")
     if !File.file?(config_path)
       message = "cannot find configuration file in \"#{hiptest_publisher_path}/lib/config\""
@@ -689,7 +689,7 @@ class LanguageConfigParser
   end
 
   def language_group_configs
-    filtered_group_names.map { |group_name| make_language_group_config(group_name) }
+    filtered_group_names.map {|group_name| make_language_group_config(group_name)}
   end
 
   def name_action_word(name)
@@ -704,7 +704,7 @@ class LanguageConfigParser
 
   def group_config(group_name)
     if @config[group_name]
-      key_values = @config[group_name].map { |key, value| [key.to_sym, value] }
+      key_values = @config[group_name].map {|key, value| [key.to_sym, value]}
       Hash[key_values]
     else
       {}
@@ -720,6 +720,9 @@ class LanguageConfigParser
       tests_ouput_dir: @cli_options.tests_ouput_dir,
       features_output_directory: @cli_options.features_output_directory,
       step_definitions_output_directory: @cli_options.step_definitions_output_directory,
+      step_definitions_library_output_directory: @cli_options.step_definitions_output_directory,
+      libraries_output_directory: @cli_options.actionwords_output_directory,
+      library_output_directory: @cli_options.actionwords_output_directory,
       actionwords_output_directory: @cli_options.actionwords_output_directory
     }
 
@@ -733,6 +736,15 @@ class LanguageConfigParser
 
     unless @cli_options.overriden_templates.nil? || @cli_options.overriden_templates.empty?
       language_group_params[:overriden_templates] = @cli_options.overriden_templates
+    end
+
+    if @cli_options.step_definitions_output_directory
+      @cli_options.step_definitions_library_output_directory = @cli_options.step_definitions_output_directory
+    end
+
+    if @cli_options.actionwords_output_directory
+      @cli_options.libraries_output_directory = @cli_options.actionwords_output_directory
+      @cli_options.library_output_directory = @cli_options.actionwords_output_directory
     end
 
     LanguageGroupConfig.new(@cli_options, language_group_params)

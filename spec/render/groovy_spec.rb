@@ -686,14 +686,6 @@ describe 'Render as Groovy' do
         '}',
       ].join("\n"))
     end
-  end
-
-
-  context 'Groovy/Spock' do
-    it_behaves_like "a renderer" do
-      let(:language) {'groovy'}
-      let(:framework) {'spock'}
-    end
 
     it_behaves_like 'a renderer handling libraries' do
       let(:language) {'groovy'}
@@ -882,6 +874,30 @@ describe 'Render as Groovy' do
         '  }',
         '}',
       ].join("\n"))
+    end
+
+    it 'Actionwords must extend ActionwordLibrary if there are libraries' do
+      aws = Hiptest::Nodes::Actionwords.new([make_actionword('aw')])
+      libraries = Hiptest::Nodes::Libraries.new([make_library('default', [])])
+      project = Hiptest::Nodes::Project.new(
+        'project',
+        '',
+        Hiptest::Nodes::TestPlan.new,
+        Hiptest::Nodes::Scenarios.new,
+        aws,
+        Hiptest::Nodes::Tests.new,
+        libraries
+      )
+
+      Hiptest::NodeModifiers.add_all(project)
+
+      context = context_for(
+        only: 'actionwords',
+        language: 'groovy',
+        framework: 'spock'
+      )
+
+      expect(aws.render(context)).to include('class Actionwords extends ActionwordLibrary')
     end
   end
 end

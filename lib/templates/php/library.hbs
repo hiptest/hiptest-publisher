@@ -1,0 +1,17 @@
+<?php
+class {{camelize rendered_children.name}}Library {{#curly}}{{#indent}}
+private static $_instance = null;
+
+private function __construct(){{#curly}}{{/curly}}
+
+public static function getInstance(){{#curly}}{{#indent}}
+if (is_null(self::$_instance)) {{#curly}}{{#indent}}
+self::$_instance = new {{camelize rendered_children.name}}Library();
+{{/indent}}
+{{/curly}}
+return self::$_instance;
+{{/indent}}
+{{/curly}}
+{{/indent}}
+{{/curly}}
+?>

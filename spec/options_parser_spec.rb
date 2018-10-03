@@ -9,7 +9,7 @@ describe OptionParser do
       f = Tempfile.new('config')
       File.write(f, "language = java")
       options = OptionsParser.parse([
-        "--config-file", f.path], NullReporter.new)
+                                      "--config-file", f.path], NullReporter.new)
       expect(options.language).to eq("java")
     end
 
@@ -17,8 +17,8 @@ describe OptionParser do
       f = Tempfile.new('config')
       File.write(f, "language = java\nframework = tartanpion")
       options = OptionsParser.parse([
-        "--language", "ruby",
-        "--config-file", f.path], NullReporter.new)
+                                      "--language", "ruby",
+                                      "--config-file", f.path], NullReporter.new)
       expect(options.language).to eq("ruby")
       expect(options.framework).to eq("tartanpion")
     end
@@ -27,10 +27,10 @@ describe OptionParser do
       f = Tempfile.new('config')
       %w"false False FaLsE no 0 NO".each do |falsy_value|
         File.write(f,
-          "with_folders = #{falsy_value}\n" +
-          "split_scenarios = plop#{falsy_value}plop")
+                   "with_folders = #{falsy_value}\n" +
+                     "split_scenarios = plop#{falsy_value}plop")
         options = OptionsParser.parse([
-          "--config-file", f.path], NullReporter.new)
+                                        "--config-file", f.path], NullReporter.new)
         expect(options.with_folders).to eq(false), "'#{falsy_value}' in config file should be interpreted as boolean false"
         expect(options.split_scenarios).not_to eq(false), "value containing '#{falsy_value}' in config file should not be interpreted as boolean false"
       end
@@ -58,12 +58,12 @@ describe OptionParser do
     it "works if config file is nil" do
       options = CliOptions.new
       options.config = nil
-      expect { FileConfigParser.update_options(options, NullReporter.new) }.not_to raise_error
+      expect {FileConfigParser.update_options(options, NullReporter.new)}.not_to raise_error
     end
 
     it "resolves the real path relative to config file" do
       f = Tempfile.new('config')
-      
+
       File.write(f, "overriden_templates = ./templates")
       options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
       expect(Pathname.new(options.overriden_templates).absolute?).to be true
@@ -77,7 +77,7 @@ describe OptionParser do
 
     it 'does not resolves the path if the given path is absolute' do
       f = Tempfile.new('config')
-      
+
       File.write(f, "overriden_templates = /home/user/hps/robot/templates")
       options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
       expect(options.overriden_templates).to eq("/home/user/hps/robot/templates")
@@ -144,9 +144,9 @@ describe CliOptions do
       options = CliOptions.new(language: "ruby-rspec")
 
       expect(options.normalize!).to eq({
-        language: "ruby",
-        framework: "rspec",
-      })
+                                         language: "ruby",
+                                         framework: "rspec",
+                                       })
     end
 
     it "returns falsy if nothing modified" do
@@ -235,7 +235,7 @@ describe NodeRenderingContext do
     NodeRenderingContext.new(
       path: '/output/directory/features/cart/payment/pay_by_credit_card.feature',
       relative_path: 'cart/payment/pay_by_credit_card.feature',
-      # other options not detailed here...
+    # other options not detailed here...
     )
   end
 
@@ -255,7 +255,7 @@ end
 
 describe LanguageConfigParser do
 
-  let(:options) { CliOptions.new(language: "ruby").tap {|options| options.normalize! } }
+  let(:options) {CliOptions.new(language: "ruby").tap {|options| options.normalize!}}
 
   describe "#filtered_group_names" do
     it "rejects groups not specified in --only clip option" do
@@ -296,7 +296,7 @@ describe LanguageConfigParser do
 
       it "fails if framework does not no match anything" do
         options.framework = "youplala"
-        expect{LanguageConfigParser.config_path_for(options)}.
+        expect {LanguageConfigParser.config_path_for(options)}.
           to raise_error('cannot find configuration file in "./lib/config" for language "ruby" and framework "youplala"')
       end
     end
@@ -304,7 +304,7 @@ describe LanguageConfigParser do
     it "raises an error if language config file could not be found" do
       options.language = "carakoko"
       options.framework = "lalakoko"
-      expect{LanguageConfigParser.config_path_for(options)}.
+      expect {LanguageConfigParser.config_path_for(options)}.
         to raise_error('cannot find configuration file in "./lib/config" for language "carakoko" and framework "lalakoko"')
     end
   end
@@ -317,15 +317,51 @@ describe LanguageConfigParser do
     it "raises an error if language config file cannot be found" do
       options = CliOptions.new(language: "carakoko")
       options.normalize!
-      expect{LanguageConfigParser.new(options)}.
+      expect {LanguageConfigParser.new(options)}.
         to raise_error('cannot find configuration file in "./lib/config" for language "carakoko"')
+    end
+  end
+
+  describe "#language_group_configs" do
+    let(:step_definitions_path) {'/path/step_definitions_output'}
+    let(:actionwords_output_directory) {'/path/actionwords_output'}
+
+    let(:cli_options) do
+      options = CliOptions.new(language: "behat").tap {|options| options.normalize!}
+      options.step_definitions_output_directory = step_definitions_path
+      options.actionwords_output_directory = actionwords_output_directory
+      options
+    end
+
+    let(:languageConfigParser) do
+      lcp = LanguageConfigParser.new(cli_options)
+      allow(lcp).to receive(:filtered_group_names) {["step_definitions"]}
+      lcp
+    end
+
+    it "must copy the step_definitions_output_directory content to step_definitions_library_output_directory" do
+      languageConfigParser.language_group_configs
+
+      expect(cli_options.step_definitions_library_output_directory).to eq(step_definitions_path)
+    end
+
+    it "must copy the actionwords_output_directory content to libraries_output_directory" do
+      languageConfigParser.language_group_configs
+
+      expect(cli_options.libraries_output_directory).to eq(actionwords_output_directory)
+    end
+
+    it "must copy the actionwords_output_directory content to library_output_directory" do
+      languageConfigParser.language_group_configs
+
+      expect(cli_options.library_output_directory).to eq(actionwords_output_directory)
     end
   end
 end
 
 describe LanguageGroupConfig do
   context "shorten_filename" do
-    let(:options) { CliOptions.new(split_scenarios: true, filename_pattern: "%s_spec.rb").tap {|options| options.normalize! } }
+    let(:options) {CliOptions.new(split_scenarios: true, filename_pattern: "%s_spec.rb").tap {|options| options.normalize!}}
     let(:config) {LanguageGroupConfig.new(options)}
 
     it "truncates file name when its length exceeds 255 character" do
