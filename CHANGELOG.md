@@ -1,6 +1,10 @@
 Hiptest publisher changelog
 ===========================
 
+1.16.0
+------
+  - Shared actionwords handling for behat
+  
 1.15.0
 ------
   - Shared actionwords handling for groovy/spock
