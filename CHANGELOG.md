@@ -1,6 +1,10 @@
 Hiptest publisher changelog
 ===========================
 
+1.16.2
+------
+  - Remove unnecessary templates for cucumber/groovy
+
 1.16.0
 ------
   - Shared actionwords handling for behat
