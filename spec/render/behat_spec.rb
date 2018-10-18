@@ -172,6 +172,10 @@ describe 'Behat rendering' do
         '    }',
         '    return self::$_instance;',
         '  }',
+        '',
+        '  public function myFirstActionWord() {',
+        '',
+        '  }',
         '}',
         '?>'
       ].join("\n")
@@ -190,6 +194,10 @@ describe 'Behat rendering' do
         '      self::$_instance = new WebLibrary();',
         '    }',
         '    return self::$_instance;',
+        '  }',
+        '',
+        '  public function mySecondActionWord() {',
+        '',
         '  }',
         '}',
         '?>'
