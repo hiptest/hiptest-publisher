@@ -174,7 +174,7 @@ describe 'Behat rendering' do
         '  }',
         '',
         '  public function myFirstActionWord() {',
-        '',
+        '    // Tags: priority:high wip',
         '  }',
         '}',
         '?>'
@@ -197,7 +197,7 @@ describe 'Behat rendering' do
         '  }',
         '',
         '  public function mySecondActionWord() {',
-        '',
+        '    // Tags: priority:low done',
         '  }',
         '}',
         '?>'

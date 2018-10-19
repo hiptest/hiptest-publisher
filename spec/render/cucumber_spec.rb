@@ -405,6 +405,7 @@ describe 'Cucumber/Groovy rendering' do
       '@Singleton',
       'class DefaultLibrary {',
       '    def myFirstActionWord() {',
+      '        // Tags: priority:high wip',
       '    }',
       '}'
     ].join("\n")}
@@ -415,6 +416,7 @@ describe 'Cucumber/Groovy rendering' do
       '@Singleton',
       'class WebLibrary {',
       '    def mySecondActionWord() {',
+      '        // Tags: priority:low done',
       '    }',
       '}'
     ].join("\n")}

@@ -616,11 +616,13 @@ shared_examples "a renderer handling libraries" do
   include HelperFactories
 
   let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
-  let(:first_actionword) {make_actionword('My first action word', uid: first_actionword_uid)}
+  let(:first_tags) { [make_tag('priority', 'high'), make_tag('wip')] }
+  let(:first_actionword) {make_actionword('My first action word', uid: first_actionword_uid, tags: first_tags)}
   let(:first_lib) {make_library('Default', [first_actionword])}
 
   let(:second_actionword_uid) {'87654321-4321-4321-4321-098765432121'}
-  let(:second_actionword) {make_actionword('My second action word', uid: second_actionword_uid)}
+  let(:second_tags) { [make_tag('priority', 'low'), make_tag('done')] }
+  let(:second_actionword) {make_actionword('My second action word', uid: second_actionword_uid, tags: second_tags)}
   let(:second_lib) {make_library('Web', [second_actionword])}
 
   let(:project_actionword_uid) {'ABCDABCD-ABCD-ABCD-ABCD-ABCDABCDABCD'}
@@ -673,7 +675,6 @@ shared_examples "a renderer handling libraries" do
     it 'generates a file for each libraries with the actionwords definitions inside' do
       expect(rendering(first_lib)).to eq(first_lib_rendered)
       expect(rendering(second_lib)).to eq(second_lib_rendered)
-
     end
   end
 end

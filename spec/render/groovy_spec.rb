@@ -713,6 +713,7 @@ describe 'Render as Groovy' do
         '@Singleton',
         'class DefaultLibrary {',
         '  def myFirstActionWord() {',
+        '    // Tags: priority:high wip',
         '  }',
         '}'
       ].join("\n")}
@@ -723,6 +724,7 @@ describe 'Render as Groovy' do
         '@Singleton',
         'class WebLibrary {',
         '  def mySecondActionWord() {',
+        '    // Tags: priority:low done',
         '  }',
         '}'
       ].join("\n")}
