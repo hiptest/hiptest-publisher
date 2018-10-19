@@ -1,6 +1,10 @@
 Hiptest publisher changelog
 ===========================
 
+1.16.4
+------
+  - Handling tags for shared actionwords
+
 1.16.3
 ------
   - Fix behat rendering of shared actionwords
