@@ -1,6 +1,10 @@
 Hiptest publisher changelog
 ===========================
 
+1.16.5
+------
+  - Fix UIDCall handling for behat
+
 1.16.4
 ------
   - Handling tags for shared actionwords
