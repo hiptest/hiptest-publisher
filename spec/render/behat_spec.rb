@@ -139,6 +139,28 @@ describe 'Behat rendering' do
     let(:language) {'behat'}
     let(:framework) {''}
 
+    let(:actionwords_rendered) {
+      [
+        '<?php',
+        'require_once(\'ActionwordLibrary.php\');',
+        '',
+        'class Actionwords extends ActionwordLibrary {',
+        '  public function myProjectActionWord() {',
+        '',
+        '  }',
+        '',
+        '  public function myHighLevelProjectActionword() {',
+        '    $this->myProjectActionWord();',
+        '  }',
+        '',
+        '  public function myHighLevelActionword() {',
+        '    $this->getDefaultLibrary()->myFirstActionWord();',
+        '  }',
+        '}',
+        '?>'
+      ].join("\n")
+    }
+
     let(:libraries_rendered) {
       [
         '<?php',

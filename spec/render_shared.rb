@@ -626,7 +626,29 @@ shared_examples "a renderer handling libraries" do
   let(:second_lib) {make_library('Web', [second_actionword])}
 
   let(:project_actionword_uid) {'ABCDABCD-ABCD-ABCD-ABCD-ABCDABCDABCD'}
-  let(:project_actionword) {make_actionword('My project action word', uid: project_actionword_uid)}
+  let(:high_level_project_actionword_uid) {'AACCABCD-ABAD-ABDD-ACCD-ABCDABCAABCA'}
+  let(:high_level_actionword_uid) {'AACCABCD-AAAD-CDDD-DCCD-ABADABDDABCA'}
+  let(:project_actionword) {
+    make_actionword('My project action word', uid: project_actionword_uid)
+  }
+
+  let(:high_level_project_actionword) {
+    make_actionword(
+      'My high level project actionword',
+      uid: high_level_project_actionword_uid,
+      body: [
+        Hiptest::Nodes::Call.new('My project action word')
+      ])
+  }
+
+  let(:high_level_actionword) {
+    make_actionword(
+      'My high level actionword',
+      uid: high_level_actionword_uid,
+      body: [
+        Hiptest::Nodes::UIDCall.new(first_actionword_uid)
+      ])
+  }
 
   let(:libraries) {Hiptest::Nodes::Libraries.new([first_lib, second_lib])}
 
@@ -634,14 +656,14 @@ shared_examples "a renderer handling libraries" do
     make_scenario('My calling scenario', body: [
       Hiptest::Nodes::UIDCall.new(first_actionword_uid),
       Hiptest::Nodes::UIDCall.new(second_actionword_uid),
-      Hiptest::Nodes::UIDCall.new(project_actionword_uid)
+      Hiptest::Nodes::Call.new(project_actionword_uid)
     ])
   }
 
   let(:project) {
     make_project('My project',
                  scenarios: [scenario],
-                 actionwords: [project_actionword],
+                 actionwords: [project_actionword, high_level_project_actionword, high_level_actionword],
                  libraries: libraries
     ).tap do |p|
       Hiptest::NodeModifiers.add_all(p)
@@ -660,6 +682,14 @@ shared_examples "a renderer handling libraries" do
   let(:scenarios_rendered) {''}
   let(:scenario_using_default_parameter_rendered) {''}
   let(:library_with_typed_parameters_rendered) {''}
+
+  context '[actionwords] group' do
+    let(:only) {"actionwords"}
+
+    it 'Actionwords' do
+      expect(rendering(project.children[:actionwords])).to eq(actionwords_rendered)
+    end
+  end
 
   context '[library]' do
     let(:only) {'library'}

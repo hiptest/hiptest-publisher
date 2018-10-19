@@ -653,6 +653,14 @@ describe 'Render as Java' do
         '    public void myProjectActionWord() {',
         '',
         '    }',
+        '',
+        '    public void myHighLevelProjectActionword() {',
+        '        myProjectActionWord();',
+        '    }',
+        '',
+        '    public void myHighLevelActionword() {',
+        '        getDefaultLibrary().myFirstActionWord();',
+        '    }',
         '}'
       ].join("\n")}
 
