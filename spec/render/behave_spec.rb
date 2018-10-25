@@ -69,6 +69,15 @@ describe 'Behave rendering' do
       ].join("\n")
     }
 
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        "",
+        "@given(r'the color (.*)')",
+        "def impl(context, color):",
+        "    context.actionwords.the_color_color(color)"
+      ].join("\n")
+    }
+
     let(:rendered_free_texted_actionword) {[
       'def the_following_users_are_available(self, free_text = \'\'):',
       '    pass',

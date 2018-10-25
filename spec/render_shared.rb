@@ -679,6 +679,7 @@ shared_examples "a renderer handling libraries" do
   let(:first_lib_rendered) {''}
   let(:second_lib_rendered) {''}
   let(:actionwords_rendered) {''}
+  let(:actionword_without_quotes_in_regexp_rendered) {''}
   let(:scenarios_rendered) {''}
   let(:scenario_using_default_parameter_rendered) {''}
   let(:library_with_typed_parameters_rendered) {''}
@@ -1110,6 +1111,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     node_to_render.render(options)
   end
 
+
+
   let(:scenario_tag_rendered) {
     [
       '',
@@ -1433,6 +1436,35 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     ].join("\n")
   }
 
+  let(:scenario_rendered_without_quotes_around_parameters) {
+    [
+      '',
+      'Scenario: Create purple',
+      '  # You can have a description',
+      '  # on multiple lines',
+      '  Given the color blue',
+      '  And the color red',
+      '  When you mix colors',
+      '  Then you obtain purple',
+      ''
+    ].join("\n")
+  }
+
+  let(:scenario_rendered_with_dollars_around_parameters) {
+    # Because why not after all ?
+    [
+      '',
+      'Scenario: Create purple',
+      '  # You can have a description',
+      '  # on multiple lines',
+      '  Given the color $blue$',
+      '  And the color $red$',
+      '  When you mix colors',
+      '  Then you obtain $purple$',
+      ''
+    ].join("\n")
+  }
+
   let(:feature_with_setup_rendered) {
     [
       'Feature: Other colors',
@@ -1674,6 +1706,59 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         scenario.children[:datatable].children[:datasets] = []
 
         expect(rendered).to eq(scenario_rendered_with_option_no_uid)
+      end
+    end
+
+    context 'option parameter-delimiter' do
+      context 'can be set to empty' do
+        let(:options) {
+          context_for(
+            only: features_option_name,
+            language: language,
+            framework: framework,
+            parameter_delimiter: '',
+          )
+        }
+
+        let(:scenario) {create_purple_scenario}
+
+        it 'so no quotes are added around parameters in features' do
+          expect(rendered).to eq(scenario_rendered_without_quotes_around_parameters)
+        end
+      end
+
+      context 'can be set to any value' do
+        let(:options) {
+          context_for(
+            only: features_option_name,
+            language: language,
+            framework: framework,
+            parameter_delimiter: '$',
+          )
+        }
+
+        let(:scenario) {create_purple_scenario}
+
+        it 'allthough that might not be that much a good idea' do
+          expect(rendered).to eq(scenario_rendered_with_dollars_around_parameters)
+        end
+      end
+
+      context 'is also used when generating step definitions' do
+        let(:options) {
+          context_for(
+            only: "step_definitions",
+            language: language,
+            framework: framework,
+            parameter_delimiter: ''
+          )
+        }
+
+        let(:node_to_render) {project.children[:actionwords].children[:actionwords].first}
+
+        it 'generates a steps definitions mapping' do
+          expect(rendered).to eq(actionword_without_quotes_in_regexp_rendered)
+        end
       end
     end
   end

@@ -120,6 +120,16 @@ describe 'Specflow rendering' do
       ].join("\n")
     }
 
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '[Given("^the color (.*)$"), When("^the color (.*)$"), Then("^the color (.*)$")]',
+        'public void TheColorColor(string color) {',
+        '    Actionwords.TheColorColor(color);',
+        '}',
+        ''
+      ].join("\n")
+    }
+
     let(:rendered_free_texted_actionword) {[
       'public void TheFollowingUsersAreAvailable(string freeText) {',
       '',

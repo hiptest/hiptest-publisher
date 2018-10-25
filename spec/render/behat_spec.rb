@@ -90,6 +90,18 @@ describe 'Behat rendering' do
       ].join("\n")
     }
 
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '',
+        '/**',
+        ' * @Given /^the color (.*)$/',
+        ' */',
+        'public function theColorColor($color){',
+        '  $this->actionwords->theColorColor($color);',
+        '}'
+      ].join("\n")
+    }
+
     let(:rendered_free_texted_actionword) {[
       'public function theFollowingUsersAreAvailable(PyStringNode $__free_text) {',
       '',

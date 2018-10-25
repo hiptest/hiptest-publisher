@@ -1,1 +1,1 @@
-{{#if rendered_children.annotation}}{{{capitalize rendered_children.annotation }}}{{else}}*{{/if}} {{#strip}}{{#join chunks '"'}}{{this.value}}{{/join}}{{#each extra_inlined_arguments}} "{{this.value}}"{{/each}}{{/strip}}
+{{#if rendered_children.annotation}}{{{capitalize rendered_children.annotation }}}{{else}}*{{/if}} {{#strip}}{{#join chunks context.parameter_delimiter}}{{this.value}}{{/join}}{{#each extra_inlined_arguments}} {{context.parameter_delimiter}}{{this.value}}{{context.parameter_delimiter}}{{/each}}{{/strip}}

@@ -70,6 +70,16 @@ describe 'JBehave rendering' do
       ].join("\n")
     }
 
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '@Given("the color $color")',
+        'public void theColorColor(String color) {',
+        '    actionwords.theColorColor(color);',
+        '}',
+        ''
+      ].join("\n")
+    }
+
     let(:rendered_free_texted_actionword) {[
       %|public void theFollowingUsersAreAvailable(String freeText) {|,
       %||,
@@ -366,6 +376,33 @@ describe 'JBehave rendering' do
            ''
            ].join("\n")
        }
+
+      let(:scenario_rendered_without_quotes_around_parameters) {
+        [
+          'Scenario: Create purple',
+          '# You can have a description',
+          '# on multiple lines',
+          'Given the color blue',
+          'And the color red',
+          'When you mix colors',
+          'Then you obtain purple',
+          ''
+        ].join("\n")
+      }
+
+      let(:scenario_rendered_with_dollars_around_parameters) {
+        # Because why not after all ?
+        [
+          'Scenario: Create purple',
+          '# You can have a description',
+          '# on multiple lines',
+          'Given the color $blue$',
+          'And the color $red$',
+          'When you mix colors',
+          'Then you obtain $purple$',
+          ''
+        ].join("\n")
+      }
 
        let(:feature_rendered_with_option_no_uid) {
         [

@@ -49,6 +49,15 @@ describe 'Cucumber/Ruby rendering' do
         ""
       ].join("\n")
     }
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '',
+        'Given /^the color (.*)$/ do |color|',
+        '  the_color_color(color)',
+        'end',
+        ''
+      ].join("\n")
+    }
 
     let(:rendered_free_texted_actionword) {[
       'def the_following_users_are_available(__free_text = \'\')',
@@ -135,6 +144,16 @@ describe 'Cucumber/Java rendering' do
         '        actionwords.iLoginOn(site, username);',
         '    }',
         '}'
+      ].join("\n")
+    }
+
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '@Given("^the color (.*)$")',
+        'public void theColorColor(String color) {',
+        '    actionwords.theColorColor(color);',
+        '}',
+        ''
       ].join("\n")
     }
 
@@ -281,6 +300,16 @@ describe 'Cucumber/Javascript rendering' do
       ].join("\n")
     }
 
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '',
+        'this.Given(/^the color (.*)$/, function (color, callback) {',
+        '    this.actionwords.theColorColor(color);',
+        '    callback();',
+        '});'
+      ].join("\n")
+    }
+
     let(:rendered_empty_scenario) {"\nScenario: Empty Scenario\n"}
   end
 end
@@ -347,6 +376,15 @@ describe 'Cucumber/Groovy rendering' do
         '    actionwords.iLoginOn(site, username)',
         '}',
         '',
+        ''
+      ].join("\n")
+    }
+
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        'Given(~"^the color (.*)\$") { String color ->',
+        '    actionwords.theColorColor(color)',
+        '}',
         ''
       ].join("\n")
     }

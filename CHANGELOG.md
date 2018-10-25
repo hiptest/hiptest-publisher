@@ -1,6 +1,11 @@
 Hiptest publisher changelog
 ===========================
 
+Unreleased
+----------
+
+  - Add options "parameter-delimiter" allowing to remove quotes around parameters in Gherkin export (or replace it by anything else in fact)
+
 1.16.5
 ------
   - Fix UIDCall handling for behat
