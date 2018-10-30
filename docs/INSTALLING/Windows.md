@@ -6,7 +6,7 @@ Since version 0.3.4, we support installing hiptest-publisher on Windows. Here's 
 Install Ruby
 ------------
 
-Go to [Ruby installer](http://rubyinstaller.org/), click on "Downloads" and get "Ruby 2.5.1-1 (x64)". Once the file has been downloaded, open your "Downloads" folder and run ``rubyinstaller-2.5.1-1-x64``. On the second screen, select the checkbox "Add Ruby executables to your PATH".
+Go to [Ruby installer](http://rubyinstaller.org/), click on "Downloads" and get "Ruby 2.5.3-1 (x64)". Once the file has been downloaded, open your "Downloads" folder and run ``rubyinstaller-2.5.3-1-x64``. On the second screen, select the checkbox "Add Ruby executables to your PATH".
 
 Now run in the prompt: ``gem install hiptest-publisher`` and you'll have hiptest-publisher installed.
 
