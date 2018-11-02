@@ -172,6 +172,17 @@ package = 'com.youcompany'
 
 Note that options from command line arguments override options from config file.
 
+### using hiptest-publisher behind a http proxy
+
+To use hiptest-publisher behind a http proxy, set an environment variable named http_proxy
+```
+http_proxy=http://<proxy_host>:<proxy_port>
+```
+If username and password are required:
+```
+http_proxy=http://<username>:<password>@<proxy_host>:<proxy_port>
+```
+
 Posting results to Hiptest
 --------------------------
 
