@@ -23,3 +23,6 @@ pkg
 # Ignore git and environment files
 .git
 .env*
+
+# Ignore Dockerfile to prevent rebuilding each time it is changed
+Dockerfile
