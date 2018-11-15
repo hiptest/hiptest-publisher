@@ -11,27 +11,27 @@ Hiptest Publisher
 Installing
 ----------
 
-### Docker Installation
+### Using docker image
 
-You can build the docker image or use an already built docker image for hiptest/hiptest-publisher.
+A docker image of hiptest-publisher is built automatically and is available on
+[Docker Hub](https://hub.docker.com/r/hiptest/hiptest-publisher/)
 
-You can use the docker image just like the command line installation. The image includes a script that runs
-docker with the necessary options. Copy the script from the image using these commands:
-
-```shell
-cid=$(docker create hiptest/hiptest-publisher) &&
-docker cp $cid:/usr/src/app/bin/hiptest-publisher-docker hiptest-publisher &&
-docker rm $cid > /dev/null
+To call hiptest-publisher using this image, run this command:
+```
+docker run -it --rm -u $UID -v $(pwd):/app hiptest/hiptest-publisher <arguments>
 ```
 
-Now you can use `hiptest-publisher` in order to run the program.
+A wrapper script is provided in
+[`bin/hiptest-publisher-docker`](https://raw.githubusercontent.com/hiptest/hiptest-publisher/master/bin/hiptest-publisher-docker).
+To use it:
+1. copy `bin/hiptest-publisher-docker` to a location available in your `PATH`
+   like `~/bin` or `/usr/local/bin`
+2. rename it as `hiptest-publisher`
+3. make it executable with `chmod +x hiptest-publisher`
 
-Suggestions for installation of the hiptest-publisher script:
+You will then be able to use hiptest-publisher as if it was locally installed.
 
-* Copy hiptest-publisher to a path directory (e.g. ~/bin or /usr/local/bin).
-* Create an alias for hiptest-publisher: `alias 'hiptest-publisher=/path/to/hiptest-publisher'`
-
-### Local Installation
+### Using local installation
 
 You need to have [Ruby installed on your machine](https://www.ruby-lang.org/en/installation/). You can then install it using gem:
 
