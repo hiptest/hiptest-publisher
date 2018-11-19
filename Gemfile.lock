@@ -64,7 +64,7 @@ GEM
       byebug (~> 9.1)
       pry (~> 0.10)
     psych (2.2.4)
-    rack (2.0.3)
+    rack (2.0.6)
     rake (12.3.0)
     rdoc (6.0.1)
     rspec (3.7.0)
@@ -117,4 +117,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.16.4
+   1.17.1
