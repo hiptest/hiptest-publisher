@@ -276,7 +276,7 @@ module Hiptest
     end
 
     def hh_if_includes(context, array, element, block_true, block_false = nil)
-      if array&.include?(element)
+      if array.kind_of?(Array) && array.include?(element)
         block_true.fn(context)
       elsif block_false
         block_false.fn(context)
