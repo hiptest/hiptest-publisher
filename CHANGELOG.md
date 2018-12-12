@@ -1,6 +1,9 @@
 Hiptest publisher changelog
 ===========================
 
+1.17.1
+  - update version number 
+  
 1.16.6
 ----------
   - Add the if_includes handlebars helper 
