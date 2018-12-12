@@ -383,3 +383,13 @@ Outputs an closing curly bracket.
 ```
 
 Outputs a tabulation character.
+
+### if_includes
+``` handlebars
+{{ #if_includes array element}}
+  case true
+{{ else }}
+  case false
+{{ /if_includes }}
+```
+Outputs the true block if array contains element otherwise the false one.

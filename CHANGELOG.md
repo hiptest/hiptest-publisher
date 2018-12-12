@@ -1,9 +1,9 @@
 Hiptest publisher changelog
 ===========================
 
-Unreleased
+1.16.6
 ----------
-
+  - Add the if_includes handlebars helper 
   - Add options "parameter-delimiter" allowing to remove quotes around parameters in Gherkin export (or replace it by anything else in fact)
 
 1.16.5
