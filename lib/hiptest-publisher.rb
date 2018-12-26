@@ -121,7 +121,7 @@ module Hiptest
         answer = $stdin.gets.chomp.downcase.strip
         return ['y', 'yes'].include?(answer)
       else
-        reporter.notify(:show_status_message, "File #{path} already exists, skipping. Use --force to overwrite it.", :warning)
+        reporter.warning_message("File #{path} already exists, skipping. Use --force to overwrite it.")
         return false
       end
     end
@@ -246,6 +246,20 @@ module Hiptest
       reporter.with_status_message "Posting #{@cli_options.push} to #{@cli_options.site}" do
         response = @client.push_results
       end
+      if valid_hiptest_api_response?(response)
+        report_imported_results(response)
+      else
+        report_hiptest_api_error(response)
+      end
+    rescue => err
+      reporter.dump_error(err)
+    end
+
+    def valid_hiptest_api_response?(response)
+      response.is_a?(Net::HTTPSuccess)
+    end
+
+    def report_imported_results(response)
       json = JSON.parse(response.body)
 
       reported_tests = json.has_key?('test_import') ? json['test_import'] : []
@@ -260,8 +274,15 @@ module Hiptest
       end
 
       display_empty_push_help if passed_count == 0
-    rescue => err
-      reporter.dump_error(err)
+    end
+
+    def report_hiptest_api_error(response)
+      reporter.failure_message("Hiptest API returned error #{response.code}")
+      if response.code == "422" && response.body.start_with?("Unknown format")
+        STDERR.print response.body.chomp + "\n"
+      elsif response.code == "404"
+        STDERR.print "Did you specify the project token of an existing Hiptest project?\n"
+      end
     end
 
     def display_empty_push_help
@@ -274,10 +295,10 @@ module Hiptest
       puts [
         "Possible causes for the lack of imported tests:",
         "",
-        "  * Did you run the following command before executing your tests ?",
+        "  * Did you run the following command before executing your tests?",
         "    #{enhanced_command}",
         "",
-        "  * Did you specify the correct push format ?",
+        "  * Did you specify the correct push format?",
         "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
         "    Available formats are: cucumber-json, junit, nunit, robot, tap",
         ""

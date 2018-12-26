@@ -644,10 +644,10 @@ describe Hiptest::Publisher do
         }.to output([
           "Possible causes for the lack of imported tests:",
           "",
-          "  * Did you run the following command before executing your tests ?",
+          "  * Did you run the following command before executing your tests?",
           "    hiptest-publisher --token=456 --without=actionwords --test-run-id=<the ID of the test run you want to push the results to>",
           "",
-          "  * Did you specify the correct push format ?",
+          "  * Did you specify the correct push format?",
           "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
           "    Available formats are: cucumber-json, junit, nunit, robot, tap",
           ""
@@ -668,10 +668,10 @@ describe Hiptest::Publisher do
           }.to output([
             "Possible causes for the lack of imported tests:",
             "",
-            "  * Did you run the following command before executing your tests ?",
+            "  * Did you run the following command before executing your tests?",
             "    hiptest-publisher --config=#{config_file} --without=actionwords",
             "",
-            "  * Did you specify the correct push format ?",
+            "  * Did you specify the correct push format?",
             "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
             "    Available formats are: cucumber-json, junit, nunit, robot, tap",
             ""
@@ -686,15 +686,67 @@ describe Hiptest::Publisher do
           }.to output([
             "Possible causes for the lack of imported tests:",
             "",
-            "  * Did you run the following command before executing your tests ?",
+            "  * Did you run the following command before executing your tests?",
             "    hiptest-publisher --token=456 --test-run-id=7899 --without=actionwords",
             "",
-            "  * Did you specify the correct push format ?",
+            "  * Did you specify the correct push format?",
             "    Use push_format=<format> in your config file or option --push-format=<format> in the command line",
             "    Available formats are: cucumber-json, junit, nunit, robot, tap",
             ""
           ].join("\n")).to_stdout
         end
+      end
+    end
+
+    context 'when Hiptest returns a 404 error' do
+      let(:result_file) { create_file('result.tap') }
+
+      before do
+        stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
+            to_return(status: 404,
+                      body: "")
+      end
+
+      it 'displays the HTTP error code, and suggests that the token may be incorrect' do
+        publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
+        publisher.run
+
+        expect(STDERR).to have_printed("Hiptest API returned error 404")
+        expect(STDERR).to have_printed("Did you specify the project token of an existing Hiptest project?")
+      end
+    end
+
+    context 'when Hiptest returns a 422 error' do
+      let(:result_file) { create_file('result.jsonb') }
+
+      before do
+        stub_request(:post, "https://app.hiptest.com/import_test_results/456/jsonb").
+            to_return(status: 422,
+                      body: "Unknown format jsonb. Available formats are:" +
+                            "\n - android-studio" +
+                            "\n - cucumber-json" +
+                            "\n - junit" +
+                            "\n - mstest" +
+                            "\n - nunit" +
+                            "\n - robot" +
+                            "\n - tap")
+      end
+
+      it 'displays the HTTP error code, and prints the response body as an error' do
+        publisher = Hiptest::Publisher.new(["--token", "456", "--push-format", "jsonb", "--push", result_file], listeners: listeners)
+        publisher.run
+
+        expect(STDERR).to have_printed("Hiptest API returned error 422")
+        expect(STDERR).to have_printed(<<~CONSOLE_OUTPUT)
+          Unknown format jsonb. Available formats are:
+           - android-studio
+           - cucumber-json
+           - junit
+           - mstest
+           - nunit
+           - robot
+           - tap
+        CONSOLE_OUTPUT
       end
     end
   end
