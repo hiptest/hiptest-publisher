@@ -90,7 +90,7 @@ module Hiptest
             is_argument: true
           }
         else
-         call.chunks << {
+          call.chunks << {
             value: inline_parameter_name,
             is_argument: false
           } unless inline_parameter_name.nil?

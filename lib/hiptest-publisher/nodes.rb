@@ -241,7 +241,7 @@ module Hiptest
 
       def initialize(uid, arguments = [], annotation = nil)
         super()
-        annotation = nil if annotation == ""
+        annotation = nil if annotation == ''
 
         @children = {
           uid: uid,
@@ -252,6 +252,14 @@ module Hiptest
 
         @chunks = []
         @extra_inlined_arguments = []
+      end
+
+      def free_text_arg
+        children[:arguments].find(&:free_text?)
+      end
+
+      def datatable_arg
+        children[:arguments].find(&:datatable?)
       end
     end
 
