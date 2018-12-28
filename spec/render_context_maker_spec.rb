@@ -248,6 +248,24 @@ describe Hiptest::RenderContextMaker do
     end
   end
 
+  context 'walk_uidcall' do
+    let(:node) { Hiptest::Nodes::UIDCall.new('ff85fe99-55c0-48f5-9de3-b4ffd6ea9636') }
+
+    it 'tells if there is an annotation' do
+      expect(subject.walk_uidcall(node)[:has_annotation?]).to be false
+
+      node.children[:annotation] = 'Given'
+      expect(subject.walk_uidcall(node)[:has_annotation?]).to be true
+    end
+
+    it 'tells if there is a library' do
+      expect(subject.walk_uidcall(node)[:has_library?]).to be false
+
+      node.children[:library_name] = 'default library'
+      expect(subject.walk_uidcall(node)[:has_library?]).to be true
+    end
+  end
+
   context 'walk_ifthen' do
     it 'tells if there is stements in the else part' do
       node = Hiptest::Nodes::IfThen.new(nil, nil)
