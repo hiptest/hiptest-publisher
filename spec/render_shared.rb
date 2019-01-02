@@ -1167,6 +1167,19 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     ].join("\n")
   }
 
+  let(:feature_with_no_parent_folder_tags_rendered) {
+    [
+      '@key-value',
+      'Feature: Sub-sub-regression folder',
+      '',
+      '',
+      '  @my-own',
+      '  Scenario: Inherit tags',
+      '    Given the color "<color_definition>"',
+      ''
+    ].join("\n")
+  }
+
   let(:test_rendered) {
     [
       "Scenario: Create white",
@@ -1822,6 +1835,25 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
         it 'the feature level' do
           expect(rendered).to eq(inherited_tags_rendered)
+        end
+      end
+
+      context 'unless option no-parent-folder-tags is set' do
+        let(:node_to_render) {
+          subsubreg_folder
+        }
+
+        let(:options) {
+          context_for(
+            only: features_option_name,
+            language: language,
+            framework: framework,
+            parent_folder_tags: false
+          )
+        }
+
+        it 'only the feature tags are shown' do
+          expect(rendered).to eq(feature_with_no_parent_folder_tags_rendered)
         end
       end
     end

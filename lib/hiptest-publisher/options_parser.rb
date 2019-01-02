@@ -239,6 +239,7 @@ class OptionsParser
       Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (cucumber-json, junit, nunit, robot, tap)", :push_format),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
       Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
+      Option.new(nil, '[no-]parent-folder-tags', true, nil, 'Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports)', :parent_folder_tags),
       Option.new(nil, 'parameter-delimiter', '"', String, 'Parameter delimiter (for Gherkin based export only)', :parameter_delimiter),
       Option.new(nil, 'with-dataset-names', false, nil, 'Export dataset name when creating feature files (note: available only for Gherkin-based exports)', :with_dataset_names),
       Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in Hiptest for the test files (note: may cause encoding issues)", :keep_filenames),
@@ -568,6 +569,7 @@ class LanguageGroupConfig
       parameter_delimiter: @user_params[:parameter_delimiter],
       namespace: @language_group_params[:namespace],
       uids: @user_params[:uids],
+      parent_folder_tags: @user_params[:parent_folder_tags],
       with_dataset_names: @user_params[:with_dataset_names],
       renderer_addons: @language_group_params[:renderer_addons]
     )

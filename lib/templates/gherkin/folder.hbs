@@ -1,5 +1,5 @@
-{{#if rendered_children.ancestor_tags}}{{#each rendered_children.ancestor_tags}}{{this}} {{/each}}{{#unless has_tags?}}
-{{/unless}}{{/if}}{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{#if rendered_children.ancestor_tags}}{{#if context.parent_folder_tags}}{{#each rendered_children.ancestor_tags}}{{this}} {{/each}}{{#unless has_tags?}}
+{{/unless}}{{/if}}{{/if}}{{#if has_tags?}}{{join rendered_children.tags ' '}}
 {{/if}}Feature: {{{ rendered_children.name }}}{{#indent}}
 {{#if rendered_children.description}}{{#indent}}{{#comment '#'}}{{rendered_children.description}}{{/comment}}{{/indent}}{{/if}}
 {{#unless is_empty?}}

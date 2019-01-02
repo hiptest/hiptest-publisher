@@ -119,6 +119,7 @@ Specific options:
                                      Output signatures of action words for which signature changed (default: false)
         --show-actionwords-definition-changed
                                      Output action words for which definition changed (default: false)
+        --library-name=LIBRARY_NAME  Use in conjunction with show-actionwords-*: show the diff for the specified library
         --with-folders               Use folders hierarchy to export files in respective directories (default: false)
         --empty-folders              Export empty folders (default: false)
         --split-scenarios            Export each scenario in a single file (except for Gherkin based languages) (default: false)
@@ -130,6 +131,9 @@ Specific options:
         --push-format=tap            Format of the test results (cucumber-json, junit, nunit, robot, tap) (default: tap)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
+        --[no-]parent-folders-tags   Export tags from parent folder (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
+        --parameter-delimiter        Parameter delimiter (for Gherkin based export only) (default: ")
+        --with-dataset-names         Export dataset name when creating feature files (note: available only for Gherkin-based exports) (default: false)
         --keep-filenames             Keep the same name as in Hiptest for the test files (note: may cause encoding issues) (default: false)
         --keep-foldernames           Keep the same name as in Hiptest for the folders (note: may cause encoding issues) (default: false)
         --filter-on-scenario-ids=IDS Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)

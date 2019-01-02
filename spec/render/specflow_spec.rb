@@ -59,6 +59,19 @@ describe 'Specflow rendering' do
       ].join("\n")
     }
 
+  let(:feature_with_no_parent_folder_tags_rendered) {
+    [
+      '@key_value',
+      'Feature: Sub-sub-regression folder',
+      '',
+      '',
+      '  @my_own',
+      '  Scenario: Inherit tags',
+      '    Given the color "<color_definition>"',
+      ''
+    ].join("\n")
+  }
+
     let(:rendered_actionwords) {
       [
         'namespace Example {',

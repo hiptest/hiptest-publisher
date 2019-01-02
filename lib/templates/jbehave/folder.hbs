@@ -1,7 +1,9 @@
 {{{ rendered_children.name }}}
-{{#if rendered_children.ancestor_tags}}Meta:
+{{#if context.parent_folder_tags}}{{#if rendered_children.ancestor_tags}}Meta:
 {{rendered_children.ancestor_tags}}{{/if}}{{#if has_tags?}}{{#if rendered_children.ancestor_tags}} {{else}}Meta:
 {{/if}}{{join rendered_children.tags " "}}
+{{/if}}{{else}}Meta:
+{{join rendered_children.tags " "}}
 {{/if}}{{#if rendered_children.description}}
 Narrative:
 {{rendered_children.description}}{{/if}}

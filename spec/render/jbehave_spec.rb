@@ -155,6 +155,22 @@ describe 'JBehave rendering' do
         ].join("\n")
       }
 
+      let(:feature_with_no_parent_folder_tags_rendered) {
+        [
+          'Sub-sub-regression folder',
+          'Meta:',
+          '@key-value',
+          '',
+          '',
+          'Scenario: Inherit tags',
+          'Meta:',
+          '@my-own',
+          'Given the color "<color_definition>"',
+          '',
+          ''
+        ].join("\n")
+      }
+
       let(:test_rendered) {
         [
           "Scenario: Create white",
