@@ -1,12 +1,21 @@
 Hiptest publisher changelog
 ===========================
 
+1.18.0
+------
+ - Add option [no-]parent-folders-tags to choose if parent tags are rendered in feature files
+
+1.17.2
+------
+  - Fix UIDCall handling for shared actionwords
+
 1.17.1
-  - update version number 
-  
+------
+  - update version number
+
 1.16.6
-----------
-  - Add the if_includes handlebars helper 
+------
+  - Add the if_includes handlebars helper
   - Add options "parameter-delimiter" allowing to remove quotes around parameters in Gherkin export (or replace it by anything else in fact)
 
 1.16.5
