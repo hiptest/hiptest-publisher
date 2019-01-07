@@ -22,10 +22,17 @@ describe Hiptest::NodeModifiers::UidCallReferencerAdder do
     ])
   }
 
+  let(:incorrect_scenario) {
+    make_scenario('My scenario', body: [
+       make_uidcall("an-unknown-uid")
+    ])
+  }
+
+
   let(:project) {
     make_project(
       'My project',
-      scenarios: [scenario],
+      scenarios: [scenario, incorrect_scenario],
       actionwords: [project_actioword],
       libraries: Hiptest::Nodes::Libraries.new([library])
     )
@@ -44,7 +51,11 @@ describe Hiptest::NodeModifiers::UidCallReferencerAdder do
     it 'does not set the library_name if the action word belongs to the project' do
       expect(project_uid_call.children[:actionword_name]).to eq('My project actionword')
       expect(project_uid_call.children).not_to have_key(:library_name)
+    end
 
+    it 'adds a message when the referenced actionword do not exist' do
+      # Far from perfect, but at least code will be generated
+      expect(incorrect_scenario.children[:body].first.children[:actionword_name]).to eq("Unknown actionword with UID: an-unknown-uid")
     end
   end
 end

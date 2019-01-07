@@ -16,7 +16,10 @@ module Hiptest
       def update_uid_calls
         @project.each_sub_nodes(Hiptest::Nodes::UIDCall) do |uid_call|
           index = @indexer.get_index(uid_call.children[:uid])
-          next if index.nil?
+          if index.nil?
+            uid_call.children[:actionword_name] = "Unknown actionword with UID: #{uid_call.children[:uid]}"
+            next
+          end
 
           uid_call.children[:actionword_name] = index[:actionword].children[:name]
           uid_call.children[:library_name] = index[:library].children[:name] unless index[:library].nil?

@@ -74,7 +74,8 @@ module Hiptest
         call.chunks = []
         call.extra_inlined_arguments = []
 
-        call_chunks = call.is_a?(Hiptest::Nodes::Call) ? call.children[:actionword].split("\"", -1) : call.children[:actionword_name].split("\"", -1)
+        actionword_name = call.is_a?(Hiptest::Nodes::Call) ? call.children[:actionword] : call.children[:actionword_name]
+        call_chunks = actionword_name.split("\"", -1)
 
         call_chunks.each_slice(2) do |text, inline_parameter_name|
           call.chunks << {
