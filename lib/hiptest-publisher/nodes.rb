@@ -89,6 +89,15 @@ module Hiptest
         end
         child.to_s
       end
+
+      def fix_annotated_description(description)
+        return description unless description.is_a?(String)
+
+        description.strip!
+        return "\"#{description}\"" if description.start_with?('Given', 'When', 'Then', 'And', 'But')
+
+        description
+      end
     end
 
     class Literal < Node
@@ -323,6 +332,8 @@ module Hiptest
 
       def initialize(name, tags = [], description = '', parameters = [], body = [])
         super()
+
+        description = fix_annotated_description(description)
         @children = {
           name: name,
           tags: tags,
@@ -491,6 +502,7 @@ module Hiptest
       def initialize(uid, parent_uid, name, description, tags = [], order_in_parent = 0, body = [])
         super()
 
+        description = fix_annotated_description(description)
         @uid = uid
         @parent_uid = parent_uid
         @order_in_parent = order_in_parent
