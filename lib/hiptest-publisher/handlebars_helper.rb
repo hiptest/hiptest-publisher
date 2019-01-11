@@ -222,6 +222,14 @@ module Hiptest
       end.join("\n")
     end
 
+    def hh_description (context, commenter, block)
+      value = compute_block_value(context, commenter, block)
+      value = value.split("\n").map do |line|
+        line.start_with?('Given', 'When', 'Then', 'And', 'But') ? "\"#{line}\"" : line
+      end.join("\n")
+      value
+    end
+
     def hh_curly (context, block)
       "{#{block.fn(context)}}"
     end
