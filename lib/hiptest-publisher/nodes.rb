@@ -92,9 +92,9 @@ module Hiptest
 
       def fix_annotated_description(description)
         return description unless description.is_a?(String)
-        
+
         description.strip!
-        return "\"#{description}\"" if description.start_with?('Given', 'When', 'Then', 'And', 'But')
+        return description.split("\n").map { |n| n.start_with?('Given', 'When', 'Then', 'And', 'But') ? "\"#{n}\"" : n }.join("\n")
 
         description
       end
