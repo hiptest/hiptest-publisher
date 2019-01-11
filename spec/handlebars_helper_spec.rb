@@ -530,6 +530,13 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  context 'hh_description' do
+    it 'Surround a line with double quotes if it starts with an annotation steps' do
+      commenter = "First line\nGiven line\nThird line"
+      expect(instance.hh_description(nil, commenter, nil)).to eq("First line\n\"Given line\"\nThird line")
+    end
+  end
+
   context 'hh_curly' do
     it 'adds curly braces around a block' do
       expect(instance.hh_curly(nil, block)).to eq([

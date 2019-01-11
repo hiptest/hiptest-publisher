@@ -109,18 +109,6 @@ describe Hiptest::Nodes do
       end
     end
 
-    context 'initialize' do
-      it 'add double quotes on description if it starts with a step annotation' do
-        node = Hiptest::Nodes::Item.new('My item', [], 'Given the description starts with a step annotation it is double quoted')
-        expect(node.children[:description]).to eq('"Given the description starts with a step annotation it is double quoted"')
-      end
-
-      it 'don\'t add double quotes on description if it not starts with a step annotation' do
-        node = Hiptest::Nodes::Item.new('My item', [], 'Don\'t start with a step annotation')
-        expect(node.children[:description]).to eq('Don\'t start with a step annotation')
-      end
-    end
-
     context 'add_tags' do
       it 'add each tags to the tags list' do
         item = Hiptest::Nodes::Item.new('My item')
