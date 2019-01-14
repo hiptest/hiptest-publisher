@@ -1071,6 +1071,18 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     )
   }
 
+  let(:scenario_with_steps_annotation_in_description) {
+    make_scenario('Steps annotation in description',
+                  description: ["First line",
+                                "Given a line with steps annotation",
+                                "Third line"
+                                ].join("\n"),
+                  body: [
+                    make_call("one step", annotation: "given")
+                  ]
+    )
+  }
+
   let!(:project) {
     make_project("Colors",
                  scenarios: [
@@ -1088,7 +1100,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
                    scenario_calling_aw_with_incorrect_order,
                    scenario_calling_actionwords_with_extra_params,
                    scenario_with_double_quotes_in_datatable,
-                   scenario_inheriting_tags
+                   scenario_inheriting_tags, 
+                   scenario_with_steps_annotation_in_description,
                  ],
                  tests: [create_white_test],
                  actionwords: actionwords,
@@ -1478,6 +1491,18 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     ].join("\n")
   }
 
+  let(:scenario_with_steps_annotation_in_description_rendered) {
+    [
+      '',
+      'Scenario: Steps annotation in description',
+      '  First line',
+      '  "Given a line with steps annotation"',
+      '  Third line',
+      '  Given one step', 
+      ''
+    ].join("\n")
+  }
+
   let(:feature_with_setup_rendered) {
     [
       'Feature: Other colors',
@@ -1632,6 +1657,14 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         it "is rendered using the <> notation" do
           expect(rendered).to eq(scenario_using_variables_in_step_datatables_rendered)
         end
+      end
+    end
+
+    context 'Scenario with steps annotation in description' do
+      let(:scenario) {scenario_with_steps_annotation_in_description}
+      
+      it "renders double quotes surrounding the line with the annotation" do
+        expect(rendered).to eq(scenario_with_steps_annotation_in_description_rendered)
       end
     end
 
