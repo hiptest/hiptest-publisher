@@ -99,12 +99,13 @@ describe 'JBehave rendering' do
           'Scenario: Create purple',
           'Meta:',
           '@myTag @myTag-some_value',
-          '  You can have a description',
-          '  on multiple lines',
-          '  Given the color "blue"',
-          '  And the color "red"',
-          '  When you mix colors',
-          '  Then you obtain "purple"'
+          'You can have a description',
+          'on multiple lines',
+          'Given the color "blue"',
+          'And the color "red"',
+          'When you mix colors',
+          'Then you obtain "purple"',
+          ''
         ].join("\n")
       }
 
@@ -119,19 +120,21 @@ describe 'JBehave rendering' do
           'They are the hues from blue green through blue violet, most grays included.',
           '',
           'Scenario: Create green',
-          '  You can create green by mixing other colors',
-          '  Given the color "blue"',
-          '  And the color "yellow"',
-          '  When you mix colors',
-          '  Then you obtain "green"',
-          '  But you cannot play croquet',
+          'You can create green by mixing other colors',
+          'Given the color "blue"',
+          'And the color "yellow"',
+          'When you mix colors',
+          'Then you obtain "green"',
+          'But you cannot play croquet',
+          '',
           'Scenario: Create purple',
-          '  You can have a description',
-          '  on multiple lines',
-          '  Given the color "blue"',
-          '  And the color "red"',
-          '  When you mix colors',
-          '  Then you obtain "purple"',
+          'You can have a description',
+          'on multiple lines',
+          'Given the color "blue"',
+          'And the color "red"',
+          'When you mix colors',
+          'Then you obtain "purple"',
+          '',
           ''
         ].join("\n")
       }
@@ -146,7 +149,8 @@ describe 'JBehave rendering' do
           'Scenario: Inherit tags',
           'Meta:',
           '@my-own',
-          '  Given the color "<color_definition>"',
+          'Given the color "<color_definition>"',
+          '',
           ''
         ].join("\n")
       }
@@ -161,7 +165,8 @@ describe 'JBehave rendering' do
           'Scenario: Inherit tags',
           'Meta:',
           '@my-own',
-          '  Given the color "<color_definition>"',
+          'Given the color "<color_definition>"',
+          '',
           ''
         ].join("\n")
       }
@@ -181,46 +186,49 @@ describe 'JBehave rendering' do
       let(:scenario_rendered) {
         [
           "Scenario: Create green",
-          '  You can create green by mixing other colors',
-          "  Given the color \"blue\"",
-          "  And the color \"yellow\"",
-          "  When you mix colors",
-          "  Then you obtain \"green\"",
-          "  But you cannot play croquet"
+          'You can create green by mixing other colors',
+          "Given the color \"blue\"",
+          "And the color \"yellow\"",
+          "When you mix colors",
+          "Then you obtain \"green\"",
+          "But you cannot play croquet",
+          ""
         ].join("\n")
       }
 
       let(:scenario_with_uid_rendered) {
         [
           "Scenario: Create green (uid:1234-4567)",
-          '  You can create green by mixing other colors',
-          "  Given the color \"blue\"",
-          "  And the color \"yellow\"",
-          "  When you mix colors",
-          "  Then you obtain \"green\"",
-          "  But you cannot play croquet"
+          'You can create green by mixing other colors',
+          "Given the color \"blue\"",
+          "And the color \"yellow\"",
+          "When you mix colors",
+          "Then you obtain \"green\"",
+          "But you cannot play croquet",
+          ""
         ].join("\n")
       }
 
       let(:scenario_without_annotations_rendered) {
         [
           "Scenario: Create orange",
-          "  * the color \"red\"",
-          "  * the color \"yellow\"",
-          "  * you mix colors",
-          "  * you obtain \"orange\""
+          "* the color \"red\"",
+          "* the color \"yellow\"",
+          "* you mix colors",
+          "* you obtain \"orange\"",
+          "",
         ].join("\n")
       }
 
       let(:scenario_with_datatable_rendered) {
         [
           "Scenario: Create secondary colors#{outline_title_ending}",
-          "  This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
-          
+          "This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
           "Examples:",
           "| first_color | second_color | got_color | priority | hiptest-uid |",
           "| blue | yellow | green | -1 |  |",
@@ -233,11 +241,12 @@ describe 'JBehave rendering' do
       let(:scenario_with_datatable_and_dataset_names_rendered) {
         [
           "Scenario: Create secondary colors#{outline_title_ending}",
-          "  This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
+          "This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
           "Examples:",
           "| dataset name | first_color | second_color | got_color | priority | hiptest-uid |",
           "| Mix to green | blue | yellow | green | -1 |  |",
@@ -250,11 +259,12 @@ describe 'JBehave rendering' do
       let(:scenario_with_datatable_rendered_with_uids_in_outline) {
         [
           "Scenario: Create secondary colors (<hiptest-uid>)",
-          "  This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
+          "This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
           "Examples:",
           "| first_color | second_color | got_color | priority | hiptest-uid |",
           "| blue | yellow | green | -1 | uid:1234 |",
@@ -267,11 +277,12 @@ describe 'JBehave rendering' do
       let(:scenario_with_datatable_rendered_with_uids) {
         [
           "Scenario: Create secondary colors (uid:abcd-efgh)",
-          "  This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
+          "This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
           "Examples:",
           "| first_color | second_color | got_color | priority | hiptest-uid |",
           "| blue | yellow | green | -1 | uid:1234 |",
@@ -284,36 +295,39 @@ describe 'JBehave rendering' do
       let(:scenario_with_freetext_argument_rendered) {
         [
           'Scenario: Open a site with comments',
-          '  When I am on the "http://google.com" home page',
-          '  """',
-          "  Some explanations when opening the site:",
-          "   - for example one explanation",
-          "   - and another one",
-          '  """',
-          '  Then stuff happens'
+          'When I am on the "http://google.com" home page',
+          '"""',
+          "Some explanations when opening the site:",
+          " - for example one explanation",
+          " - and another one",
+          '"""',
+          'Then stuff happens',
+          ''
         ].join("\n")
       }
 
       let(:scenario_with_datatable_argument_rendered) {
         [
           'Scenario: Check users',
-          '  When the following users are available on "http://google.com"',
-          '  | name  | password |',
-          '  | bob   | plopi    |',
-          '  | alice | dou      |',
-          '  Then stuff happens'
+          'When the following users are available on "http://google.com"',
+          '| name  | password |',
+          '| bob   | plopi    |',
+          '| alice | dou      |',
+          'Then stuff happens',
+          ''
         ].join("\n")
       }
 
       let(:scenario_using_variables_in_step_datatables_rendered) {
         [
           "Scenario: Check users#{outline_title_ending}",
-          '  When I login as',
-          '  | <username> |',
-          '  Then I am logged in as',
-          '  """',
-          '   -: <username> :- ',
-          '  """',
+          'When I login as',
+          '| <username> |',
+          'Then I am logged in as',
+          '"""',
+          ' -: <username> :- ',
+          '"""',
+          '',
           'Examples:',
           '| username | hiptest-uid |',
           '| user@example.com |  |',
@@ -324,7 +338,8 @@ describe 'JBehave rendering' do
       let(:scenario_with_double_quotes_in_datatable_rendered) {
         [
           "Scenario: Double quote in datatable#{outline_title_ending}",
-          '  Given the color "<color_definition>"',
+          'Given the color "<color_definition>"',
+          '',
           'Examples:',
           '| color_definition | hiptest-uid |',
           '| {"html": ["#008000", "#50D050"]} |  |',
@@ -336,7 +351,8 @@ describe 'JBehave rendering' do
       let(:scenario_with_capital_parameters_rendered) {
         [
           "Scenario: Validate Nav#{outline_title_ending}",
-          '  Given I am on the "<SITE_NAME>" home page',
+          'Given I am on the "<SITE_NAME>" home page',
+          '',
           'Examples:',
           '| SITE_NAME | hiptest-uid |',
           '| http://google.com |  |',
@@ -347,10 +363,11 @@ describe 'JBehave rendering' do
       let(:scenario_with_incomplete_datatable_rendered) {
         [
           "Scenario: Incomplete datatable#{outline_title_ending}",
-          '  Given the color "<first_color>"',
-          '  And the color "<second_color>"',
-          '  When you mix colors',
-          '  Then you obtain "<got_color>"',
+          'Given the color "<first_color>"',
+          'And the color "<second_color>"',
+          'When you mix colors',
+          'Then you obtain "<got_color>"',
+          '',
           'Examples:',
           '| first_color | second_color | got_color | hiptest-uid |',
           '| blue | yellow | green |  |',
@@ -363,26 +380,29 @@ describe 'JBehave rendering' do
       let(:scenario_calling_untrimed_actionword_rendered) {
         [
            'Scenario: Calling an untrimed action word',
-           '  Given an untrimed action word'
+           'Given an untrimed action word',
+           ''
            ].join("\n")
        }
 
        let(:scenario_calling_actionwords_with_extra_params_rendered) {
         [
            'Scenario: Calling an action word with not inlined parameters',
-           '  Given I login on "preview" "Vincent"'
+           'Given I login on "preview" "Vincent"',
+           ''
            ].join("\n")
        }
 
       let(:scenario_rendered_without_quotes_around_parameters) {
         [
           'Scenario: Create purple',
-          '  You can have a description',
-          '  on multiple lines',
-          '  Given the color blue',
-          '  And the color red',
-          '  When you mix colors',
-          '  Then you obtain purple',
+          'You can have a description',
+          'on multiple lines',
+          'Given the color blue',
+          'And the color red',
+          'When you mix colors',
+          'Then you obtain purple',
+          ''
         ].join("\n")
       }
 
@@ -390,33 +410,36 @@ describe 'JBehave rendering' do
         # Because why not after all ?
         [
           'Scenario: Create purple',
-          '  You can have a description',
-          '  on multiple lines',
-          '  Given the color $blue$',
-          '  And the color $red$',
-          '  When you mix colors',
-          '  Then you obtain $purple$',
+          'You can have a description',
+          'on multiple lines',
+          'Given the color $blue$',
+          'And the color $red$',
+          'When you mix colors',
+          'Then you obtain $purple$',
+          ''
         ].join("\n")
       }
 
       let(:scenario_with_steps_annotation_in_description_rendered) {
         [
           'Scenario: Steps annotation in description',
-          '  First line',
-          '  "Given a line with steps annotation"',
-          '  Third line',
-          '  Given one step'
+          'First line',
+          '"Given a line with steps annotation"',
+          'Third line',
+          'Given one step',
+          ''
         ].join("\n")
       }
 
        let(:feature_rendered_with_option_no_uid) {
         [
           "Scenario: Create secondary colors",
-          "  This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\"",
+          "This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
           "Examples:",
           "| first_color | second_color | got_color | priority |",
           "| blue | yellow | green | -1 |",
@@ -429,11 +452,12 @@ describe 'JBehave rendering' do
       let(:scenario_rendered_with_option_no_uid) {
         [
           "Scenario: Create secondary colors",
-          "  This scenario has a datatable and a description",
-          "  Given the color \"<first_color>\"",
-          "  And the color \"<second_color>\"",
-          "  When you mix colors",
-          "  Then you obtain \"<got_color>\""
+          "This scenario has a datatable and a description",
+          "Given the color \"<first_color>\"",
+          "And the color \"<second_color>\"",
+          "When you mix colors",
+          "Then you obtain \"<got_color>\"",
+          "",
           ].join("\n")
       }
 
@@ -449,11 +473,12 @@ describe 'JBehave rendering' do
           'And I know the expected color',
           '',
           "Scenario: Create secondary colors#{outline_title_ending}",
-          '  This scenario has a datatable and a description',
-          '  Given the color "<first_color>"',
-          '  And the color "<second_color>"',
-          '  When you mix colors',
-          '  Then you obtain "<got_color>"',
+          'This scenario has a datatable and a description',
+          'Given the color "<first_color>"',
+          'And the color "<second_color>"',
+          'When you mix colors',
+          'Then you obtain "<got_color>"',
+          '',
           'Examples:',
           '| first_color | second_color | got_color | priority | hiptest-uid |',
           '| blue | yellow | green | -1 |  |',
@@ -474,19 +499,21 @@ describe 'JBehave rendering' do
           'They are the hues from blue green through blue violet, most grays included.',
           '',
           'Scenario: Create green',
-          '  You can create green by mixing other colors',
-          '  Given the color "blue"',
-          '  And the color "yellow"',
-          '  When you mix colors',
-          '  Then you obtain "green"',
-          '  But you cannot play croquet',
+          'You can create green by mixing other colors',
+          'Given the color "blue"',
+          'And the color "yellow"',
+          'When you mix colors',
+          'Then you obtain "green"',
+          'But you cannot play croquet',
+          '',
           'Scenario: Create purple',
-          '  You can have a description',
-          '  on multiple lines',
-          '  Given the color "blue"',
-          '  And the color "red"',
-          '  When you mix colors',
-          '  Then you obtain "purple"',
+          'You can have a description',
+          'on multiple lines',
+          'Given the color "blue"',
+          'And the color "red"',
+          'When you mix colors',
+          'Then you obtain "purple"',
+          '',
           ''
           ].join("\n")
       }

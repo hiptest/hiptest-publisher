@@ -1,9 +1,9 @@
 Scenario: {{{ rendered_children.name }}}{{#if context.uids}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{/if}}
 {{#if has_tags?}}Meta:
 {{join rendered_children.tags ' '}}
-{{/if}}{{#indent}}{{#if has_description?}}{{description_with_annotations rendered_children.description}}
+{{/if}}{{#if has_description?}}{{description_with_annotations rendered_children.description}}
 {{/if}}{{#each rendered_children.body}}{{{ this }}}
-{{/each}}{{/indent}}{{#if has_datasets?}}
+{{/each}}{{#if has_datasets?}}
 Examples:
 {{#if context.with_dataset_names}}| dataset name {{/if}}| {{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid |{{/if}}
 {{{rendered_children.datatable}}}{{/if}}
