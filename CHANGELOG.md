@@ -1,14 +1,17 @@
 Hiptest publisher changelog
 ===========================
 
+1.19.0
+------
+  - Do not comment description in Gherkin exports
+
 1.18.1
 ------
-
  - Show message when calling an actionword using an unknown UID
 
 1.18.0
 ------
- - Add option [no-]parent-folders-tags to choose if parent tags are rendered in feature files
+  - Add option [no-]parent-folders-tags to choose if parent tags are rendered in feature files
 
 1.17.2
 ------
