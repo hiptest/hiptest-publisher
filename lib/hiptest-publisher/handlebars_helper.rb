@@ -225,7 +225,7 @@ module Hiptest
     def hh_description_with_annotations (context, commenter, block)
       value = compute_block_value(context, commenter, block)
       value = value.split("\n").map do |line|
-        line.start_with?('Given', 'When', 'Then', 'And', 'But') ? "\"#{line}\"" : line
+        line.start_with?('Given', 'When', 'Then', 'And', 'But', '*') ? "\"#{line}\"" : line
       end.join("\n")
       value
     end

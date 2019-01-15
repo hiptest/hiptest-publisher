@@ -535,12 +535,22 @@ describe Hiptest::HandlebarsHelper do
       commenter = [
         "First line",
         "Given line",
-        "Third line"
+        "When line",
+        "Then line",
+        "And line",
+        "But line",
+        "* line",
+        "Last line"
       ].join("\n")
       expect(instance.hh_description_with_annotations(nil, commenter, nil)).to eq([
         "First line",
         "\"Given line\"",
-        "Third line"
+        "\"When line\"",
+        "\"Then line\"",
+        "\"And line\"",
+        "\"But line\"",
+        "\"* line\"",
+        "Last line"
       ].join("\n"))
     end
   end
