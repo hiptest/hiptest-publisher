@@ -536,20 +536,22 @@ describe Hiptest::HandlebarsHelper do
         "First line",
         "Given line",
         "When line",
-        "Then line",
+        "    Then line",
         "And line",
         "But line",
         "* line",
+        "    * line",
         "Last line"
       ].join("\n")
       expect(instance.hh_description_with_annotations(nil, commenter, nil)).to eq([
         "First line",
         "\"Given line\"",
         "\"When line\"",
-        "\"Then line\"",
+        "\"    Then line\"",
         "\"And line\"",
         "\"But line\"",
         "\"* line\"",
+        "\"    * line\"",
         "Last line"
       ].join("\n"))
     end
