@@ -555,6 +555,38 @@ describe Hiptest::HandlebarsHelper do
         "Last line"
       ].join("\n"))
     end
+
+    it 'Surround a line with double quotes if it starts with an #' do
+      commenter = [
+        "First line",
+        "# an other line",
+        "",
+        "# last line"
+      ].join("\n")
+      expect(instance.hh_description_with_annotations(nil, commenter, nil)).to eq([
+        "First line",
+        "\"# an other line\"",
+        "",
+        "\"# last line\""
+      ].join("\n"))
+    end
+
+    it 'Surround a line with double quotes if it starts with an annotation steps (case insensitive)' do
+      commenter = [
+        "given line",
+        "when line",
+        "    THEN line",
+        "aND line",
+        "but line"
+      ].join("\n")
+      expect(instance.hh_description_with_annotations(nil, commenter, nil)).to eq([
+        "\"given line\"",
+        "\"when line\"",
+        "\"    THEN line\"",
+        "\"aND line\"",
+        "\"but line\""
+      ].join("\n"))
+    end
   end
 
   context 'hh_curly' do

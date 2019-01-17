@@ -426,6 +426,9 @@ describe 'JBehave rendering' do
           'First line',
           '"Given a line with steps annotation"',
           'Third line',
+          '',
+          '"# this line shoud be protected"',
+          '" AND this one should be"',
           'Given one step',
           ''
         ].join("\n")
