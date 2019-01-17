@@ -1,6 +1,10 @@
 Hiptest publisher changelog
 ===========================
 
+1.19.2
+------
+  - Fix description in Gherkin exports
+
 1.19.1
 ------
   - Fix description in Gherkin exports
