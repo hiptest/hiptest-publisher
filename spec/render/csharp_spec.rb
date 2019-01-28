@@ -505,7 +505,7 @@ describe 'Render as C#' do
       '            Actionwords.Click(".login-form input[type=submit]");',
       '            Actionwords.CheckUrl("/welcome");',
       '        }',
-      '        // ',
+      '        //',
       '        // Tags: myTag:somevalue',
       "        [Test]",
       '        public void FailedLogin() {',

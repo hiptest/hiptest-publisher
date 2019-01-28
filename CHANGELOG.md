@@ -1,6 +1,11 @@
 Hiptest publisher changelog
 ===========================
 
+1.19.3
+------
+
+  - Do not leave trailing whitespaces with {{comment}} helper
+
 1.19.2
 ------
   - Fix description in Gherkin exports
