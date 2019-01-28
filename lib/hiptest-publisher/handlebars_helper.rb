@@ -218,7 +218,8 @@ module Hiptest
 
     def hh_comment (context, commenter, block)
       block.fn(context).split("\n").map do |line|
-        "#{commenter} #{line}"
+        stripped_line = line.strip
+        stripped_line.empty? ? commenter : "#{commenter} #{line}"
       end.join("\n")
     end
 

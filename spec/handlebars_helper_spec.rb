@@ -49,6 +49,20 @@ describe Hiptest::HandlebarsHelper do
     MockHbBlock.new(txt_block)
   }
 
+  let(:txt_empty_lines_block) {
+    [
+      "A single line",
+      "Two\nLines",
+      "  ",
+      "Three\n  indented\n\n    lines"
+    ].join("\n")
+  }
+
+  let(:empty_lines_block) {
+    MockHbBlock.new(txt_empty_lines_block)
+  }
+
+
   context 'self.register_helpers' do
     it 'register the helpers needed for the application' do
       expect {
@@ -526,7 +540,20 @@ describe Hiptest::HandlebarsHelper do
         "/+ Three",
         "/+   indented",
         "/+     lines"
-        ].join("\n"))
+      ].join("\n"))
+    end
+
+    it 'does not leave trailing whitespaces' do
+      expect(instance.hh_comment(nil, '#', empty_lines_block)).to eq([
+        '# A single line',
+        '# Two',
+        '# Lines',
+        '#',
+        '# Three',
+        '#   indented',
+        '#',
+        '#     lines'
+      ].join("\n"))
     end
   end
 
