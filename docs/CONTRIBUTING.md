@@ -3,7 +3,7 @@ Contributing
 
 Do not hesitate to contribute to the project by adding support for your favorite language or test framework as explained below. This tool was built to be configurable and have the possibility to export tests in any language.
 
-We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [Hiptest test description language](https://app.hiptest.com/tdl_documentation.html) is needed to add support for new languages/frameworks.
+We did our best to make it as simple as possible, but some knowledge of ruby, handlebars and [HipTest test description language](https://app.hiptest.com/tdl_documentation.html) is needed to add support for new languages/frameworks.
 
 Adding support for a new language
 ---------------------------------
@@ -21,7 +21,7 @@ rspec spec/render/scala_spec.rb -f d
 Note for Gherkin based languages (such as Cucumber, Specflow, Behave, Behat, Lettuce and so on): those languages have another list of tests. If you want to add support for this kind of language, use ``spec/render__gherkin_template_spec.rb.sample`` file as a template instead. Good news, there are way less parts to complete for those languages :)
 
 Normally, you should see a lot of tests failing and that's totally normal (only 5 tests should pass).
-Now you have to update the expected output when exporting in Scala. That is the variables ``@<some name, mainly about the Foo Fighters>`` declared in the ``before(:each)`` block. For all expected output, we also added the corresponding text in Hiptest test description language.
+Now you have to update the expected output when exporting in Scala. That is the variables ``@<some name, mainly about the Foo Fighters>`` declared in the ``before(:each)`` block. For all expected output, we also added the corresponding text in HipTest test description language.
 
 Once all the expectations are written, it is time to write the template. The simplest way is to copy the Ruby sources:
 

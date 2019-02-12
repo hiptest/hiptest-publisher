@@ -1,4 +1,4 @@
-Hiptest publisher changelog
+HipTest Publisher Changelog
 ===========================
 
 1.19.3

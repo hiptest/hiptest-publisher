@@ -5,73 +5,73 @@ describe 'Render as Python' do
   include_context "shared render"
 
   before(:each) do
-    # In Hiptest: null
+    # In HipTest: null
     @null_rendered = 'None'
 
-    # In Hiptest: 'What is your quest ?'
+    # In HipTest: 'What is your quest ?'
     @what_is_your_quest_rendered = "'What is your quest ?'"
 
-    # In Hiptest: 3.14
+    # In HipTest: 3.14
     @pi_rendered = '3.14'
 
-    # In Hiptest: false
+    # In HipTest: false
     @false_rendered = 'False'
 
-    # In Hiptest: "${foo}fighters"
+    # In HipTest: "${foo}fighters"
     @foo_template_rendered = '"%sfighters" % (foo)'
 
-    # In Hiptest: "Fighters said \"Foo !\""
+    # In HipTest: "Fighters said \"Foo !\""
     @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
 
-    # In Hiptest: ""
+    # In HipTest: ""
     @empty_template_rendered = '""'
 
-    # In Hiptest: foo (as in 'foo := 1')
+    # In HipTest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
     @foo_bar_variable_rendered = 'foo_bar'
 
-    # In Hiptest: foo.fighters
+    # In HipTest: foo.fighters
     @foo_dot_fighters_rendered = 'foo.fighters'
 
-    # In Hiptest: foo['fighters']
+    # In HipTest: foo['fighters']
     @foo_brackets_fighters_rendered = "foo['fighters']"
 
-    # In Hiptest: -foo
+    # In HipTest: -foo
     @minus_foo_rendered = '-foo'
 
-    # In Hiptest: foo - 'fighters'
+    # In HipTest: foo - 'fighters'
     @foo_minus_fighters_rendered = "foo - 'fighters'"
 
-    # In Hiptest: (foo)
+    # In HipTest: (foo)
     @parenthesis_foo_rendered = '(foo)'
 
-    # In Hiptest: [foo, 'fighters']
+    # In HipTest: [foo, 'fighters']
     @foo_list_rendered = "[foo, 'fighters']"
 
-    # In Hiptest: foo: 'fighters'
+    # In HipTest: foo: 'fighters'
     @foo_fighters_prop_rendered = "'foo': 'fighters'"
 
-    # In Hiptest: {foo: 'fighters', Alt: J}
+    # In HipTest: {foo: 'fighters', Alt: J}
     @foo_dict_rendered = "{'foo': 'fighters', 'Alt': J}"
 
-    # In Hiptest: foo := 'fighters'
+    # In HipTest: foo := 'fighters'
     @assign_fighters_to_foo_rendered = "foo = 'fighters'"
 
-    # In Hiptest: call 'foo'
+    # In HipTest: call 'foo'
     @call_foo_rendered = "self.actionwords.foo()"
-    # In Hiptest: call 'foo bar'
+    # In HipTest: call 'foo bar'
     @call_foo_bar_rendered = "self.actionwords.foo_bar()"
 
-    # In Hiptest: call 'foo'('fighters')
+    # In HipTest: call 'foo'('fighters')
     @call_foo_with_fighters_rendered = "self.actionwords.foo(x = 'fighters')"
-    # In Hiptest: call 'foo bar'('fighters')
+    # In HipTest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "self.actionwords.foo_bar(x = 'fighters')"
     @call_with_special_characters_in_value_rendered = "self.actionwords.my_call_with_weird_arguments(free_text = \"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\")"
 
-    # In Hiptest: step {action: "${foo}fighters"}
+    # In HipTest: step {action: "${foo}fighters"}
     @action_foo_fighters_rendered = '# TODO: Implement action: "%sfighters" % (foo)'
 
-    # In Hiptest:
+    # In HipTest:
     # if (true)
     #   foo := 'fighters'
     #end
@@ -80,7 +80,7 @@ describe 'Render as Python' do
         "    foo = 'fighters'"
       ].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # if (true)
     #   foo := 'fighters'
     # else
@@ -93,7 +93,7 @@ describe 'Render as Python' do
         "    fighters = 'foo'"
       ].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # while (foo)
     #   fighters := 'foo'
     #   call 'foo' ('fighters')
@@ -104,19 +104,19 @@ describe 'Render as Python' do
         "    self.actionwords.foo(x = 'fighters')"
       ].join("\n")
 
-    # In Hiptest: @myTag
+    # In HipTest: @myTag
     @simple_tag_rendered = 'myTag'
 
-    # In Hiptest: @myTag:somevalue
+    # In HipTest: @myTag:somevalue
     @valued_tag_rendered = 'myTag:somevalue'
 
-    # In Hiptest: plic (as in: call 'foo'(plic))
+    # In HipTest: plic (as in: call 'foo'(plic))
     @plic_param_rendered = 'plic'
 
-    # In Hiptest: plic = 'ploc' (as in: call 'foo'(plic = 'ploc'))
+    # In HipTest: plic = 'ploc' (as in: call 'foo'(plic = 'ploc'))
     @plic_param_default_ploc_rendered = "plic = 'ploc'"
 
-    # In Hiptest:
+    # In HipTest:
     # actionword 'my action word' do
     # end
     @empty_action_word_rendered = [
@@ -124,7 +124,7 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
@@ -140,7 +140,7 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
@@ -148,7 +148,7 @@ describe 'Render as Python' do
       "    pass",
       ""].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # @myTag
     # actionword 'compare to pi' (x) do
     #   foo := 3.14
@@ -171,7 +171,7 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # actionword 'my action word' do
     #   step {action: "basic action"}
     # end
@@ -181,7 +181,7 @@ describe 'Render as Python' do
       "    raise NotImplementedError",
       ""].join("\n")
 
-    # In Hiptest, correspond to two action words:
+    # In HipTest, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -201,7 +201,7 @@ describe 'Render as Python' do
       "        self.first_action_word()",
       ""].join("\n")
 
-    # In Hiptest, correspond to these action words with parameters:
+    # In HipTest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -242,7 +242,7 @@ describe 'Render as Python' do
       "        pass",
       ""].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # @myTag
     # scenario 'compare to pi' (x) do
     #   foo := 3.14
@@ -391,7 +391,7 @@ describe 'Render as Python' do
       ].join("\n")
 
 
-    # In Hiptest, correspond to two scenarios in a project called 'My project'
+    # In HipTest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do
     # end
     # scenario 'second scenario' do

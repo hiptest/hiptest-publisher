@@ -1,4 +1,4 @@
-Installing Hiptest-publisher on OSX
+Installing hiptest-publisher on OSX
 ===================================
 
 Many thanks to Adam (@apowers313) for documenting the installation with the default OSX ruby. If you use RVM, using ``gem install hiptest-publisher`` should be enough.

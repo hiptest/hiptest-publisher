@@ -1,10 +1,10 @@
-Hiptest nodes documentation
+HipTest nodes documentation
 ===========================
 
-Each element in a Hiptest project is translated in Hiptest publisher as a Node. This documentation will show for each type of Node its equivalent in Hiptest and some hints on its content.
+Each element in a HipTest project is translated in HipTest publisher as a Node. This documentation will show for each type of Node its equivalent in HipTest and some hints on its content.
 To ease understanding, we'll sort them by type.
 
-Some knowledge of the [Hiptest test description language](https://hiptest.net/tdl_documentation.html) is needed here as all example will be written with this language (you can have example in your project by opening a scenario and clicking on the "Go to code" link above the definition).
+Some knowledge of the [HipTest test description language](https://hiptest.net/tdl_documentation.html) is needed here as all example will be written with this language (you can have example in your project by opening a scenario and clicking on the "Go to code" link above the definition).
 
 Literals and types
 ------------------
@@ -71,7 +71,7 @@ This node has a single child, 'items', that is a list of [Property](https://gith
 
 ### [Property](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#property)
 
-This node is never directly written in Hiptest. It has two children, 'key' and 'value'.
+This node is never directly written in HipTest. It has two children, 'key' and 'value'.
 
 
 ### [Template](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#template)
@@ -234,14 +234,14 @@ This type of node has only one child, 'datasets', which is a list of [Dataset](h
 
 ### [Dataset](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#dataset)
 
-In Hiptest, a dataset correspond to a line of a datatable.
+In HipTest, a dataset correspond to a line of a datatable.
 
 This type of node has two children:
- - name: a string giving the name of the dataset (the column "[Dataset](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#dataset) name" in Hiptest)
+ - name: a string giving the name of the dataset (the column "[Dataset](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#dataset) name" in HipTest)
  - arguments: a list of [Argument](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#argument) nodes, corresponding to the user input.
 
 
-Hiptest objects
+HipTest objects
 ---------------
 
 ### [Actionword](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#actionword)
@@ -289,7 +289,7 @@ Use `folder` to get the containing folder.
 
 ### [Folder](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#folder)
 
-Represent a folder in the scenario's hierarchical view in Hiptest. It has three children:
+Represent a folder in the scenario's hierarchical view in HipTest. It has three children:
  - name: a string
  - description: a string
  - subfolders: a list of [Folder](https://github.com/hiptest/hiptest-publisher/blob/master/docs/nodes.md#folder) nodes

@@ -152,7 +152,7 @@ describe Hiptest::Client do
   describe '#fetch_project_export' do
     let(:args) { ["--token", "123456789"] }
 
-    it 'fetches the project xml from Hiptest server' do
+    it 'fetches the project xml from HipTest server' do
       sent_xml = "<xml_everywhere/>"
       stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(body: sent_xml)
@@ -202,7 +202,7 @@ describe Hiptest::Client do
             to_return(status: 404)
           expect {
             client.fetch_project_export
-          }.to raise_error(Hiptest::ClientError, "Cannot get the list of available test runs from Hiptest. Try using --test-run-id instead of --test-run-name")
+          }.to raise_error(Hiptest::ClientError, "Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name")
         end
       end
     end
@@ -210,7 +210,7 @@ describe Hiptest::Client do
     context "with --test-run-id" do
       let(:args) { ["--token", "123456789", "--test-run-id", "98"] }
 
-      it "fetches the test run xml from Hiptest server" do
+      it "fetches the test run xml from HipTest server" do
         stub_available_test_runs(test_runs: [tr_98__Sprint_13])
         sent_xml = "<xml_everywhere/>"
         stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
@@ -242,7 +242,7 @@ describe Hiptest::Client do
         end
       end
 
-      context "on old Hiptest version (no /publication/<token>/test_runs API)" do
+      context "on old HipTest version (no /publication/<token>/test_runs API)" do
         it "uses the given test run id and ignores that the API does not exist" do
           stub_request(:get, "https://app.hiptest.com/publication/123456789/test_runs").
             to_return(status: 404)

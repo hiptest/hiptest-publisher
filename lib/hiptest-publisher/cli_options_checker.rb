@@ -90,7 +90,7 @@ module Hiptest
           raise CliOptionError, [
             "Missing argument --token: you must specify project secret token with --token=<project-token>",
             "",
-            "The project secret token can be found on Hiptest in the settings section, under",
+            "The project secret token can be found on HipTest in the settings section, under",
             "'Publication settings'. It is a sequence of numbers uniquely identifying your",
             "project.",
             "",
@@ -193,7 +193,7 @@ module Hiptest
           next if tag_compatible?(val.strip)
 
           raise CliOptionError, [
-            "#{option_name} should be a list of comma separated tags in Hiptest",
+            "#{option_name} should be a list of comma separated tags in HipTest",
             "",
             "Found: #{val.strip.inspect}"
           ].join("\n")

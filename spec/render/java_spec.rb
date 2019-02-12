@@ -5,78 +5,78 @@ describe 'Render as Java' do
   include_context "shared render"
 
   before(:each) do
-    # In Hiptest: null
+    # In HipTest: null
     @null_rendered = 'null'
 
-    # In Hiptest: 'What is your quest ?'
+    # In HipTest: 'What is your quest ?'
     @what_is_your_quest_rendered = '"What is your quest ?"'
 
-    # In Hiptest: 3.14
+    # In HipTest: 3.14
     @pi_rendered = '3.14'
 
-    # In Hiptest: false
+    # In HipTest: false
     @false_rendered = 'false'
 
-    # In Hiptest: "${foo}fighters"
+    # In HipTest: "${foo}fighters"
     @foo_template_rendered = 'String.format("%sfighters", foo)'
 
-    # In Hiptest: "Fighters said \"Foo !\""
+    # In HipTest: "Fighters said \"Foo !\""
     @double_quotes_template_rendered = '"Fighters said \"Foo !\""'
 
-    # In Hiptest: ""
+    # In HipTest: ""
     @empty_template_rendered = '""'
 
-    # In Hiptest: foo (as in 'foo := 1')
+    # In HipTest: foo (as in 'foo := 1')
     @foo_variable_rendered = 'foo'
     @foo_bar_variable_rendered = 'fooBar'
 
-    # In Hiptest: foo.fighters
+    # In HipTest: foo.fighters
     # TODO: Shouldn't have a better manner ?
     @foo_dot_fighters_rendered = 'foo.fighters'
 
-    # In Hiptest: foo['fighters']
+    # In HipTest: foo['fighters']
     # TODO: foo should be a map in Java, depend usage: getter or setter ?
     @foo_brackets_fighters_rendered = 'foo.get("fighters")'
 
-    # In Hiptest: -foo
+    # In HipTest: -foo
     @minus_foo_rendered = '-foo'
 
-    # In Hiptest: foo - 'fighters'
+    # In HipTest: foo - 'fighters'
     @foo_minus_fighters_rendered = 'foo - "fighters"'
 
-    # In Hiptest: (foo)
+    # In HipTest: (foo)
     @parenthesis_foo_rendered = '(foo)'
 
-    # In Hiptest: [foo, 'fighters']
+    # In HipTest: [foo, 'fighters']
     @foo_list_rendered = 'new String[]{foo, "fighters"}'
 
-    # In Hiptest: foo: 'fighters'
+    # In HipTest: foo: 'fighters'
     # TODO: What is a property in Java ?
     @foo_fighters_prop_rendered = 'foo: "fighters"'
 
-    # In Hiptest: {foo: 'fighters', Alt: J}
+    # In HipTest: {foo: 'fighters', Alt: J}
     # TODO: What is a dictionary in Java ?
     @foo_dict_rendered = '{foo: "fighters", Alt: J}'
 
-    # In Hiptest: foo := 'fighters'
+    # In HipTest: foo := 'fighters'
     @assign_fighters_to_foo_rendered = "foo = \"fighters\";"
 
-    # In Hiptest: call 'foo'
+    # In HipTest: call 'foo'
     @call_foo_rendered = "actionwords.foo();"
-    # In Hiptest: call 'foo bar'
+    # In HipTest: call 'foo bar'
     @call_foo_bar_rendered = "actionwords.fooBar();"
 
-    # In Hiptest: call 'foo'('fighters')
+    # In HipTest: call 'foo'('fighters')
     @call_foo_with_fighters_rendered = 'actionwords.foo("fighters");'
-    # In Hiptest: call 'foo bar'('fighters')
+    # In HipTest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = 'actionwords.fooBar("fighters");'
 
-    # In Hiptest: step {action: "${foo}fighters"}
+    # In HipTest: step {action: "${foo}fighters"}
     # TODO: it is a little big strange to use a string format
     @action_foo_fighters_rendered = '// TODO: Implement action: String.format("%sfighters", foo)'
     @call_with_special_characters_in_value_rendered = "actionwords.myCallWithWeirdArguments(\"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\");"
 
-    # In Hiptest:
+    # In HipTest:
     # if (true)
     #   foo := 'fighters'
     #end
@@ -86,7 +86,7 @@ describe 'Render as Java' do
       "}"
     ].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # if (true)
     #   foo := 'fighters'
     # else
@@ -100,7 +100,7 @@ describe 'Render as Java' do
       "}"
     ].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # while (foo)
     #   fighters := 'foo'
     #   foo('fighters')
@@ -112,22 +112,22 @@ describe 'Render as Java' do
       "}"
     ].join("\n")
 
-    # In Hiptest: @myTag
+    # In HipTest: @myTag
     @simple_tag_rendered = 'myTag'
 
-    # In Hiptest: @myTag:somevalue
+    # In HipTest: @myTag:somevalue
     @valued_tag_rendered = 'myTag:somevalue'
 
-    # In Hiptest: plic (as in: definition 'foo'(plic))
+    # In HipTest: plic (as in: definition 'foo'(plic))
     # TODO: choose the right type
     @plic_param_rendered = 'String plic'
 
-    # In Hiptest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
+    # In HipTest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
     # TODO: how render default value ?
     # TODO: test with parameter name: plic_et
     @plic_param_default_ploc_rendered = "String plic"
 
-    # In Hiptest:
+    # In HipTest:
     # actionword 'my action word' do
     # end
     @empty_action_word_rendered = [
@@ -136,7 +136,7 @@ describe 'Render as Java' do
       "}"].join("\n")
 
 
-    # In Hiptest:
+    # In HipTest:
     # @myTag @myTag:somevalue
     # actionword 'my action word' do
     # end
@@ -150,7 +150,7 @@ describe 'Render as Java' do
       "    // Some description",
       "}"].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # actionword 'my action word' (plic, flip = 'flap') do
     # end
     @parameterized_action_word_rendered = [
@@ -158,7 +158,7 @@ describe 'Render as Java' do
       "",
       "}"].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # @myTag
     # actionword 'compare to pi' (x) do
     #   foo := 3.14
@@ -182,7 +182,7 @@ describe 'Render as Java' do
       "    throw new UnsupportedOperationException();",
       "}"].join("\n")
 
-    # In Hiptest:
+    # In HipTest:
     # actionword 'my action word' do
     #   step {action: "basic action"}
     # end
@@ -192,7 +192,7 @@ describe 'Render as Java' do
       "    throw new UnsupportedOperationException();",
       "}"].join("\n")
 
-    # In Hiptest, correspond to two action words:
+    # In HipTest, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -212,7 +212,7 @@ describe 'Render as Java' do
       "    }",
       "}"].join("\n")
 
-    # In Hiptest, correspond to these action words with parameters:
+    # In HipTest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -261,7 +261,7 @@ describe 'Render as Java' do
 
   context 'JUnit' do
     before(:each) do
-      # In Hiptest:
+      # In HipTest:
       # @myTag
       # scenario 'compare to pi' (x) do
       #   foo := 3.14
@@ -441,7 +441,7 @@ describe 'Render as Java' do
         "}"
       ].join("\n")
 
-      # In Hiptest, correspond to two scenarios in a project called 'My project'
+      # In HipTest, correspond to two scenarios in a project called 'My project'
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do
@@ -1088,7 +1088,7 @@ describe 'Render as Java' do
 
   context 'Espresso' do
     before(:each) do
-      # In Hiptest:
+      # In HipTest:
       # @myTag
       # scenario 'compare to pi' (x) do
       #   foo := 3.14
@@ -1308,7 +1308,7 @@ describe 'Render as Java' do
         '}'
       ].join("\n")
 
-      # In Hiptest, correspond to two scenarios in a project called 'My project'
+      # In HipTest, correspond to two scenarios in a project called 'My project'
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do
@@ -1576,4 +1576,3 @@ describe 'default package' do
     expect(rendering_context.package).to eq('com.example')
   end
 end
-

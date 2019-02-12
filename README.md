@@ -1,4 +1,4 @@
-Hiptest Publisher
+HipTest Publisher
 ==============
 
 [![Build Status Linux](https://travis-ci.org/hiptest/hiptest-publisher.svg?branch=master)](https://travis-ci.org/hiptest/hiptest-publisher)
@@ -44,7 +44,7 @@ Note: for Windows users, take a look at [this Windows installation guide](docs/I
 Exporting a project
 -------------------
 
-Go to one of your [Hiptest projects](https://app.hiptest.com/projects) and select the Settings tab.
+Go to one of your [HipTest projects](https://app.hiptest.com/projects) and select the Settings tab.
 This tab is available only for projects you own.
 From there, copy the secret token and run this command line:
 
@@ -91,7 +91,7 @@ hiptest-publisher --help
 You could obtain for example:
 
 ```shell
-Exports tests from Hiptest for automation.
+Exports tests from HipTest for automation.
 
 Specific options:
     -t, --token=TOKEN                Secret token (available in your project settings)
@@ -105,7 +105,7 @@ Specific options:
         --test-run-name=NAME         Export data from a test run identified by its name
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
         --without=CATEGORIES         Exclude file categories from import (--only=list to list them)
-    -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from Hiptest
+    -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from HipTest
         --tests-only                 (deprecated) alias for --only=tests (default: false)
         --actionwords-only           (deprecated) alias for --only=actionwords (default: false)
         --actionwords-signature      Export actionwords signature (default: false)
@@ -129,13 +129,13 @@ Specific options:
         --global-failure-on-missing-reports
                                      When there is no results file to push, report a global failure (default: false)
         --push-format=tap            Format of the test results (cucumber-json, junit, nunit, robot, tap) (default: tap)
-        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
+        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in HipTest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
         --[no-]parent-folders-tags   Export tags from parent folder (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
         --parameter-delimiter        Parameter delimiter (for Gherkin based export only) (default: ")
         --with-dataset-names         Export dataset name when creating feature files (note: available only for Gherkin-based exports) (default: false)
-        --keep-filenames             Keep the same name as in Hiptest for the test files (note: may cause encoding issues) (default: false)
-        --keep-foldernames           Keep the same name as in Hiptest for the folders (note: may cause encoding issues) (default: false)
+        --keep-filenames             Keep the same name as in HipTest for the test files (note: may cause encoding issues) (default: false)
+        --keep-foldernames           Keep the same name as in HipTest for the folders (note: may cause encoding issues) (default: false)
         --filter-on-scenario-ids=IDS Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)
         --filter-on-folder-ids=IDS   Filter on folder ids (use commas to separate ids when fetching multiple folders)
         --filter-on-scenario-name=NAME
@@ -187,11 +187,11 @@ If username and password are required:
 http_proxy=http://<username>:<password>@<proxy_host>:<proxy_port>
 ```
 
-Posting results to Hiptest
+Posting results to HipTest
 --------------------------
 
-You can use the options --push to push the results back to Hiptest. For this, you first need to generate the test code from a Test run by specifying option ``--test-run-id=<xxx>`` during code generation (or add it to the configuration file).
-The tests must then generate a test report that is supported by Hiptest. Currently four types of test results are handled:
+You can use the options --push to push the results back to HipTest. For this, you first need to generate the test code from a Test run by specifying option ``--test-run-id=<xxx>`` during code generation (or add it to the configuration file).
+The tests must then generate a test report that is supported by HipTest. Currently four types of test results are handled:
  - jUnit XML format
  - [NUnit XML v2 format](https://github.com/nunit/docs/wiki/XML-Formats#v2-test-results)
  - [TAP (Test Anything Protocol)](https://testanything.org/)

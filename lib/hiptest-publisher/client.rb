@@ -122,7 +122,7 @@ module Hiptest
         if cli_options.test_run_id?
           cli_options.test_run_id
         else
-          raise ClientError, "Cannot get the list of available test runs from Hiptest. Try using --test-run-id instead of --test-run-name"
+          raise ClientError, "Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name"
         end
       else
         matching_test_run = available_test_runs.find { |test_run| test_run[key] == searched_value }

@@ -315,7 +315,7 @@ describe Hiptest::NodeModifiers::ParameterTypeAdder do
 
   context 'Call imbrication' do
     let(:scenario) {
-      # In Hiptest:
+      # In HipTest:
       # scenario 'My scenario' (x) do
       #   call 'aw1' (p1 = 16)
       #   call 'aw2' (p1 = x)

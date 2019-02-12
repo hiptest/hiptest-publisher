@@ -255,10 +255,10 @@ describe Hiptest::Publisher do
         expect(STDOUT).to have_printed("Exporting scenarios")
       end
 
-      it "does not print 'Fetching data from Hiptest'" do
+      it "does not print 'Fetching data from HipTest'" do
         WebMock.reset!  # to ensure failure if any http requests are done
         run_publisher_command("--xml-file", "samples/xml_input/Hiptest publisher.xml")
-        expect(STDOUT).to have_not_printed("Fetching data from Hiptest")
+        expect(STDOUT).to have_not_printed("Fetching data from HipTest")
       end
 
       it "does not need --token argument" do
@@ -698,7 +698,7 @@ describe Hiptest::Publisher do
       end
     end
 
-    context 'when Hiptest returns a 404 error' do
+    context 'when HipTest returns a 404 error' do
       let(:result_file) { create_file('result.tap') }
 
       before do
@@ -711,12 +711,12 @@ describe Hiptest::Publisher do
         publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
         publisher.run
 
-        expect(STDERR).to have_printed("Hiptest API returned error 404")
-        expect(STDERR).to have_printed("Did you specify the project token of an existing Hiptest project?")
+        expect(STDERR).to have_printed("HipTest API returned error 404")
+        expect(STDERR).to have_printed("Did you specify the project token of an existing HipTest project?")
       end
     end
 
-    context 'when Hiptest returns a 422 error' do
+    context 'when HipTest returns a 422 error' do
       let(:result_file) { create_file('result.jsonb') }
 
       before do
@@ -736,7 +736,7 @@ describe Hiptest::Publisher do
         publisher = Hiptest::Publisher.new(["--token", "456", "--push-format", "jsonb", "--push", result_file], listeners: listeners)
         publisher.run
 
-        expect(STDERR).to have_printed("Hiptest API returned error 422")
+        expect(STDERR).to have_printed("HipTest API returned error 422")
         expect(STDERR).to have_printed(<<~CONSOLE_OUTPUT)
           Unknown format jsonb. Available formats are:
            - android-studio
@@ -862,7 +862,7 @@ describe Hiptest::Publisher do
         expect {
           run_publisher_expecting_exit('-t', '123', '--filter-on-tags', 'abc, pli!c')
         }.to output([
-          'filter_on_tags should be a list of comma separated tags in Hiptest',
+          'filter_on_tags should be a list of comma separated tags in HipTest',
           '',
           'Found: "pli!c"',
           ""

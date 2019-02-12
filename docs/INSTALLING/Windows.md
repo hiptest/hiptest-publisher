@@ -1,4 +1,4 @@
-Installing Hiptest-publisher on Windows
+Installing hiptest-publisher on Windows
 =======================================
 
 Since version 0.3.4, we support installing hiptest-publisher on Windows. Here's a quick how-to:

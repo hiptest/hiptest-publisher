@@ -82,7 +82,7 @@ module Hiptest
     end
 
     def fetch_xml_file
-      reporter.with_status_message "Fetching data from Hiptest" do
+      reporter.with_status_message "Fetching data from HipTest" do
         @client.fetch_project_export
       end
     rescue ClientError => err
@@ -277,11 +277,11 @@ module Hiptest
     end
 
     def report_hiptest_api_error(response)
-      reporter.failure_message("Hiptest API returned error #{response.code}")
+      reporter.failure_message("HipTest API returned error #{response.code}")
       if response.code == "422" && response.body.start_with?("Unknown format")
         STDERR.print response.body.chomp + "\n"
       elsif response.code == "404"
-        STDERR.print "Did you specify the project token of an existing Hiptest project?\n"
+        STDERR.print "Did you specify the project token of an existing HipTest project?\n"
       end
     end
 

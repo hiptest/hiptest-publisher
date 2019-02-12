@@ -217,7 +217,7 @@ class OptionsParser
       Option.new(nil, 'test-run-name=NAME', '', String, "Export data from a test run identified by its name", :test_run_name),
       Option.new(nil, 'only=CATEGORIES', nil, String, "Restrict export to given file categories (--only=list to list them)", :only),
       Option.new(nil, 'without=CATEGORIES', nil, String, "Exclude file categories from import (--only=list to list them)", :without),
-      Option.new('x', 'xml-file=PROJECT_XML', nil, String, "XML file to use instead of fetching it from Hiptest", :xml_file),
+      Option.new('x', 'xml-file=PROJECT_XML', nil, String, "XML file to use instead of fetching it from HipTest", :xml_file),
       Option.new(nil, 'tests-only', false, nil, "(deprecated) alias for --only=tests", :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, "(deprecated) alias for --only=actionwords", :actionwords_only),
       Option.new(nil, 'actionwords-signature', false, nil, "Export actionwords signature", :actionwords_signature),
@@ -242,8 +242,8 @@ class OptionsParser
       Option.new(nil, '[no-]parent-folder-tags', true, nil, 'Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports)', :parent_folder_tags),
       Option.new(nil, 'parameter-delimiter', '"', String, 'Parameter delimiter (for Gherkin based export only)', :parameter_delimiter),
       Option.new(nil, 'with-dataset-names', false, nil, 'Export dataset name when creating feature files (note: available only for Gherkin-based exports)', :with_dataset_names),
-      Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in Hiptest for the test files (note: may cause encoding issues)", :keep_filenames),
-      Option.new(nil, 'keep-foldernames', false, nil, "Keep the same name as in Hiptest for the folders (note: may cause encoding issues)", :keep_foldernames),
+      Option.new(nil, 'keep-filenames', false, nil, "Keep the same name as in HipTest for the test files (note: may cause encoding issues)", :keep_filenames),
+      Option.new(nil, 'keep-foldernames', false, nil, "Keep the same name as in HipTest for the folders (note: may cause encoding issues)", :keep_foldernames),
       Option.new(nil, 'filter-on-scenario-ids=IDS', '', String, "Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)", :filter_on_scenario_ids),
       Option.new(nil, 'filter-on-folder-ids=IDS', '', String, "Filter on folder ids (use commas to separate ids when fetching multiple folders)", :filter_on_folder_ids),
       Option.new(nil, 'filter-on-scenario-name=NAME', '', String, "Filter on scenario name (only one name is accepted)", :filter_on_scenario_name),
@@ -263,7 +263,7 @@ class OptionsParser
       opts.version = hiptest_publisher_version if hiptest_publisher_version
       opts.banner = "Usage: ruby publisher.rb [options]"
       opts.separator ""
-      opts.separator "Exports tests from Hiptest for automation."
+      opts.separator "Exports tests from HipTest for automation."
       opts.separator ""
       opts.separator "Specific options:"
 

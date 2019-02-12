@@ -40,11 +40,11 @@ describe 'Render as Ruby' do
     # Statements
     @assign_fighters_to_foo_rendered = "foo = 'fighters'"
     @call_foo_rendered = "foo"
-    # In Hiptest: call 'foo bar'
+    # In HipTest: call 'foo bar'
     @call_foo_bar_rendered = "foo_bar"
 
     @call_foo_with_fighters_rendered = "foo('fighters')"
-    # In Hiptest: call 'foo bar'('fighters')
+    # In HipTest: call 'foo bar'('fighters')
     @call_foo_bar_with_fighters_rendered = "foo_bar('fighters')"
     @call_with_special_characters_in_value_rendered = "my_call_with_weird_arguments(\"{\\n  this: 'is',\\n  some: ['JSON', 'outputed'],\\n  as: 'a string'\\n}\")"
 
@@ -134,7 +134,7 @@ describe 'Render as Ruby' do
       "  end",
       "end"].join("\n")
 
-    # In Hiptest, correspond to these action words with parameters:
+    # In HipTest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end

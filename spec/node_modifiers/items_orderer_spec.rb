@@ -48,7 +48,7 @@ describe Hiptest::NodeModifiers::ItemsOrderer do
       expect(root_folder_scenarios_names).to eq(['Another scenario', 'Das scenario', 'First scenario', 'My scenario'])
     end
 
-    it 'its order in Hiptest (using sort="order")' do
+    it 'its order in HipTest (using sort="order")' do
       Hiptest::NodeModifiers::ItemsOrderer.add(project, 'order')
       expect(root_folder_subfolders_names).to eq(['Second folder', 'First folder', 'Ah ah third folder'])
       expect(root_folder_scenarios_names).to eq(['Das scenario', 'Another scenario', 'First scenario', 'My scenario'])

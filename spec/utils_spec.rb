@@ -2,8 +2,7 @@ require_relative 'spec_helper'
 require_relative "../lib/hiptest-publisher/formatters/reporter"
 require_relative '../lib/hiptest-publisher/utils'
 
-describe 'Hiptest publisher utils' do
-
+describe 'hiptest-publisher utils' do
   describe "singularize" do
     it "singularizes a plural form" do
       expect(singularize("names")).to eq("name")
