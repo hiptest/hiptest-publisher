@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+1.20.0
+------
+
+ - Add --meta option to add more flexibility in code generation (see: https://github.com/hiptest/hiptest-publisher/blob/master/docs/Using%20meta%20data.md#using-meta-data)
+
 1.19.3
 ------
 
