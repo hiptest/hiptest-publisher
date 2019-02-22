@@ -567,6 +567,7 @@ class LanguageGroupConfig
       node: node,
       call_prefix: @language_group_params[:call_prefix],
       package: @language_group_params[:package],
+      meta: @language_group_params[:meta],
       parameter_delimiter: @user_params[:parameter_delimiter],
       namespace: @language_group_params[:namespace],
       uids: @user_params[:uids],
@@ -735,6 +736,7 @@ class LanguageConfigParser
     # List of options that can be set in the config file but not in command line
     non_visible_options = {
       package: @cli_options.package,
+      meta: meta,
       namespace: @cli_options.namespace,
       test_export_dir: @cli_options.test_export_dir,
       tests_ouput_dir: @cli_options.tests_ouput_dir,

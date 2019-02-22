@@ -87,4 +87,66 @@ describe Hiptest::Publisher do
       end
     end
   end
+
+  context 'using --meta option in templates' do
+    let(:templates_dir) {
+      @templates_dir_created = true
+      Dir.mktmpdir
+    }
+
+    before(:each) {
+      File.write("#{templates_dir}/scenarios.hbs", "This is a custom template referencing meta:custom {{ context.meta.custom }}")
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+        to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
+    }
+
+    after(:each) {
+      if @templates_dir_created
+        FileUtils.rm_rf(templates_dir)
+      end
+    }
+
+    let(:arguments) {
+      [
+        "--language", 'ruby',
+        "--output-directory", output_dir,
+        "--token", "123456789",
+        "--overriden_templates", templates_dir
+      ]
+    }
+
+    it 'does not fail when the meta is not set' do
+      expect {
+        publisher = Hiptest::Publisher.new(arguments, listeners: [ErrorListener.new])
+        publisher.run
+      }.not_to raise_error
+
+      expect(File.read("#{output_dir}/project_spec.rb")).to eq("This is a custom template referencing meta:custom ")
+    end
+
+    it 'uses the value when set' do
+      arguments.concat(["--meta", "custom:My_meta_value_in_use"])
+      expect {
+        publisher = Hiptest::Publisher.new(arguments, listeners: [ErrorListener.new])
+        publisher.run
+      }.not_to raise_error
+
+      expect(File.read("#{output_dir}/project_spec.rb")).to eq("This is a custom template referencing meta:custom My_meta_value_in_use")
+    end
+
+    it 'can correctly use boolean values' do
+      File.write("#{templates_dir}/scenarios.hbs", [
+        "{{#unless context.meta.boolean}}This will be displayed as 'false' is interpreted as a boolean{{/unless}}",
+        "{{#unless context.meta.nonBoolean}}This will not, even 0 is considered as a String{{/unless}}"
+      ].join("\n"))
+
+      arguments.concat(["--meta", "boolean:false,nonBoolean:0"])
+      expect {
+        publisher = Hiptest::Publisher.new(arguments, listeners: [ErrorListener.new])
+        publisher.run
+      }.not_to raise_error
+
+      expect(File.read("#{output_dir}/project_spec.rb")).to eq("This will be displayed as 'false' is interpreted as a boolean\n")
+    end
+  end
 end
