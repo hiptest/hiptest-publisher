@@ -251,6 +251,7 @@ class OptionsParser
       Option.new(nil, 'filter-on-tags=TAGS', '', String, "Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)", :filter_on_tags),
       Option.new(nil, 'filter-on-status=STATUS', '', String, "Filter on test status in last build (use in conjunction with a test run)", :filter_on_status),
       Option.new(nil, 'not-recursive', false, nil, "Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children", :not_recursive),
+      Option.new(nil, 'meta=META', '', String, "Meta informations that can be used for customizing templates", :meta),
       Option.new(nil, 'check-version', false, nil, "Check if a new release of hiptest-publisher is available", :check_version),
       Option.new(nil, 'force', false, nil, "Force overwrite of existing files (do not apply to test files)", :force_overwrite),
       Option.new('v', 'verbose', false, nil, "Run verbosely", :verbose)

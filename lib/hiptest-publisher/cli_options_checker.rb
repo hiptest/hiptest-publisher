@@ -23,6 +23,7 @@ module Hiptest
       check_secret_token
       check_filters
       check_status_filter
+      check_meta
 
       if cli_options.push?
         check_push_file
@@ -200,6 +201,20 @@ module Hiptest
       end
     end
 
+    def check_meta
+      value = cli_options.meta
+      return if absent?(value)
+
+      value.split(',').each do |val|
+          next if meta_compatible?(val.strip)
+
+          raise CliOptionError, [
+            "meta should be a list of comma separated key:value items (eg. OS:Linux,CI:Jenkins)",
+            "",
+            "Found: #{val.strip.inspect}"
+          ].join("\n")
+      end    end
+
     def check_language_and_only
       if present?(cli_options.language)
         begin
@@ -247,6 +262,10 @@ module Hiptest
 
     def tag_compatible?(value)
       value =~ /\A[a-zA-Z0-9_-]*(: ?[a-zA-Z0-9_-]*)?\z/
+    end
+
+    def meta_compatible?(value)
+      value =~ /\A[a-zA-Z0-9_-]*: ?[a-zA-Z0-9_-]*\z/
     end
 
     def formatted_categories(categories)

@@ -880,6 +880,14 @@ describe Hiptest::Publisher do
       end
     end
 
+    context 'with meta' do
+      it 'outputs an error message indicating when invalid meta are found' do
+        expect {
+          run_publisher_expecting_exit("--language", "hello", "--token", "123", "--meta", "valid:meta,invalid-meta")
+        }.to output("meta should be a list of comma separated key:value items (eg. OS:Linux,CI:Jenkins)\n\nFound: \"invalid-meta\"\n").to_stdout
+      end
+    end
+
     context 'with unknown language ONLY' do
       it 'outputs an error message indicating that language is unknown' do
         expect {
