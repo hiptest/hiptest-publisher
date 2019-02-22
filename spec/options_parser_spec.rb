@@ -357,6 +357,37 @@ describe LanguageConfigParser do
       expect(cli_options.library_output_directory).to eq(actionwords_output_directory)
     end
   end
+
+  describe '#meta' do
+    it 'provides an empty hash when the option meta is not set' do
+      options = CliOptions.new(language: "ruby")
+      options.normalize!
+      expect(LanguageConfigParser.new(options).meta).to eq({})
+
+    end
+
+    it 'provides a hash based on the values provided my the meta option' do
+      options = CliOptions.new(language: "ruby", meta: "OS:Windows,CI:Jenkins,VERSION:2")
+      options.normalize!
+      expect(LanguageConfigParser.new(options).meta).to eq({'OS' => 'Windows', 'CI' => 'Jenkins', 'VERSION' => '2'})
+    end
+
+    it 'automatically strips the keys but leaves the values intact' do
+      options = CliOptions.new(language: "ruby", meta: "OS:Windows  , CI:Jenkins")
+      options.normalize!
+      expect(LanguageConfigParser.new(options).meta).to eq({'OS' => 'Windows  ', 'CI' => 'Jenkins'})
+    end
+
+    it 'translates to booleans when the value is true or false' do
+      options = CliOptions.new(language: "ruby", meta: "Bool:true,OtherBool:false,NonBool: false ")
+      options.normalize!
+      expect(LanguageConfigParser.new(options).meta).to eq({
+        'Bool' => true,
+        'OtherBool' => false,
+        'NonBool' => ' false '
+      })
+    end
+  end
 end
 
 describe LanguageGroupConfig do

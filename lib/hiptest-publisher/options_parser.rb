@@ -701,6 +701,21 @@ class LanguageConfigParser
     name.send(get_key_from_group('actionwords', 'naming_convention'))
   end
 
+  def meta
+    treated = {}
+    meta_opt = @cli_options.meta || ""
+
+    meta_opt.split(',').each do |m|
+      key, value = m.split(':')
+      value = true if value == 'true'
+      value = false if value == 'false'
+
+      treated[key.strip] = value
+    end
+
+    treated
+  end
+
   private
 
   def get_key_from_group(group, key)
