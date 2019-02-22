@@ -1,7 +1,7 @@
 Using meta data
 ===============
 
-Meta are some data you want to be able to use in your templates but do not want to hardcode there. You can specify them in the command line using the ```--meta=key:value,key2:value2``` argument and reference them in your templates with {{ context.meta.<key>}}.
+Meta are some data you want to be able to use in your templates but do not want to hardcode there. You can specify them in the command line using the ```--meta=key:value,key2:value2``` argument and reference them in your templates with {{ context.meta.key}}.
 
 A classical example would be to run the same tests against multiple browser. Let's have a look at the last overiden template from [this blogpost about overriding templates](https://hiptest.com/blog/automation/customising-your-export-with-hiptest-publisher-part-ii-customising-the-templates/). In this blog-post, the driver type was hard-coded.
 Let's do this better with meta data.
