@@ -111,7 +111,7 @@ describe Hiptest::Publisher do
         "--language", 'ruby',
         "--output-directory", output_dir,
         "--token", "123456789",
-        "--overriden_templates", templates_dir
+        "--overriden-templates", templates_dir
       ]
     }
 
