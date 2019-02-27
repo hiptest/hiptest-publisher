@@ -286,7 +286,7 @@ module Hiptest
     end
 
     def display_empty_push_help
-      command = @cli_options.command_line_used(exclude: [:push, :push_format])
+      command = @cli_options.command_line_used(exclude: [:push, :push_format, :execution_environment])
       enhanced_command = "#{command} --without=actionwords"
       if @cli_options.test_run_id.nil? || @cli_options.test_run_id.empty?
         enhanced_command += " --test-run-id=<the ID of the test run you want to push the results to>"

@@ -20,7 +20,7 @@ module Hiptest
 
     def url
       if cli_options.push?
-        "#{cli_options.site}/import_test_results/#{cli_options.token}/#{cli_options.push_format}"
+        "#{cli_options.site}/import_test_results/#{cli_options.token}/#{cli_options.push_format}#{execution_environment_query_parameter}"
       elsif test_run_id
         "#{base_publication_path}/test_run/#{test_run_id}#{test_run_export_filter}"
       else
@@ -191,6 +191,12 @@ module Hiptest
       URI::HTTP.new(
         "http", nil, address, port, nil, nil, nil, nil, nil
       ).find_proxy
+    end
+
+    def execution_environment_query_parameter
+      return "?execution_environment=#{cli_options.execution_environment}" unless cli_options.execution_environment.strip.empty?
+
+      ""
     end
   end
 end

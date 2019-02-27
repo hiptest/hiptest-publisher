@@ -67,6 +67,14 @@ describe Hiptest::Client do
         it 'creates url to push results' do
           expect(client.url).to eq("https://app.hiptest.com/import_test_results/1234/tap")
         end
+
+        context "and with --execution-environment" do
+          let(:args) { ["--token", "1234", "--push", "myfile.tap", "--execution-environment", "Default"] }
+
+          it 'creates url to import results for a specific execution environment' do
+            expect(client.url).to eq("https://app.hiptest.com/import_test_results/1234/tap?execution_environment=Default")
+          end
+        end
       end
 
       context "and with --filter-on-scenario-ids" do

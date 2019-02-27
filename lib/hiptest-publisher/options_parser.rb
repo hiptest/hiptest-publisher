@@ -237,6 +237,7 @@ class OptionsParser
       Option.new('p', 'push=FILE.TAP', '', String, "Push a results file to the server", :push),
       Option.new(nil, 'global-failure-on-missing-reports', false, nil, "When there is no results file to push, report a global failure", :global_failure_on_missing_reports),
       Option.new(nil, 'push-format=tap', 'tap', String, "Format of the test results (cucumber-json, junit, nunit, robot, tap)", :push_format),
+      Option.new(nil, 'execution-environment=NAME', '', String, "Name of the execution environment", :execution_environment),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name", :sort),
       Option.new(nil, '[no-]uids', true, nil, 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)', :uids),
       Option.new(nil, '[no-]parent-folder-tags', true, nil, 'Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports)', :parent_folder_tags),
@@ -317,7 +318,6 @@ class OptionsParser
   end
 end
 
-
 class NodeRenderingContext
   def initialize(properties)
     # should contain  :node, :path, :description, :indentation
@@ -359,7 +359,6 @@ class NodeRenderingContext
     end
   end
 end
-
 
 class TemplateFinder
   attr_reader :template_dirs, :overriden_templates, :forced_templates, :fallback_template
@@ -651,7 +650,6 @@ class LanguageGroupConfig
     name.send(filename_convention)
   end
 end
-
 
 class LanguageConfigParser
   def initialize(cli_options, language_config_path = nil)

@@ -96,7 +96,6 @@ describe OptionParser do
   end
 end
 
-
 describe CliOptions do
   describe "#normalize!" do
     it "replaces --actionwords-only by --only=actionwords" do
@@ -229,7 +228,6 @@ describe CliOptions do
   end
 end
 
-
 describe NodeRenderingContext do
   subject(:node_rendering_context) do
     NodeRenderingContext.new(
@@ -251,7 +249,6 @@ describe NodeRenderingContext do
     end
   end
 end
-
 
 describe LanguageConfigParser do
 

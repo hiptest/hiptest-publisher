@@ -129,9 +129,10 @@ Specific options:
         --global-failure-on-missing-reports
                                      When there is no results file to push, report a global failure (default: false)
         --push-format=tap            Format of the test results (cucumber-json, junit, nunit, robot, tap) (default: tap)
-        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in HipTest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
+        --execution-environment=NAME Name of the execution environment
+        --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
-        --[no-]parent-folders-tags   Export tags from parent folder (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
+        --[no-]parent-folder-tags    Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
         --parameter-delimiter        Parameter delimiter (for Gherkin based export only) (default: ")
         --with-dataset-names         Export dataset name when creating feature files (note: available only for Gherkin-based exports) (default: false)
         --keep-filenames             Keep the same name as in HipTest for the test files (note: may cause encoding issues) (default: false)
