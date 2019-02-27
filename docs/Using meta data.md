@@ -36,7 +36,7 @@ And now, in the CI script:
 hiptest-publisher -c hiptest-publisher.conf --meta=webdriver:ChromeDriver --test-run-id=1234 --without=actionwords
 mvn test
 hiptest-publisher -c hiptest-publisher.conf --test-run-id=1234 -p "target/surefire-reports/*.xml"
-hiptest-publisher -c hiptest-publisher.conf --meta=webdriver:FireFoxDriver --test-run-id=5678 --without=actionwords
+hiptest-publisher -c hiptest-publisher.conf --meta=webdriver:GeckoDriver --test-run-id=5678 --without=actionwords
 mvn test
 hiptest-publisher -c hiptest-publisher.conf --test-run-id=5678 -p "target/surefire-reports/*.xml"
 ```
