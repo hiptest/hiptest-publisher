@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+1.21.0
+------
+
+  - Add option --execution-environment to push results in the specified execution environment name
+
 1.20.0
 ------
 
