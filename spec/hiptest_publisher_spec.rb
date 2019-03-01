@@ -1034,6 +1034,14 @@ describe Hiptest::Publisher do
           end
         end
       end
+
+      context "with execution environment longer than 255 characters" do
+        it "outputs an error message that the execution environment parameter must not be longer than 255" do
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--push", "file", "--execution-environment", 'a' * 256)
+          }.to output(a_string_including("Error with --execution-environment: the name of the execution environment must be less than 255 characters")).to_stdout
+        end
+      end
     end
 
     context "--output-directory" do

@@ -26,6 +26,7 @@ module Hiptest
       check_meta
 
       if cli_options.push?
+        check_execution_environment
         check_push_file
       else
         check_output_directory
@@ -118,6 +119,14 @@ module Hiptest
           elsif !File.file?(agnostic_path)
             raise CliOptionError, "Error with --push: the file \"#{cli_options.push}\" is not a regular file"
           end
+        end
+      end
+    end
+
+    def check_execution_environment
+      if cli_options.execution_environment
+        if cli_options.execution_environment.length > 255
+          raise CliOptionError, "Error with --execution-environment: the name of the execution environment must be less than 255 characters"
         end
       end
     end
