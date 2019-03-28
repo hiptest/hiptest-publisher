@@ -314,6 +314,86 @@ describe 'Cucumber/Javascript rendering' do
   end
 end
 
+describe 'Cucumber/TypeScript rendering' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
+    let(:language) {'cucumber'}
+    let(:framework) {'typescript'}
+
+    let(:rendered_free_texted_actionword) {[
+      'theFollowingUsersAreAvailable(__free_text = "\'\'") {',
+      '',
+      '}'].join("\n")}
+
+     let(:rendered_datatabled_actionword) {[
+       'theFollowingUsersAreAvailable(__datatable = "\'\'") {',
+       '',
+       '}'].join("\n")}
+
+    let(:rendered_actionwords) {
+      [
+        'import { After, Before, Given, When, Then } from "cucumber";',
+        'import { ActionWords } from \'actionwords\';',
+        '',
+        'Before(async () => {',
+        '});',
+        '',
+        'After(async () => {',
+        '});',
+        '',
+        '',
+        'Given(/^the color "(.*)"$/, async (color) => {',
+        '    ActionWords.theColorColor(color);',
+        '});',
+        '',
+        'When(/^you mix colors$/, async () => {',
+        '    ActionWords.youMixColors();',
+        '});',
+        '',
+        'Then(/^you obtain "(.*)"$/, async (color) => {',
+        '    ActionWords.youObtainColor(color);',
+        '});',
+        '',
+        '',
+        'Then(/^you cannot play croquet$/, async () => {',
+        '    ActionWords.youCannotPlayCroquet();',
+        '});',
+        '',
+        'Given(/^I am on the "(.*)" home page$/, async (site, __free_text) => {',
+        '    ActionWords.iAmOnTheSiteHomePage(site, __free_text);',
+        '});',
+        '',
+        'When(/^the following users are available on "(.*)"$/, async (site, __datatable) => {',
+        '    ActionWords.theFollowingUsersAreAvailableOnSite(site, __datatable);',
+        '});',
+        '',
+        'Given(/^an untrimed action word$/, async () => {',
+        '    ActionWords.anUntrimedActionWord();',
+        '});',
+        '',
+        'Given(/^the "(.*)" of "(.*)" is weird "(.*)" "(.*)"$/, async (order, parameters, p0, p1) => {',
+        '    ActionWords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
+        '});',
+        '',
+        'Given(/^I login on "(.*)" "(.*)"$/, async (site, username) => {',
+        '    ActionWords.iLoginOn(site, username);',
+        '});',
+        ''
+      ].join("\n")
+    }
+
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '',
+        'Given(/^the color (.*)$/, async (color) => {',
+        '    ActionWords.theColorColor(color);',
+        '});'
+      ].join("\n")
+    }
+
+    let(:rendered_empty_scenario) {"\nScenario: Empty Scenario\n"}
+  end
+end
+
 describe 'Cucumber/Groovy rendering' do
   include_context "shared render"
   it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
