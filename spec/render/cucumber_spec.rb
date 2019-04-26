@@ -320,12 +320,12 @@ describe 'Cucumber/TypeScript rendering' do
     let(:framework) {'typescript'}
 
     let(:rendered_free_texted_actionword) {[
-      'theFollowingUsersAreAvailable(__free_text = "\'\'") {',
+      'theFollowingUsersAreAvailable(__free_text = \'\') {',
       '',
       '}'].join("\n")}
 
      let(:rendered_datatabled_actionword) {[
-       'theFollowingUsersAreAvailable(__datatable = "\'\'") {',
+       'theFollowingUsersAreAvailable(__datatable = \'\') {',
        '',
        '}'].join("\n")}
 
