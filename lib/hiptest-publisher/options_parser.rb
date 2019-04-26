@@ -188,7 +188,7 @@ class OptionsParser
 
     {
       'Ruby' => ['Rspec', 'MiniTest'],
-      'Cucumber' => ['Ruby', 'Java', 'Javascript', 'Groovy'],
+      'Cucumber' => ['Ruby', 'Java', 'Javascript', 'Groovy', 'TypeScript'],
       'Java' => ['JUnit', 'Test NG', 'Espresso'],
       'Python' => ['Unittest'],
       'Robot Framework' => [''],
