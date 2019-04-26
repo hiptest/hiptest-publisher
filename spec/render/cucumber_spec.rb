@@ -325,14 +325,14 @@ describe 'Cucumber/TypeScript rendering' do
       '}'].join("\n")}
 
      let(:rendered_datatabled_actionword) {[
-       'theFollowingUsersAreAvailable(__datatable = \'\') {',
+       'theFollowingUsersAreAvailable(__datatable: TableDefinition) {',
        '',
        '}'].join("\n")}
 
     let(:rendered_actionwords) {
       [
-        'import { After, Before, Given, When, Then } from "cucumber";',
-        'import { ActionWords } from \'actionwords\';',
+        'import { After, Before, Given, When, Then, TableDefinition } from "cucumber";',
+        'import { ActionWords } from \'./actionwords\';',
         '',
         'Before(async () => {',
         '});',
