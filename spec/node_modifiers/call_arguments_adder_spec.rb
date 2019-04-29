@@ -15,24 +15,17 @@ describe Hiptest::NodeModifiers::DefaultArgumentAdder do
   end
 
   shared_examples 'a default argument adder' do
-    let(:call_to_unknown_actionword) {
-      make_call('Humm, nope')
-    }
-
-    let(:call_with_all_parameters_set) {
-      make_call(aw_name, arguments: [
-        make_argument('y', literal('And another value here')),
-        make_argument('x', literal(3.14))
+    let(:aw_uid) { '12345678-1234-1234-1234-123456789012'}
+    let(:aw) {
+      make_actionword('first actionword', uid: aw_uid, parameters: [
+        make_parameter('x', default: literal('Hi, I am a valued parameter')),
+        make_parameter('y', default: literal('Hi, I am another valued parameter'))
       ])
     }
 
-    let(:call_with_no_parameter_set) {
-      make_call(aw_name)
-    }
-
-    let(:call_with_no_parameters_even_if_needed) {
-      # Yep, that' a long name
-      make_call(aw1_name)
+    let(:aw1_uid) { '87654321-4321-4321-4321-098765432121'}
+    let(:aw1) {
+      make_actionword('second actionword', uid: aw1_uid, parameters: [make_parameter('x')])
     }
 
     let(:scenario) {
@@ -84,35 +77,48 @@ describe Hiptest::NodeModifiers::DefaultArgumentAdder do
 
   it_behaves_like 'a default argument adder' do
     # With classical calls
-    let(:aw_name) { 'first actionword' }
-    let(:aw) {
-      make_actionword(aw_name, parameters: [
-        make_parameter('x', default: literal('Hi, I am a valued parameter')),
-        make_parameter('y', default: literal('Hi, I am another valued parameter'))
+
+    let(:call_to_unknown_actionword) {
+      make_call('Humm, nope')
+    }
+
+    let(:call_with_all_parameters_set) {
+      make_call('first actionword', arguments: [
+        make_argument('y', literal('And another value here')),
+        make_argument('x', literal(3.14))
       ])
     }
 
-    let(:aw1_name) { 'second actionword' }
-    let(:aw1) {
-      make_actionword(aw1_name, parameters: [make_parameter('x')])
+    let(:call_with_no_parameter_set) {
+      make_call('first actionword')
+    }
+
+    let(:call_with_no_parameters_even_if_needed) {
+      # Yep, that' a long name
+      make_call('second actionword')
     }
   end
 
-  it_behaves_like 'a default argument adder' do
-    # With calls to library actionword
-    let(:library) { make_library('default', [aw]) }
-    let(:aw_name) { 'first actionword' }
-    let(:aw) {
-      make_library_actionword(aw_name, parameters: [
-        make_parameter('x', default: literal('Hi, I am a valued parameter')),
-        make_parameter('y', default: literal('Hi, I am another valued parameter'))
-      ])
-    }
+  # it_behaves_like 'a default argument adder' do
+  #   # With UID calls
+  #   let(:call_to_unknown_actionword) {
+  #     make_uidcall('this-is-not-really-an-uid')
+  #   }
 
-    let(:library1) { make_library('default', [aw1]) }
-    let(:aw1_name) { 'second actionword' }
-    let(:aw1) {
-      make_library_actionword(aw1_name, parameters: [make_parameter('x')])
-    }
-  end
+  #   let(:call_with_all_parameters_set) {
+  #     make_uidcall(aw_uid, arguments: [
+  #       make_argument('y', literal('And another value here')),
+  #       make_argument('x', literal(3.14))
+  #     ])
+  #   }
+
+  #   let(:call_with_no_parameter_set) {
+  #     make_uidcall(aw_uid)
+  #   }
+
+  #   let(:call_with_no_parameters_even_if_needed) {
+  #     # Yep, that' a long name
+  #     make_uidcall(aw1_uid)
+  #   }
+  # end
 end

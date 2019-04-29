@@ -342,22 +342,7 @@ module Hiptest
       end
     end
 
-    class LibraryActionword < Item
-      attr_reader :chunks, :extra_inlined_parameters, :uniq_name
-      attr_writer :chunks, :extra_inlined_parameters, :uniq_name
-
-      def initialize(name, tags = [], parameters = [], body = [], uid = nil, description = '')
-        super(name, tags, description, parameters, body)
-        @children[:uid] = uid
-
-        @chunks = []
-        @extra_inlined_parameters = []
-        @uniq_name = name
-      end
-
-      def must_be_implemented?
-        @children[:body].empty? || @children[:body].map {|step| step.class}.compact.include?(Hiptest::Nodes::Step)
-      end
+    class LibraryActionword < Actionword
     end
 
     class Scenario < Item
