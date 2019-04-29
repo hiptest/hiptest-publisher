@@ -14,6 +14,18 @@ module Hiptest
       super(call)
     end
 
+    def walk_uidcall(call)
+      if call.free_text_arg
+        @rendered_children[:free_text_arg] = rendered_freetext_arg(call)
+      end
+
+      if call.datatable_arg
+        @rendered_children[:datatable_arg] = rendered_datatable_arg(call)
+      end
+
+      super(call)
+    end
+
     def walk_folder(folder)
       @rendered_children[:ancestor_tags] = ancestor_tags(folder)
 

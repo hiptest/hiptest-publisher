@@ -59,4 +59,13 @@ describe Hiptest::ActionwordIndexer do
       let(:second_aw_query) { 'Actionword with parameters' }
     end
   end
+
+  context 'get_uid_index' do
+    it_behaves_like "an index query" do
+      let(:getter_method) { :get_uid_index }
+      let(:unknown_query) { 'abcdabcdabcd-bcda-bcda-bcda-abcdabcdabcdabcd' }
+      let(:first_aw_query) { first_actionword_uid }
+      let(:second_aw_query) { second_actionword_uid }
+    end
+  end
 end

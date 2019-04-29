@@ -750,25 +750,21 @@ describe 'Render as Groovy' do
     end
 
     context 'with library actionwords' do
-      let(:aw_name) { 'some trigger' }
+      let(:aw_uid) { '12345678-1234-1234-1234-123456789012'}
       let(:aw) {
-        make_library_actionword(aw_name)
+        make_actionword('some trigger', uid: aw_uid)
       }
 
       it 'handles correctly shared actionwords in tests' do
-        library_name = 'default'
-        default_library = make_library(library_name, [aw])
+        default_library = make_library('default', [aw])
         container = make_folder("A folder", parent: @root_folder)
-
-        shared_call = make_call(aw_name, annotation: 'when')
-        shared_call.children[:library_name] = library_name
 
         sc1 = make_scenario(
           "When-Then Scenario",
           folder: container,
           body: [
             make_call("go to page", annotation: "given"),
-            shared_call,
+            make_uidcall(aw_uid, annotation: "when"),
             make_call('the page contains something', annotation: "then")
           ]
         )
@@ -781,6 +777,7 @@ describe 'Render as Groovy' do
         )
 
         Hiptest::NodeModifiers::ParentAdder.add(@folders_project)
+        Hiptest::NodeModifiers::UidCallReferencerAdder.add(project)
         render_context = context_for(
           node: container,
           # only to select the right config group: we render [actionwords], [tests] and others differently

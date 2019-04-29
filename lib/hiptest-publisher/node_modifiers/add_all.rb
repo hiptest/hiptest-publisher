@@ -5,12 +5,14 @@ require 'hiptest-publisher/node_modifiers/gherkin_adder'
 require 'hiptest-publisher/node_modifiers/items_orderer'
 require 'hiptest-publisher/node_modifiers/parameter_type_adder'
 require 'hiptest-publisher/node_modifiers/parent_adder'
+require 'hiptest-publisher/node_modifiers/uid_call_reference_adder'
 
 module Hiptest
   module NodeModifiers
     def self.add_all(project, sort_method = nil)
       DatatableFixer.add(project)
       ParentAdder.add(project)
+      UidCallReferencerAdder.add(project)
       ParameterTypeAdder.add(project)
       DefaultArgumentAdder.add(project)
       ActionwordUniqRenamer.add(project)

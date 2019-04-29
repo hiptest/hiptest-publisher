@@ -122,6 +122,13 @@ module Hiptest
         css_first_content(call, '> annotation'))
     end
 
+    def build_uidcall(uid_call)
+      Hiptest::Nodes::UIDCall.new(
+        css_first_content(uid_call, '> uid'),
+        build_arguments(uid_call),
+        css_first_content(uid_call, '> annotation'))
+    end
+
     def build_arguments(arguments)
       build_node_list(arguments.css('> arguments > argument'))
     end
@@ -198,16 +205,7 @@ module Hiptest
         css_first_content(actionword, '> uid'),
         css_first_content(actionword, '> description'))
     end
-
-    def build_libraryActionword(libraryActionword)
-      Hiptest::Nodes::LibraryActionword.new(
-        css_first_content(libraryActionword, '> name'),
-        build_tags(libraryActionword),
-        build_parameters(libraryActionword),
-        build_steps(libraryActionword),
-        css_first_content(libraryActionword, '> uid'),
-        css_first_content(libraryActionword, '> description'))
-    end
+    alias :build_libraryActionword :build_actionword
 
     def build_actionwordSnapshot(actionword)
       Hiptest::Nodes::Actionword.new(

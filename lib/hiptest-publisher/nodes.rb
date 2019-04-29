@@ -235,6 +235,34 @@ module Hiptest
       end
     end
 
+    class UIDCall < Node
+      attr_reader :chunks, :extra_inlined_arguments
+      attr_writer :chunks, :extra_inlined_arguments
+
+      def initialize(uid, arguments = [], annotation = nil)
+        super()
+        annotation = nil if annotation == ''
+
+        @children = {
+          uid: uid,
+          arguments: arguments,
+          all_arguments: arguments,
+          annotation: annotation
+        }
+
+        @chunks = []
+        @extra_inlined_arguments = []
+      end
+
+      def free_text_arg
+        children[:arguments].find(&:free_text?)
+      end
+
+      def datatable_arg
+        children[:arguments].find(&:datatable?)
+      end
+    end
+
     class IfThen < Node
       def initialize(condition, then_, else_ = [])
         super()
@@ -340,9 +368,6 @@ module Hiptest
       def must_be_implemented?
         @children[:body].empty? || @children[:body].map {|step| step.class}.compact.include?(Hiptest::Nodes::Step)
       end
-    end
-
-    class LibraryActionword < Actionword
     end
 
     class Scenario < Item
@@ -542,11 +567,11 @@ module Hiptest
     end
 
     class Library < Node
-      def initialize(name = 'default_library', library_actionwords = [])
+      def initialize(name = 'default_library', actionwords = [])
         super()
         @children = {
           name: name,
-          library_actionwords: library_actionwords
+          actionwords: actionwords
         }
       end
     end

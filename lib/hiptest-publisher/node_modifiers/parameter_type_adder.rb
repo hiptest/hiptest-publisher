@@ -49,8 +49,8 @@ module Hiptest
       end
 
       def gather_call_argument_types(node)
-        node.each_sub_nodes(Hiptest::Nodes::Call) do |call|
-          actionword_name = call.children[:actionword]
+        node.each_sub_nodes(Hiptest::Nodes::Call, Hiptest::Nodes::UIDCall) do |call|
+          actionword_name = call.is_a?(Hiptest::Nodes::Call) ? call.children[:actionword] : call.children[:actionword_name]
 
           @call_types.add_callable_item(actionword_name, Hiptest::Nodes::Actionword)
           add_arguments_from(call, node)

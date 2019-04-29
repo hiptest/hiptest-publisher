@@ -1,0 +1,1 @@
+{{#if context.call_prefix}}{{{context.call_prefix}}}.{{/if}}{{#if has_library?}}get{{{camelize rendered_children.library_name}}}Library().{{/if}}{{{ camelize_lower rendered_children.actionword_name }}}({{{ join rendered_children.all_arguments ', '}}});

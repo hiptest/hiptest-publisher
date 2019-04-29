@@ -5,7 +5,7 @@ module Hiptest
   module NodeModifiers
     class DefaultArgumentAdder
       def self.add(project)
-        self.new(project).update_calls
+        self.new(project).update_all_calls
       end
 
       def initialize(project)
@@ -13,9 +13,20 @@ module Hiptest
         @indexer = ActionwordIndexer.new(project)
       end
 
+      def update_all_calls
+        update_calls
+        update_uid_calls
+      end
+
       def update_calls
         @project.each_sub_nodes(Hiptest::Nodes::Call) do |call|
           update_call(call, @indexer.get_index(call.children[:actionword]))
+        end
+      end
+
+      def update_uid_calls
+        @project.each_sub_nodes(Hiptest::Nodes::UIDCall) do |uid_call|
+          update_call(uid_call, @indexer.get_uid_index(uid_call.children[:uid]))
         end
       end
 

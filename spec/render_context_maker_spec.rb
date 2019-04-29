@@ -204,8 +204,7 @@ describe Hiptest::RenderContextMaker do
         in_actionword?: false,
         in_datatabled_scenario?: false,
         chunks: [],
-        extra_inlined_arguments: [],
-        is_shared?: false
+        extra_inlined_arguments: []
       })
 
       node.children[:arguments] << 'x'
@@ -215,8 +214,7 @@ describe Hiptest::RenderContextMaker do
         in_actionword?: false,
         in_datatabled_scenario?: false,
         chunks: [],
-        extra_inlined_arguments: [],
-        is_shared?: false
+        extra_inlined_arguments: []
       })
 
       node.children[:annotation] = 'Given'
@@ -226,8 +224,7 @@ describe Hiptest::RenderContextMaker do
         in_actionword?: false,
         in_datatabled_scenario?: false,
         chunks: [],
-        extra_inlined_arguments: [],
-        is_shared?: false
+        extra_inlined_arguments: []
       })
     end
 
@@ -249,12 +246,23 @@ describe Hiptest::RenderContextMaker do
 
       expect(subject.walk_call(node)[:in_datatabled_scenario?]).to be true
     end
+  end
 
-    it ':is_shared? tells if the children has a library name' do
-      expect(subject.walk_call(node)[:is_shared?]).to be false
+  context 'walk_uidcall' do
+    let(:node) { Hiptest::Nodes::UIDCall.new('ff85fe99-55c0-48f5-9de3-b4ffd6ea9636') }
 
-      node.children[:library_name] = 'default'
-      expect(subject.walk_call(node)[:is_shared?]).to be true
+    it 'tells if there is an annotation' do
+      expect(subject.walk_uidcall(node)[:has_annotation?]).to be false
+
+      node.children[:annotation] = 'Given'
+      expect(subject.walk_uidcall(node)[:has_annotation?]).to be true
+    end
+
+    it 'tells if there is a library' do
+      expect(subject.walk_uidcall(node)[:has_library?]).to be false
+
+      node.children[:library_name] = 'default library'
+      expect(subject.walk_uidcall(node)[:has_library?]).to be true
     end
   end
 
