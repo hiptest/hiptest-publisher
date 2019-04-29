@@ -827,10 +827,10 @@ describe Hiptest::XMLParser do
         </actionwordLibrary>")
 
         expect(node.children[:library_actionwords].length).to eq(2)
-        expect(node.children[:library_actionwords].first).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:library_actionwords].first).to be_a(Hiptest::Nodes::LibraryActionword)
         expect(node.children[:library_actionwords].first.children[:name]).to eq('My first action word')
 
-        expect(node.children[:library_actionwords].last).to be_a(Hiptest::Nodes::Actionword)
+        expect(node.children[:library_actionwords].last).to be_a(Hiptest::Nodes::LibraryActionword)
         expect(node.children[:library_actionwords].last.children[:name]).to eq('My second action word')
       end
     end
