@@ -10,7 +10,7 @@ class {{camelize rendered_children.name}}FeatureContext implements SnippetAccept
 public function __construct() {{#curly}}{{#indent}}
 $this->actionwords = new Actionwords();{{/indent}}
 {{/curly}}
-{{#each rendered_children.actionwords}}
+{{#each rendered_children.library_actionwords}}
 {{{this}}}{{/each}}{{/indent}}
 {{/curly}}
 ?>

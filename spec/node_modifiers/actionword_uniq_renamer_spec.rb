@@ -38,23 +38,23 @@ describe Hiptest::NodeModifiers::ActionwordUniqRenamer do
     }
 
     it 'renames action words if needed' do
-      first_lib.children[:actionwords] << make_actionword('plop', uid: '1234')
-      first_lib.children[:actionwords] << make_actionword('plop', uid: '5678')
-      first_lib.children[:actionwords] << make_actionword('plop', uid: '0987')
+      first_lib.children[:library_actionwords] << make_actionword('plop', uid: '1234')
+      first_lib.children[:library_actionwords] << make_actionword('plop', uid: '5678')
+      first_lib.children[:library_actionwords] << make_actionword('plop', uid: '0987')
 
       subject.make_uniq_names()
 
-      expect(first_lib.children[:actionwords].map(&:uniq_name)).to eq(['plop 1', 'plop 2', 'plop'])
+      expect(first_lib.children[:library_actionwords].map(&:uniq_name)).to eq(['plop 1', 'plop 2', 'plop'])
     end
 
     it 'only limitates to names inside a library' do
-      first_lib.children[:actionwords] << make_actionword('plop', uid: '1234')
-      second_lib.children[:actionwords] << make_actionword('plop', uid: '5678')
+      first_lib.children[:library_actionwords] << make_actionword('plop', uid: '1234')
+      second_lib.children[:library_actionwords] << make_actionword('plop', uid: '5678')
 
       subject.make_uniq_names()
 
-      expect(first_lib.children[:actionwords].map(&:uniq_name)).to eq(['plop'])
-      expect(second_lib.children[:actionwords].map(&:uniq_name)).to eq(['plop'])
+      expect(first_lib.children[:library_actionwords].map(&:uniq_name)).to eq(['plop'])
+      expect(second_lib.children[:library_actionwords].map(&:uniq_name)).to eq(['plop'])
     end
   end
 end

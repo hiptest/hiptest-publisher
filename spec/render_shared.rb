@@ -615,19 +615,17 @@ end
 shared_examples "a renderer handling libraries" do
   include HelperFactories
 
-  let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
+  let(:first_actionword_name) { 'My first action word' }
   let(:first_tags) { [make_tag('priority', 'high'), make_tag('wip')] }
-  let(:first_actionword) {make_actionword('My first action word', uid: first_actionword_uid, tags: first_tags)}
+  let(:first_actionword) {make_library_actionword(first_actionword_name, tags: first_tags)}
   let(:first_lib) {make_library('Default', [first_actionword])}
 
-  let(:second_actionword_uid) {'87654321-4321-4321-4321-098765432121'}
+  let(:second_actionword_name) { 'My second action word' }
   let(:second_tags) { [make_tag('priority', 'low'), make_tag('done')] }
-  let(:second_actionword) {make_actionword('My second action word', uid: second_actionword_uid, tags: second_tags)}
+  let(:second_actionword) {make_library_actionword(second_actionword_name, tags: second_tags)}
   let(:second_lib) {make_library('Web', [second_actionword])}
 
   let(:project_actionword_uid) {'ABCDABCD-ABCD-ABCD-ABCD-ABCDABCDABCD'}
-  let(:high_level_project_actionword_uid) {'AACCABCD-ABAD-ABDD-ACCD-ABCDABCAABCA'}
-  let(:high_level_actionword_uid) {'AACCABCD-AAAD-CDDD-DCCD-ABADABDDABCA'}
   let(:project_actionword) {
     make_actionword('My project action word', uid: project_actionword_uid)
   }
@@ -635,7 +633,6 @@ shared_examples "a renderer handling libraries" do
   let(:high_level_project_actionword) {
     make_actionword(
       'My high level project actionword',
-      uid: high_level_project_actionword_uid,
       body: [
         Hiptest::Nodes::Call.new('My project action word')
       ])
@@ -644,23 +641,24 @@ shared_examples "a renderer handling libraries" do
   let(:high_level_actionword) {
     make_actionword(
       'My high level actionword',
-      uid: high_level_actionword_uid,
       body: [
-        Hiptest::Nodes::UIDCall.new(first_actionword_uid)
+        Hiptest::Nodes::Call.new(first_actionword_name)
       ])
   }
 
-  let(:libraries) {Hiptest::Nodes::Libraries.new([first_lib, second_lib])}
+  let(:libraries) {
+    Hiptest::Nodes::Libraries.new([first_lib, second_lib])
+  }
 
   let(:scenario) {
     make_scenario('My calling scenario', body: [
-      Hiptest::Nodes::UIDCall.new(first_actionword_uid),
-      Hiptest::Nodes::UIDCall.new(second_actionword_uid),
+      Hiptest::Nodes::Call.new(first_actionword_name),
+      Hiptest::Nodes::Call.new(second_actionword_name),
       Hiptest::Nodes::Call.new(project_actionword_uid)
     ])
   }
 
-  let(:project) {
+  let!(:project) {
     make_project('My project',
                  scenarios: [scenario],
                  actionwords: [project_actionword, high_level_project_actionword, high_level_actionword],
@@ -688,6 +686,7 @@ shared_examples "a renderer handling libraries" do
     let(:only) {"actionwords"}
 
     it 'Actionwords' do
+
       expect(rendering(project.children[:actionwords])).to eq(actionwords_rendered)
     end
   end
@@ -2003,14 +2002,14 @@ end
 shared_examples 'a BDD renderer with library actionwords' do
   include HelperFactories
 
-  let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
-  let(:another_actionword_uid) {'12345678-1234-1234-1234-1234567890123'}
-  let(:first_actionword) {make_actionword('My first action word', uid: first_actionword_uid)}
-  let(:another_actionword) {make_actionword('another action word', uid: another_actionword_uid)}
+  let(:first_actionword_name) {'My first action word'}
+  let(:another_actionword_name) {'another actionword name'}
+  let(:first_actionword) {make_library_actionword(first_actionword_name)}
+  let(:another_actionword) {make_library_actionword(another_actionword_name)}
   let(:first_lib) {make_library('Default', [first_actionword, another_actionword])}
 
-  let(:second_actionword_uid) {'87654321-4321-4321-4321-098765432121'}
-  let(:second_actionword) {make_actionword('My second action word', uid: second_actionword_uid)}
+  let(:second_actionword_name) {'My second action word'}
+  let(:second_actionword) {make_library_actionword(second_actionword_name)}
   let(:second_lib) {make_library('Web', [second_actionword])}
 
   let(:libraries) {Hiptest::Nodes::Libraries.new([first_lib, second_lib])}
@@ -2019,8 +2018,8 @@ shared_examples 'a BDD renderer with library actionwords' do
     make_scenario("Create scenario with library actionwords",
                   description: "This scenario contains library actionwords",
                   body: [
-                    make_uidcall(first_actionword_uid, annotation: "given"),
-                    make_uidcall(second_actionword_uid, annotation: "when"),
+                    make_call(first_actionword_name, annotation: "given"),
+                    make_call(second_actionword_name, annotation: "when"),
                   ])
   }
 
