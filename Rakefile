@@ -11,8 +11,8 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
+require 'juwelier'
+Juwelier::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "hiptest-publisher"
   gem.homepage = "https://hiptest.com"
@@ -26,7 +26,7 @@ Jeweler::Tasks.new do |gem|
   gem.files = `git ls-files -- lib/*`.split("\n")
   gem.require_path = "lib"
 end
-Jeweler::RubygemsDotOrgTasks.new
+Juwelier::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
