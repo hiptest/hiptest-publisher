@@ -450,15 +450,15 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://hiptest.com".freeze
   s.licenses = ["GPL-2.0".freeze]
-  s.rubygems_version = "3.0.3".freeze
+  s.rubygems_version = "2.6.10".freeze
   s.summary = "Export your tests from HipTest into executable tests.".freeze
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<colorize>.freeze, ["~> 0.7", ">= 0.7.5"])
-      s.add_runtime_dependency(%q<parseconfig>.freeze, ["~> 1.0", ">= 1.0.4"])
+      s.add_runtime_dependency(%q<colorize>.freeze, [">= 0.7.5", "~> 0.7"])
+      s.add_runtime_dependency(%q<parseconfig>.freeze, [">= 1.0.4", "~> 1.0"])
       s.add_runtime_dependency(%q<i18n>.freeze, [">= 0.7.0", "~> 0.7"])
       s.add_runtime_dependency(%q<nokogiri>.freeze, ["~> 1.8"])
       s.add_runtime_dependency(%q<multipart-post>.freeze, [">= 2.0.0", "~> 2.0"])
@@ -468,10 +468,10 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<pry-byebug>.freeze, ["~> 3"])
       s.add_development_dependency(%q<rspec>.freeze, ["~> 3.3"])
       s.add_development_dependency(%q<rspec-mocks>.freeze, ["~> 3.3"])
-      s.add_development_dependency(%q<codeclimate-test-reporter>.freeze, ["~> 0.4", ">= 0.4.6"])
+      s.add_development_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
     else
-      s.add_dependency(%q<colorize>.freeze, ["~> 0.7", ">= 0.7.5"])
-      s.add_dependency(%q<parseconfig>.freeze, ["~> 1.0", ">= 1.0.4"])
+      s.add_dependency(%q<colorize>.freeze, [">= 0.7.5", "~> 0.7"])
+      s.add_dependency(%q<parseconfig>.freeze, [">= 1.0.4", "~> 1.0"])
       s.add_dependency(%q<i18n>.freeze, [">= 0.7.0", "~> 0.7"])
       s.add_dependency(%q<nokogiri>.freeze, ["~> 1.8"])
       s.add_dependency(%q<multipart-post>.freeze, [">= 2.0.0", "~> 2.0"])
@@ -481,11 +481,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<pry-byebug>.freeze, ["~> 3"])
       s.add_dependency(%q<rspec>.freeze, ["~> 3.3"])
       s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.3"])
-      s.add_dependency(%q<codeclimate-test-reporter>.freeze, ["~> 0.4", ">= 0.4.6"])
+      s.add_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
     end
   else
-    s.add_dependency(%q<colorize>.freeze, ["~> 0.7", ">= 0.7.5"])
-    s.add_dependency(%q<parseconfig>.freeze, ["~> 1.0", ">= 1.0.4"])
+    s.add_dependency(%q<colorize>.freeze, [">= 0.7.5", "~> 0.7"])
+    s.add_dependency(%q<parseconfig>.freeze, [">= 1.0.4", "~> 1.0"])
     s.add_dependency(%q<i18n>.freeze, [">= 0.7.0", "~> 0.7"])
     s.add_dependency(%q<nokogiri>.freeze, ["~> 1.8"])
     s.add_dependency(%q<multipart-post>.freeze, [">= 2.0.0", "~> 2.0"])
@@ -495,7 +495,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<pry-byebug>.freeze, ["~> 3"])
     s.add_dependency(%q<rspec>.freeze, ["~> 3.3"])
     s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.3"])
-    s.add_dependency(%q<codeclimate-test-reporter>.freeze, ["~> 0.4", ">= 0.4.6"])
+    s.add_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
   end
 end
 
