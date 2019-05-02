@@ -1,18 +1,18 @@
 require_relative '../spec_helper'
-require_relative '../../lib/hiptest-publisher/indexers/actionword_indexer'
+require_relative '../../lib/hiptest-publisher/indexers/library_actionword_indexer'
 
-describe Hiptest::ActionwordIndexer do
+describe Hiptest::LibraryActionwordIndexer do
   shared_examples "an index query" do
     include HelperFactories
 
     let(:first_actionword_uid) {'12345678-1234-1234-1234-123456789012'}
     let(:first_aw) {
-      make_actionword('Simple actionword', uid: first_actionword_uid)
+      make_library_actionword('Simple actionword', uid: first_actionword_uid)
     }
 
     let(:second_actionword_uid) {'87654321-4321-4321-4321-09876543212'}
     let(:second_aw) {
-      make_actionword('Actionword with parameters', uid: second_actionword_uid, parameters: [
+      make_library_actionword('Actionword with parameters', uid: second_actionword_uid, parameters: [
         make_parameter('x'),
         make_parameter('y', default: literal('Hi, I am a valued parameter'))
       ])
@@ -23,7 +23,7 @@ describe Hiptest::ActionwordIndexer do
     }
 
     let(:indexer) {
-      Hiptest::ActionwordIndexer.new(project)
+      Hiptest::LibraryActionwordIndexer.new(project)
     }
 
     it 'gives nil if the seeked actionword does not exist' do

@@ -99,26 +99,26 @@ describe Hiptest::NodeModifiers::DefaultArgumentAdder do
     }
   end
 
-  it_behaves_like 'a default argument adder' do
-    # With UID calls
-    let(:call_to_unknown_actionword) {
-      make_uidcall('this-is-not-really-an-uid')
-    }
+  # it_behaves_like 'a default argument adder' do
+  #   # With UID calls
+  #   let(:call_to_unknown_actionword) {
+  #     make_uidcall('this-is-not-really-an-uid')
+  #   }
 
-    let(:call_with_all_parameters_set) {
-      make_uidcall(aw_uid, arguments: [
-        make_argument('y', literal('And another value here')),
-        make_argument('x', literal(3.14))
-      ])
-    }
+  #   let(:call_with_all_parameters_set) {
+  #     make_uidcall(aw_uid, arguments: [
+  #       make_argument('y', literal('And another value here')),
+  #       make_argument('x', literal(3.14))
+  #     ])
+  #   }
 
-    let(:call_with_no_parameter_set) {
-      make_uidcall(aw_uid)
-    }
+  #   let(:call_with_no_parameter_set) {
+  #     make_uidcall(aw_uid)
+  #   }
 
-    let(:call_with_no_parameters_even_if_needed) {
-      # Yep, that' a long name
-      make_uidcall(aw1_uid)
-    }
-  end
+  #   let(:call_with_no_parameters_even_if_needed) {
+  #     # Yep, that' a long name
+  #     make_uidcall(aw1_uid)
+  #   }
+  # end
 end

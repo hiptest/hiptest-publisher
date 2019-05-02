@@ -1,13 +1,13 @@
 module Hiptest
-  class ActionwordIndexer
+  class LibraryActionwordIndexer
     def initialize(project)
       @project = project
       @indexed = {}
-      index_actionwords
+      index_library_actionwords
     end
 
-    def index_actionwords
-      @project.each_sub_nodes(Hiptest::Nodes::Actionword) do |aw|
+    def index_library_actionwords
+      @project.each_sub_nodes(Hiptest::Nodes::LibraryActionword) do |aw|
         aw_name = aw.children[:name]
         indexed_parameters = {}
 

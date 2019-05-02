@@ -1,4 +1,5 @@
 require 'hiptest-publisher/indexers/actionword_indexer'
+require 'hiptest-publisher/indexers/library_actionword_indexer'
 require 'hiptest-publisher/nodes'
 
 module Hiptest
@@ -11,6 +12,7 @@ module Hiptest
       def initialize(project)
         @project = project
         @indexer = ActionwordIndexer.new(project)
+        @library_indexer = LibraryActionwordIndexer.new(project)
         @annotations_counter = AnnotationsCounter.new
 
         @special_params = ['__free_text', '__datatable']
@@ -19,11 +21,14 @@ module Hiptest
       def update_calls
         @project.each_sub_nodes(Hiptest::Nodes::Scenario, Hiptest::Nodes::Actionword, Hiptest::Nodes::Test, Hiptest::Nodes::Folder) do |item|
           @last_annotation = nil
-          item.each_sub_nodes(Hiptest::Nodes::Call, Hiptest::Nodes::UIDCall) do |call|
+          item.each_sub_nodes(Hiptest::Nodes::Call) do |call|
             set_call_chunks(call)
             call.children[:gherkin_text] ||= "#{text_annotation(call)} #{prettified(call)}"
 
             if actionword = get_actionword(call)
+              if actionword.is_a?(Hiptest::Nodes::LibraryActionword)
+                call.children[:library_name] = actionword.parent.children[:name]
+              end
               @annotations_counter.increment(actionword, code_annotation(call))
               set_actionwords_chunks(actionword)
 
@@ -187,8 +192,11 @@ module Hiptest
       end
 
       def get_actionword(call)
+        actionword = @library_indexer.get_index(call.children[:actionword])
 
-        actionword = call.is_a?(Hiptest::Nodes::UIDCall) ? @indexer.get_uid_index(call.children[:uid]) : @indexer.get_index(call.children[:actionword])
+        if actionword.nil?
+          actionword = @indexer.get_index(call.children[:actionword])
+        end
 
         actionword && actionword[:actionword] || nil
       end

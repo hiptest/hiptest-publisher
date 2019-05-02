@@ -24,7 +24,7 @@ module Hiptest
       {
         'name' => library.children[:name],
         'type' => 'library',
-        'actionwords' => library.children[:actionwords].map {|aw| export_actionword(aw, export_nodes) }
+        'actionwords' => library.children[:library_actionwords].map {|aw| export_actionword(aw, export_nodes) }
       }
     end
 
