@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+1.23.0
+------
+
+  - Handle new shared actionword architecture
+
 1.22.0
 ------
 
