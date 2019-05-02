@@ -17,7 +17,7 @@ group :development do
 end
 
 group :packaging do
-  gem 'jeweler'
+  gem 'juwelier'
 end
 
 group :test do

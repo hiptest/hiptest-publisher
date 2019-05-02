@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 1.22.0
 ------
 
-  - Update library actionword handling to support new architecture
+  - Add support for Cucumber/Typescript
   - Unlock Nokogiri update to 1.9.1
 
 1.21.0
