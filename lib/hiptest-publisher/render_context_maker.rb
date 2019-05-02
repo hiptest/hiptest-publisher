@@ -28,9 +28,7 @@ module Hiptest
         extra_inlined_parameters: aw.extra_inlined_parameters || [],
         has_free_text_parameter?: aw.children[:parameters].select(&:free_text?).count > 0,
         has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0,
-        uniq_name: aw.uniq_name,
-        has_library?: (aw.parent.is_a? Hiptest::Nodes::Library) ? true : false,
-        library_name: aw.parent.nil? ? '' : aw.parent.children[:name]
+        uniq_name: aw.uniq_name
       )
     end
 
@@ -146,12 +144,7 @@ module Hiptest
     end
 
     def walk_libraryactionword(aw)
-      walk_item(aw).merge(
-        chunks: aw.chunks || [],
-        extra_inlined_parameters: aw.extra_inlined_parameters || [],
-        has_free_text_parameter?: aw.children[:parameters].select(&:free_text?).count > 0,
-        has_datatable_parameter?: aw.children[:parameters].select(&:datatable?).count > 0,
-        uniq_name: aw.uniq_name,
+      walk_actionword(aw).merge(
         library_name: aw.parent.children[:name]
       )
     end

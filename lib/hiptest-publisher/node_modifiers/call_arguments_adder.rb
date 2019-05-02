@@ -1,4 +1,5 @@
 require 'hiptest-publisher/indexers/actionword_indexer'
+require 'hiptest-publisher/indexers/library_actionword_indexer'
 require 'hiptest-publisher/nodes'
 
 module Hiptest
@@ -10,12 +11,16 @@ module Hiptest
 
       def initialize(project)
         @project = project
+        @library_indexer = LibraryActionwordIndexer.new(project)
         @indexer = ActionwordIndexer.new(project)
       end
 
       def update_calls
         @project.each_sub_nodes(Hiptest::Nodes::Call) do |call|
-          update_call(call, @indexer.get_index(call.children[:actionword]))
+          actionword = @library_indexer.get_index(call.children[:actionword])
+          actionword = @indexer.get_index(call.children[:actionword]) if actionword.nil?
+
+          update_call(call, actionword)
         end
       end
 
