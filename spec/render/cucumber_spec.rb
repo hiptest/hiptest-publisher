@@ -314,6 +314,88 @@ describe 'Cucumber/Javascript rendering' do
   end
 end
 
+describe 'Cucumber/TypeScript rendering' do
+  it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
+    let(:language) {'cucumber'}
+    let(:framework) {'typescript'}
+
+    let(:rendered_free_texted_actionword) {[
+      'theFollowingUsersAreAvailable(__free_text = \'\') {',
+      '',
+      '}'].join("\n")}
+
+     let(:rendered_datatabled_actionword) {[
+       'theFollowingUsersAreAvailable(__datatable: TableDefinition) {',
+       '',
+       '}'].join("\n")}
+
+    let(:rendered_actionwords) {
+      [
+        'import { After, Before, Given, When, Then, TableDefinition } from "cucumber";',
+        'import { ActionWords } from \'./actionwords\';',
+        '',
+        'let actionWords : ActionWords;',
+        'Before(async () => {',
+        '    actionWords = new ActionWords();',
+        '});',
+        '',
+        'After(async () => {',
+        '});',
+        '',
+        '',
+        'Given(/^the color "(.*)"$/, async (color) => {',
+        '    actionWords.theColorColor(color);',
+        '});',
+        '',
+        'When(/^you mix colors$/, async () => {',
+        '    actionWords.youMixColors();',
+        '});',
+        '',
+        'Then(/^you obtain "(.*)"$/, async (color) => {',
+        '    actionWords.youObtainColor(color);',
+        '});',
+        '',
+        '',
+        'Then(/^you cannot play croquet$/, async () => {',
+        '    actionWords.youCannotPlayCroquet();',
+        '});',
+        '',
+        'Given(/^I am on the "(.*)" home page$/, async (site, __free_text) => {',
+        '    actionWords.iAmOnTheSiteHomePage(site, __free_text);',
+        '});',
+        '',
+        'When(/^the following users are available on "(.*)"$/, async (site, __datatable) => {',
+        '    actionWords.theFollowingUsersAreAvailableOnSite(site, __datatable);',
+        '});',
+        '',
+        'Given(/^an untrimed action word$/, async () => {',
+        '    actionWords.anUntrimedActionWord();',
+        '});',
+        '',
+        'Given(/^the "(.*)" of "(.*)" is weird "(.*)" "(.*)"$/, async (order, parameters, p0, p1) => {',
+        '    actionWords.theOrderOfParametersIsWeird(p0, p1, parameters, order);',
+        '});',
+        '',
+        'Given(/^I login on "(.*)" "(.*)"$/, async (site, username) => {',
+        '    actionWords.iLoginOn(site, username);',
+        '});',
+        ''
+      ].join("\n")
+    }
+
+    let(:actionword_without_quotes_in_regexp_rendered) {
+      [
+        '',
+        'Given(/^the color (.*)$/, async (color) => {',
+        '    actionWords.theColorColor(color);',
+        '});'
+      ].join("\n")
+    }
+
+    let(:rendered_empty_scenario) {"\nScenario: Empty Scenario\n"}
+  end
+end
+
 describe 'Cucumber/Groovy rendering' do
   include_context "shared render"
   it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do

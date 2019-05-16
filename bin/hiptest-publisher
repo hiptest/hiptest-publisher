@@ -29,6 +29,12 @@ if RubyVersion < '2.1.0'
   exit 1
 end
 
+if RubyVersion < '2.3'
+  STDERR.puts "You are using #{RUBY_ENGINE} #{RUBY_VERSION}."
+  STDERR.puts "Ruby 2.2 support is deprecated and will be removed in later version of hiptest-publisher"
+  STDERR.puts "Official support for Ruby 1.9.2 ended on 2018-03-31"
+end
+
 require 'hiptest-publisher'
 begin
   require 'pry' # only available in development

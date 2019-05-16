@@ -7,12 +7,6 @@ module Hiptest
       use_annotation(call, base)
     end
 
-    def walk_uidcall(uidcall)
-      base = super(uidcall)
-      use_annotation(uidcall, base)
-    end
-
-
     private
 
     def use_annotation(call, base)
@@ -29,7 +23,7 @@ module Hiptest
       return false unless call.children[:annotation].nil? || ignore_case_equal?(call.children[:annotation], 'then')
 
       return call.parent.children[:body].select do |step|
-        (step.is_a?(Hiptest::Nodes::Call) || step.is_a?(Hiptest::Nodes::UIDCall)) && !step.children[:annotation].nil? && ignore_case_equal?(step.children[:annotation], 'when')
+        step.is_a?(Hiptest::Nodes::Call) && !step.children[:annotation].nil? && ignore_case_equal?(step.children[:annotation], 'when')
       end.empty?
     end
 

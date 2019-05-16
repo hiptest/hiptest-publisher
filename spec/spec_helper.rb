@@ -55,16 +55,16 @@ module HelperFactories
     Hiptest::Nodes::Call.new(actionword, arguments, annotation)
   end
 
-  def make_uidcall(uid, arguments: [], annotation: nil)
-    Hiptest::Nodes::UIDCall.new(uid, arguments, annotation)
-  end
-
   def make_parameter(name, default: nil)
     Hiptest::Nodes::Parameter.new(name, default)
   end
 
   def make_actionword(name, tags: [], parameters: [], body: [], uid: nil)
     Hiptest::Nodes::Actionword.new(name, tags, parameters, body, uid)
+  end
+
+  def make_library_actionword(name, tags: [], parameters: [], body: [], uid: nil)
+    Hiptest::Nodes::LibraryActionword.new(name, tags, parameters, body, uid)
   end
 
   def make_scenario(name, tags: [], description: '', parameters: [], body: [], folder: nil, datatable: Hiptest::Nodes::Datatable.new)

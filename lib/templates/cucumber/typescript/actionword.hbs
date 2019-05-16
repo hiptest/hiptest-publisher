@@ -1,0 +1,5 @@
+{{#if rendered_children.gherkin_annotation }}
+{{{ rendered_children.gherkin_annotation }}}(/{{> gherkin_pattern}}/, async ({{#if rendered_children.parameters}}{{{ join rendered_children.parameters_ordered_by_pattern ', '}}}{{/if}}) => {{#curly}}{{#indent}}
+actionWords.{{{camelize_lower rendered_children.name}}}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{underscore this}}}{{/join}}{{/if}});
+{{/indent}}
+{{/curly}});{{/if}}

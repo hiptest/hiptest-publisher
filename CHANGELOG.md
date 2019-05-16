@@ -1,6 +1,23 @@
 HipTest Publisher Changelog
 ===========================
 
+1.23.2
+------
+
+ - Force Nokogiri < 1.10 to keep support for Ruby 2.2
+ - Add deprecation notifications for Ruby 2.2
+
+1.23.1
+------
+
+  - Handle new shared actionword architecture
+
+1.22.0
+------
+
+  - Add support for Cucumber/Typescript
+  - Unlock Nokogiri update to 1.9.1
+
 1.21.0
 ------
 

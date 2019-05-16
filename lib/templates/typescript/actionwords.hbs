@@ -1,0 +1,6 @@
+import {{#curly}} TableDefinition {{/curly}} from "cucumber";
+
+export class ActionWords {{#curly}}{{#indent}}
+{{#each rendered_children.actionwords}}{{{this}}}
+{{/each}}{{/indent}}
+{{/curly}}
