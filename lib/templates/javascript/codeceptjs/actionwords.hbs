@@ -1,0 +1,4 @@
+const {{#curly}} I {{/curly}} = inject();
+const actionwords = Object.create(require('{{{ relative_path './actionwords.js' }}}')).Actionwords;
+{{#each rendered_children.actionwords}}{{{this}}}
+{{/each}}
