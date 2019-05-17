@@ -1,0 +1,62 @@
+en:
+  actionwords_diff:
+    exporting_title: "Exporting actionword signature"
+    loading_previous_definition: "Loading previous definition"
+
+  analyzing_data: "Analyzing data"
+  api_error: "HipTest API returned error %{code}"
+
+  check_version:
+    title: "Checking latest version on Rubygem"
+    error: "Unable to connect to Rubygem"
+    up_to_date: "Your current install of hiptest-publisher (%{current}) is up-to-date."
+    outdated: |
+      Your current install of hiptest-publisher (%{current}) is outdated, version %{latest} is available
+      run 'gem install hiptest-publisher' to get the latest version."
+
+  default_error: |
+    An error has occured, sorry for the inconvenience.
+    Try running the command again with --verbose for detailed output
+
+  exporting_file: "Exporting %{name}"
+  extracting_data: "Extracting data"
+  fetching_data: "Fetching data from HipTest"
+
+  help:
+    categories:
+      title: "For language %{language}, available file groups are"
+      usage_example: |
+
+        Usage examples:
+
+        To export only %{first} files:
+            hiptest-publisher --language=%{language} --only=%{first}
+
+        To export both %{first} and %{second} files:
+            hiptest-publisher --language=%{language} --only=%{first},%{second}
+
+  overwrite:
+    ask_confirmation: "File %{path} exists, do you want to overwrite it? [y/N] "
+    warning_message: "File %{path} already exists, skipping. Use --force to overwrite it."
+
+  project_not_found_error: "Did you specify the project token of an existing HipTest project?\n"
+
+  push:
+    posting_results: "Posting %{file} to %{site}"
+    test_imported: "  Test '%{name}' imported"
+    test_run_id: "the ID of the test run you want to push the results to"
+    tests_imported_summary:
+      zero: "No tests imported"
+      one: "One test imported"
+      other: "%{count} tests imported"
+    empty_results: |
+        Possible causes for the lack of imported tests:
+
+          * Did you run the following command before executing your tests?
+            %{enhanced_command}
+
+          * Did you specify the correct push format?
+            Use push_format=<format> in your config file or option --push-format=<format> in the command line
+            Available formats are: cucumber-json, junit, nunit, robot, tap
+
+  verbose_header: "Running hiptest-publisher %{version} with:"

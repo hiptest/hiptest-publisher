@@ -589,7 +589,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(STDOUT).to have_printed("1 test imported\n")
+      expect(STDOUT).to have_printed("One test imported\n")
 
       # multiple passed
       stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
@@ -611,7 +611,7 @@ describe Hiptest::Publisher do
 
       expect {publisher.run}.to output(a_string_including("Possible causes for the lack of imported tests:")).to_stdout
 
-      expect(STDOUT).to have_printed("0 tests imported\n")
+      expect(STDOUT).to have_printed("No tests imported\n")
     end
 
     it "displays names of passed tests with --verbose" do
@@ -1022,7 +1022,7 @@ describe Hiptest::Publisher do
                                   "--test-run-id", "456",
                                   "--push", 'this file does not exist',
                                   '--global-failure-on-missing-reports')
-            expect(STDOUT).to have_printed('1 test imported')
+            expect(STDOUT).to have_printed('One test imported')
           end
 
           it "there are no matching files" do
@@ -1030,7 +1030,7 @@ describe Hiptest::Publisher do
                                   "--test-run-id", "456",
                                   "--push", 'the files * do not exist',
                                   '--global-failure-on-missing-reports')
-            expect(STDOUT).to have_printed('1 test imported')
+            expect(STDOUT).to have_printed('One test imported')
           end
         end
       end

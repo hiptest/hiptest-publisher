@@ -1,3 +1,5 @@
+require 'i18n'
+
 require 'hiptest-publisher/utils'
 
 class ConsoleFormatter
@@ -21,7 +23,7 @@ class ConsoleFormatter
 
   def show_options(options, message = nil)
     return unless verbose
-    message ||= "Running hiptest-publisher #{hiptest_publisher_version} with:"
+    message ||= I18n.t(:verbose_header, version: hiptest_publisher_version)
     puts message.yellow
     options.each { |k, v| puts " - #{k}: #{v.inspect}" }
   end

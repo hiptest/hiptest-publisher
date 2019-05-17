@@ -1,13 +1,16 @@
 require 'webmock'
 require 'codeclimate-test-reporter'
 require 'pry'
+require 'i18n'
 require 'securerandom'
+
 require_relative '../lib/hiptest-publisher/formatters/reporter'
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
 
 CodeClimate::TestReporter.start
 WebMock.disable_net_connect!(allow: "codeclimate.com")
+I18n.load_path << Dir[File.expand_path("config/locales") + "/*.yml"]
 
 class ErrorListener
   def dump_error(error, message)
