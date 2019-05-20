@@ -59,4 +59,11 @@ en:
             Use push_format=<format> in your config file or option --push-format=<format> in the command line
             Available formats are: cucumber-json, junit, nunit, robot, tap
 
+  ruby_version:
+    current_version: "You are using %{engine} %{version}."
+    deprecation_warning: "Ruby %{version} support is deprecated and will be removed in later version of hiptest-publisher"
+    required_version: "hiptest-publisher requires Ruby version >= %{version}."
+    support_ended: "Official support for Ruby %{version} ended on %{year}-%{month}-%{day}"
+    use_more_recent: "Please use a more recent ruby release to run hiptest-publisher."
+
   verbose_header: "Running hiptest-publisher %{version} with:"
