@@ -98,7 +98,7 @@ module Hiptest
     end
 
     def get_project(xml)
-      reporter.with_status_message I18n.t(:extracting_data) do
+      reporter.with_status_message I18n.t('build_data.title') do
         parser = Hiptest::XMLParser.new(xml, reporter)
         return parser.build_project
       end

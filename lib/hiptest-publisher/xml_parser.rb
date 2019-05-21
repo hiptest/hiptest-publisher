@@ -381,7 +381,7 @@ module Hiptest
       end
       self.send("build_#{node.name}", node)
     rescue => error
-      @reporter.dump_error(error, "Unable to build: \n#{node}")
+      @reporter.dump_error(error, I18n.t('build_data.error', node: node.to_s))
       nil
     end
 

@@ -968,7 +968,7 @@ describe Hiptest::XMLParser do
       expect(node).to be(nil)
       expect(reporter_spy).to have_received(:dump_error).with(
         a_kind_of(StandardError),
-        "Unable to build: \n#{xml}")
+        "Unable to build:\n#{xml}\n")
     end
   end
 

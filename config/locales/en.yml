@@ -6,6 +6,12 @@ en:
   analyzing_data: "Analyzing data"
   api_error: "HipTest API returned error %{code}"
 
+  build_data:
+    title: "Extracting data"
+    error: |
+      Unable to build:
+      %{node}
+
   check_version:
     title: "Checking latest version on Rubygem"
     error: "Unable to connect to Rubygem"
