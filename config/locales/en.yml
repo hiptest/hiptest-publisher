@@ -20,15 +20,26 @@ en:
       Your current install of hiptest-publisher (%{current}) is outdated, version %{latest} is available
       run 'gem install hiptest-publisher' to get the latest version."
 
+  default: "default"
   default_error: |
     An error has occured, sorry for the inconvenience.
     Try running the command again with --verbose for detailed output
+
+  errors:
+    invalid_node: "Invalid node_name %{name} in language group [%{group_name}]"
 
   exporting_file: "Exporting %{name}"
   extracting_data: "Extracting data"
   fetching_data: "Fetching data from HipTest"
 
   help:
+    header: "Usage: hiptest-publisher [options]"
+    description: |
+      
+      Exports tests from HipTest for automation.
+      
+      Specific options:
+
     categories:
       title: "For language %{language}, available file groups are"
       usage_example: |
@@ -40,6 +51,67 @@ en:
 
         To export both %{first} and %{second} files:
             hiptest-publisher --language=%{language} --only=%{first},%{second}
+    
+    languages:
+      supported_languages: "Supported languages:"
+      no_framework_available: "  no framework option available %{language}"
+
+    options:
+      nomalized_options: "Options have been normalized. Values updated:"
+
+  options:
+    actionwords_diff: "Show actionwords diff since last update (summary)"
+    actionwords_diff_json: "Show actionwords diff since last update (JSON output)"
+    actionwords_only: "(deprecated) alias for --only=actionwords"
+    actionwords_signature: "Export actionwords signature"
+    aw_created: "Output code for new action words"
+    aw_definition_changed: "Output action words for which definition changed"
+    aw_deleted: "Output signature of deleted action words"
+    aw_renamed: "Output signatures of renamed action words"
+    aw_signature_changed: "Output signatures of action words for which signature changed"
+    check_version: "Check if a new release of hiptest-publisher is available"
+    config: "Configuration file"
+    empty_folders: "Export empty folders"
+    execution_environment: "Name of the execution environment"
+    filename_pattern: "Filename pattern (containing %s)"
+    filter_on_folder_ids: "Filter on folder ids (use commas to separate ids when fetching multiple folders)"
+    filter_on_folder_name: "Filter on folder name (only one name is accepted)"
+    filter_on_scenario_ids: "Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)"
+    filter_on_scenario_name: "Filter on scenario name (only one name is accepted)"
+    filter_on_status: "Filter on test status in last build (use in conjunction with a test run)"
+    filter_on_tags: "Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)"
+    force_overwrite : "Force overwrite of existing files (do not apply to test files)"
+    framework: "Test framework to use"
+    global_failure_on_missing_reports: "When there is no results file to push, report a global failure"
+    help: "Show this message"
+    keep_filenames: "Keep the same name as in HipTest for the test files (note: may cause encoding issues)"
+    keep_foldernames: "Keep the same name as in HipTest for the folders (note: may cause encoding issues)"
+    language: "Target language"
+    language_help: "Show languages and framework options"
+    leafless_export: "Use only last level action word"
+    library_name: "Use in conjunction with show-actionwords-*: show the diff for the specified library"
+    meta: "Meta informations that can be used for customizing templates"
+    not_recursive: "Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children"
+    only: "Restrict export to given file categories (--only=list to list them)"
+    output_directory: "Output directory"
+    overriden_templates: "Folder for overriden templates"
+    parameter_delimiter: "Parameter delimiter (for Gherkin based export only)"
+    parent_folder_tags: "Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports)"
+    push: "Push a results file to the server"
+    push_format: "Format of the test results (cucumber-json, junit, nunit, robot, tap)"
+    site: "Site to fetch from"
+    sort: "Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name"
+    split_scenarios: "Export each scenario in a single file (except for Gherkin based languages)"
+    test_run_id: "Export data from a test run identified by its id"
+    test_run_name: "Export data from a test run identified by its name"
+    tests_only: "(deprecated) alias for --only=tests"
+    token: "Secret token (available in your project settings)"
+    uids: "Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)"
+    verbose: "Run verbosely"
+    with_dataset_names: "Export dataset name when creating feature files (note: available only for Gherkin-based exports)"
+    with_folders:  "Use folders hierarchy to export files in respective directories"
+    without: "Exclude file categories from import (--only=list to list them)"
+    xml_file: "XML file to use instead of fetching it from HipTest"
 
   overwrite:
     ask_confirmation: "File %{path} exists, do you want to overwrite it? [y/N] "

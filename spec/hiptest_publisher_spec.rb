@@ -759,7 +759,7 @@ describe Hiptest::Publisher do
           fail("it should have exited")
         rescue SystemExit
         end
-      }.to output(a_string_including("Usage: ruby publisher.rb [options]")).to_stdout
+      }.to output(a_string_including("Usage: hiptest-publisher [options]")).to_stdout
     end
   end
 
@@ -771,7 +771,7 @@ describe Hiptest::Publisher do
           fail("it should have exited")
         rescue SystemExit
         end
-      }.to output(a_string_including("Usage: ruby publisher.rb [options]")).to_stdout
+      }.to output(a_string_including("Usage: hiptest-publisher [options]")).to_stdout
     end
   end
 
