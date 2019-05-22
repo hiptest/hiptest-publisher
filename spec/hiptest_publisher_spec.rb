@@ -560,7 +560,7 @@ describe Hiptest::Publisher do
       expect(a_request(:post, "https://app.hiptest.com/import_test_results/123/tap").
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.tap"/)
-          expect(req.headers).to include('Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost')
+          expect(req.headers['Content-Type']).to include('multipart/form-data;')
         }
       ).to have_been_made
       expect(STDOUT).to have_printed("Posting #{result_file} to https://app.hiptest.com")
@@ -578,7 +578,7 @@ describe Hiptest::Publisher do
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result1.tap"/).
                           and match(/Content-Disposition: form-data;.+ filename="result2.tap"/)
-          expect(req.headers).to include('Content-Type' => 'multipart/form-data; boundary=-----------RubyMultipartPost')
+          expect(req.headers['Content-Type']).to include('multipart/form-data;')
         }
       ).to have_been_made
     end

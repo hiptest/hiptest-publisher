@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+1.23.3
+------
+
+ - Update multipart-post to 2.1.1 to handle issues with Ruby < 2.5 (see: https://github.com/socketry/multipart-post/issues/61)
+
 1.23.2
 ------
 
