@@ -26,6 +26,55 @@ en:
       An error has occured, sorry for the inconvenience.
       Try running the command again with --verbose for detailed output
 
+    cli_options:
+      actionwords_signature_directory: "Bad Action Words signature file: the file \"%{path}\" is a directory"
+      filter_status_without_test_run: |
+        You need to specify a test run when filtering on test status.
+        Use options test_run_id or test_run_name.
+      filter_with_test_run: "Filtering can not be applied when exporting from a test run"
+      invalid_category:
+        one: "Error with --only: the category %{invalid_categories} does not exist for language %{language}. Available categories are %{available_categories}."
+        other: "Error with --only: the categories %{invalid_categories} do not exist for language %{language}. Available categories are %{available_categories}."
+
+      invalid_execution_environment: "Error with --execution-environment: the name of the execution environment must be less than 255 characters"
+      invalid_numeric_value_list: |
+        %{option} should be a list of comma separated numeric values
+        
+        Found: %{incorrect_value}
+      invalid_meta: |
+        meta should be a list of comma separated key:value items (eg. OS:Linux,CI:Jenkins)
+        
+        Found: %{incorrect_value}
+      invalid_tag_value_list: |
+        %{option} should be a list of comma separated tags in HipTest
+        
+        Found: %{incorrect_value}
+      invalid_test_run_id: "Invalid format --test-run-id=\"%{test_run_id}\": the test run id must be numeric"
+      invalid_token: "Invalid format --token=\"%{token}\": the project secret token must be numeric"
+      irregular_report_file: "Error with --push: the file \"%{path}\" is not a regular file"
+      irregular_xml_file: "Error with --xml-file: the file \"%{path}\" is not a regular file"
+      missing_actionwords_signature_file: |
+        Missing Action Words signature file: the file "actionwords_signature.yaml" could not be found in directory "%{directory_path}"
+        Use --actionwords-signature to generate the file "%{directory_path}/actionwords_signature.yaml"
+      missing_config_file: "Error with --config: the file \"%{config_file}\" does not exist or is not readable"
+      missing_token: |
+        Missing argument --token: you must specify project secret token with --token=<project-token>
+        
+        The project secret token can be found on HipTest in the settings section, under
+        'Test code generation'. It is a sequence of numbers uniquely identifying your
+        project.
+        
+        Note that settings section is available only to administrators of the project.
+      multiple_filters: |
+        You specified multiple filters for the export.
+        
+        Only one filter can be applied.
+      output_directory_not_writable: "Error with --output-directory: the directory \"%{output_dir}\" is not writable"
+      output_directory_parent_not_writable: "Error with --output-directory: the directory \"%{output_dir}\" can not be created because \"%{realpath}\" is not writable"
+      output_directory_not_directory: "Error with --output-directory: the file \"%{output_dir}\" is not a directory"
+      unreadable_report_file: "Error with --push: the file \"%{path}\" does not exist or is not readable"
+      unreadable_xml_file: "Error with --xml-file: the file \"%{path}\" does not exist or is not readable"
+
     invalid_config_file: "cannot find configuration file in \"%{hiptest_publisher_path}/lib/config\" for language %{language} and framework %{framework}"
     invalid_config_file_no_framework: "cannot find configuration file in \"%{hiptest_publisher_path}/lib/config\" for language %{language}"
     invalid_node: "Invalid node_name %{name} in language group [%{group_name}]"
@@ -139,6 +188,8 @@ en:
           * Did you specify the correct push format?
             Use push_format=<format> in your config file or option --push-format=<format> in the command line
             Available formats are: cucumber-json, junit, nunit, robot, tap
+
+  readable_list: "%{first_items} and %{last_item}"
 
   ruby_version:
     current_version: "You are using %{engine} %{version}."
