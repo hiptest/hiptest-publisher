@@ -1,8 +1,14 @@
 require 'webmock'
 require 'codeclimate-test-reporter'
-require 'pry'
 require 'i18n'
 require 'securerandom'
+
+begin
+  require 'pry'
+rescue LoadError => exception
+  puts "Unable to use pry"
+  puts exception
+end
 
 require_relative '../lib/hiptest-publisher/formatters/reporter'
 require_relative '../lib/hiptest-publisher/nodes'
