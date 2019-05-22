@@ -411,7 +411,7 @@ class TemplateFinder
     unless @template_path_by_name.has_key?(template_name)
       @template_path_by_name[template_name] = get_template_by_name(template_name) || get_template_by_name(@fallback_template)
     end
-    @template_path_by_name[template_name] or raise ArgumentError.new("no template with name #{template_name} in dirs #{dirs}")
+    @template_path_by_name[template_name] or raise ArgumentError.new(I18n.t('errors.template_no_found', template_name: template_name, dirs: dirs))
   end
 
   def register_partials
@@ -663,10 +663,13 @@ class LanguageConfigParser
                     "#{cli_options.language}-#{cli_options.framework}.conf"
                   end
     config_path = File.expand_path("#{hiptest_publisher_path}/lib/config/#{config_name.downcase}")
+
     if !File.file?(config_path)
-      message = "cannot find configuration file in \"#{hiptest_publisher_path}/lib/config\""
-      message << " for language #{cli_options.language.inspect}"
-      message << " and framework #{cli_options.framework.inspect}" unless cli_options.framework.to_s.empty?
+      if cli_options.framework.to_s.empty?
+        message = I18n.t('errors.invalid_config_file_no_framework', hiptest_publisher_path: hiptest_publisher_path, language: cli_options.language.inspect)
+      else
+        message = I18n.t('errors.invalid_config_file', hiptest_publisher_path: hiptest_publisher_path, language: cli_options.language.inspect, framework: cli_options.framework.inspect)
+      end
       raise ArgumentError.new(message)
     end
     File.expand_path(config_path)

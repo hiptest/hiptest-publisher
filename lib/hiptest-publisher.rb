@@ -93,7 +93,7 @@ module Hiptest
         raise
       end
     rescue => err
-      puts I18n.t(:default_error).red
+      puts I18n.t("errors.default").red
       reporter.dump_error(err)
     end
 
