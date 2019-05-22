@@ -1,3 +1,5 @@
+require 'i18n'
+
 module Hiptest
   class DiffDisplayer
     def initialize(diff, cli_options, language_config, file_writer)
@@ -50,7 +52,7 @@ module Hiptest
     def export_as_json
       @file_writer.write_to_file(
         "#{@cli_options.output_directory}/actionwords-diff.json",
-        "Exporting actionwords diff") {
+        I18n.t('actionwords_diff.exporting_diff_title')) {
         JSON.pretty_generate(as_api)
       }
     end
@@ -106,47 +108,33 @@ module Hiptest
       command_line = @cli_options.command_line_used(exclude: [:actionwords_diff])
 
       unless @diff[:deleted].nil?
-        output([
-          "#{pluralize(@diff[:deleted].length, "action word")} deleted,",
-          "run '#{command_line} --show-actionwords-deleted' to list the #{pluralize_word(@diff[:deleted].length, "name")} in the code",
-          displayable_list(@diff[:deleted])
-        ])
+        puts I18n.t('actionwords_diff.summary.deleted', count: @diff[:deleted].length, command_line: command_line, list: displayable_list(@diff[:deleted]))
+        puts ""
       end
 
       unless @diff[:created].nil?
-        output([
-          "#{pluralize(@diff[:created].length, "action word")} created,",
-          "run '#{command_line} --show-actionwords-created' to get the #{pluralize_word(@diff[:created].length, "definition")}",
-          displayable_list(@diff[:created])
-        ])
+        puts I18n.t('actionwords_diff.summary.created', count: @diff[:created].length, command_line: command_line, list: displayable_list(@diff[:created]))
+        puts ""
       end
 
       unless @diff[:renamed].nil?
-        output([
-          "#{pluralize(@diff[:renamed].length, "action word")} renamed,",
-          "run '#{command_line} --show-actionwords-renamed' to get the new #{pluralize_word(@diff[:renamed].length, "name")}",
-          displayable_list(@diff[:renamed])
-        ])
+        puts I18n.t('actionwords_diff.summary.renamed', count: @diff[:renamed].length, command_line: command_line, list: displayable_list(@diff[:renamed]))
+        puts ""
       end
 
       unless @diff[:signature_changed].nil?
-        output([
-          "#{pluralize(@diff[:signature_changed].length, "action word")} which signature changed,",
-          "run '#{command_line} --show-actionwords-signature-changed' to get the new #{pluralize_word(@diff[:signature_changed].length, "signature")}",
-          displayable_list(@diff[:signature_changed])
-        ])
+        puts I18n.t('actionwords_diff.summary.signature_changed', count: @diff[:signature_changed].length, command_line: command_line, list: displayable_list(@diff[:signature_changed]))
+        puts ""
       end
 
       unless @diff[:definition_changed].nil?
-        output([
-          "#{pluralize(@diff[:definition_changed].length, "action word")} which definition changed:",
-          "run '#{command_line} --show-actionwords-definition-changed' to get the new #{pluralize_word(@diff[:definition_changed].length, "definition")}",
-          displayable_list(@diff[:definition_changed])
-        ])
+        puts I18n.t('actionwords_diff.summary.definition_changed', count: @diff[:definition_changed].length, command_line: command_line, list: displayable_list(@diff[:definition_changed]))
+        puts ""
       end
 
       if @diff.empty?
-        output("No action words changed")
+        puts I18n.t('actionwords_diff.summary.empty')
+        puts ""
       end
     end
 

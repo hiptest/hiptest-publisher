@@ -1,3 +1,4 @@
+require 'i18n'
 require 'pathname'
 
 require 'hiptest-publisher/utils'

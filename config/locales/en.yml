@@ -1,8 +1,56 @@
 --- 
 en: 
   actionwords_diff: 
+    exporting_diff_title: "Exporting actionwords diff"
     exporting_title: "Exporting actionword signature"
     loading_previous_definition: "Loading previous definition"
+    summary: 
+      created: 
+        one: |
+            One action word created,
+            run '%{command_line} --show-actionwords-created' to get the definition
+            %{list}
+        other: |
+            %{count} action words created,
+            run '%{command_line} --show-actionwords-created' to get the definitions
+            %{list}
+      definition_changed: 
+        one: |
+            One action word which definition changed,
+            run '%{command_line} --show-actionwords-definition-changed' to get the new definition
+            %{list}
+        other: |
+            %{count} action words which definition changed,
+            run '%{command_line} --show-actionwords-definition-changed' to get the new definitions
+            %{list}
+      deleted: 
+        one: |
+            One action word deleted,
+            run '%{command_line} --show-actionwords-deleted' to list the name in the code
+            %{list}
+        other: |
+            %{count} action words deleted,
+            run '%{command_line} --show-actionwords-deleted' to list the names in the code
+            %{list}
+      empty: "No action words changed"
+      renamed: 
+        one: |
+            One action word renamed,
+            run '%{command_line} --show-actionwords-renamed' to get the new name
+            %{list}
+        other: |
+            %{count} action words renamed,
+            run '%{command_line} --show-actionwords-renamed' to get the new names
+            %{list}
+      signature_changed: 
+        one: |
+            One action word which signature changed,
+            run '%{command_line} --show-actionwords-signature-changed' to get the new signature
+            %{list}
+        other: |
+            %{count} action words which signature changed,
+            run '%{command_line} --show-actionwords-signature-changed' to get the new signatures
+            %{list}
   analyzing_data: "Analyzing data"
   api_error: "HipTest API returned error %{code}"
   build_data: 
