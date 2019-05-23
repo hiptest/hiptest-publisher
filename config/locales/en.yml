@@ -1,11 +1,11 @@
---- 
-en: 
-  actionwords_diff: 
+---
+en:
+  actionwords_diff:
     exporting_diff_title: "Exporting actionwords diff"
     exporting_title: "Exporting actionword signature"
     loading_previous_definition: "Loading previous definition"
-    summary: 
-      created: 
+    summary:
+      created:
         one: |
             One action word created,
             run '%{command_line} --show-actionwords-created' to get the definition
@@ -14,7 +14,7 @@ en:
             %{count} action words created,
             run '%{command_line} --show-actionwords-created' to get the definitions
             %{list}
-      definition_changed: 
+      definition_changed:
         one: |
             One action word which definition changed,
             run '%{command_line} --show-actionwords-definition-changed' to get the new definition
@@ -23,7 +23,7 @@ en:
             %{count} action words which definition changed,
             run '%{command_line} --show-actionwords-definition-changed' to get the new definitions
             %{list}
-      deleted: 
+      deleted:
         one: |
             One action word deleted,
             run '%{command_line} --show-actionwords-deleted' to list the name in the code
@@ -33,7 +33,7 @@ en:
             run '%{command_line} --show-actionwords-deleted' to list the names in the code
             %{list}
       empty: "No action words changed"
-      renamed: 
+      renamed:
         one: |
             One action word renamed,
             run '%{command_line} --show-actionwords-renamed' to get the new name
@@ -42,7 +42,7 @@ en:
             %{count} action words renamed,
             run '%{command_line} --show-actionwords-renamed' to get the new names
             %{list}
-      signature_changed: 
+      signature_changed:
         one: |
             One action word which signature changed,
             run '%{command_line} --show-actionwords-signature-changed' to get the new signature
@@ -53,12 +53,12 @@ en:
             %{list}
   analyzing_data: "Analyzing data"
   api_error: "HipTest API returned error %{code}"
-  build_data: 
+  build_data:
     error: |
         Unable to build:
         %{node}
     title: "Extracting data"
-  check_version: 
+  check_version:
     error: "Unable to connect to Rubygem"
     outdated: |
         Your current install of hiptest-publisher (%{current}) is outdated, version %{latest} is available
@@ -66,28 +66,28 @@ en:
     title: "Checking latest version on Rubygem"
     up_to_date: "Your current install of hiptest-publisher (%{current}) is up-to-date."
   default: default
-  errors: 
-    cli_options: 
+  errors:
+    cli_options:
       actionwords_signature_directory: "Bad Action Words signature file: the file \"%{path}\" is a directory"
       filter_status_without_test_run: |
           You need to specify a test run when filtering on test status.
           Use options test_run_id or test_run_name.
       filter_with_test_run: "Filtering can not be applied when exporting from a test run"
-      invalid_category: 
+      invalid_category:
         one: "Error with --only: the category %{invalid_categories} does not exist for language %{language}. Available categories are %{available_categories}."
         other: "Error with --only: the categories %{invalid_categories} do not exist for language %{language}. Available categories are %{available_categories}."
       invalid_execution_environment: "Error with --execution-environment: the name of the execution environment must be less than 255 characters"
       invalid_meta: |
           meta should be a list of comma separated key:value items (eg. OS:Linux,CI:Jenkins)
-          
+
           Found: %{incorrect_value}
       invalid_numeric_value_list: |
           %{option} should be a list of comma separated numeric values
-          
+
           Found: %{incorrect_value}
       invalid_tag_value_list: |
           %{option} should be a list of comma separated tags in HipTest
-          
+
           Found: %{incorrect_value}
       invalid_test_run_id: "Invalid format --test-run-id=\"%{test_run_id}\": the test run id must be numeric"
       invalid_token: "Invalid format --token=\"%{token}\": the project secret token must be numeric"
@@ -99,15 +99,15 @@ en:
       missing_config_file: "Error with --config: the file \"%{config_file}\" does not exist or is not readable"
       missing_token: |
           Missing argument --token: you must specify project secret token with --token=<project-token>
-          
+
           The project secret token can be found on HipTest in the settings section, under
           'Test code generation'. It is a sequence of numbers uniquely identifying your
           project.
-          
+
           Note that settings section is available only to administrators of the project.
       multiple_filters: |
           You specified multiple filters for the export.
-          
+
           Only one filter can be applied.
       output_directory_not_directory: "Error with --output-directory: the file \"%{output_dir}\" is not a directory"
       output_directory_not_writable: "Error with --output-directory: the directory \"%{output_dir}\" is not writable"
@@ -124,30 +124,30 @@ en:
   exporting_file: "Exporting %{name}"
   extracting_data: "Extracting data"
   fetching_data: "Fetching data from HipTest"
-  help: 
-    categories: 
+  help:
+    categories:
       title: "For language %{language}, available file groups are"
       usage_example: |
-          
+
           Usage examples:
-          
+
           To export only %{first} files:
               hiptest-publisher --language=%{language} --only=%{first}
-          
+
           To export both %{first} and %{second} files:
               hiptest-publisher --language=%{language} --only=%{first},%{second}
     description: |
-        
+
         Exports tests from HipTest for automation.
-        
+
         Specific options:
     header: "Usage: hiptest-publisher [options]"
-    languages: 
+    languages:
       no_framework_available: "  no framework option available %{language}"
       supported_languages: "Supported languages:"
-    options: 
+    options:
       nomalized_options: "Options have been normalized. Values updated:"
-  options: 
+  options:
     actionwords_diff: "Show actionwords diff since last update (summary)"
     actionwords_diff_json: "Show actionwords diff since last update (JSON output)"
     actionwords_only: "(deprecated) alias for --only=actionwords"
@@ -200,29 +200,29 @@ en:
     with_folders: "Use folders hierarchy to export files in respective directories"
     without: "Exclude file categories from import (--only=list to list them)"
     xml_file: "XML file to use instead of fetching it from HipTest"
-  overwrite: 
+  overwrite:
     ask_confirmation: "File %{path} exists, do you want to overwrite it? [y/N] "
     warning_message: "File %{path} already exists, skipping. Use --force to overwrite it."
   project_not_found_error: "Did you specify the project token of an existing HipTest project?\n"
-  push: 
+  push:
     empty_results: |
         Possible causes for the lack of imported tests:
-        
+
           * Did you run the following command before executing your tests?
             %{enhanced_command}
-        
+
           * Did you specify the correct push format?
             Use push_format=<format> in your config file or option --push-format=<format> in the command line
             Available formats are: cucumber-json, junit, nunit, robot, tap
     posting_results: "Posting %{file} to %{site}"
     test_imported: "  Test '%{name}' imported"
     test_run_id: "the ID of the test run you want to push the results to"
-    tests_imported_summary: 
+    tests_imported_summary:
       one: "One test imported"
       other: "%{count} tests imported"
       zero: "No tests imported"
   readable_list: "%{first_items} and %{last_item}"
-  ruby_version: 
+  ruby_version:
     current_version: "You are using %{engine} %{version}."
     deprecation_warning: "Ruby %{version} support is deprecated and will be removed in later version of hiptest-publisher"
     required_version: "hiptest-publisher requires Ruby version >= %{version}."

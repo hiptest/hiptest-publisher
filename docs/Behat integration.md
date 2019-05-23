@@ -3,7 +3,7 @@ Integrate hiptest actions words into behat with AbstractClass
 
 Integration with [Behat](https://github.com/Behat/Behat) can be quite simple.
 
-With the given file structure you can integrate HipTest with no impact to your current framework's test code architecture. 
+With the given file structure you can integrate HipTest with no impact to your current framework's test code architecture.
 
 ```php
 ./behat/bootstrap/Feature/Context/FeatureContext.php
@@ -63,10 +63,10 @@ abstract class FeatureContext extends Context{
 
 ##### 4. Implement your actionword in your main context
 
-- You need to add `@override` to each step definition that implements your action word 
+- You need to add `@override` to each step definition that implements your action word
  (So that Behat doesn't argue on duplicated step)
 - When you export actionwords with update you need to make sure
- the method in `FeatureContext.php` is still overridden in your main context 
+ the method in `FeatureContext.php` is still overridden in your main context
 
 `#file ./behat/bootstrap/Feature/Context/CustomerContext.php`
 ```php
