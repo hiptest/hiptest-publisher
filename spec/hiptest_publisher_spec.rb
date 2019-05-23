@@ -335,19 +335,19 @@ describe Hiptest::Publisher do
           expect {
             run_publisher_command("--show-actionwords-diff")
           }.to output(a_string_including([
-            "1 action word deleted,",
+            "One action word deleted,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-deleted' to list the name in the code",
             "- Do something",
             "",
-            "1 action word created,",
+            "One action word created,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-created' to get the definition",
             "- start publisher",
             "",
-            "1 action word renamed,",
+            "One action word renamed,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-renamed' to get the new name",
             "- Parameters and assinements",
             "",
-            "1 action word which signature changed,",
+            "One action word which signature changed,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-signature-changed' to get the new signature",
             "- Control blocks",
           ].join("\n"))).to_stdout
