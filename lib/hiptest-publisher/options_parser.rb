@@ -411,7 +411,7 @@ class TemplateFinder
     unless @template_path_by_name.has_key?(template_name)
       @template_path_by_name[template_name] = get_template_by_name(template_name) || get_template_by_name(@fallback_template)
     end
-    @template_path_by_name[template_name] or raise ArgumentError.new(I18n.t('errors.template_no_found', template_name: template_name, dirs: dirs))
+    @template_path_by_name[template_name] or raise ArgumentError.new(I18n.t('errors.template_not_found', template_name: template_name, dirs: dirs))
   end
 
   def register_partials
