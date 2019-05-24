@@ -120,7 +120,13 @@ en:
     invalid_config_file: "cannot find configuration file in \"%{hiptest_publisher_path}/lib/config\" for language %{language} and framework %{framework}"
     invalid_config_file_no_framework: "cannot find configuration file in \"%{hiptest_publisher_path}/lib/config\" for language %{language}"
     invalid_node: "Invalid node_name %{name} in language group [%{group_name}]"
+    no_test_runs: "No matching test run found: this project does not have any test runs."
+    no_matching_test_run: |
+        No matching test run found. Available test runs for this project are:
+        %{test_runs}
+    project_not_found: "No project found with this secret token."
     template_not_found: "no template with name %{template_name} in dirs %{dirs}"
+    test_run_list_unavailable: "Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name"
   exporting_file: "Exporting %{name}"
   extracting_data: "Extracting data"
   fetching_data: "Fetching data from HipTest"
@@ -222,6 +228,7 @@ en:
       other: "%{count} tests imported"
       zero: "No tests imported"
   readable_list: "%{first_items} and %{last_item}"
+  request_sent: "Request sent to: %{uri}"
   ruby_version:
     current_version: "You are using %{engine} %{version}."
     deprecation_warning: "Ruby %{version} support is deprecated and will be removed in later version of hiptest-publisher"
