@@ -712,7 +712,7 @@ describe Hiptest::Publisher do
         publisher.run
 
         expect(STDERR).to have_printed("HipTest API returned error 404")
-        expect(STDERR).to have_printed("Did you specify the project token of an existing HipTest project?")
+        expect(STDERR).to have_printed("No project found with this secret token.")
       end
     end
 

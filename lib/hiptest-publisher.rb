@@ -265,11 +265,11 @@ module Hiptest
     end
 
     def report_hiptest_api_error(response)
-      reporter.failure_message(I18n.t(:api_error, code: response.code))
+      reporter.failure_message(I18n.t('errors.api_error', code: response.code))
       if response.code == "422" && response.body.start_with?("Unknown format")
         STDERR.print response.body.chomp + "\n"
       elsif response.code == "404"
-        STDERR.print I18n.t(:project_not_found_error)
+        STDERR.print I18n.t('errors.project_not_found')
       end
     end
 
