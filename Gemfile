@@ -15,6 +15,7 @@ group :development do
   gem 'rspec-mocks', '~> 3.3'
   gem 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.6'
   gem 'i18n-tasks', '~> 0.9.29'
+  gem 'i18n-coverage', '~> 0.1.1'
 end
 
 group :packaging do
