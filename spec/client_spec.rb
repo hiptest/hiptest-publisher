@@ -239,6 +239,7 @@ describe Hiptest::Client do
             "  --   ----",
             "  18   Continuous integration",
             "  541  Unit tests",
+            ""
           ].join("\n")
           expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
         end
@@ -287,6 +288,7 @@ describe Hiptest::Client do
             "  89   Sprint 12",
             "  18   Continuous integration",
             "  541  Unit tests",
+            ""
           ].join("\n")
           expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
         end

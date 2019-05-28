@@ -1,13 +1,28 @@
 require 'webmock'
 require 'codeclimate-test-reporter'
-require 'pry'
+require 'i18n/coverage'
 require 'securerandom'
+
+begin
+  require 'pry'
+rescue LoadError => exception
+  puts "Unable to use pry"
+  puts exception
+end
+
 require_relative '../lib/hiptest-publisher/formatters/reporter'
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
 
 CodeClimate::TestReporter.start
 WebMock.disable_net_connect!(allow: "codeclimate.com")
+I18n.load_path << Dir[File.expand_path("config/locales") + "/*.yml"]
+
+RSpec.configure do |config|
+  config.after(:suite) do
+    I18n::Coverage::Reporter.report if ENV['I18N_COVERAGE']
+  end
+end
 
 class ErrorListener
   def dump_error(error, message)

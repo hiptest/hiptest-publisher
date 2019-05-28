@@ -13,26 +13,30 @@
 #
 
 require 'ruby_version'
+require 'i18n'
+
+I18n.load_path << Dir[File.expand_path("config/locales") + "/*.yml"]
 
 # Ensure ruby version >= 2
 if RubyVersion < '2.1.0'
-  STDERR.puts "hiptest-publisher requires Ruby version >= 2.1.0."
-  STDERR.puts "You are using #{RUBY_ENGINE} #{RUBY_VERSION}."
-  STDERR.puts "Please use a more recent ruby release to run hiptest-publisher."
+  STDERR.puts(I18n.t('ruby_version.required_version', version: '2.1.0'))
+  STDERR.puts(I18n.t('ruby_version.current_version', engine: RUBY_ENGINE, version: RUBY_VERSION))
+  STDERR.puts(I18n.t('ruby_version.use_more_recent'))
+
   if RubyVersion.is? 2.0
-    STDERR.puts "Official support for Ruby 2.0.0 ended on 2016-02-24"
+    STDERR.puts(I18n.('ruby_version.support_ended', version: '2.0.0', year: '2016', month: '02', day: '24'))
   elsif RubyVersion.is? '1.9.3'
-    STDERR.puts "Official support for Ruby 1.9.3 ended on 2015-02-23"
+    STDERR.puts(I18n.('ruby_version.support_ended', version: '1.9.3', year: '2015', month: '02', day: '23'))
   elsif RubyVersion.is? '1.9.2'
-    STDERR.puts "Official support for Ruby 1.9.2 ended on 2014-07-31"
+    STDERR.puts(I18n.('ruby_version.support_ended', version: '1.9.2', year: '2014', month: '07', day: '31'))
   end
   exit 1
 end
 
 if RubyVersion < '2.3'
-  STDERR.puts "You are using #{RUBY_ENGINE} #{RUBY_VERSION}."
-  STDERR.puts "Ruby 2.2 support is deprecated and will be removed in later version of hiptest-publisher"
-  STDERR.puts "Official support for Ruby 1.9.2 ended on 2018-03-31"
+  STDERR.puts(I18n.t('ruby_version.current_version', engine: RUBY_ENGINE, version: RUBY_VERSION))
+  STDERR.puts(I18n.t('ruby_version.deprecation_warning', version: '2.2'))
+  STDERR.puts(I18n.t('ruby_version.support_ended', version: '2.2', year: '2018', month: '03', day: '31'))
 end
 
 require 'hiptest-publisher'

@@ -335,19 +335,19 @@ describe Hiptest::Publisher do
           expect {
             run_publisher_command("--show-actionwords-diff")
           }.to output(a_string_including([
-            "1 action word deleted,",
+            "One action word deleted,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-deleted' to list the name in the code",
             "- Do something",
             "",
-            "1 action word created,",
+            "One action word created,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-created' to get the definition",
             "- start publisher",
             "",
-            "1 action word renamed,",
+            "One action word renamed,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-renamed' to get the new name",
             "- Parameters and assinements",
             "",
-            "1 action word which signature changed,",
+            "One action word which signature changed,",
             "run 'hiptest-publisher --language=ruby --output-directory=#{output_dir} --token=123456789 --show-actionwords-signature-changed' to get the new signature",
             "- Control blocks",
           ].join("\n"))).to_stdout
@@ -589,7 +589,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(STDOUT).to have_printed("1 test imported\n")
+      expect(STDOUT).to have_printed("One test imported\n")
 
       # multiple passed
       stub_request(:post, "https://app.hiptest.com/import_test_results/456/tap").
@@ -611,7 +611,7 @@ describe Hiptest::Publisher do
 
       expect {publisher.run}.to output(a_string_including("Possible causes for the lack of imported tests:")).to_stdout
 
-      expect(STDOUT).to have_printed("0 tests imported\n")
+      expect(STDOUT).to have_printed("No tests imported\n")
     end
 
     it "displays names of passed tests with --verbose" do
@@ -712,7 +712,7 @@ describe Hiptest::Publisher do
         publisher.run
 
         expect(STDERR).to have_printed("HipTest API returned error 404")
-        expect(STDERR).to have_printed("Did you specify the project token of an existing HipTest project?")
+        expect(STDERR).to have_printed("No project found with this secret token.")
       end
     end
 
@@ -759,7 +759,7 @@ describe Hiptest::Publisher do
           fail("it should have exited")
         rescue SystemExit
         end
-      }.to output(a_string_including("Usage: ruby publisher.rb [options]")).to_stdout
+      }.to output(a_string_including("Usage: hiptest-publisher [options]")).to_stdout
     end
   end
 
@@ -771,7 +771,7 @@ describe Hiptest::Publisher do
           fail("it should have exited")
         rescue SystemExit
         end
-      }.to output(a_string_including("Usage: ruby publisher.rb [options]")).to_stdout
+      }.to output(a_string_including("Usage: hiptest-publisher [options]")).to_stdout
     end
   end
 
@@ -1022,7 +1022,7 @@ describe Hiptest::Publisher do
                                   "--test-run-id", "456",
                                   "--push", 'this file does not exist',
                                   '--global-failure-on-missing-reports')
-            expect(STDOUT).to have_printed('1 test imported')
+            expect(STDOUT).to have_printed('One test imported')
           end
 
           it "there are no matching files" do
@@ -1030,7 +1030,7 @@ describe Hiptest::Publisher do
                                   "--test-run-id", "456",
                                   "--push", 'the files * do not exist',
                                   '--global-failure-on-missing-reports')
-            expect(STDOUT).to have_printed('1 test imported')
+            expect(STDOUT).to have_printed('One test imported')
           end
         end
       end

@@ -1,4 +1,5 @@
 require 'erb'
+require 'i18n'
 require 'json'
 require 'net/http'
 require 'uri'
@@ -73,7 +74,7 @@ module Hiptest
     def fetch_project_export
       response = send_get_request(url)
       if response.code_type == Net::HTTPNotFound
-        raise ClientError, "No project found with this secret token."
+        raise ClientError, I18n.t('errors.project_not_found')
       end
       response.body
     end
@@ -122,7 +123,7 @@ module Hiptest
         if cli_options.test_run_id?
           cli_options.test_run_id
         else
-          raise ClientError, "Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name"
+          raise ClientError, I18n.t('errors.test_run_list_unavailable')
         end
       else
         matching_test_run = available_test_runs.find { |test_run| test_run[key] == searched_value }
@@ -135,10 +136,9 @@ module Hiptest
 
     def no_matching_test_runs_error_message
       if available_test_runs.empty?
-        "No matching test run found: this project does not have any test runs."
+        I18n.t('errors.no_test_runs')
       else
-        "No matching test run found. Available test runs for this project are:\n" +
-            columnize_test_runs(available_test_runs)
+        I18n.t('errors.no_matching_test_run', test_runs: columnize_test_runs(available_test_runs))
       end
     end
 
@@ -182,7 +182,7 @@ module Hiptest
           proxy_address, proxy_port, proxy_user, proxy_pass,
           use_ssl: use_ssl,
           verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
-        @reporter.show_verbose_message("Request sent to: #{request.uri}")
+        @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
         http.request(request)
       end
     end
