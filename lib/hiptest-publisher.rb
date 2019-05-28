@@ -16,6 +16,7 @@ require 'hiptest-publisher/signature_differ'
 require 'hiptest-publisher/signature_exporter'
 require 'hiptest-publisher/string'
 require 'hiptest-publisher/utils'
+require 'hiptest-publisher/version_checker'
 require 'hiptest-publisher/xml_parser'
 
 module Hiptest
@@ -34,8 +35,7 @@ module Hiptest
 
     def run
       if @cli_options.check_version
-        check_version
-        return
+        return VersionChecker.check_version
       end
 
       begin
@@ -206,27 +206,6 @@ module Hiptest
         puts "  - #{group_name}"
       end
       puts I18n.t('help.categories.usage_example', language: @cli_options.language, first: group_names.first, second: group_names[1])
-    end
-
-    def check_version
-      latest = nil
-      reporter.with_status_message I18n.t('check_version.title') do
-        latest_gem = Gem.latest_version_for('hiptest-publisher')
-
-        raise RuntimeError, I18n.t('check_version.error') if latest_gem.nil?
-
-        latest = latest_gem.version
-      end
-
-      return if latest.nil?
-
-      current = hiptest_publisher_version
-
-      if latest == current
-        puts I18n.t('check_version.up_to_date', current: current)
-      else
-        puts I18n.t('check_version.outdated', current: current, latest: latest)
-      end
     end
 
     def post_results
