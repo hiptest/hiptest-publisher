@@ -1,7 +1,7 @@
 HipTest Publisher Changelog
 ===========================
 
-1.23.3
+1.23.4
 ------
 
  - Add I18n to enable localizing (and clearing the code)
