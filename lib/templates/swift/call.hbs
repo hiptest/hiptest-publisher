@@ -1,0 +1,2 @@
+{{#if has_annotation? }}{{#comment '//'}}{{{ rendered_children.gherkin_text }}}{{/comment}}
+{{/if}}app.{{{ underscore rendered_children.actionword }}}({{#if has_arguments?}}{{{ join rendered_children.all_arguments ', '}}}{{/if}})
