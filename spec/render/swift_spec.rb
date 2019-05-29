@@ -1,21 +1,21 @@
-require_relative '../spec_helper'
+require_relative "../spec_helper"
 require_relative "../render_shared"
 
-describe 'Render as swift' do
+describe "Render as swift" do
   include_context "shared render"
 
   before(:each) do
     # In HipTest: null
-    @null_rendered = 'nil'
+    @null_rendered = "nil"
 
     # In HipTest: 'What is your quest ?'
     @what_is_your_quest_rendered = "\"What is your quest ?\""
 
     # In HipTest: 3.14
-    @pi_rendered = '3.14'
+    @pi_rendered = "3.14"
 
     # In HipTest: false
-    @false_rendered = 'false'
+    @false_rendered = "false"
 
     # In HipTest: "${foo}fighters"
     @foo_template_rendered = '"#{foo}fighters"'
@@ -27,22 +27,22 @@ describe 'Render as swift' do
     @empty_template_rendered = '""'
 
     # In HipTest: foo (as in 'foo := 1')
-    @foo_variable_rendered = 'foo'
+    @foo_variable_rendered = "foo"
 
     # In HipTest: foo.fighters
-    @foo_dot_fighters_rendered = 'foo.fighters'
+    @foo_dot_fighters_rendered = "foo.fighters"
 
     # In HipTest: foo['fighters']
     @foo_brackets_fighters_rendered = "foo[\"fighters\"]"
 
     # In HipTest: -foo
-    @minus_foo_rendered = '-foo'
+    @minus_foo_rendered = "-foo"
 
     # In HipTest: foo - 'fighters'
     @foo_minus_fighters_rendered = "foo - \"fighters\""
 
     # In HipTest: (foo)
-    @parenthesis_foo_rendered = '(foo)'
+    @parenthesis_foo_rendered = "(foo)"
 
     # In HipTest: [foo, 'fighters']
     @foo_list_rendered = "[foo, \"fighters\"]"
@@ -78,10 +78,10 @@ describe 'Render as swift' do
     #   foo := 'fighters'
     #end
     @if_then_rendered = [
-        "if (true) {",
-        "  foo = \"fighters\"",
-        "}"
-      ].join("\n")
+      "if (true) {",
+      "  foo = \"fighters\"",
+      "}",
+    ].join("\n")
 
     # In HipTest:
     # if (true)
@@ -90,12 +90,12 @@ describe 'Render as swift' do
     #   fighters := 'foo'
     #end
     @if_then_else_rendered = [
-        "if (true) {",
-        "  foo = \"fighters\"",
-        "} else {",
-        "  fighters = \"foo\"",
-        "}"
-      ].join("\n")
+      "if (true) {",
+      "  foo = \"fighters\"",
+      "} else {",
+      "  fighters = \"foo\"",
+      "}",
+    ].join("\n")
 
     # In HipTest:
     # while (foo)
@@ -103,20 +103,20 @@ describe 'Render as swift' do
     #   foo('fighters')
     # end
     @while_loop_rendered = [
-        "while (foo) {",
-        "  fighters = \"foo\"",
-        "  app.foo(x: \"fighters\")",
-        "}"
-      ].join("\n")
+      "while (foo) {",
+      "  fighters = \"foo\"",
+      "  app.foo(x: \"fighters\")",
+      "}",
+    ].join("\n")
 
     # In HipTest: @myTag
-    @simple_tag_rendered = 'myTag'
+    @simple_tag_rendered = "myTag"
 
     # In HipTest: @myTag:somevalue
-    @valued_tag_rendered = 'myTag:somevalue'
+    @valued_tag_rendered = "myTag:somevalue"
 
     # In HipTest: plic (as in: definition 'foo'(plic))
-    @plic_param_rendered = 'plic: String'
+    @plic_param_rendered = "plic: String"
 
     # In HipTest: plic = 'ploc' (as in: definition 'foo'(plic = 'ploc'))
     @plic_param_default_ploc_rendered = "plic: String = \"ploc\""
@@ -133,12 +133,13 @@ describe 'Render as swift' do
     @tagged_action_word_rendered = [
       "func my_action_word() {",
       "    // Tags: myTag myTag:somevalue",
-      "}\n"].join("\n")
+      "}\n",
+    ].join("\n")
 
     @described_action_word_rendered = [
       "func my_action_word() {",
       "    // Some description",
-      "}\n"
+      "}\n",
     ].join("\n")
 
     # In HipTest:
@@ -146,7 +147,8 @@ describe 'Render as swift' do
     # end
     @parameterized_action_word_rendered = [
       "func my_action_word(plic: String, flip: String = \"flap\") {",
-      "}\n"].join("\n")
+      "}\n",
+    ].join("\n")
 
     # In HipTest:
     # @myTag
@@ -170,7 +172,8 @@ describe 'Render as swift' do
       "      // on two lines",
       "    }",
       "    raise NotImplementedError",
-      "}\n"].join("\n")
+      "}\n",
+    ].join("\n")
 
     # In HipTest:
     # actionword 'my action word' do
@@ -180,7 +183,8 @@ describe 'Render as swift' do
       "func my_action_word() {",
       "    // TODO: Implement action: basic action",
       "    raise NotImplementedError",
-      "}\n"].join("\n")
+      "}\n",
+    ].join("\n")
 
     # In HipTest, correspond to two action words:
     # actionword 'first action word' do
@@ -200,7 +204,7 @@ describe 'Render as swift' do
       "  func second_action_word() {",
       "      app.first_action_word()",
       "  }}",
-      ].join("\n")
+    ].join("\n")
 
     # In HipTest, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
@@ -243,9 +247,8 @@ describe 'Render as swift' do
       "",
       "",
       "  func aw_with_template_param(x: String) {",
-      "  }}"
+      "  }}",
     ].join("\n")
-
 
     # In HipTest:
     # @myTag
@@ -259,36 +262,36 @@ describe 'Render as swift' do
     #   end
     # end
     @full_scenario_rendered = [
-       "func testCompareToPi() {",
-       "    // This is a scenario which description ",
-       "    // is on two lines",
-       "    // Tags: myTag",
-       "    foo = 3.14",
-       "    if (foo > x) {",
-       "      // TODO: Implement result: x is greater than Pi",
-       "    } else {",
-       "      // TODO: Implement result: x is lower than Pi",
-       "      // on two lines",
-       "    }",
-       "    raise NotImplementedError",
-       "}\n\n",
+      "func testCompareToPi() {",
+      "    // This is a scenario which description ",
+      "    // is on two lines",
+      "    // Tags: myTag",
+      "    foo = 3.14",
+      "    if (foo > x) {",
+      "      // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "      // TODO: Implement result: x is lower than Pi",
+      "      // on two lines",
+      "    }",
+      "    raise NotImplementedError",
+      "}\n\n",
     ].join("\n")
 
     @full_scenario_with_uid_rendered = [
-       "func testCompareToPi_abcd-1234() {",
-       "    // This is a scenario which description ",
-       "    // is on two lines",
-       "    // Tags: myTag",
-       "    foo = 3.14",
-       "    if (foo > x) {",
-       "      // TODO: Implement result: x is greater than Pi",
-       "    } else {",
-       "      // TODO: Implement result: x is lower than Pi",
-       "      // on two lines",
-       "    }",
-       "    raise NotImplementedError",
-       "}\n\n",
-       ].join("\n")
+      "func testCompareToPi_abcd-1234() {",
+      "    // This is a scenario which description ",
+      "    // is on two lines",
+      "    // Tags: myTag",
+      "    foo = 3.14",
+      "    if (foo > x) {",
+      "      // TODO: Implement result: x is greater than Pi",
+      "    } else {",
+      "      // TODO: Implement result: x is lower than Pi",
+      "      // on two lines",
+      "    }",
+      "    raise NotImplementedError",
+      "}\n\n",
+    ].join("\n")
 
     # In hiptest
     # scenario 'reset password' do
@@ -297,51 +300,51 @@ describe 'Render as swift' do
     #   call then 'page "url" should be opened'(url='/reset-password')
     # end
     @bdd_scenario_rendered = [
-        "func testResetPassword() {",
-        "    // Given Page \"/login\" is opened",
-        "    app.page_url_is_opened(url: \"/login\")",
-        "    // When I click on \"Reset password\"",
-        "    app.i_click_on_link(link: \"Reset password\")",
-        "    // Then Page \"/reset-password\" should be opened",
-        "    app.page_url_should_be_opened(url: \"/reset-password\")",
-        "}\n\n",
+      "func testResetPassword() {",
+      "    // Given Page \"/login\" is opened",
+      "    app.page_url_is_opened(url: \"/login\")",
+      "    // When I click on \"Reset password\"",
+      "    app.i_click_on_link(link: \"Reset password\")",
+      "    // Then Page \"/reset-password\" should be opened",
+      "    app.page_url_should_be_opened(url: \"/reset-password\")",
+      "}\n\n",
     ].join("\n")
 
     # Same than previous scenario, except that is is rendered
     # so it can be used in a single file (using the --split-scenarios option)
     @full_scenario_rendered_for_single_file = [
-        "import XCTest",
-        "",
-        "class CompareToPiUITest: XCTestCase {",
-        "",
-        "  var app: XCUIApplication!",
-        "",
-        "  override func setUp() {",
-        "    super.setUp()",
-        "",
-        "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-        "    continueAfterFailure = false",
-        "",
-        "    app = XCUIApplication()",
-        "",
-        "    // We send a command line argument to our app, to enable it to reset its state",
-        "    app.launchArguments.append(\"--uitesting\")",
-        "  }",
-        "  func testCompareToPi() {",
-        "      // This is a scenario which description ",
-        "      // is on two lines",
-        "      // Tags: myTag",
-        "      foo = 3.14",
-        "      if (foo > x) {",
-        "        // TODO: Implement result: x is greater than Pi",
-        "      } else {",
-        "        // TODO: Implement result: x is lower than Pi",
-        "        // on two lines",
-        "      }",
-        "      raise NotImplementedError",
-        "  }",
-        "}",
-        ].join("\n")
+      "import XCTest",
+      "",
+      "class CompareToPiUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "  func testCompareToPi() {",
+      "      // This is a scenario which description ",
+      "      // is on two lines",
+      "      // Tags: myTag",
+      "      foo = 3.14",
+      "      if (foo > x) {",
+      "        // TODO: Implement result: x is greater than Pi",
+      "      } else {",
+      "        // TODO: Implement result: x is lower than Pi",
+      "        // on two lines",
+      "      }",
+      "      raise NotImplementedError",
+      "  }",
+      "}",
+    ].join("\n")
 
     # Scenario definition is:
     # call 'fill login' (login = login)
@@ -358,94 +361,94 @@ describe 'Render as swift' do
 
     @scenario_with_datatable_rendered = [
       "",
-       "func check_login(login: String, password: String, expected: String) {",
-       "    // Ensure the login process",
-       "    app.fill_login(login: login)",
-       "    app.fill_password(password: password)",
-       "    app.press_enter()",
-       "    app.assert_error_is_displayed(error: expected)",
-       "}",
-       "",
-       "",
-       "func WrongLogin() {",
-       "    check_login(login: \"invalid\", password: \"invalid\", expected: \"Invalid username or password\")",
-       "}",
-       "",
-       "func WrongPassword() {",
-       "    check_login(login: \"valid\", password: \"invalid\", expected: \"Invalid username or password\")",
-       "}",
-       "",
-       "func ValidLoginpassword() {",
-       "    check_login(login: \"valid\", password: \"valid\", expected: nil)",
-       "}\n\n",
-          ].join("\n")
+      "func check_login(login: String, password: String, expected: String) {",
+      "    // Ensure the login process",
+      "    app.fill_login(login: login)",
+      "    app.fill_password(password: password)",
+      "    app.press_enter()",
+      "    app.assert_error_is_displayed(error: expected)",
+      "}",
+      "",
+      "",
+      "func WrongLogin() {",
+      "    check_login(login: \"invalid\", password: \"invalid\", expected: \"Invalid username or password\")",
+      "}",
+      "",
+      "func WrongPassword() {",
+      "    check_login(login: \"valid\", password: \"invalid\", expected: \"Invalid username or password\")",
+      "}",
+      "",
+      "func ValidLoginpassword() {",
+      "    check_login(login: \"valid\", password: \"valid\", expected: nil)",
+      "}\n\n",
+    ].join("\n")
 
     @scenario_with_datatable_rendered_with_uids = [
       "",
-       "func check_login(login: String, password: String, expected: String) {",
-       "    // Ensure the login process",
-       "    app.fill_login(login: login)",
-       "    app.fill_password(password: password)",
-       "    app.press_enter()",
-       "    app.assert_error_is_displayed(error: expected)",
-       "}",
-       "",
-       "",
-       "func WrongLogina-123() {",
-       "    check_login(login: \"invalid\", password: \"invalid\", expected: \"Invalid username or password\")",
-       "}",
-       "",
-       "func WrongPasswordb-456() {",
-       "    check_login(login: \"valid\", password: \"invalid\", expected: \"Invalid username or password\")",
-       "}",
-       "",
-       "func ValidLoginpasswordc-789() {",
-       "    check_login(login: \"valid\", password: \"valid\", expected: nil)",
-       "}\n\n",
+      "func check_login(login: String, password: String, expected: String) {",
+      "    // Ensure the login process",
+      "    app.fill_login(login: login)",
+      "    app.fill_password(password: password)",
+      "    app.press_enter()",
+      "    app.assert_error_is_displayed(error: expected)",
+      "}",
+      "",
+      "",
+      "func WrongLogina-123() {",
+      "    check_login(login: \"invalid\", password: \"invalid\", expected: \"Invalid username or password\")",
+      "}",
+      "",
+      "func WrongPasswordb-456() {",
+      "    check_login(login: \"valid\", password: \"invalid\", expected: \"Invalid username or password\")",
+      "}",
+      "",
+      "func ValidLoginpasswordc-789() {",
+      "    check_login(login: \"valid\", password: \"valid\", expected: nil)",
+      "}\n\n",
     ].join("\n")
 
     # Same than "scenario_with_datatable_rendered" but rendered with the option --split-scenarios
     @scenario_with_datatable_rendered_in_single_file = [
-        "import XCTest",
-        "",
-        "class CheckLoginUITest: XCTestCase {",
-        "",
-        "  var app: XCUIApplication!",
-        "",
-        "  override func setUp() {",
-        "    super.setUp()",
-        "",
-        "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-        "    continueAfterFailure = false",
-        "",
-        "    app = XCUIApplication()",
-        "",
-        "    // We send a command line argument to our app, to enable it to reset its state",
-        "    app.launchArguments.append(\"--uitesting\")",
-        "  }",
-        "",
-        "  func check_login(login: String, password: String, expected: String) {",
-        "      // Ensure the login process",
-        "      app.fill_login(login: login)",
-        "      app.fill_password(password: password)",
-        "      app.press_enter()",
-        "      app.assert_error_is_displayed(error: expected)",
-        "  }",
-        "",
-        "",
-        "  func WrongLogin() {",
-        "      check_login(login: \"invalid\", password: \"invalid\", expected: \"Invalid username or password\")",
-        "  }",
-        "",
-        "  func WrongPassword() {",
-        "      check_login(login: \"valid\", password: \"invalid\", expected: \"Invalid username or password\")",
-        "  }",
-        "",
-        "  func ValidLoginpassword() {",
-        "      check_login(login: \"valid\", password: \"valid\", expected: nil)",
-        "  }",
-        "}"
-      ].join("\n")
+      "import XCTest",
+      "",
+      "class CheckLoginUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "",
+      "  func check_login(login: String, password: String, expected: String) {",
+      "      // Ensure the login process",
+      "      app.fill_login(login: login)",
+      "      app.fill_password(password: password)",
+      "      app.press_enter()",
+      "      app.assert_error_is_displayed(error: expected)",
+      "  }",
+      "",
+      "",
+      "  func WrongLogin() {",
+      "      check_login(login: \"invalid\", password: \"invalid\", expected: \"Invalid username or password\")",
+      "  }",
+      "",
+      "  func WrongPassword() {",
+      "      check_login(login: \"valid\", password: \"invalid\", expected: \"Invalid username or password\")",
+      "  }",
+      "",
+      "  func ValidLoginpassword() {",
+      "      check_login(login: \"valid\", password: \"valid\", expected: nil)",
+      "  }",
+      "}",
+    ].join("\n")
 
     # In HipTest, correspond to two scenarios in a project called 'My project'
     # scenario 'first scenario' do
@@ -458,171 +461,171 @@ describe 'Render as swift' do
       "",
       "class ProjectUITests: XCTestCase {",
       "",
-       "  var app: XCUIApplication!",
-       "",
-       "  override func setUp() {",
-       "    super.setUp()",
-       "",
-       "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-       "    continueAfterFailure = false",
-       "",
-       "    app = XCUIApplication()",
-       "",
-       "    // We send a command line argument to our app, to enable it to reset its state",
-       "    app.launchArguments.append(\"--uitesting\")",
-       "  }",
-       "  func testFirstScenario() {",
-       "  }",
-       "",
-       "",
-       "",
-       "  func testSecondScenario() {",
-       "      app.my_action_word()",
-       "  }",
-       "}",
-    ].join("\n")
-
-      @tests_rendered = [
-       "import XCTest",
-       "",
-       "class ProjectUITests: XCTestCase {",
-       "",
-       "  var app: XCUIApplication!",
-       "",
+      "  var app: XCUIApplication!",
+      "",
       "  override func setUp() {",
-       "    super.setUp()",
-       "",
-       "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-       "    continueAfterFailure = false",
-       "",
-       "    app = XCUIApplication()",
-       "",
-       "    // We send a command line argument to our app, to enable it to reset its state",
-       "    app.launchArguments.append(\"--uitesting\")",
-       "  }",
-       "  func testLogin() {",
-       "      // The description is on ",
-       "      // two lines",
-       "      // Tags: myTag myTag:somevalue",
-       "      app.visit(url: \"/login\")",
-       "      app.fill(login: \"user@example.com\")",
-       "      app.fill(password: \"s3cret\")",
-       "      app.click(path: \".login-form input[type=submit]\")",
-       "      app.check_url(path: \"/welcome\")",
-       "  }",
-       "",
-       "",
-       "",
-       "  func testFailedLogin() {",
-       "      // Tags: myTag:somevalue",
-       "      app.visit(url: \"/login\")",
-       "      app.fill(login: \"user@example.com\")",
-       "      app.fill(password: \"notTh4tS3cret\")",
-       "      app.click(path: \".login-form input[type=submit]\")",
-       "      app.check_url(path: \"/login\")",
-       "  }",
-       "}"
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "  func testFirstScenario() {",
+      "  }",
+      "",
+      "",
+      "",
+      "  func testSecondScenario() {",
+      "      app.my_action_word()",
+      "  }",
+      "}",
     ].join("\n")
 
-      @first_test_rendered = [
-        "func testLogin() {",
-        "    // The description is on ",
-        "    // two lines",
-        "    // Tags: myTag myTag:somevalue",
-        "    app.visit(url: \"/login\")",
-        "    app.fill(login: \"user@example.com\")",
-        "    app.fill(password: \"s3cret\")",
-        "    app.click(path: \".login-form input[type=submit]\")",
-        "    app.check_url(path: \"/welcome\")",
-        "}\n\n"
-      ].join("\n")
-
-      @first_test_rendered_for_single_file = [
-       "import XCTest",
-       "",
-       "class LoginUITest: XCTestCase {",
-       "",
-       "  var app: XCUIApplication!",
-       "",
-       "  override func setUp() {",
-       "    super.setUp()",
-       "",
-       "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-       "    continueAfterFailure = false",
-       "",
-       "    app = XCUIApplication()",
-       "",
-       "    // We send a command line argument to our app, to enable it to reset its state",
-       "    app.launchArguments.append(\"--uitesting\")",
-       "  }",
-       "  func testLogin() {",
-       "      // The description is on ",
-       "      // two lines",
-       "      // Tags: myTag myTag:somevalue",
-       "      app.visit(url: \"/login\")",
-       "      app.fill(login: \"user@example.com\")",
-       "      app.fill(password: \"s3cret\")",
-       "      app.click(path: \".login-form input[type=submit]\")",
-       "      app.check_url(path: \"/welcome\")",
-       "  }",
-       "}",
-      ].join("\n")
-
-  @root_folder_rendered = [
-       "import XCTest",
-       "",
-       "class MyRootFolderUITest: XCTestCase {",
-       "",
-       "  var app: XCUIApplication!",
-       "",
-       "  override func setUp() {",
-       "    super.setUp()",
-       "",
-       "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-       "    continueAfterFailure = false",
-       "",
-       "    app = XCUIApplication()",
-       "",
-       "    // We send a command line argument to our app, to enable it to reset its state",
-       "    app.launchArguments.append(\"--uitesting\")",
-       "  }",
-       "  func testOneRootScenario() {",
-       "  }",
-       "",
-       "",
-       "",
-       "  func testAnotherRootScenario() {",
-       "  }",
-       "}",
+    @tests_rendered = [
+      "import XCTest",
+      "",
+      "class ProjectUITests: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "  func testLogin() {",
+      "      // The description is on ",
+      "      // two lines",
+      "      // Tags: myTag myTag:somevalue",
+      "      app.visit(url: \"/login\")",
+      "      app.fill(login: \"user@example.com\")",
+      "      app.fill(password: \"s3cret\")",
+      "      app.click(path: \".login-form input[type=submit]\")",
+      "      app.check_url(path: \"/welcome\")",
+      "  }",
+      "",
+      "",
+      "",
+      "  func testFailedLogin() {",
+      "      // Tags: myTag:somevalue",
+      "      app.visit(url: \"/login\")",
+      "      app.fill(login: \"user@example.com\")",
+      "      app.fill(password: \"notTh4tS3cret\")",
+      "      app.click(path: \".login-form input[type=submit]\")",
+      "      app.check_url(path: \"/login\")",
+      "  }",
+      "}",
     ].join("\n")
 
-      @grand_child_folder_rendered = [
-      'import XCTest',
-      '',
-      'class AGrandchildFolderUITest: XCTestCase {',
-        "",
-        "  var app: XCUIApplication!",
-        "",
-        "  override func setUp() {",
-        "    super.setUp()",
-        "",
-        "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
-        "    continueAfterFailure = false",
-        "",
-        "    app = XCUIApplication()",
-        "",
-        "    // We send a command line argument to our app, to enable it to reset its state",
-        "    app.launchArguments.append(\"--uitesting\")",
-        "  }",
-        "}"
-      ].join("\n")
+    @first_test_rendered = [
+      "func testLogin() {",
+      "    // The description is on ",
+      "    // two lines",
+      "    // Tags: myTag myTag:somevalue",
+      "    app.visit(url: \"/login\")",
+      "    app.fill(login: \"user@example.com\")",
+      "    app.fill(password: \"s3cret\")",
+      "    app.click(path: \".login-form input[type=submit]\")",
+      "    app.check_url(path: \"/welcome\")",
+      "}\n\n",
+    ].join("\n")
+
+    @first_test_rendered_for_single_file = [
+      "import XCTest",
+      "",
+      "class LoginUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "  func testLogin() {",
+      "      // The description is on ",
+      "      // two lines",
+      "      // Tags: myTag myTag:somevalue",
+      "      app.visit(url: \"/login\")",
+      "      app.fill(login: \"user@example.com\")",
+      "      app.fill(password: \"s3cret\")",
+      "      app.click(path: \".login-form input[type=submit]\")",
+      "      app.check_url(path: \"/welcome\")",
+      "  }",
+      "}",
+    ].join("\n")
+
+    @root_folder_rendered = [
+      "import XCTest",
+      "",
+      "class MyRootFolderUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "  func testOneRootScenario() {",
+      "  }",
+      "",
+      "",
+      "",
+      "  func testAnotherRootScenario() {",
+      "  }",
+      "}",
+    ].join("\n")
+
+    @grand_child_folder_rendered = [
+      "import XCTest",
+      "",
+      "class AGrandchildFolderUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      "    // Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered",
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      "    app.launchArguments.append(\"--uitesting\")",
+      "  }",
+      "}",
+    ].join("\n")
 
     @grand_child_scenario_rendered_for_single_file = [
-      'import XCTest',
-      '',
-      'class OneGrandchildScenarioUITest: XCTestCase {',
+      "import XCTest",
       "",
-      '  var app: XCUIApplication!',
+      "class OneGrandchildScenarioUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
       "",
       "  override func setUp() {",
       "    super.setUp()",
@@ -637,38 +640,37 @@ describe 'Render as swift' do
       "  }",
       "  func testOneGrandchildScenario() {",
       "  }",
-      "}"
+      "}",
     ].join("\n")
 
     @second_grand_child_folder_rendered = [
-        'import XCTest',
-        '',
-        'class ASecondGrandchildFolderUITest: XCTestCase {',
-        '',
-        '  var app: XCUIApplication!',
-        '',
-        '  override func setUp() {',
-        '    super.setUp()',
-        "",
-        '    // Since UI tests are more expensive to run, it\'s usually a good idea to exit if a failure was encountered',
-        '    continueAfterFailure = false',
-        '',
-        '    app = XCUIApplication()',
-        '',
-        '    // We send a command line argument to our app, to enable it to reset its state',
-        '    app.launchArguments.append("--uitesting")',
-        '  }',
-        '  func testOneGrandchildScenario() {',
-        '  }',
-        '}'
-      ].join("\n")
+      "import XCTest",
+      "",
+      "class ASecondGrandchildFolderUITest: XCTestCase {",
+      "",
+      "  var app: XCUIApplication!",
+      "",
+      "  override func setUp() {",
+      "    super.setUp()",
+      "",
+      '    // Since UI tests are more expensive to run, it\'s usually a good idea to exit if a failure was encountered',
+      "    continueAfterFailure = false",
+      "",
+      "    app = XCUIApplication()",
+      "",
+      "    // We send a command line argument to our app, to enable it to reset its state",
+      '    app.launchArguments.append("--uitesting")',
+      "  }",
+      "  func testOneGrandchildScenario() {",
+      "  }",
+      "}",
+    ].join("\n")
   end
 
-
-  context 'xctest' do
+  context "xctest" do
     it_behaves_like "a renderer" do
-      let(:language) {'swift'}
-      let(:framework) {'xctest'}
+      let(:language) { "swift" }
+      let(:framework) { "xctest" }
     end
   end
 end
