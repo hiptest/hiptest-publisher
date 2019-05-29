@@ -23,7 +23,7 @@ Juwelier::Tasks.new do |gem|
   gem.authors = ["HipTest R&D"]
 
   gem.executables = ['hiptest-publisher']
-  gem.files = `git ls-files -- lib/*`.split("\n")
+  gem.files = `git ls-files -- lib/* config/*`.split("\n")
   gem.require_path = "lib"
 end
 Juwelier::RubygemsDotOrgTasks.new

@@ -14,8 +14,9 @@
 
 require 'ruby_version'
 require 'i18n'
+require 'hiptest-publisher/utils'
 
-I18n.load_path << Dir[File.expand_path("config/locales") + "/*.yml"]
+I18n.load_path << Dir["#{hiptest_publisher_path}/config/locales/*.yml"]
 
 # Ensure ruby version >= 2
 if RubyVersion < '2.1.0'
