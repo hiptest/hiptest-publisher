@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+1.23.5
+------
+
+ - Load i18n path also when used as a library
+
 1.23.4
 ------
 
