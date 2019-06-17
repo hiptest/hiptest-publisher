@@ -14,6 +14,8 @@ app = XCUIApplication()
 
 // We send a command line argument to our app, to enable it to reset its state
 app.launchArguments.append("--uitesting")
+
+app.launch()
 {{/indent}}
 {{/curly}}
 {{> scenario}}
