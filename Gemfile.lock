@@ -86,7 +86,7 @@ GEM
     minitest (5.11.3)
     multi_json (1.13.1)
     multi_xml (0.6.0)
-    multipart-post (2.1.1)
+    multipart-post (2.0.0)
     nokogiri (1.9.1)
       mini_portile2 (~> 2.4.0)
     oauth2 (1.4.1)
@@ -173,7 +173,7 @@ DEPENDENCIES
   i18n-coverage (~> 0.1.1)
   i18n-tasks (~> 0.9.29)
   juwelier
-  multipart-post (~> 2.0)
+  multipart-post (= 2.0.0)
   nokogiri (~> 1.8, < 1.10)
   parseconfig (~> 1.0, >= 1.0.4)
   pry (~> 0)
