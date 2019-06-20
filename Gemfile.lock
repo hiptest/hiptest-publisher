@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/vincent-psarga/ruby-handlebars.git
+  revision: fd70fa9091c573014fb5275912f872b24b191ca3
+  specs:
+    ruby-handlebars (0.0.6)
+      colorize (~> 0.7, >= 0.7.5)
+      parslet (~> 1.6, >= 1.6.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -140,9 +148,6 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    ruby-handlebars (0.0.6)
-      colorize (~> 0.7, >= 0.7.5)
-      parslet (~> 1.6, >= 1.6.2)
     ruby_version (1.0.1)
     safe_yaml (1.0.5)
     semver2 (3.4.2)
@@ -180,7 +185,7 @@ DEPENDENCIES
   pry-byebug (~> 3)
   rspec (~> 3.3)
   rspec-mocks (~> 3.3)
-  ruby-handlebars (~> 0.0.2)
+  ruby-handlebars!
   ruby_version (~> 1)
   webmock
 
