@@ -1,3 +1,5 @@
+require 'ruby-handlebars/escapers/dummy_escaper'
+
 require_relative 'spec_helper'
 require_relative '../lib/hiptest-publisher/handlebars_helper'
 
@@ -29,6 +31,7 @@ end
 describe Hiptest::HandlebarsHelper do
   def evaluate(template, context)
     hbs = Handlebars::Handlebars.new
+    hbs.set_escaper(Handlebars::Escapers::DummyEscaper)
     Hiptest::HandlebarsHelper.register_helpers(hbs, {})
 
     hbs.compile(template).call(context)

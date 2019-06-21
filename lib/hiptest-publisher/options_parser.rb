@@ -4,6 +4,7 @@ require 'parseconfig'
 require 'ostruct'
 require 'digest/md5'
 require 'pathname'
+require 'ruby-handlebars/escapers/dummy_escaper'
 
 require 'hiptest-publisher/formatters/console_formatter'
 require 'hiptest-publisher/renderer_addons'
@@ -430,6 +431,8 @@ class TemplateFinder
   def handlebars
     if !@handlebars
       @handlebars = Handlebars::Handlebars.new
+      @handlebars.set_escaper(Handlebars::Escapers::DummyEscaper)
+
       register_partials
       Hiptest::HandlebarsHelper.register_helpers(@handlebars, @context)
     end

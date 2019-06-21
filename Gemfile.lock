@@ -1,9 +1,8 @@
 GIT
   remote: https://github.com/vincent-psarga/ruby-handlebars.git
-  revision: fd70fa9091c573014fb5275912f872b24b191ca3
+  revision: 8eba51bdb4e1682ee797f0bef86c549465af0378
   specs:
     ruby-handlebars (0.0.6)
-      colorize (~> 0.7, >= 0.7.5)
       parslet (~> 1.6, >= 1.6.2)
 
 GEM

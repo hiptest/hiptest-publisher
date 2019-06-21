@@ -63,7 +63,6 @@ module Hiptest
       joiner.gsub!(/\\t/, "\t")
       joiner.gsub!(/\\n/, "\n")
 
-
       if block.nil? || block.items.empty?
         "#{items.join(joiner)}"
       else
