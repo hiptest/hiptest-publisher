@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+1.24.0
+------
+ - Add #case, #when and #when_includes handlebars helpers
+ - Modify #if_includes handlebars helper to work with strings
+
 1.23.5
 ------
 
