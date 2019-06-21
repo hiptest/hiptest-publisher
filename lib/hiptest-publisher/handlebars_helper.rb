@@ -284,8 +284,37 @@ module Hiptest
       ""
     end
 
-    def hh_if_includes(context, array, element, block_true, block_false = nil)
-      if array.kind_of?(Array) && array.include?(element)
+    def hh_case(context, expression, block_whens, block_else = nil)
+      context.add_item(:__case_expression, expression);
+      block_whens.fn(context)
+      result = context.get("__case_result") || (block_else && block_else.fn(context).chomp) || ''
+
+      context.add_item(:__case_expression, nil)
+      context.add_item(:__case_result, nil)
+
+      result
+    end
+
+    def hh_when(context, value, block)
+      return if context.get("__case_result")
+
+      expression = context.get("__case_expression")
+      if expression == value
+        context.add_item(:__case_result, block.fn(context))
+      end
+    end
+
+    def hh_when_includes(context, value, block)
+      return if context.get("__case_result")
+
+      expression = context.get("__case_expression")
+      if expression.respond_to?(:include?) && expression.include?(value)
+        context.add_item(:__case_result, block.fn(context))
+      end
+    end
+
+    def hh_if_includes(context, expression, element, block_true, block_false = nil)
+      if expression.respond_to?(:include?) && expression.include?(element)
         block_true.fn(context)
       elsif block_false
         block_false.fn(context)

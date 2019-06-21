@@ -384,12 +384,39 @@ Outputs an closing curly bracket.
 
 Outputs a tabulation character.
 
+### case, when and when_includes
+``` handlebars
+{{#case expression}}
+{{#when "value"}} case expression == value {{/when}}
+{{#when_includes "value"}} case value is included in expression {{/when_includes}}
+{{else}} if no when clause matches
+{{/if_includes}}
+```
+
+Compare an expression against multiple cases and returns the first block that
+matches. If none matches, return the else block. If there is no else block,
+returns empty string.
+
+`when` checks for equality.
+
+`when_includes` checks for inclusion of value in expression. Like `if_includes`,
+it can work with arrays and strings.
+
 ### if_includes
 ``` handlebars
-{{ #if_includes array element}}
+{{#if_includes array element}}
   case true
-{{ else }}
+{{else}}
   case false
-{{ /if_includes }}
+{{/if_includes}}
 ```
 Outputs the true block if array contains element otherwise the false one.
+
+It also works with strings, to check if a substring is included in a string:
+``` handlebars
+{{#if_includes some_string "hello"}}
+  case "hello" is included in some_string
+{{else }}
+  case false
+{{/if_includes}}
+```

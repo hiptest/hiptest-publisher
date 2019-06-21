@@ -27,7 +27,7 @@ class MockHandlebars
 end
 
 describe Hiptest::HandlebarsHelper do
-  def evaluate(template, context)
+  def evaluate(template, context = {})
     hbs = Handlebars::Handlebars.new
     Hiptest::HandlebarsHelper.register_helpers(hbs, {})
 
@@ -690,6 +690,128 @@ describe Hiptest::HandlebarsHelper do
     end
   end
 
+  describe 'hh_case' do
+    it 'evaluates an expression and returns the result of first matching when block' do
+      template = '{{#case "hello"}}{{#when "bonjour"}}bonjour{{/when}}{{#when "hello"}}hello first block{{/when}}{{#when "hello"}}hello second block{{/when}}{{/case}}'
+      expect(evaluate(template)).to eq('hello first block')
+    end
+
+    it 'ignores text not inside a when block' do
+      template = '{{#case "hello"}}ignored text{{#when "hello"}}world{{/when}}ignored text{{/case}}'
+      expect(evaluate(template)).to eq('world')
+    end
+
+    context 'with  {{#when "value"}}{{/when}}' do
+      it 'matches equality' do
+        template = <<~TEMPLATE.chomp
+        {{#case weather}}
+        {{#when "sunny"}}Take your sunglasses{{/when}}
+        {{#when "rainy"}}Take your umbrella{{/when}}
+        {{/case}}
+        TEMPLATE
+        expect(evaluate(template, weather: 'sunny')).to eq('Take your sunglasses')
+        expect(evaluate(template, weather: '')).to eq('')
+        expect(evaluate(template, weather: ['sunny'])).to eq('')
+        expect(evaluate(template, weather: 42)).to eq('')
+        expect(evaluate(template, weather: nil)).to eq('')
+      end
+    end
+
+    context 'with {{#when_includes "something"}}{{/when_includes}}' do
+      it 'matches substring inclusion in string' do
+        template = <<~TEMPLATE.chomp
+        {{#case weather}}
+        {{#when_includes "sun"}}Sounds sunny{{/when_includes}}
+        {{#when_includes "rain"}}Sounds rainy{{/when_includes}}
+        {{#when_includes "cloud"}}Sounds cloudy{{/when_includes}}
+        {{/case}}
+        TEMPLATE
+        expect(evaluate(template, weather: 'I see clouds in the sky')).to eq('Sounds cloudy')
+        expect(evaluate(template, weather: 'cloud')).to eq('Sounds cloudy')
+        expect(evaluate(template, weather: 'CLOUD')).to eq('')
+      end
+
+      it 'matches element inclusion in array' do
+        template = <<~TEMPLATE.chomp
+        {{#case people}}
+        {{#when_includes "bob"}}Bob will be here \\o/{{/when_includes}}
+        {{else}}Bob is absent
+        {{/case}}
+        TEMPLATE
+        expect(evaluate(template, people: ["bob"])).to eq('Bob will be here \o/')
+        expect(evaluate(template, people: ["alice", "bob", "charlie"])).to eq('Bob will be here \o/')
+        expect(evaluate(template, people: [])).to eq('Bob is absent')
+      end
+
+      it 'returns empty string if expression does not respond to include?' do
+        template = <<~TEMPLATE.chomp
+        {{#case weather}}
+        {{#when_includes "sun"}}Sounds sunny{{/when_includes}}
+        {{#when_includes "rain"}}Sounds rainy{{/when_includes}}
+        {{/case}}
+        TEMPLATE
+        expect(evaluate(template, weather: {})).to eq('')
+        expect(evaluate(template, weather: Object.new)).to eq('')
+        expect(evaluate(template, weather: 42)).to eq('')
+        expect(evaluate(template, weather: nil)).to eq('')
+      end
+    end
+
+    context 'when no matching when block' do
+      it 'returns result of else block if present' do
+        template = '{{#case "guten tag"}}{{#when "hello"}}world{{/when}}{{/case}}'
+        expect(evaluate(template)).to eq('')
+      end
+
+      it 'returns empty string without else block' do
+        template = '{{#case "guten tag"}}{{#when "hello"}}world{{/when}}{{else}}In else block{{/case}}'
+        expect(evaluate(template)).to eq('In else block')
+      end
+
+      it 'chomps the final newline of else block to ease multiline templates' do
+        template = <<~TEMPLATE.chomp
+        {{#case weather}}
+        {{#when "sunny"}}Take your sunglasses{{/when}}
+        {{#when "rainy"}}Take your umbrella{{/when}}
+        {{else}}Just go!
+        {{/case}}
+        TEMPLATE
+        expect(evaluate(template, weather: 'cloudy')).to eq('Just go!')
+      end
+    end
+
+    it 'can be used twice' do
+      template = <<~TEMPLATE.chomp
+      {{#case weather}}
+      {{#when "sunny"}}Take your sunglasses{{/when}}
+      {{#when "rainy"}}Take your umbrella{{/when}}
+      {{else}}Just go!
+      {{/case}}
+      {{#case temperature}}
+      {{#when "0"}}Chilly!{{/when}}
+      {{#when "30"}}Hot!{{/when}}
+      {{else}}Fine
+      {{/case}}
+      TEMPLATE
+      expect(evaluate(template, weather: 'sunny', temperature: '30')).to eq("Take your sunglasses\nHot!")
+    end
+
+    it 'can be nested' do
+      template = <<~TEMPLATE.chomp
+      {{#case weather}}
+      {{#when "sunny"}}Take your sunglasses because today will be {{#case temperature}}
+        {{#when "30"}}hot!{{/when}}
+        {{#when "35"}}very Hot!{{/when}}
+        {{else}}damn hot!
+      {{/case}}{{/when}}
+      {{#when "rainy"}}Take your umbrella{{/when}}
+      {{else}}Just go!
+      {{/case}}
+      TEMPLATE
+      expect(evaluate(template, weather: 'sunny', temperature: '30')).to eq('Take your sunglasses because today will be hot!')
+    end
+  end
+
   context 'hh_if_includes' do
     it 'returns the true block if array contains the element' do
       template = '{{#if_includes array element}}true block{{else}}false block{{/if_includes}}'
@@ -697,10 +819,22 @@ describe Hiptest::HandlebarsHelper do
       expect(evaluate(template, array: %w[a b c], element: 'a')).to eq('true block')
     end
 
+    it 'returns the true block if string contains substring' do
+      template = '{{#if_includes string substring}}true block{{else}}false block{{/if_includes}}'
+
+      expect(evaluate(template, string: "hello world", substring: 'hello')).to eq('true block')
+    end
+
     it 'returns the false block if array does not contain the element' do
       template = '{{#if_includes array element}}true block{{else}}false block{{/if_includes}}'
 
       expect(evaluate(template, array: %w[a b c], element: 'd')).to eq('false block')
+    end
+
+    it 'returns the false block if string does not contain substring' do
+      template = '{{#if_includes string substring}}true block{{else}}false block{{/if_includes}}'
+
+      expect(evaluate(template, string: "hello world", substring: 'bonjour')).to eq('false block')
     end
 
     it 'returns the false block if array is empty' do
