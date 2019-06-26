@@ -52,14 +52,27 @@ To avoid this problem, it is better to use the triple bracket notation that will
 
 ### {Curly braces}
 
-Handlebars relies heavily on curly braces but they are not the only ones. You might run into problems when trying to output curly braces that you do not wnat to be interpreted.
+Handlebars relies heavily on curly braces but they are not the only ones. You might run into problems when trying to output curly braces that you do not want to be interpreted.
+Simple usages can work fine, like the one below for example:
+
+```handlebars
+import { SomePackage };
+```
+
+But when you want to surround other Handlebars helper with curly braces, the Handlebars parser will be a bit lost, for example:
+
+```handlebars
+function {{{#indent}}
+  // other commands here
+{{/indent}}}
+```
+See how the curly braces that are supposed to define the rendered function impact on the use of the ```indent``` helper ? (the first one has three opening curly braces but only one closing)
+
 For that, we added three helpers: [curly](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#curly), [open_curly](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#open_curly) and [close_curly](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#close_curly).
 
 ```handlebars
 Considering my_value is "Hi !"
 {{ my_value }} will display "Hi !"
-{{{ my_value }}} will display "Hi !" (see above section on special characters)
-{{{{ my_value }}}} will fail at compilation
 {{#curly}}{{ my_value }}{{/curly}} will display "{Hi !}"
 {{ open_curly }}{{ my_value }}{{ close_curly }} will also display "{Hi !}"
 ```

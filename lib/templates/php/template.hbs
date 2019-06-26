@@ -1,1 +1,1 @@
-"{{#each treated_chunks}}{{#if this.is_variable?}}{{#curly}}${{{camelize_lower this.raw.children.name}}}{{/curly}}{{else}}{{{ escape_double_quotes this.raw.children.value }}}{{/if}}{{/each}}"
+"{{#each treated_chunks}}{{#if this.is_variable?}}{${{{camelize_lower this.raw.children.name}}}}{{else}}{{{ escape_double_quotes this.raw.children.value }}}{{/if}}{{/each}}"
