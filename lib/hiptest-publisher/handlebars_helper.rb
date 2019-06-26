@@ -70,14 +70,11 @@ module Hiptest
           return else_block.fn(context)
         end
 
-        current_this = context.get('this')
-        result = items.map do |item|
-          context.add_item(:this, item)
-          block.fn(context)
+        items.map do |item|
+          context.with_temporary_context(this: item) do
+            block.fn(context)
+          end
         end.join(joiner)
-
-        context.add_item(:this, current_this)
-        result
       end
     end
 
@@ -88,12 +85,9 @@ module Hiptest
     end
 
     def hh_with(context, var, name, block)
-      name = name.to_s
-      current_value = context.get(name)
-      context.add_item(name, var)
-      result = block.fn(context)
-      context.add_item(name, current_value)
-      result
+      context.with_temporary_context(name => var) do
+        block.fn(context)
+      end
     end
 
     def hh_unless(context, condition, block, else_block = nil)
@@ -284,14 +278,12 @@ module Hiptest
     end
 
     def hh_case(context, expression, block_whens, block_else = nil)
-      context.add_item(:__case_expression, expression);
-      block_whens.fn(context)
-      result = context.get("__case_result") || (block_else && block_else.fn(context).chomp) || ''
+      result = nil
 
-      context.add_item(:__case_expression, nil)
-      context.add_item(:__case_result, nil)
-
-      result
+      context.with_temporary_context(__case_expression: expression, __case_result: nil) do
+        block_whens.fn(context)
+        context.get("__case_result") || (block_else && block_else.fn(context).chomp) || ''
+      end
     end
 
     def hh_when(context, value, block)
