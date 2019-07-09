@@ -403,7 +403,7 @@ Outputs a tabulation character.
 {{#when "value"}} case expression == value {{/when}}
 {{#when_includes "value"}} case value is included in expression {{/when_includes}}
 {{else}} if no when clause matches
-{{/if_includes}}
+{{/case}}
 ```
 
 Compare an expression against multiple cases and returns the first block that
