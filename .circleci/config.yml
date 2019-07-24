@@ -1,7 +1,3 @@
-# Ruby CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-ruby/ for more details
-#
 version: 2.1
 
 commands:
@@ -37,7 +33,7 @@ commands:
           path: /tmp/test-results/<< parameters.output_dir >>
 
 jobs:
-  build-ruby-2.3:
+  build-ruby-2_3:
     docker:
       - image: circleci/ruby:2.3.8
 
@@ -46,8 +42,7 @@ jobs:
       - build_and_test:
         output_dir: "2.3"
 
-jobs:
-  build-ruby-2.4:
+  build-ruby-2_4:
     docker:
       - image: circleci/ruby:2.4.5
 
@@ -56,8 +51,7 @@ jobs:
       - build_and_test:
         output_dir: "2.4"
 
-jobs:
-  build-ruby-2.5:
+  build-ruby-2_5:
     docker:
       - image: circleci/ruby:2.5.5
 
@@ -66,8 +60,7 @@ jobs:
       - build_and_test:
         output_dir: "2.5"
 
-jobs:
-  build-ruby-2.6:
+  build-ruby-2_6:
     docker:
       - image: circleci/ruby:2.6.2
 
@@ -80,7 +73,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - build-ruby-2.3
-      - build-ruby-2.4
-      - build-ruby-2.5
-      - build-ruby-2.6
+      - build-ruby-2_3
+      - build-ruby-2_4
+      - build-ruby-2_5
+      - build-ruby-2_6
