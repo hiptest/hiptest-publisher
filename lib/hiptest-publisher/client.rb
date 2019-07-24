@@ -188,6 +188,10 @@ module Hiptest
     end
 
     def find_proxy_uri(address, port)
+      puts "----------------------------------------------------"
+      puts "Found HTTP_PROXY: #{ENV['http_proxy']}"
+      puts "----------------------------------------------------"
+
       URI::HTTP.new(
         "http", nil, address, port, nil, nil, nil, nil, nil
       ).find_proxy
