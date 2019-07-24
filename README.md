@@ -1,6 +1,7 @@
 HipTest Publisher
 ==============
 
+[![CircleCI](https://circleci.com/gh/hiptest/hiptest-publisher.svg?style=svg)](https://circleci.com/gh/hiptest/hiptest-publisher)
 [![Build Status Linux](https://travis-ci.org/hiptest/hiptest-publisher.svg?branch=master)](https://travis-ci.org/hiptest/hiptest-publisher)
 [![Build Status Windows](https://ci.appveyor.com/api/projects/status/ciahcci0ayr1oihr/branch/master?svg=true)](https://ci.appveyor.com/project/hiptest/hiptest-publisher)
 [![Gem Version](https://badge.fury.io/rb/hiptest-publisher.svg)](http://badge.fury.io/rb/hiptest-publisher)
