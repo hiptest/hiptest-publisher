@@ -92,12 +92,15 @@ jobs:
       - run:
           name: Install hiptest-publisher
           command: |
-            bundle install && bundle clean
-            bundle exec rake install
+            bundle install && bundle clean --force
       - save_cache:
           paths:
             - ~/.bundle
           key: v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Install hiptest-publisher
+          command: |
+            bundle exec rake install
 
 
   hps-behat:
