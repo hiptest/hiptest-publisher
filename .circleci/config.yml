@@ -51,6 +51,7 @@ commands:
       - run:
           name: Install hiptest-publisher
           command: |
+            bundle install
             bundle exec rake install
 
 jobs:
