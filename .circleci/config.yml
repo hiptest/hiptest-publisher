@@ -69,6 +69,19 @@ jobs:
       - build_and_test:
         output_dir: "2.6"
 
+  install-hiptest-publisher:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install hiptest-publisher
+          command: |
+            bundle
+            bundle exec rake install
+
   hps-behat:
     docker:
       - image: hiptest/hiptest-publisher-samples
@@ -80,10 +93,8 @@ jobs:
       - run:
           name: run tests
           command: |
-            bundle
-            rake install
             cd /hiptest-publisher-samples/hps/hps-behat
-            hiptest-publisher -t $SECRET_TOEKN -c behat.conf --without=actionwords
+            hiptest-publisher -t $SECRET_TOKEN -c behat.conf --without=actionwords
             vendor/bin/behat
 
 
@@ -98,4 +109,7 @@ workflows:
 
   run_samples:
     jobs:
-      - hps-behat
+      - install-hiptest-publisher
+      - hps-behat:
+          requires:
+            - install-hiptest-publisher
