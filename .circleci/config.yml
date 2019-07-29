@@ -73,22 +73,27 @@ jobs:
     docker:
       - image: hiptest/hiptest-publisher-samples
 
-    working_directory: /hiptest-publisher-samples/hps/hps-behat
+    working_directory: ~/repo
+
     steps:
       - run:
           name: run tests
           command: |
-            vendor/bin/behat -f cucumber_json
+            bundle
+            rake install
+            cd /hiptest-publisher-samples/hps/hps-behat
+            hiptest-publisher -t $SECRET_TOEKN -c behat.conf --without=actionwords
+            vendor/bin/behat
 
 
 workflows:
   version: 2
-  build:
-    jobs:
-      - build-ruby-2_3
-      - build-ruby-2_4
-      - build-ruby-2_5
-      - build-ruby-2_6
+  # build:
+  #   jobs:
+  #     - build-ruby-2_3
+  #     - build-ruby-2_4
+  #     - build-ruby-2_5
+  #     - build-ruby-2_6
 
   run_samples:
     jobs:
