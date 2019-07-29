@@ -1,6 +1,10 @@
 version: 2.1
 
 commands:
+  #############################################################################
+  #                     Hiptest publisher CI jobs                             #
+  #############################################################################
+
   build_and_test:
     description: "Build and run the tests"
     parameters:
@@ -9,7 +13,6 @@ commands:
         default: ""
     steps:
       - checkout
-
       - run:
           name: install dependencies
           command: |
@@ -69,18 +72,33 @@ jobs:
       - build_and_test:
         output_dir: "2.6"
 
+  #############################################################################
+  #                   Hiptest publisher samples jobs                          #
+  #############################################################################
+
   install-hiptest-publisher:
     docker:
       - image: hiptest/hiptest-publisher-samples
 
     working_directory: ~/repo
     steps:
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - v1-gem-cache-{{ arch }}-{{ .Branch }}-
+            - v1-gem-cache-{{ arch }}-
       - checkout
       - run:
           name: Install hiptest-publisher
           command: |
-            bundle
+            bundle install && bundle clean
             bundle exec rake install
+      - save_cache:
+          paths:
+            - ~/.bundle
+          key: v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+
 
   hps-behat:
     docker:
@@ -90,6 +108,11 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: Install hiptest-publisher
+          command: |
+            bundle install && bundle clean
+            bundle exec rake install
       - run:
           name: run tests
           command: |
