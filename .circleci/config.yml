@@ -69,6 +69,18 @@ jobs:
       - build_and_test:
         output_dir: "2.6"
 
+  hps-behat:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+
+    working_directory: /hiptest-publisher-samples/hps/hps-behat
+    steps:
+      - run:
+          name: run tests
+          command: |
+            vendor/bin/behat -f cucumber_json
+
+
 workflows:
   version: 2
   build:
@@ -77,3 +89,7 @@ workflows:
       - build-ruby-2_4
       - build-ruby-2_5
       - build-ruby-2_6
+
+  run_samples:
+    jobs:
+      - hps-behat
