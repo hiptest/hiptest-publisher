@@ -213,6 +213,17 @@ jobs:
           config_file: "java-testng.conf"
           test_command: "mvn test"
 
+  hps-jbehave:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-jbehave"
+          config_file: "jbehave.conf"
+          test_command: "mvn integration-test"
+
   hps-python-unittest:
     docker:
       - image: hiptest/hiptest-publisher-samples
@@ -258,5 +269,8 @@ workflows:
           requires:
             - install-hiptest-publisher
       - hps-java-testng:
+          requires:
+            - install-hiptest-publisher
+      - hps-jbehave:
           requires:
             - install-hiptest-publisher
