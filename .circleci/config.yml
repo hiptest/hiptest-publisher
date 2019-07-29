@@ -158,6 +158,17 @@ jobs:
           config_file: "behave.conf"
           test_command: "behave"
 
+  hps-python-unittest:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-python-unittest"
+          config_file: "python-unittest.conf"
+          test_command: "bin/test"
+
 workflows:
   version: 2
   # build:
@@ -174,5 +185,8 @@ workflows:
           requires:
             - install-hiptest-publisher
       - hps-behave:
+          requires:
+            - install-hiptest-publisher
+      - hps-python-unittest:
           requires:
             - install-hiptest-publisher
