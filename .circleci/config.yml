@@ -158,6 +158,61 @@ jobs:
           config_file: "behave.conf"
           test_command: "behave"
 
+  hps-cucumber-groovy:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-cucumber-groovy"
+          config_file: "cucumber-groovy.conf"
+          test_command: "mvn test"
+
+  hps-cucumber-java:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-cucumber-java"
+          config_file: "cucumber-java.conf"
+          test_command: "mvn test"
+
+  hps-groovy-spock:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-groovy-spock"
+          config_file: "groovy-spock.conf"
+          test_command: "mvn test"
+
+  hps-java-junit:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-java-junit"
+          config_file: "junit.conf"
+          test_command: "mvn test"
+
+  hps-java-testng:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-java-testng"
+          config_file: "java-testng.conf"
+          test_command: "mvn test"
+
   hps-python-unittest:
     docker:
       - image: hiptest/hiptest-publisher-samples
@@ -188,5 +243,20 @@ workflows:
           requires:
             - install-hiptest-publisher
       - hps-python-unittest:
+          requires:
+            - install-hiptest-publisher
+      - hps-cucumber-groovy:
+          requires:
+            - install-hiptest-publisher
+      - hps-cucumber-java:
+          requires:
+            - install-hiptest-publisher
+      - hps-groovy-spock:
+          requires:
+            - install-hiptest-publisher
+      - hps-java-junit:
+          requires:
+            - install-hiptest-publisher
+      - hps-java-testng:
           requires:
             - install-hiptest-publisher
