@@ -136,27 +136,26 @@ jobs:
   hps-behat:
     docker:
       - image: hiptest/hiptest-publisher-samples
-
     working_directory: ~/repo
+
     steps:
       - regenerate_tests:
-        project_path: "hps-behat"
-        config_file: "behat.conf"
+          project_path: "hps-behat"
+          config_file: "behat.conf"
       - run:
           name: run tests
           command: |
             vendor/bin/behat
 
-
   hps-behave:
     docker:
       - image: hiptest/hiptest-publisher-samples
-
     working_directory: ~/repo
+
     steps:
       - regenerate_tests:
-        project_path: "hps-behave"
-        config_file: "behave.conf"
+          project_path: "hps-behave"
+          config_file: "behave.conf"
       - run:
           name: run tests
           command: |
