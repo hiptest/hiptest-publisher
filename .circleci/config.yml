@@ -54,6 +54,26 @@ commands:
             bundle install
             bundle exec rake install
 
+  regenerate_tests:
+    description: "Regenerate tests with hiptest-publisher"
+    parameters:
+      project_path:
+        type: string
+        default: ""
+      config_file:
+        type: string
+        default: ""
+
+    steps:
+      - checkout
+      - restore_bundler_cache
+      - install_hiptest_publisher
+      - run:
+          name: Generate tests
+          command: |
+            cd /hiptest-publisher-samples/hps/<< parameters.project_path >>
+            hiptest-publisher -t $SECRET_TOKEN -c << parameters.config_file >> --without=actionwords
+
 jobs:
   build-ruby-2_3:
     docker:
@@ -118,18 +138,29 @@ jobs:
       - image: hiptest/hiptest-publisher-samples
 
     working_directory: ~/repo
-
     steps:
-      - checkout
-      - restore_bundler_cache
-      - install_hiptest_publisher
+      - regenerate_tests:
+        project_path: "hps-behat"
+        config_file: "behat.conf"
       - run:
           name: run tests
           command: |
-            cd /hiptest-publisher-samples/hps/hps-behat
-            hiptest-publisher -t $SECRET_TOKEN -c behat.conf --without=actionwords
             vendor/bin/behat
 
+
+  hps-behave:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+
+    working_directory: ~/repo
+    steps:
+      - regenerate_tests:
+        project_path: "hps-behave"
+        config_file: "behave.conf"
+      - run:
+          name: run tests
+          command: |
+            behave
 
 workflows:
   version: 2
@@ -144,5 +175,8 @@ workflows:
     jobs:
       - install-hiptest-publisher
       - hps-behat:
+          requires:
+            - install-hiptest-publisher
+      - hps-behave:
           requires:
             - install-hiptest-publisher
