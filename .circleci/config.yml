@@ -100,8 +100,8 @@ jobs:
 
     working_directory: ~/repo
     steps:
-      - restore_bundler_cache
       - checkout
+      - restore_bundler_cache
       - run:
           name: Install hiptest-publisher
           command: |
@@ -119,8 +119,8 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - restore_bundler_cache
       - checkout
+      - restore_bundler_cache
       - install_hiptest_publisher
       - run:
           name: run tests
