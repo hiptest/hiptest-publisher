@@ -35,6 +35,24 @@ commands:
       - store_test_results:
           path: /tmp/test-results/<< parameters.output_dir >>
 
+  restore_bundler_cache:
+    description: "Restore cached gems"
+    steps:
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - v1-gem-cache-{{ arch }}-{{ .Branch }}-
+            - v1-gem-cache-{{ arch }}-
+
+  install_hiptest_publisher:
+    description: "Install Hiptest publisher"
+    steps:
+      - run:
+          name: Install hiptest-publisher
+          command: |
+            bundle exec rake install
+
 jobs:
   build-ruby-2_3:
     docker:
@@ -82,12 +100,7 @@ jobs:
 
     working_directory: ~/repo
     steps:
-      - restore_cache:
-          keys:
-            # when lock file changes, use increasingly general patterns to restore cache
-            - v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-            - v1-gem-cache-{{ arch }}-{{ .Branch }}-
-            - v1-gem-cache-{{ arch }}-
+      - restore_bundler_cache
       - checkout
       - run:
           name: Install hiptest-publisher
@@ -97,11 +110,7 @@ jobs:
           paths:
             - ~/.bundle
           key: v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Install hiptest-publisher
-          command: |
-            bundle exec rake install
-
+      - install_hiptest_publisher
 
   hps-behat:
     docker:
@@ -110,12 +119,9 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - restore_bundler_cache
       - checkout
-      - run:
-          name: Install hiptest-publisher
-          command: |
-            bundle install && bundle clean
-            bundle exec rake install
+      - install_hiptest_publisher
       - run:
           name: run tests
           command: |
