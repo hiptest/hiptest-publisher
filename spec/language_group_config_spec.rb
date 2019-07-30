@@ -646,6 +646,7 @@ describe LanguageGroupConfig do
                                                       "/sell_goods.feature",
                                                       "[step_definitions]",
                                                       "/steps.py",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ],
@@ -653,7 +654,9 @@ describe LanguageGroupConfig do
                                                      "/buy_goods.feature",
                                                      "/sell_goods.feature",
                                                      "[step_definitions]",
-                                                     "/steps.py", "[actionwords]",
+                                                     "/steps.py",
+                                                     "[step_definitions_library]",
+                                                     "[actionwords]",
                                                      "/actionwords.py"
                                                     ],
         ["--with-folders"]                       => [ "[features]",
@@ -661,6 +664,7 @@ describe LanguageGroupConfig do
                                                       "/global_trades/sell_goods.feature",
                                                       "[step_definitions]",
                                                       "/steps.py",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ],
@@ -669,6 +673,7 @@ describe LanguageGroupConfig do
                                                       "/global_trades/sell_goods.feature",
                                                       "[step_definitions]",
                                                       "/steps.py",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ],
@@ -677,6 +682,7 @@ describe LanguageGroupConfig do
                                                       "/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/steps.py",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ],
@@ -685,6 +691,7 @@ describe LanguageGroupConfig do
                                                       "/Global trades/sell_goods.feature",
                                                       "[step_definitions]",
                                                       "/steps.py",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ],
@@ -694,6 +701,7 @@ describe LanguageGroupConfig do
                                                       "/Global trades/Sell goods.feature",
                                                       "[step_definitions]",
                                                       "/steps.py",
+                                                      "[step_definitions_library]",
                                                       "[actionwords]",
                                                       "/actionwords.py"
                                                     ]

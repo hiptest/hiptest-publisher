@@ -1,6 +1,9 @@
 # encoding: UTF-8
 
-class Actionwords:{{#indent}}
+{{#if uses_library?}}from steps.actionword_library import ActionwordLibrary{{/if}}
+
+
+class Actionwords{{#if uses_library?}}(ActionwordLibrary){{/if}}:{{#indent}}
 def __init__(self):{{#indent}}
 pass{{/indent}}
 

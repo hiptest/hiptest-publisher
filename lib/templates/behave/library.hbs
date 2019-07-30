@@ -1,0 +1,7 @@
+from behave import *
+
+
+use_step_matcher('re')
+{{#each rendered_children.library_actionwords}}
+{{{this}}}
+{{/each}}

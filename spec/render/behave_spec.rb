@@ -4,6 +4,7 @@ require_relative '../render_shared'
 describe 'Behave rendering' do
   include HelperFactories
 
+  include_context 'shared render'
   it_behaves_like 'a BDD renderer', uid_should_be_in_outline: true do
     let(:language) {'behave'}
     let(:rendered_actionwords) {
@@ -183,5 +184,122 @@ describe 'Behave rendering' do
       %|    context.actionwords.i_do_things(things)|,
       %||
     ].join("\n"))
+  end
+
+  it_behaves_like 'a BDD renderer with library actionwords', uid_should_be_in_outline: true do
+    let(:language) {'behave'}
+    let(:framework) {''}
+
+    let(:rendered_library_actionwords) {
+      [
+        'from behave import *',
+        '',
+        '',
+        'use_step_matcher(\'re\')',
+        '',
+        '',
+        '@given(r\'My first action word\')',
+        'def impl(context):',
+        '    context.actionwords.getDefaultLibrary().my_first_action_word()',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+      ].join("\n")
+    }
+  end
+
+  it_behaves_like 'a renderer handling libraries' do
+    let(:language) {'behave'}
+    let(:framework) {''}
+
+    let(:actionwords_rendered) {
+      [
+        '# encoding: UTF-8',
+        '',
+        'from steps.actionword_library import ActionwordLibrary',
+        '',
+        '',
+        'class Actionwords(ActionwordLibrary):',
+        '    def __init__(self):',
+        '        pass',
+        '',
+        '    def my_project_action_word(self):',
+        '        pass',
+        '',
+        '    def my_high_level_project_actionword(self):',
+        '        self.my_project_action_word()',
+        '',
+        '    def my_high_level_actionword(self):',
+        '        self.getDefaultLibrary().my_first_action_word()',
+        ''
+      ].join("\n")
+    }
+
+    let(:libraries_rendered) {
+      [
+        '# encoding: UTF-8',
+        '',
+        'from steps.default_library import DefaultLibrary',
+        'from steps.web_library import WebLibrary',
+        '',
+        '',
+        'class ActionwordLibrary:',
+        '    def getDefaultLibrary(self):',
+        '        return DefaultLibrary(self)',
+        '',
+        '    def getWebLibrary(self):',
+        '        return WebLibrary(self)',
+        ''
+      ].join("\n")
+    }
+
+    let(:first_lib_rendered) {
+      [
+        '# encoding: UTF-8',
+        '',
+        'from behave import *',
+        '',
+        '',
+        'class DefaultLibrary:',
+        '    __instance = None',
+        '',
+        '    def __new__(cls, context):',
+        '        if DefaultLibrary.__instance is None',
+        '            DefaultLibrary.__instance = object.__new__(cls)',
+        '',
+        '        return DefaultLibrary.__instance',
+        '',
+        '    def my_first_action_word(self):',
+        '        # Tags: priority:high wip',
+        '        pass',
+        ''
+      ].join("\n")
+    }
+
+    let(:second_lib_rendered) {
+      [
+        '# encoding: UTF-8',
+        '',
+        'from behave import *',
+        '',
+        '',
+        'class WebLibrary:',
+        '    __instance = None',
+        '',
+        '    def __new__(cls, context):',
+        '        if WebLibrary.__instance is None',
+        '            WebLibrary.__instance = object.__new__(cls)',
+        '',
+        '        return WebLibrary.__instance',
+        '',
+        '    def my_second_action_word(self):',
+        '        # Tags: priority:low done',
+        '        pass',
+        ''
+      ].join("\n")
+    }
   end
 end
