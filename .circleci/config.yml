@@ -60,12 +60,6 @@ commands:
       project_path:
         type: string
         default: ""
-      config_file:
-        type: string
-        default: ""
-      test_command:
-        type: string
-        default: "echo 'No test command provided'"
     steps:
       - checkout
       - restore_bundler_cache
@@ -74,8 +68,8 @@ commands:
           name: Generate tests
           command: |
             cd /hiptest-publisher-samples/hps/<< parameters.project_path >>
-            hiptest-publisher -t $SECRET_TOKEN -c << parameters.config_file >> --without=actionwords
-            << parameters.test_command >>
+            make generate_tests
+            make test
 
 jobs:
   build-ruby-2_3:
@@ -144,8 +138,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-behat"
-          config_file: "behat.conf"
-          test_command: "vendor/bin/behat"
 
   hps-behave:
     docker:
@@ -155,8 +147,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-behave"
-          config_file: "behave.conf"
-          test_command: "behave"
 
   hps-cucumber-groovy:
     docker:
@@ -166,8 +156,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-cucumber-groovy"
-          config_file: "cucumber-groovy.conf"
-          test_command: "mvn test"
 
   hps-cucumber-java:
     docker:
@@ -177,8 +165,15 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-cucumber-java"
-          config_file: "cucumber-java.conf"
-          test_command: "mvn test"
+
+  hps-cucumber-javascript:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-cucumber-javascript"
 
   hps-groovy-spock:
     docker:
@@ -188,8 +183,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-groovy-spock"
-          config_file: "groovy-spock.conf"
-          test_command: "mvn test"
 
   hps-java-junit:
     docker:
@@ -199,8 +192,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-java-junit"
-          config_file: "junit.conf"
-          test_command: "mvn test"
 
   hps-java-testng:
     docker:
@@ -210,8 +201,15 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-java-testng"
-          config_file: "java-testng.conf"
-          test_command: "mvn test"
+
+  hps-javascript-mocha:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-javascript-mocha"
 
   hps-jbehave:
     docker:
@@ -221,8 +219,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-jbehave"
-          config_file: "jbehave.conf"
-          test_command: "mvn integration-test"
 
   hps-python-unittest:
     docker:
@@ -232,8 +228,6 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-python-unittest"
-          config_file: "python-unittest.conf"
-          test_command: "bin/test"
 
 workflows:
   version: 2
@@ -247,30 +241,47 @@ workflows:
   run_samples:
     jobs:
       - install-hiptest-publisher
+
       - hps-behat:
           requires:
             - install-hiptest-publisher
+
       - hps-behave:
           requires:
             - install-hiptest-publisher
-      - hps-python-unittest:
-          requires:
-            - install-hiptest-publisher
+
       - hps-cucumber-groovy:
           requires:
             - install-hiptest-publisher
+
       - hps-cucumber-java:
           requires:
             - install-hiptest-publisher
+
+      - hps-cucumber-javascript:
+          requires:
+            - install-hiptest-publisher
+
       - hps-groovy-spock:
           requires:
             - install-hiptest-publisher
+
       - hps-java-junit:
           requires:
             - install-hiptest-publisher
+
       - hps-java-testng:
           requires:
             - install-hiptest-publisher
+
+      - hps-javascript-mocha:
+          requires:
+            - install-hiptest-publisher
+
       - hps-jbehave:
+          requires:
+            - install-hiptest-publisher
+
+      - hps-python-unittest:
           requires:
             - install-hiptest-publisher
