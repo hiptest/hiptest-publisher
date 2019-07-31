@@ -202,6 +202,15 @@ jobs:
       - regenerate_and_run_tests:
           project_path: "hps-java-testng"
 
+  hps-javascript-jasmine:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-javascript-jasmine"
+
   hps-javascript-mocha:
     docker:
       - image: hiptest/hiptest-publisher-samples
@@ -210,6 +219,15 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-javascript-mocha"
+
+  hps-javascript-qunit:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-javascript-qunit"
 
   hps-jbehave:
     docker:
