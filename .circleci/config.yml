@@ -148,6 +148,15 @@ jobs:
       - regenerate_and_run_tests:
           project_path: "hps-behave"
 
+  hps-cucumber-ruby:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-cucumber-ruby"
+
   hps-cucumber-groovy:
     docker:
       - image: hiptest/hiptest-publisher-samples
@@ -174,6 +183,15 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-cucumber-javascript"
+
+  hps-cucumber-typescript:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-cucumber-typescript"
 
   hps-groovy-spock:
     docker:
@@ -238,6 +256,15 @@ jobs:
       - regenerate_and_run_tests:
           project_path: "hps-jbehave"
 
+  hps-protractor:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-protractor"
+
   hps-python-unittest:
     docker:
       - image: hiptest/hiptest-publisher-samples
@@ -246,6 +273,33 @@ jobs:
     steps:
       - regenerate_and_run_tests:
           project_path: "hps-python-unittest"
+
+  hps-robotframework:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-robotframework"
+
+  hps-ruby-minitest:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-ruby-minitest"
+
+  hps-ruby-rspec:
+    docker:
+      - image: hiptest/hiptest-publisher-samples
+    working_directory: ~/repo
+
+    steps:
+      - regenerate_and_run_tests:
+          project_path: "hps-ruby-rspec"
 
 workflows:
   version: 2
@@ -268,6 +322,10 @@ workflows:
           requires:
             - install-hiptest-publisher
 
+      - hps-cucumber-ruby:
+          requires:
+            - install-hiptest-publisher
+
       - hps-cucumber-groovy:
           requires:
             - install-hiptest-publisher
@@ -277,6 +335,10 @@ workflows:
             - install-hiptest-publisher
 
       - hps-cucumber-javascript:
+          requires:
+            - install-hiptest-publisher
+
+      - hps-cucumber-typescript:
           requires:
             - install-hiptest-publisher
 
@@ -300,6 +362,22 @@ workflows:
           requires:
             - install-hiptest-publisher
 
+      - hps-protractor:
+          requires:
+            - install-hiptest-publisher
+
       - hps-python-unittest:
+          requires:
+            - install-hiptest-publisher
+
+      - hps-robotframework:
+          requires:
+            - install-hiptest-publisher
+
+      - hps-ruby-minitest:
+          requires:
+            - install-hiptest-publisher
+
+      - hps-ruby-rspec:
           requires:
             - install-hiptest-publisher
