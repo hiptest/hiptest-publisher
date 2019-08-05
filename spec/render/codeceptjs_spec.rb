@@ -19,12 +19,13 @@ describe 'Cucumber/Javascript rendering' do
     let(:rendered_actionwords) {
       [
         'const { I } = inject();',
-        'let actionwords;'
-        ''
-        'Before(() => {'
-        '    actionwords = Object.create(require(\'./actionwords.js\')).Actionwords;'
-        '});'
+        'let actionwords;',
         '',
+        'Before(() => {',
+        '    actionwords = Object.create(require(\'./actionwords.js\')).Actionwords;',
+        '});',
+        '',
+        '',        
         'Given(/^the color "(.*)"$/, function (color) {',
         '    return actionwords.theColorColor(color);',
         '});',
