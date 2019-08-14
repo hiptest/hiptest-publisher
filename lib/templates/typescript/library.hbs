@@ -1,0 +1,18 @@
+import { assert } from "chai";
+import { TableDefinition } from "cucumber";
+
+export class {{capitalize rendered_children.name}}Library {{#curly}}
+{{#indent}}private static instance: {{capitalize rendered_children.name}}Library;
+
+static getInstance() {{#curly}}
+{{#indent}}if (!{{capitalize rendered_children.name}}Library.instance){{#curly}}
+{{#indent}}{{capitalize rendered_children.name}}Library.instance = new {{capitalize rendered_children.name}}Library();{{/indent}}
+{{/curly}}
+{{/indent}}
+{{#indent}}return {{capitalize rendered_children.name}}Library.instance;{{/indent}}
+{{/curly}}
+
+{{#each rendered_children.library_actionwords}}{{{this}}}
+{{/each}}
+{{/indent}}
+{{/curly}}

@@ -1,0 +1,12 @@
+import { After, Before, Given, When, Then, TableDefinition } from "cucumber";
+import { ActionwordLibrary } from "./actionword_library";
+
+let libraryActionWord : ActionwordLibrary
+Before(async () => {
+    libraryActionWord = new ActionwordLibrary();
+});
+
+{{> after_hook}}
+
+{{#each rendered_children.library_actionwords}}{{{this}}}
+{{/each}}

@@ -1,0 +1,9 @@
+{{#each library_names}}import { {{camelize this}}Library } from "./{{downcase this}}_library"
+{{/each}}
+
+export class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names}}
+get{{camelize this}}Library() {{#curly}}{{#indent}}
+return new {{camelize this}}Library(){{/indent}}
+{{/curly}}
+{{/each}}{{/indent}}
+{{/curly}}
