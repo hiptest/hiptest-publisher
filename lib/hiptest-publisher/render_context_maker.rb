@@ -61,7 +61,9 @@ module Hiptest
     def walk_dataset(dataset)
       datatable = dataset.parent
       {
-        scenario_name: datatable.parent.children[:name]
+        scenario_name: datatable.parent.children[:name],
+        has_tags?: !datatable.parent.children[:tags].empty?,
+        tags: datatable.parent.children[:tags].map {|tag| @rendered[tag]}
       }
     end
 
