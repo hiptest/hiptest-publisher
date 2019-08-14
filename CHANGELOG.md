@@ -1,8 +1,19 @@
 HipTest Publisher Changelog
 ===========================
 
+1.26.0
+------
+
+ - Shared actionwords handling for Cucumber/Typescript
+
+1.25.0
+------
+
+ - Shared actionwords handling for Behave
+
 1.24.0
 ------
+
  - Add #case, #when and #when_includes handlebars helpers
  - Modify #if_includes handlebars helper to work with strings
 
