@@ -1,6 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
+[Unreleased]
+------------
+
+ - Nothing changed yet
+
 [1.27.1]
 --------
 
@@ -163,6 +168,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
+[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.27.1...master
 [1.27.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.27.0...v1.27.1
 [1.27.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.26.0...v1.27.0
 [1.26.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.25.0...v1.26.0

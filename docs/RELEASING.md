@@ -20,7 +20,7 @@ Update CHANGELOG.md by adding the unreleased section at the beginning of the fil
 [Unreleased]
 ------------
 
- - Nothing yet
+ - Nothing changed yet
 ```
 
 Also add a link to the diff at the bottom of the file:
