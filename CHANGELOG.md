@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing yet
+ - Add CodeceptJS to language list in OptionsParser.languages
 
 [1.27.0]
 --------
