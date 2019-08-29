@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[1.27.0]
+     ------------
 
  - Enable accessing scenario tags in datasets
    ([#142](https://github.com/hiptest/hiptest-publisher/pull/142) [nono0481])
@@ -158,7 +158,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.26.0...master
+[1.27.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.26.0...v1.27.0
 [1.26.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.25.0...v1.26.0
 [1.25.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.24.0...v1.25.0
 [1.24.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.23.5...v1.24.0

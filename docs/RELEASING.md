@@ -1,7 +1,7 @@
 RELEASING
 =========
 
-Before relasing, please ensure the new version has been added to the CHANGELOG.md file and check that the file is up to date.
+Before releasing, please ensure the new version has been added to the CHANGELOG.md file and check that the file is up to date.
 Replaced the [Unreleased] link with the name of the new version and also update the link at the bottom of the file to get the diff with the previous version.
 
 This gem is built using Juwelier. To make a new release:
