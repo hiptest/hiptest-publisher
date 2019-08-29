@@ -1,6 +1,15 @@
 HipTest Publisher Changelog
 ===========================
 
+1.27.0
+------
+
+ - Enable accessing scenario tags in datasets
+   ([#142](https://github.com/hiptest/hiptest-publisher/pull/142) [nono0481])
+
+ - Added support for CodeceptJS testing framework
+   ([#130](https://github.com/hiptest/hiptest-publisher/pull/130) [DavertMik])
+
 1.26.0
 ------
 
@@ -30,7 +39,8 @@ HipTest Publisher Changelog
 1.23.3
 ------
 
- - Update multipart-post to 2.1.1 to handle issues with Ruby < 2.5 (see: https://github.com/socketry/multipart-post/issues/61)
+ - Update multipart-post to 2.1.1 to handle issues with Ruby < 2.5
+   (see: https://github.com/socketry/multipart-post/issues/61)
 
 1.23.2
 ------
@@ -57,7 +67,8 @@ HipTest Publisher Changelog
 1.20.0
 ------
 
- - Add --meta option to add more flexibility in code generation (see: https://github.com/hiptest/hiptest-publisher/blob/master/docs/Using%20meta%20data.md#using-meta-data)
+ - Add --meta option to add more flexibility in code generation
+   (see: https://github.com/hiptest/hiptest-publisher/blob/master/docs/Using%20meta%20data.md#using-meta-data)
 
 1.19.3
 ------
@@ -95,7 +106,8 @@ HipTest Publisher Changelog
 1.16.6
 ------
   - Add the if_includes handlebars helper
-  - Add options "parameter-delimiter" allowing to remove quotes around parameters in Gherkin export (or replace it by anything else in fact)
+  - Add options "parameter-delimiter" allowing to remove quotes around parameters in Gherkin export
+    (or replace it by anything else in fact)
 
 1.16.5
 ------
@@ -129,11 +141,36 @@ HipTest Publisher Changelog
 1.13.0
 ------
 
- - Add Cucumber/Groovy support [#54]
+ - Add Cucumber/Groovy support
+   ([#54](https://github.com/hiptest/hiptest-publisher/issues/54))
 
 1.12.0
 ------
 
- - Add JBehave support [#38]
- - Add option --with-dataset-names [#105]
- - Reorder steps by regexp length for Behave [#104]
+ - Add JBehave support
+   ([#38](https://github.com/hiptest/hiptest-publisher/issues/38))
+
+ - Add option --with-dataset-names
+   ([#105](https://github.com/hiptest/hiptest-publisher/issues/105))
+
+ - Reorder steps by regexp length for Behave
+   ([#104](https://github.com/hiptest/hiptest-publisher/issues/104))
+
+
+Contributors
+=============
+
+ - [nono0481](https://github.com/nono0481)
+ - [DavertMik](https://github.com/DavertMik)
+ - [mhfrantz](https://github.com/mhfrantz)
+ - [tikolakin](https://github.com/tikolakin)
+ - [atulhm](https://github.com/atulhm)
+ - [etorreborre](https://github.com/etorreborre)
+ - [daniel-kun](https://github.com/daniel-kun)
+ - [weeksghost](https://github.com/weeksghost)
+ - [lostiniceland](https://github.com/lostiniceland)
+ - [ClaudiaJ](https://github.com/ClaudiaJ)
+ - [Jesterovskiy](https://github.com/Jesterovskiy)
+ - [tenpaiyomi](https://github.com/tenpaiyomi)
+ - [hiptest team](https://github.com/hiptest)
+

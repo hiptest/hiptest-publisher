@@ -232,4 +232,4 @@ See the [CONTRIBUTING](https://github.com/hiptest/hiptest-publisher/blob/master/
 Contributors
 ------------
 
-The @hiptest team, @mhfrantz, @tikolakin, @atulhm, @etorreborre, @daniel-kun, @weeksghost, @lostiniceland, @ClaudiaJ, @Jesterovskiy, @tenpaiyomi
+See [CHANGELOG](https://github.com/hiptest/hiptest-publisher/blob/master/CHANGELOG.md#Contributors) for the full list.
