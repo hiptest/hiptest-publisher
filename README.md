@@ -232,4 +232,4 @@ See the [CONTRIBUTING](https://github.com/hiptest/hiptest-publisher/blob/master/
 Contributors
 ------------
 
-See [CHANGELOG](https://github.com/hiptest/hiptest-publisher/blob/master/CHANGELOG.md#Contributors) for the full list.
+The [@hiptest team](https://github.com/hiptest), [@mhfrantz](https://github.com/@mhfrantz), [@tikolakin](https://github.com/@tikolakin), [@atulhm](https://github.com/@atulhm), [@etorreborre](https://github.com/@etorreborre), [@daniel-kun](https://github.com/@daniel-kun), [@weeksghost](https://github.com/@weeksghost), [@lostiniceland](https://github.com/@lostiniceland), [@ClaudiaJ](https://github.com/@ClaudiaJ), [@Jesterovskiy](https://github.com/@Jesterovskiy), [@tenpaiyomi](https://github.com/@tenpaiyomi), [nono0481](https://github.com/nono0481), [DavertMik](https://github.com/DavertMik)
