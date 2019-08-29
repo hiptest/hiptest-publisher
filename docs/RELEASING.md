@@ -18,6 +18,7 @@ Update CHANGELOG.md by adding the unreleased section at the beginning of the fil
 
 ```
 [Unreleased]
+------------
 
  - Nothing yet
 ```
