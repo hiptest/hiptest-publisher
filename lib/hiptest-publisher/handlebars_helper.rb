@@ -53,7 +53,7 @@ module Hiptest
       value.is_a?(Handlebars::Tree::Block) ? value.fn(context) : value
     end
 
-    def hh_to_string(context, value, block=nil)
+    def hh_to_string(context, value, block = nil)
       value = compute_block_value(context, value, block)
       "#{value.to_s}"
     end
@@ -87,18 +87,6 @@ module Hiptest
     def hh_with(context, var, name, block)
       context.with_temporary_context(name => var) do
         block.fn(context)
-      end
-    end
-
-    def hh_unless(context, condition, block, else_block = nil)
-      condition = !condition.empty? if condition.respond_to?(:empty?)
-
-      if !condition
-        block.fn(context)
-      elsif else_block
-        else_block.fn(context)
-      else
-        ""
       end
     end
 
@@ -156,28 +144,28 @@ module Hiptest
     end
 
     # kept for backward compatibility of customized templates
-    def hh_escape_quotes (context, s, block=nil)
+    def hh_escape_quotes (context, s, block = nil)
       hh_escape_double_quotes(context, s, block)
     end
 
-    def hh_escape_double_quotes (context, s, block=nil)
+    def hh_escape_double_quotes (context, s, block = nil)
       s = compute_block_value(context, s, block)
       s ? s.gsub('"', '\\"') : ""
     end
 
-    def hh_escape_single_quotes (context, s, block=nil)
+    def hh_escape_single_quotes (context, s, block = nil)
       # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
       s = compute_block_value(context, s, block)
       s ? s.gsub('\'', "\\\\'") : ""
     end
 
-    def hh_unescape_single_quotes (context, s, block=nil)
+    def hh_unescape_single_quotes (context, s, block = nil)
       # weird \\\\, see http://stackoverflow.com/questions/7074337/why-does-stringgsub-double-content
       s = compute_block_value(context, s, block)
       s ? s.gsub("\\'", "'") : ""
     end
 
-    def hh_escape_backslashes_and_double_quotes (context, s, block=nil)
+    def hh_escape_backslashes_and_double_quotes (context, s, block = nil)
       s = compute_block_value(context, s, block)
 
       if s
@@ -228,15 +216,15 @@ module Hiptest
       "{#{block.fn(context)}}"
     end
 
-    def hh_open_curly (context, block)
+    def hh_open_curly (context, block, else_block = nil)
       "{"
     end
 
-    def hh_close_curly (context, block)
+    def hh_close_curly (context, block, else_block = nil)
       "}"
     end
 
-    def hh_tab (context, block)
+    def hh_tab (context, block, else_block = nil)
       "\t"
     end
 
@@ -253,7 +241,7 @@ module Hiptest
       name
     end
 
-    def hh_strip_regexp_delimiters(context, regexp, block=nil)
+    def hh_strip_regexp_delimiters(context, regexp, block = nil)
       regexp = compute_block_value(context, regexp, block)
       return regexp.gsub(/(^\^)|(\$$)/, '')
     end
@@ -271,7 +259,7 @@ module Hiptest
       return block.fn(context).gsub(str, replacement)
     end
 
-    def hh_debug(context, block)
+    def hh_debug(context, block, _)
       require 'pry'
       binding.pry
       ""
