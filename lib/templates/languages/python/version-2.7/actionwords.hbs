@@ -1,0 +1,12 @@
+# encoding: UTF-8
+
+{{#if uses_library?}}from steps.actionword_library import ActionwordLibrary{{/if}}
+
+
+class Actionwords{{#if uses_library?}}(ActionwordLibrary){{/if}}:{{#indent}}
+def __init__(self):{{#indent}}
+pass{{/indent}}
+
+{{#each rendered_children.actionwords}}{{{this}}}
+{{/each}}
+{{/indent}}

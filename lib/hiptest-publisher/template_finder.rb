@@ -11,8 +11,6 @@ class TemplateFinder
     indentation: '  ',
     forced_templates: nil,
     fallback_template: nil,
-    language_version: nil,
-    framework_version: nil,
     **)
     @template_dirs = template_dirs || []
     @overriden_templates = overriden_templates
@@ -20,8 +18,6 @@ class TemplateFinder
     @template_path_by_name = {}
     @forced_templates = forced_templates || {}
     @fallback_template = fallback_template
-    @language_version = language_version
-    @framework_version = framework_version
     @context = {indentation: indentation}
   end
 
@@ -30,12 +26,22 @@ class TemplateFinder
       search_dirs = []
       # search in overriden template base dir first
       search_dirs << overriden_templates if overriden_templates
-      template_dirs.each {|template_dir|
+      template_dirs.each do |template_dir|
         # search template paths in overriden_templates
         search_dirs << "#{overriden_templates}/#{template_dir}" if overriden_templates
-        # search template paths in hiptest_publisher
-        search_dirs << "#{hiptest_publisher_path}/lib/templates/#{template_dir}"
-      }
+
+        # Search for templates/languages/<language>/version-<language-version>
+        if languages_dirs.has_key?(template_dir)
+          search_dirs << "#{hiptest_publisher_path}/lib/templates/languages/#{template_dir}/#{languages_dirs[template_dir].first}"
+        # Search for templates/frameworks/<framework>/version-<framework-version>
+        elsif framework_dirs.has_key?(template_dir)
+          search_dirs << "#{hiptest_publisher_path}/lib/templates/frameworks/#{template_dir}/#{framework_dirs[template_dir].first}"
+        else
+          # Support old location for templates and "common" folder
+          search_dirs << "#{hiptest_publisher_path}/lib/templates/#{template_dir}/"
+        end
+      end
+
       search_dirs
     end
   end
@@ -74,6 +80,28 @@ class TemplateFinder
   end
 
   private
+
+  def languages_dirs
+    @languages_dirs ||= two_levels_hierarchy('languages')
+  end
+
+  def framework_dirs
+    @framework_dirs ||= two_levels_hierarchy('frameworks')
+  end
+
+  def two_levels_hierarchy(path)
+    hierarchy = {}
+    list_directories(path).map do |first_level|
+      hierarchy[first_level] = list_directories("#{path}/#{first_level}")
+    end
+    hierarchy
+  end
+
+  def list_directories(path)
+    Dir.
+    entries("#{hiptest_publisher_path}/lib/templates/#{path}")
+    .select {|entry| File.directory? File.join("#{hiptest_publisher_path}/lib/templates/#{path}", entry) and !(entry =='.' || entry == '..') }
+  end
 
   def handlebars
     if !@handlebars

@@ -1,0 +1,9 @@
+# encoding: UTF-8
+
+{{#each library_names}}from steps.{{downcase this}}_library import {{camelize this}}Library
+{{/each}}
+
+class ActionwordLibrary:{{#indent}}{{#each library_names}}
+def get{{camelize this}}Library(self):{{#indent}}
+return {{camelize this}}Library(self){{/indent}}
+{{/each}}{{/indent}}

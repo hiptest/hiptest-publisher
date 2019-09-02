@@ -1,0 +1,4 @@
+{{#if has_datasets?}}{{> item_as_def}}
+{{{ rendered_children.datatable }}}
+{{else}}def test_{{{ normalize_lower self_name }}}{{#if rendered_children.uid}}_uid{{{ normalize_lower rendered_children.uid}}}{{/if}}({{> parameters}}):
+{{> body}}{{/if}}

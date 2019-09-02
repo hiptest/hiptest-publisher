@@ -15,12 +15,12 @@ describe TemplateFinder do
     it 'looks in the language template folder' do
       template_finder = context_for(language: 'ruby').template_finder
       expect(template_finder.get_template_path('stringliteral')).to eq('./spec/fixtures/lib/templates/common/stringliteral.hbs')
-      expect(template_finder.get_template_path('assign')).to eq('./spec/fixtures/lib/templates/ruby/assign.hbs')
+      expect(template_finder.get_template_path('assign')).to eq('./spec/fixtures/lib/templates/languages/ruby/version-2.3/assign.hbs')
     end
 
     it 'looks in the framework specific folder if existing' do
       template_finder = context_for(language: 'ruby', framework: 'minitest').template_finder
-      expect(template_finder.get_template_path('scenarios')).to eq('./spec/fixtures/lib/templates/ruby/minitest/scenarios.hbs')
+      expect(template_finder.get_template_path('scenarios')).to eq('./spec/fixtures/lib/templates/frameworks/minitest/version-5.0/scenarios.hbs')
     end
 
     context 'when option[:overriden_templates] is set' do
@@ -43,7 +43,7 @@ describe TemplateFinder do
       end
 
       it 'if no matching template file found in overriden templates dir, it uses the default template file' do
-        expect(template_finder.get_template_path('scenarios')).to eq('./spec/fixtures/lib/templates/python/scenarios.hbs')
+        expect(template_finder.get_template_path('scenarios')).to eq('./spec/fixtures/lib/templates/languages/python/version-2.7/scenarios.hbs')
       end
 
       it 'if matching template file found in overriden templates dir, it uses the overriden template file' do
@@ -53,33 +53,22 @@ describe TemplateFinder do
 
       it 'looks for template in overriden templates base dir first' do
         FileUtils.touch("#{overriden_templates_dir}/actionwords.hbs")
-        FileUtils.touch("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
-        FileUtils.touch("#{overriden_templates_dir}/python/actionwords.hbs")
+        FileUtils.mkdir_p("#{overriden_templates_dir}/frameworks/python-unittest/version-2.7")
+        FileUtils.touch("#{overriden_templates_dir}/frameworks/python-unittest/version-2.7/actionwords.hbs")
         expect(template_finder.get_template_path('actionwords')).to eq("#{overriden_templates_dir}/actionwords.hbs")
-      end
-
-      it 'looks for template in each template subdirectory, both in overriden templates and hiptest-publisher template' do
-        FileUtils.touch("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
-        FileUtils.touch("#{overriden_templates_dir}/python/actionwords.hbs")
-        expect(template_finder.get_template_path('actionwords')).to eq("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
-
-        # if removing the overriden_template/python/unittest/actionwords.hbs file,
-        # it should pick the hiptest publisher one
-        # it should not pick the overriden_template/python/unittestactionwords.hbs one
-        FileUtils.rm("#{overriden_templates_dir}/python/unittest/actionwords.hbs")
-        expect(template_finder.get_template_path('actionwords')).to eq("./spec/fixtures/lib/templates/python/unittest/actionwords.hbs")
       end
     end
 
     context 'when option[:fallback_template] is set' do
       it 'uses the given fallback template if no template is found' do
-        template_finder = context_for(only: 'features', language: 'cucumber', fallback_template: "empty").template_finder
+        puts context_for(only: 'tests', language: 'python', fallback_template: "prout").inspect
+        template_finder = context_for(only: 'tests', language: 'python', fallback_template: "prout").template_finder
         expect(template_finder.get_template_path('assign')).to eq('./spec/fixtures/lib/templates/common/empty.hbs')
       end
 
       it 'still uses the template if found' do
-        template_finder = context_for(only: 'features', language: 'cucumber', fallback_template: "empty").template_finder
-        expect(template_finder.get_template_path('stringliteral')).to eq('./spec/fixtures/lib/templates/gherkin/stringliteral.hbs')
+        template_finder = context_for(only: 'tests', language: 'python', fallback_template: "empty").template_finder
+        expect(template_finder.get_template_path('scenarios')).to eq('./spec/fixtures/lib/templates/languages/python/version-2.7/scenarios.hbs')
       end
     end
   end

@@ -1,0 +1,11 @@
+# encoding: UTF-8
+require 'spec_helper'
+require_relative '{{{ relative_path 'actionwords' }}}'
+
+describe '{{{ escape_single_quotes self_name }}}' do
+  include Actionwords
+
+{{#indent}}
+{{> scenario}}
+{{/indent}}
+end
