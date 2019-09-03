@@ -1,0 +1,18 @@
+{{#if has_datasets?}}
+{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{/if}}{{> scenario_outline_title}}{{#indent}}
+{{#if has_description?}}{{description_with_annotations rendered_children.description}}
+{{/if}}{{#each rendered_children.body}}{{{ this }}}
+{{/each}}
+Examples:{{#indent}}
+{{#if context.with_dataset_names}}| dataset name {{/if}}| {{ join rendered_children.parameters ' | ' }} |{{#if context.uids}} hiptest-uid |{{/if}}
+{{{rendered_children.datatable}}}
+{{/indent}}{{/indent}}
+{{else}}
+{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{/if}}Scenario: {{{ rendered_children.name }}}{{#if context.uids}}{{#if rendered_children.uid}} (uid:{{{rendered_children.uid}}}){{/if}}{{/if}}{{#indent}}
+{{#if has_description?}}{{description_with_annotations rendered_children.description}}
+{{/if}}{{#each rendered_children.body}}{{{ this }}}
+{{/each}}
+{{/indent}}
+{{/if}}

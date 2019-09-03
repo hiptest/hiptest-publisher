@@ -446,13 +446,18 @@ class LanguageGroupConfig
   end
 
   def template_finder
-    @template_finder ||= TemplateFinder.new(
+    @template_finder ||= TemplateFinder.new(template_finder_create_opts)
+  end
+
+  def template_finder_create_opts
+    opts = {
       template_dirs: template_dirs,
       overriden_templates: @language_group_params[:overriden_templates],
       indentation: indentation,
       forced_templates: forced_templates,
       fallback_template: @language_group_params[:fallback_template],
-    )
+      language_group: @language_group_params[:group_name]
+    }
   end
 
   def each_node_rendering_context(project)

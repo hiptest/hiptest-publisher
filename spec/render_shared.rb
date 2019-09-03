@@ -1967,6 +1967,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         framework: framework
       )
     }
+
     context 'the __datatable parameter' do
       let(:node_to_render) {
         make_actionword(

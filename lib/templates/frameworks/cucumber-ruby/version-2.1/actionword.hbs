@@ -1,0 +1,5 @@
+{{#if rendered_children.gherkin_annotation }}
+{{{ rendered_children.gherkin_annotation }}} /{{> gherkin_pattern}}/ do{{#if has_parameters?}} |{{{ join rendered_children.parameters_ordered_by_pattern ', '}}}|{{/if}}
+{{#indent}}{{ underscore rendered_children.name }}{{#if has_parameters?}}({{{ join rendered_children.parameters ', '}}}){{/if}}{{/indent}}
+end
+{{/if}}
