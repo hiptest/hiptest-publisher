@@ -1,0 +1,2 @@
+{{#if has_annotation? }}{{#comment '#'}}{{{ rendered_children.gherkin_text }}}{{/comment}}
+{{/if}}self.{{#if context.call_prefix}}{{{ context.call_prefix }}}.{{/if}}{{#if is_shared?}}get{{{camelize rendered_children.library_name}}}Library().{{/if}}{{{ underscore rendered_children.actionword }}}({{{ join rendered_children.all_arguments ', '}}})

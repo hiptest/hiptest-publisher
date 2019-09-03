@@ -1,0 +1,3 @@
+def test_{{{ normalize scenario_name}}}_{{{ normalize_lower rendered_children.name}}}{{#if rendered_children.test_snapshot_uid}}_uid{{{ normalize rendered_children.test_snapshot_uid}}}{{/if}}
+  {{{ underscore scenario_name }}}({{{ join rendered_children.arguments ', ' }}})
+end

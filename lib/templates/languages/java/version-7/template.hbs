@@ -1,0 +1,1 @@
+{{#if variable_names}}String.format({{/if}}"{{#each treated_chunks}}{{#if this.is_variable?}}%s{{else}}{{{ escape_double_quotes this.raw.children.value }}}{{/if}}{{/each}}"{{#if variable_names}}, {{{join variable_names ', '}}}){{/if}}

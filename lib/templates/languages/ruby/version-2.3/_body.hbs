@@ -1,0 +1,10 @@
+{{#clear_empty_lines}}
+{{#indent}}
+{{#comment '#'}}{{#if has_description?}}{{{ rendered_children.description }}}
+{{/if}}{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}
+{{/if}}{{/comment}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
+{{#if has_step?}}raise NotImplementedError{{/if}}
+{{/indent}}
+{{/clear_empty_lines}}

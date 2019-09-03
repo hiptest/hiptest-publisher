@@ -1,0 +1,16 @@
+# encoding: UTF-8
+require 'spec_helper'
+require_relative '{{{ relative_path 'actionwords' }}}'
+
+describe '{{{ escape_single_quotes self_name }}}' do{{#indent}}
+include Actionwords
+
+{{#unless is_empty?}}before(:each) do
+{{> body}}
+end
+
+{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}
+
+{{/each}}
+{{/indent}}
+end

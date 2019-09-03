@@ -1,0 +1,17 @@
+# encoding: UTF-8
+
+from behave import *
+
+
+class {{capitalize rendered_children.name}}Library:{{#indent}}
+__instance = None
+
+def __new__(cls, context):{{#indent}}
+if {{capitalize rendered_children.name}}Library.__instance is None{{#indent}}
+{{capitalize rendered_children.name}}Library.__instance = object.__new__(cls){{/indent}}
+
+return {{capitalize rendered_children.name}}Library.__instance{{/indent}}
+
+{{#each rendered_children.library_actionwords}}{{{this}}}
+{{/each}}
+{{/indent}}

@@ -1,0 +1,5 @@
+{{#indent}}
+{{#each rendered_children.body}}{{{this}}}
+{{/each}}
+{{#if has_step?}}throw new UnsupportedOperationException();{{/if}}
+{{/indent}}

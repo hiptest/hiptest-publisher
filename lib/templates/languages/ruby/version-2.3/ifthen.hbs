@@ -1,0 +1,7 @@
+if ({{{ rendered_children.condition }}})
+{{#indent}}{{#each rendered_children.then}}{{{this}}}{{/each}}
+{{/indent}}
+{{#if has_else?}}else
+{{#indent}}{{#each rendered_children.else}}{{{this}}}{{/each}}
+{{/indent}}
+{{/if}}end

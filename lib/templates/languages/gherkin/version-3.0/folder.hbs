@@ -1,0 +1,10 @@
+{{#if rendered_children.ancestor_tags}}{{#if context.parent_folder_tags}}{{#each rendered_children.ancestor_tags}}{{this}} {{/each}}{{#unless has_tags?}}
+{{/unless}}{{/if}}{{/if}}{{#if has_tags?}}{{join rendered_children.tags ' '}}
+{{/if}}Feature: {{{ rendered_children.name }}}{{#indent}}
+{{#if rendered_children.description}}{{#indent}}{{description_with_annotations rendered_children.description}}{{/indent}}{{/if}}
+{{#unless is_empty?}}
+Background:{{#indent}}
+{{#each rendered_children.body}}{{{ this }}}
+{{/each}}{{/indent}}
+{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}{{/each}}
+{{/indent}}

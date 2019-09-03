@@ -1,0 +1,4 @@
+if ({{{ rendered_children.condition }}}):
+{{#indent}}{{{ join rendered_children.then '\n'}}}{{/indent}}{{#if has_else?}}
+else:
+{{#indent}}{{{ join rendered_children.else '\n'}}}{{/indent}}{{/if}}

@@ -3,6 +3,9 @@ require 'codeclimate-test-reporter'
 require 'i18n/coverage'
 require 'securerandom'
 
+require 'i18n'
+I18n.load_path << Dir["./config/locales/*.yml"]
+
 begin
   require 'pry'
 rescue LoadError => exception

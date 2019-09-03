@@ -1,0 +1,9 @@
+# encoding: UTF-8
+import unittest
+from actionwords import Actionwords
+
+class Test{{{ camelize self_name }}}(unittest.TestCase):
+    def setUp(self):
+        self.actionwords = Actionwords(self)
+{{#indent}}
+{{> scenario}}{{/indent}}

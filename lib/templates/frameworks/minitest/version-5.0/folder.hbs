@@ -1,0 +1,18 @@
+# encoding: UTF-8
+
+require 'minitest/autorun'
+require_relative '{{{ relative_path 'actionwords' }}}'
+
+class Test{{{ camelize self_name }}} < MiniTest::Unit::TestCase{{#indent}}
+include Actionwords
+
+{{#unless is_empty?}}def setup{{#indent}}
+{{> body}}
+{{/indent}}
+end
+
+{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}
+
+{{/each}}
+{{/indent}}
+end
