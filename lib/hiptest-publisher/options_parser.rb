@@ -445,6 +445,20 @@ class LanguageGroupConfig
     end
   end
 
+  def template_flavors
+    specified_flavors = {}
+
+    template_dirs.each do |template_dir|
+      flavor_name = "#{template_dir}_flavors".to_sym
+      flavors = @language_group_params[flavor_name]
+
+      next if flavors.nil?
+      specified_flavors[flavor_name] = flavors.split(',').map(&:strip)
+    end
+
+    specified_flavors
+  end
+
   def template_finder
     @template_finder ||= TemplateFinder.new(template_finder_create_opts)
   end
@@ -457,7 +471,7 @@ class LanguageGroupConfig
       forced_templates: forced_templates,
       fallback_template: @language_group_params[:fallback_template],
       language_group: @language_group_params[:group_name]
-    }
+    }.merge(template_flavors)
   end
 
   def each_node_rendering_context(project)

@@ -57,7 +57,24 @@ describe TemplateFinder do
       end
     end
 
-    context 'when specific sub folders exists for group' do
+    context 'when flavors are provided' do
+      it 'will check for templates inside <language>/<version>/<flavor> first' do
+        template_finder = TemplateFinder.new(template_dirs: ['ruby'], ruby_flavors: ['use_arrow_for_dict'])
+        expect(template_finder.get_template_path('dict')).to eq('./spec/fixtures/lib/templates/languages/ruby/version-2.3/use_arrow_for_dict_flavor/dict.hbs')
+      end
+
+      it 'does not fail when the flavor does not exist' do
+        template_finder = TemplateFinder.new(template_dirs: ['ruby'], ruby_flavors: ['inline_uids'])
+        expect(template_finder.get_template_path('dict')).to eq('./spec/fixtures/lib/templates/languages/ruby/version-2.3/dict.hbs')
+      end
+
+      it 'uses the main directory if the template is not overriden by the flavor' do
+        template_finder = TemplateFinder.new(template_dirs: ['ruby'], ruby_flavors: ['use_arrow_for_dict'])
+        expect(template_finder.get_template_path('assign')).to eq('./spec/fixtures/lib/templates/languages/ruby/version-2.3/assign.hbs')
+      end
+    end
+
+    context 'when specific sub folders exists for language group' do
       it 'picks the template in that sub-folder if the language group is the correct one' do
         template_finder = TemplateFinder.new(template_dirs: ['cucumber-java', 'java', 'common'], language_group: 'actionwords')
 

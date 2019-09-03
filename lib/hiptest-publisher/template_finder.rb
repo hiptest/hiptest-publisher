@@ -34,12 +34,21 @@ class TemplateFinder
         # search template paths in overriden_templates
         search_dirs << "#{overriden_templates}/#{template_dir}" if overriden_templates
         version = required_version(template_dir)
+        flavors = @extra_params["#{template_dir}_flavors".to_sym] || []
 
         # Search for templates/languages/<language>/version-<language-version>
         if languages_dirs.has_key?(template_dir)
           language_dir = "#{hiptest_publisher_path}/lib/templates/languages/#{template_dir}/#{find_version(languages_dirs[template_dir], version)}"
+
           if @language_group && File.directory?(File.join(language_dir, @language_group))
             search_dirs << "#{language_dir}/#{@language_group}"
+          end
+
+          flavors.each do |flavor|
+            flavor_dir_name = "#{flavor}_flavor"
+            if File.directory?(File.join(language_dir, flavor_dir_name))
+              search_dirs << "#{language_dir}/#{flavor_dir_name}"
+            end
           end
 
           search_dirs << language_dir
