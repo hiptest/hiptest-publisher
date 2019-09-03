@@ -177,6 +177,7 @@ en:
     framework: Test framework to use
     global_failure_on_missing_reports: When there is no results file to push, report a global failure
     help: Show this message
+    http_proxy: 'Specify your http proxy to access Hiptest'
     keep_filenames: 'Keep the same name as in HipTest for the test files (note: may cause encoding issues)'
     keep_foldernames: 'Keep the same name as in HipTest for the folders (note: may cause encoding issues)'
     language: Target language

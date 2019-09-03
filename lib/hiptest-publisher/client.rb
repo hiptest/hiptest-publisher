@@ -188,6 +188,8 @@ module Hiptest
     end
 
     def find_proxy_uri(address, port)
+      return URI.parse(@cli_options.http_proxy) if @cli_options.http_proxy
+
       URI::HTTP.new(
         "http", nil, address, port, nil, nil, nil, nil, nil
       ).find_proxy

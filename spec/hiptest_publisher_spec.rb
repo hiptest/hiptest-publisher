@@ -31,10 +31,7 @@ describe Hiptest::Publisher do
     end
   }
 
-  context "with http_proxy env var set" do
-    before { ENV['http_proxy'] = "http://www.example.org:12345" }
-    after  { ENV['http_proxy'] = nil }
-
+  context "handling http proxies" do
     def run_publisher_command(*extra_args)
       args = [
         "--language", "ruby",
@@ -45,44 +42,88 @@ describe Hiptest::Publisher do
       publisher.run
     end
 
-    it "connects through the proxy" do
-      WebMock.allow_net_connect!
+    context "with http_proxy env var set" do
+      before { ENV['http_proxy'] = "http://www.example.org:12345" }
+      after  { ENV['http_proxy'] = nil }
 
-      expect(TCPSocket).to receive(:open).with("www.example.org", 12345, anything, anything).and_throw(:connected_to_proxy)
-
-      catch :connected_to_proxy do
-        run_publisher_command
-        # TCPSocket was mocked to throw :connected_to_proxy when called with
-        # proxy setting. If we did not exit the catch block, that means it
-        # did not connect to the proxy we set.
-        fail('It did not connect through the http proxy set with "http_proxy" env var')
-      end
-    end
-
-    context "with proxy user and password specified in http_proxy like http://user:proxy@host:port" do
-      before { ENV['http_proxy'] = "http://john.doe:S3cr3tP4zzw0rd@www.example.org:12345" }
-
-      it "retrieves proxy credentials correctly" do
+      it "connects through the proxy" do
         WebMock.allow_net_connect!
 
-        expect(Net::HTTP).to receive(:start).with(anything, anything, "www.example.org", 12345, "john.doe", "S3cr3tP4zzw0rd", anything).
-            and_throw(:proxy_credentials_parsed_correctly)
+        expect(TCPSocket).to receive(:open).with("www.example.org", 12345, anything, anything).and_throw(:connected_to_proxy)
 
-        catch :proxy_credentials_parsed_correctly do
+        catch :connected_to_proxy do
           run_publisher_command
-          fail('It did not parse proxy username and password from "http_proxy" env var')
+          # TCPSocket was mocked to throw :connected_to_proxy when called with
+          # proxy setting. If we did not exit the catch block, that means it
+          # did not connect to the proxy we set.
+          fail('It did not connect through the http proxy set with "http_proxy" env var')
         end
       end
 
-      it "handles ':' in proxy password" do
-        ENV['http_proxy'] = "http://user:S3cr3t:P4zzw0rd@www.example.org:12345"
+      context "with proxy user and password specified in http_proxy like http://user:proxy@host:port" do
+        before { ENV['http_proxy'] = "http://john.doe:S3cr3tP4zzw0rd@www.example.org:12345" }
 
-        expect(Net::HTTP).to receive(:start).with(anything, anything, anything, anything, anything, "S3cr3t:P4zzw0rd", anything).
-            and_throw(:proxy_password_parsed_correctly)
+        it "retrieves proxy credentials correctly" do
+          WebMock.allow_net_connect!
 
-        catch :proxy_password_parsed_correctly do
-          run_publisher_command
-          fail('It did not parse proxy username and password from "http_proxy" env var')
+          expect(Net::HTTP).to receive(:start).with(anything, anything, "www.example.org", 12345, "john.doe", "S3cr3tP4zzw0rd", anything).
+              and_throw(:proxy_credentials_parsed_correctly)
+
+          catch :proxy_credentials_parsed_correctly do
+            run_publisher_command
+            fail('It did not parse proxy username and password from "http_proxy" env var')
+          end
+        end
+
+        it "handles ':' in proxy password" do
+          ENV['http_proxy'] = "http://user:S3cr3t:P4zzw0rd@www.example.org:12345"
+
+          expect(Net::HTTP).to receive(:start).with(anything, anything, anything, anything, anything, "S3cr3t:P4zzw0rd", anything).
+              and_throw(:proxy_password_parsed_correctly)
+
+          catch :proxy_password_parsed_correctly do
+            run_publisher_command
+            fail('It did not parse proxy username and password from "http_proxy" env var')
+          end
+        end
+      end
+    end
+
+    context 'with http-proxy option set' do
+      it "connects through the proxy" do
+        WebMock.allow_net_connect!
+        expect(TCPSocket).to receive(:open).with("www.example.org", 12345, anything, anything).and_throw(:connected_to_proxy)
+
+        catch :connected_to_proxy do
+          run_publisher_command("--http-proxy", "http://www.example.org:12345", "verbose")
+          # TCPSocket was mocked to throw :connected_to_proxy when called with
+          # proxy setting. If we did not exit the catch block, that means it
+          # did not connect to the proxy we set.
+          fail('It did not connect through the http proxy set with "http_proxy" option')
+        end
+      end
+
+      context "with proxy user and password specified in http_proxy like http://user:proxy@host:port" do
+        it "retrieves proxy credentials correctly" do
+          WebMock.allow_net_connect!
+
+          expect(Net::HTTP).to receive(:start).with(anything, anything, "www.example.org", 12345, "john.doe", "S3cr3tP4zzw0rd", anything).
+              and_throw(:proxy_credentials_parsed_correctly)
+
+          catch :proxy_credentials_parsed_correctly do
+            run_publisher_command("--http-proxy", "http://john.doe:S3cr3tP4zzw0rd@www.example.org:12345")
+            fail('It did not parse proxy username and password from "http_proxy" option')
+          end
+        end
+
+        it "handles ':' in proxy password" do
+          expect(Net::HTTP).to receive(:start).with(anything, anything, anything, anything, anything, "S3cr3t:P4zzw0rd", anything).
+              and_throw(:proxy_password_parsed_correctly)
+
+          catch :proxy_password_parsed_correctly do
+            run_publisher_command("--http-proxy", "http://user:S3cr3t:P4zzw0rd@www.example.org:12345")
+            fail('It did not parse proxy username and password from "http_proxy" option')
+          end
         end
       end
     end

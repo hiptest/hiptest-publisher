@@ -236,6 +236,7 @@ class OptionsParser
       Option.new(nil, 'split-scenarios', false, nil, I18n.t('options.split_scenarios'), :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, I18n.t('options.leafless_export'), :leafless_export),
       Option.new('s', 'site=SITE', 'https://app.hiptest.com', String, I18n.t('options.site'), :site),
+      Option.new(nil, 'http-proxy=PROXY_URL', nil, String, I18n.t('options.http_proxy'), :http_proxy),
       Option.new('p', 'push=FILE.TAP', '', String, I18n.t('options.push'), :push),
       Option.new(nil, 'global-failure-on-missing-reports', false, nil, I18n.t('options.global_failure_on_missing_reports'), :global_failure_on_missing_reports),
       Option.new(nil, 'push-format=tap', 'tap', String, I18n.t('options.push_format'), :push_format),
