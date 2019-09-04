@@ -95,7 +95,7 @@ describe Hiptest::Publisher do
         expect(TCPSocket).to receive(:open).with("www.example.org", 12345, anything, anything).and_throw(:connected_to_proxy)
 
         catch :connected_to_proxy do
-          run_publisher_command("--http-proxy", "http://www.example.org:12345", "verbose")
+          run_publisher_command("--http-proxy", "http://www.example.org:12345")
           # TCPSocket was mocked to throw :connected_to_proxy when called with
           # proxy setting. If we did not exit the catch block, that means it
           # did not connect to the proxy we set.
@@ -124,6 +124,25 @@ describe Hiptest::Publisher do
             run_publisher_command("--http-proxy", "http://user:S3cr3t:P4zzw0rd@www.example.org:12345")
             fail('It did not parse proxy username and password from "http_proxy" option')
           end
+        end
+      end
+    end
+
+    context 'with both http-proxy option set and http_proxy env var set' do
+      before { ENV['http_proxy'] = "http://another-proxy.org:12345" }
+      after  { ENV['http_proxy'] = nil }
+
+      it "ignores the env var and uses the http-proxy option value" do
+        WebMock.allow_net_connect!
+
+        expect(TCPSocket).to receive(:open).with("www.example.org", 12345, anything, anything).and_throw(:connected_to_proxy)
+
+        catch :connected_to_proxy do
+          run_publisher_command("--http-proxy", "http://www.example.org:12345")
+          # TCPSocket was mocked to throw :connected_to_proxy when called with
+          # proxy setting. If we did not exit the catch block, that means it
+          # did not connect to the proxy we set.
+          fail('It did not connect through the http proxy set with "http_proxy" env var')
         end
       end
     end
