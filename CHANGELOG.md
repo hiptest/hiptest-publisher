@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[1.28.0]
+--------
 
  - Fix bug where parameter-delimiter value was not recognized in command line ([#147](https://github.com/hiptest/hiptest-publisher/issues/147))
  - Add option --http-proxy to specify proxy to use ([#132](https://github.com/hiptest/hiptest-publisher/issues/132))
@@ -169,7 +169,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.27.1...master
+[1.28.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.27.1...v1.28.0
 [1.27.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.27.0...v1.27.1
 [1.27.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.26.0...v1.27.0
 [1.26.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.25.0...v1.26.0
