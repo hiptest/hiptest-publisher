@@ -1,7 +1,8 @@
-require 'webmock'
 require 'codeclimate-test-reporter'
+require 'i18n'
 require 'i18n/coverage'
 require 'securerandom'
+require 'webmock'
 
 begin
   require 'pry'
@@ -13,6 +14,8 @@ end
 require_relative '../lib/hiptest-publisher/formatters/reporter'
 require_relative '../lib/hiptest-publisher/nodes'
 require_relative '../lib/hiptest-publisher/options_parser'
+
+I18n.load_path << Dir["./config/locales/*.yml"]
 
 CodeClimate::TestReporter.start
 WebMock.disable_net_connect!(allow: "codeclimate.com")
