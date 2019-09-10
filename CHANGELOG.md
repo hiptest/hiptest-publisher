@@ -4,6 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+ - Fix bug where parameter-delimiter value was not recognized in command line ([#147](https://github.com/hiptest/hiptest-publisher/issues/147))
  - Add option --http-proxy to specify proxy to use ([#132](https://github.com/hiptest/hiptest-publisher/issues/132))
 
 [1.27.1]

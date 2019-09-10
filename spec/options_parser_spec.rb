@@ -82,6 +82,11 @@ describe OptionParser do
       options = OptionsParser.parse(["--config-file", f.path], Reporter.new([ErrorListener.new]))
       expect(options.overriden_templates).to eq("/home/user/hps/robot/templates")
     end
+
+    it 'recognizes the --parameter-delimiter option with its value' do
+      options = OptionsParser.parse(["--parameter-delimiter", "'"], Reporter.new([ErrorListener.new]))
+      expect(options.parameter_delimiter).to eq("'")
+    end
   end
 
   it "does not resolve paths if the value does not come from config file" do
