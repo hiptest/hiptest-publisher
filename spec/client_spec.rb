@@ -4,7 +4,12 @@ require_relative '../lib/hiptest-publisher/client'
 
 describe Hiptest::Client do
   let(:args) { ["--token", "123456789"] }
-  let(:options) { OptionsParser.parse(args, NullReporter.new) }
+  let(:options) {
+    full_args = args + ["--xml-cache-validity", xml_cache_validity]
+    OptionsParser.parse(full_args, NullReporter.new)
+  }
+  let(:xml_cache_validity) { "0" }
+
   subject(:client) { Hiptest::Client.new(options) }
 
   let(:tr_89__Sprint_12) { {
@@ -12,16 +17,19 @@ describe Hiptest::Client do
     "name" => "Sprint 12",
     "created_at" => "2016-06-06T09:31:33.138Z",
   } }
+
   let(:tr_98__Sprint_13) { {
     "id" => "98",
     "name" => "Sprint 13",
     "created_at" => "2016-06-20T09:35:17.981Z",
   } }
+
   let(:tr_18__Continuous_integration) { {
     "id" => "18",
     "name" => "Continuous integration",
     "created_at" => "2016-03-03T16:02:38.574Z",
   } }
+
   let(:tr_54__Unit_tests) { {
     "id" => "541",
     "name" => "Unit tests",
@@ -166,6 +174,28 @@ describe Hiptest::Client do
         to_return(body: sent_xml)
       got_xml = client.fetch_project_export
       expect(got_xml).to eq(sent_xml)
+    end
+
+    context 'when xml cache is enabled' do
+      let(:args) { ["--token", "123456789", "--xml-cache-dir", cache_dir] }
+      let(:cache_dir) { Dir.mktmpdir }
+      let(:xml_cache_validity) { "60" }
+
+      after do
+        FileUtils.rm_rf(cache_dir)
+      end
+
+      it 'only fetches the XML file from Hiptest the first time' do
+        stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+          to_return(body: "<xml_everywhere/>")
+
+        client.fetch_project_export
+        client.fetch_project_export
+        client.fetch_project_export
+
+        expect(a_request(:get, "https://app.hiptest.com/publication/123456789/project"))
+          .to have_been_made.at_most_once
+      end
     end
 
     context "with unexisting secret token" do

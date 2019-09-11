@@ -20,11 +20,12 @@ module Hiptest
       date ||= Time.now
       filename = "#{Digest::MD5.hexdigest(url)}-#{date.to_i}"
 
-      make_cache_dir
-      FileWriter.new(@reporter).write_to_file(File.join(@cache_dir, filename), "Caching export") { content }
+      file_writer.write_to_file(File.join(@cache_dir, filename), "Caching export") { content }
     end
 
     def cache_for(url)
+      return if @cache_duration <= 0
+
       hashed_url = Digest::MD5.hexdigest(url)
       expiry_date = (Time.now - @cache_duration).to_i
 
@@ -47,6 +48,10 @@ module Hiptest
     end
 
     private
+
+    def file_writer
+      FileWriter.new(@reporter)
+    end
 
     def expired_files
       expiry_date = (Time.now - @cache_duration).to_i
@@ -71,14 +76,6 @@ module Hiptest
     def timestamp_from_filename(filename)
       m = filename.match(/\A[a-f0-9]{32}-(\d+)\Z/)
       m.nil? ? nil : m[1].to_i
-    end
-
-    def make_cache_dir
-      FileUtils.mkdir_p(@cache_dir)
-    rescue Errno::EPERM => err
-      # TODO: handle this better
-      @reporter.dump_error(err, I18n.t("errors.export_cache.cache_dir_not_creatable"))
-      raise err
     end
   end
 end
