@@ -20,7 +20,7 @@ module Hiptest
       date ||= Time.now
       filename = "#{Digest::MD5.hexdigest(url)}-#{date.to_i}"
 
-      file_writer.write_to_file(File.join(@cache_dir, filename), "Caching export") { content }
+      file_writer.write_to_file(File.join(@cache_dir, filename), I18n.t("caching_data")) { content }
     end
 
     def cache_for(url)
