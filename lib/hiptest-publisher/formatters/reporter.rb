@@ -51,6 +51,10 @@ class Reporter
 end
 
 class NullReporter
+  def with_status_message(message, &blk)
+    yield
+  end
+
   def method_missing(*args)
   end
 end
