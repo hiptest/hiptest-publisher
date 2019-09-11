@@ -4,6 +4,7 @@ require 'json'
 require 'net/http'
 require 'uri'
 
+require_relative 'export_cache'
 require_relative 'formatters/reporter'
 
 module Hiptest
@@ -72,11 +73,18 @@ module Hiptest
     end
 
     def fetch_project_export
+      cached = export_cache.cache_for(url)
+      return cached unless cached.nil?
+
       response = send_get_request(url)
       if response.code_type == Net::HTTPNotFound
         raise ClientError, I18n.t('errors.project_not_found')
       end
-      response.body
+
+      content = response.body
+      export_cache.cache(url, content)
+
+      return content
     end
 
     def available_test_runs
@@ -107,6 +115,13 @@ module Hiptest
     end
 
     private
+
+    def export_cache
+      @export_cache ||= ExportCache.new(
+        @cli_options.xml_cache_dir,
+        @cli_options.xml_cache_validity,
+        reporter: @reporter)
+    end
 
     def test_run_id
       return unless cli_options.test_run_id? || cli_options.test_run_name?
