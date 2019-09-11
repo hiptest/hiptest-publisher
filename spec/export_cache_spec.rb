@@ -6,11 +6,7 @@ require_relative '../lib/hiptest-publisher/formatters/console_formatter'
 describe Hiptest::ExportCache do
   subject { Hiptest::ExportCache.new(cache_dir, cache_duration, reporter: reporter) }
 
-  let(:reporter) {
-    r = Reporter.new
-    #r.add_listener(ConsoleFormatter.new(true))
-    r
-  }
+  let(:reporter) { Reporter.new }
 
   let(:cache_dir) {
     @cache_dir_created = true
@@ -60,7 +56,7 @@ describe Hiptest::ExportCache do
       expect(file_content(cached_name)).to eq('Here is some XML content')
     end
 
-    it "creates xml-cache-dir if it does not exist" do
+    it "creates cache dir if it does not exist" do
       new_cache_path = File.join(cache_dir, "plopidou")
 
       cache = Hiptest::ExportCache.new(new_cache_path, 60, reporter: reporter)
@@ -77,13 +73,29 @@ describe Hiptest::ExportCache do
         expect(cached_files).to be_empty
       end
 
-      it "does not create xml-cache-dir if it does not exist" do
+      it "does not create cache dir if it does not exist" do
         new_cache_path = File.join(cache_dir, "plopideux")
 
         cache = Hiptest::ExportCache.new(new_cache_path, 0, reporter: reporter)
         cache.cache('some-url', 'some-content')
 
         expect(Dir.entries(cache_dir)).not_to include("plopideux")
+      end
+    end
+
+    context "when cache_dir is not writable" do
+      let(:read_only_dir) {
+        path = File.join(cache_dir, "read-only")
+        Dir.mkdir(path, 0555)
+        path
+      }
+
+      it "fails silently" do
+        cache = Hiptest::ExportCache.new(read_only_dir, 0, reporter: reporter)
+
+        expect {
+          cache.cache('some-url', 'some-content')
+        }.not_to raise_error
       end
     end
   end
