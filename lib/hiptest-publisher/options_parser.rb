@@ -223,6 +223,8 @@ class OptionsParser
       Option.new(nil, 'only=CATEGORIES', nil, String, I18n.t('options.only'), :only),
       Option.new(nil, 'without=CATEGORIES', nil, String, I18n.t('options.without'), :without),
       Option.new('x', 'xml-file=PROJECT_XML', nil, String, I18n.t('options.xml_file'), :xml_file),
+      Option.new(nil, 'xml-cache-dir=PATH', self.default_cache_directory, String, I18n.t('options.xml_cache_dir'), :xml_cache_dir),
+      Option.new(nil, 'xml-cache-validity=DURATION', 60, Integer, I18n.t('options.xml_cache_validity'), :xml_cache_validity),
       Option.new(nil, 'tests-only', false, nil, I18n.t('options.tests_only'), :tests_only),
       Option.new(nil, 'actionwords-only', false, nil, I18n.t('options.actionwords_only'), :actionwords_only),
       Option.new(nil, 'actionwords-signature', false, nil, I18n.t('options.actionwords_signature'), :actionwords_signature),
@@ -263,6 +265,10 @@ class OptionsParser
       Option.new(nil, 'force', false, nil, I18n.t('options.force_overwrite'), :force_overwrite),
       Option.new('v', 'verbose', false, nil, I18n.t('options.verbose'), :verbose)
     ]
+  end
+
+  def self.default_cache_directory
+    File.join(Dir.home, '.hiptest-publisher', 'cache')
   end
 
   def self.parse(args, reporter)
