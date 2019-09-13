@@ -1,7 +1,7 @@
 echo "Running local gem"
 bundle exec ruby -I lib bin/hiptest-publisher --help
 
-gem install hiptest-publisher
+rake install
 echo "== Running hiptest-publisher --help"
 hiptest-publisher --help
 

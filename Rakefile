@@ -28,6 +28,23 @@ Juwelier::Tasks.new do |gem|
 end
 Juwelier::RubygemsDotOrgTasks.new
 
+# Backport PR flajann2/juwelier#9 for ruby 2.6
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.6')
+  require 'juwelier/gemspec_helper'
+  class Juwelier
+    class GemSpecHelper
+      def parse
+        data = to_ruby
+        parsed_gemspec = nil
+        Thread.new { parsed_gemspec = eval("$SAFE = 1\n#{data}", binding, path) }.join
+        # Need to reset $SAFE to 0 as it is process global since ruby 2.6
+        $SAFE = 0 if $SAFE == 1
+        parsed_gemspec
+      end
+    end
+  end
+end
+
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
