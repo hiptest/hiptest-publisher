@@ -4,6 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+ - Make `rake install` work with ruby 2.6
  - `--parameter-delimiter` option now accepts empty string
 
 [1.28.0]
