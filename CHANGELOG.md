@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+ - `--parameter-delimiter` option now accepts empty string
 
 [1.28.0]
 --------
@@ -222,4 +222,3 @@ HipTest Publisher Changelog
 [tenpaiyomi]: https://github.com/tenpaiyomi
 [tikolakin]: https://github.com/tikolakin
 [weeksghost]: https://github.com/weeksghost
-

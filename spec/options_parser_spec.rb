@@ -87,6 +87,11 @@ describe OptionParser do
       options = OptionsParser.parse(["--parameter-delimiter", "'"], Reporter.new([ErrorListener.new]))
       expect(options.parameter_delimiter).to eq("'")
     end
+
+    it 'accepts empty string for --parameter-delimiter option' do
+      options = OptionsParser.parse(["--parameter-delimiter", ""], Reporter.new([ErrorListener.new]))
+      expect(options.parameter_delimiter).to eq("")
+    end
   end
 
   it "does not resolve paths if the value does not come from config file" do

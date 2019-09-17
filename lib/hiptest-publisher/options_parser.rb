@@ -184,6 +184,9 @@ class CliOptions < OpenStruct
   end
 end
 
+class EmptiableString
+end
+
 class OptionsParser
   def self.languages
     # First framework is default framework
@@ -244,7 +247,7 @@ class OptionsParser
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, I18n.t('options.sort'), :sort),
       Option.new(nil, '[no-]uids', true, nil, I18n.t('options.uids'), :uids),
       Option.new(nil, '[no-]parent-folder-tags', true, nil, I18n.t('options.parent_folder_tags'), :parent_folder_tags),
-      Option.new(nil, 'parameter-delimiter=DELIMITER', '"', String, I18n.t('options.parameter_delimiter'), :parameter_delimiter),
+      Option.new(nil, 'parameter-delimiter=DELIMITER', '"', EmptiableString, I18n.t('options.parameter_delimiter'), :parameter_delimiter),
       Option.new(nil, 'with-dataset-names', false, nil, I18n.t('options.with_dataset_names'), :with_dataset_names),
       Option.new(nil, 'keep-filenames', false, nil, I18n.t('options.keep_filenames'), :keep_filenames),
       Option.new(nil, 'keep-foldernames', false, nil, I18n.t('options.keep_foldernames'), :keep_foldernames),
@@ -268,6 +271,7 @@ class OptionsParser
       opts.version = hiptest_publisher_version if hiptest_publisher_version
       opts.banner = I18n.t('help.header')
       opts.separator I18n.t("help.description")
+      opts.accept(EmptiableString, /.*/m) { |s,*| s }
 
       all_options.each {|o| o.register(opts, options)}
 
