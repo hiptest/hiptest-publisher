@@ -153,6 +153,18 @@ describe Hiptest::ExportCache do
           end
         end
       end
+
+      it "displays the file used in verbose mode" do
+        now = Time.now
+        allow(reporter).to receive(:show_verbose_message)
+
+        subject.cache('my-file', "Some fresh content", date: now)
+        subject.cache_for('my-file')
+
+        expect(reporter).to have_received(:show_verbose_message)
+          .with(I18n.t(:using_cache, full_path: "#{cache_dir}/7cc853aedf961e7aafbc04f09e44446c-#{now.to_i}"))
+          .once
+      end
     end
 
     context "when multiple valid cached file exists" do
