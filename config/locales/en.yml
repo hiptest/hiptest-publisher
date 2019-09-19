@@ -132,6 +132,7 @@ en:
   exporting_file: Exporting %{name}
   fetching_data: Fetching data from HipTest
   caching_data: Caching data
+  using_cache: "Using cache: %{full_path}"
   help:
     categories:
       title: For language %{language}, available file groups are

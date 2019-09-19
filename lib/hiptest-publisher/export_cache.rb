@@ -38,7 +38,11 @@ module Hiptest
         end
         .last
 
-      cached_filename ? File.read(File.join(@cache_dir, cached_filename)) : nil
+      return nil if cached_filename.nil?
+
+      full_path = File.join(@cache_dir, cached_filename)
+      @reporter.show_verbose_message(I18n.t(:using_cache, full_path: full_path))
+      File.read(full_path)
     end
 
     def clear_cache
