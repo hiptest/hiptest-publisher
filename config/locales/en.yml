@@ -131,6 +131,7 @@ en:
     test_run_list_unavailable: Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name
   exporting_file: Exporting %{name}
   fetching_data: Fetching data from HipTest
+  using_cached_data: Using cached data from previous export
   caching_data: Caching data
   using_cache: "Using cache: %{full_path}"
   help:
