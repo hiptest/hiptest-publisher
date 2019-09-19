@@ -49,7 +49,7 @@ describe Hiptest::ExportCache do
   end
 
   context "#cache" do
-    it "caches the content of the downloaded file in xml-cache-dir" do
+    it "caches the content of the downloaded file in cache-dir" do
       subject.cache('http://example.com/something.xml', 'Here is some XML content')
       cached_name = cached_files.first
 

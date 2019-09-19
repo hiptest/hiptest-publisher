@@ -5,10 +5,10 @@ require_relative '../lib/hiptest-publisher/client'
 describe Hiptest::Client do
   let(:args) { ["--token", "123456789"] }
   let(:options) {
-    full_args = args + ["--xml-cache-validity", xml_cache_validity]
+    full_args = args + ["--cache-duration", cache_duration]
     OptionsParser.parse(full_args, NullReporter.new)
   }
-  let(:xml_cache_validity) { "0" }
+  let(:cache_duration) { "0" }
 
   subject(:client) { Hiptest::Client.new(options) }
 
@@ -177,9 +177,9 @@ describe Hiptest::Client do
     end
 
     context 'when xml cache is enabled' do
-      let(:args) { ["--token", "123456789", "--xml-cache-dir", cache_dir] }
+      let(:args) { ["--token", "123456789", "--cache-dir", cache_dir] }
       let(:cache_dir) { Dir.mktmpdir }
-      let(:xml_cache_validity) { "60" }
+      let(:cache_duration) { "60" }
 
       after do
         FileUtils.rm_rf(cache_dir)
