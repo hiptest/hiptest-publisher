@@ -83,9 +83,7 @@ module Hiptest
     end
 
     def fetch_xml_file
-      reporter.with_status_message I18n.t(:fetching_data) do
-        @client.fetch_project_export
-      end
+      @client.fetch_project_export
     rescue ClientError => err
       # This should not be an error that needs reporting to an exception monitoring app
       puts err.message.yellow

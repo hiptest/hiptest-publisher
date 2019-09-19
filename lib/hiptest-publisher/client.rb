@@ -74,17 +74,24 @@ module Hiptest
 
     def fetch_project_export
       cached = export_cache.cache_for(url)
-      return cached unless cached.nil?
 
-      response = send_get_request(url)
-      if response.code_type == Net::HTTPNotFound
-        raise ClientError, I18n.t('errors.project_not_found')
+      unless cached.nil?
+        @reporter.with_status_message I18n.t(:using_cached_data) do
+          return cached
+        end
       end
 
-      content = response.body
-      export_cache.cache(url, content)
+      @reporter.with_status_message I18n.t(:fetching_data) do
+        response = send_get_request(url)
+        if response.code_type == Net::HTTPNotFound
+          raise ClientError, I18n.t('errors.project_not_found')
+        end
 
-      return content
+        content = response.body
+        export_cache.cache(url, content)
+
+        return content
+      end
     end
 
     def available_test_runs
