@@ -118,8 +118,8 @@ module Hiptest
 
     def export_cache
       @export_cache ||= ExportCache.new(
-        @cli_options.xml_cache_dir,
-        @cli_options.xml_cache_validity,
+        @cli_options.cache_dir,
+        @cli_options.cache_duration,
         reporter: @reporter)
     end
 
