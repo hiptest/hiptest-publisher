@@ -1,20 +1,12 @@
----
-name: New feature
-about: Add a new feature to Hiptest-publisher
-title: ''
-labels: New feature
-assignees: ''
+## Motivation and description of the pull request
 
----
-
-## Motivation and description of the new feature
-
-A link to the issue or a short description
+A link to the issue (for bugfixes) or a description of the new feature.
 
 ## Type of change
 
 - [ ] Breaking change (loosing support of old ruby versions, incompatibility with previous templates or config files)
 - [ ] New functionnality
+- [ ] Bug fix
 
 ## Checklist:
 
