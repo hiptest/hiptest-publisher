@@ -1,6 +1,6 @@
 ---
-name: Bug fix
-about: Fix an existing bug in Hiptest-publisher
+name: New feature
+about: Add a new feature to Hiptest-publisher
 title: ''
 labels: New feature
 assignees: ''
