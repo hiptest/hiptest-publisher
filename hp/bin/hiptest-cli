@@ -108,7 +108,7 @@ class App
 
     c.desc "Select order in which actionwords are generated"
     c.arg_name 'id,order,alpha'
-    c.flag :sort
+    c.flag :sort, must_match: ['id', 'order', 'alpha']
 
     c.desc "Export scenario UIDs in test files"
     c.switch :uids
@@ -127,6 +127,7 @@ class App
     c.arg_name "META"
     c.flag :meta
 
+    c.desc "Filter exported data"
     c.command :filter do |filter|
       filter.desc "Filter on folder ids (use commas to separate ids when fetching multiple folders)"
       filter.arg_name "IDS"
@@ -209,7 +210,7 @@ class App
 
     c.desc 'Format of the report file(s)'
     c.arg_name 'tap'
-    c.flag :'push-format', default_value: 'tap', must_match: ['cucumber-json', 'junit', 'nunit', 'robot', 'tap']
+    c.flag :format, default_value: 'tap', must_match: ['cucumber-json', 'junit', 'nunit', 'robot', 'tap']
 
     c.desc 'ID of the test run where results will be shown'
     c.arg_name '1234'
@@ -224,7 +225,7 @@ class App
     c.flag :e, :'execution-environment'
 
     c.desc 'Mark tests as failed if no reports are present'
-    c.switch :'global-failure-on-missing-reports'
+    c.switch :'global-failure-on-missing-reports', negatable: false
 
     c.action do |global_options, options, args|
       puts "share command ran"
