@@ -1,0 +1,5 @@
+= hp
+
+Generate this with
+    hp _doc
+After you have described your command line interface
