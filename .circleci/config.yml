@@ -64,25 +64,8 @@ commands:
             bundle install
             sudo bundle exec rake install
 
-  regenerate_and_run_tests:
-    description: "Regenerate tests with hiptest-publisher and run them"
-    parameters:
-      project_path:
-        type: string
-        default: ""
-    steps:
-      - checkout
-      - restore_bundler_cache
-      - install_hiptest_publisher
-      - run:
-          name: Generate tests
-          command: |
-            cd /hiptest-publisher-samples/hps/<< parameters.project_path >>
-            make generate_tests
-            make test
-
   run_sample:
-    description: "Run hps repo with local hisptest-publisher"
+    description: "Run hps repo with local hiptest-publisher"
     parameters:
       project_path:
         type: string
@@ -143,24 +126,6 @@ jobs:
   #                   Hiptest publisher samples jobs                          #
   #############################################################################
 
-  install-hiptest-publisher:
-    docker:
-      - image: hiptest/hiptest-publisher-samples
-
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - restore_bundler_cache
-      - run:
-          name: Install hiptest-publisher
-          command: |
-            bundle install && bundle clean --force
-      - save_cache:
-          paths:
-            - ~/.bundle
-          key: v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-      - install_hiptest_publisher
-
   hps-behat:
     docker:
       - image: circleci/php:7.2
@@ -181,11 +146,11 @@ jobs:
 
   hps-cucumber-ruby:
     docker:
-      - image: hiptest/hiptest-publisher-samples
+      - image: circleci/ruby:2.6
     working_directory: ~/repo
 
     steps:
-      - regenerate_and_run_tests:
+      - run_sample:
           project_path: "hps-cucumber-ruby"
 
   hps-cucumber-groovy:
@@ -345,6 +310,7 @@ workflows:
     jobs:
       - hps-behat
       - hps-behave
+      - hps-cucumber-ruby
 
       # - hps-cucumber-ruby:
       #     requires:
