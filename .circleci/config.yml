@@ -98,7 +98,7 @@ commands:
             pushd hps
             git clone https://github.com/hiptest/<< parameters.project_path >>
             pushd << parameters.project_path >>
-            sudo make install_prerequisites
+            make install_prerequisites
             make generate_tests
             make test
 
