@@ -53,6 +53,7 @@ commands:
           command: |
             sudo apt-get update
             sudo apt-get install ruby ruby-dev
+            gem install bundler
 
   install_hiptest_publisher:
     description: "Install Hiptest publisher"
@@ -341,72 +342,65 @@ workflows:
 
   run_samples:
     jobs:
-      - install-hiptest-publisher
+      - hps-behat
+      - hps-behave
 
-      - hps-behat:
-          requires:
-            - install-hiptest-publisher
+      # - hps-cucumber-ruby:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-behave:
-          requires:
-            - install-hiptest-publisher
+      # - hps-cucumber-groovy:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-cucumber-ruby:
-          requires:
-            - install-hiptest-publisher
+      # - hps-cucumber-java:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-cucumber-groovy:
-          requires:
-            - install-hiptest-publisher
+      # - hps-cucumber-javascript:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-cucumber-java:
-          requires:
-            - install-hiptest-publisher
+      # - hps-cucumber-typescript:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-cucumber-javascript:
-          requires:
-            - install-hiptest-publisher
+      # - hps-groovy-spock:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-cucumber-typescript:
-          requires:
-            - install-hiptest-publisher
+      # - hps-java-junit:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-groovy-spock:
-          requires:
-            - install-hiptest-publisher
+      # - hps-java-testng:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-java-junit:
-          requires:
-            - install-hiptest-publisher
+      # - hps-javascript-mocha:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-java-testng:
-          requires:
-            - install-hiptest-publisher
+      # - hps-jbehave:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-javascript-mocha:
-          requires:
-            - install-hiptest-publisher
+      # - hps-protractor:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-jbehave:
-          requires:
-            - install-hiptest-publisher
+      # - hps-python-unittest:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-protractor:
-          requires:
-            - install-hiptest-publisher
+      # - hps-robotframework:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-python-unittest:
-          requires:
-            - install-hiptest-publisher
+      # - hps-ruby-minitest:
+      #     requires:
+      #       - install-hiptest-publisher
 
-      - hps-robotframework:
-          requires:
-            - install-hiptest-publisher
-
-      - hps-ruby-minitest:
-          requires:
-            - install-hiptest-publisher
-
-      - hps-ruby-rspec:
-          requires:
-            - install-hiptest-publisher
+      # - hps-ruby-rspec:
+      #     requires:
+      #       - install-hiptest-publisher
