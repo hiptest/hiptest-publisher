@@ -49,11 +49,10 @@ commands:
     description: "Install Ruby"
     steps:
       - run:
-          name: Install hiptest-publisher
+          name: Install Ruby
           command: |
             sudo apt-get update
             sudo apt-get install ruby ruby-dev
-            sudo gem install hiptest-publisher
 
   install_hiptest_publisher:
     description: "Install Hiptest publisher"
@@ -162,7 +161,7 @@ jobs:
 
   hps-behat:
     docker:
-      - image: circleci/python:2.7
+      - image: circleci/php:7.2
     working_directory: ~/repo
 
     steps:
@@ -171,11 +170,11 @@ jobs:
 
   hps-behave:
     docker:
-      - image: hiptest/hiptest-publisher-samples
+      - image: circleci/python:2.7
     working_directory: ~/repo
 
     steps:
-      - regenerate_and_run_tests:
+      - run_sample:
           project_path: "hps-behave"
 
   hps-cucumber-ruby:
