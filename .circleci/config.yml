@@ -62,7 +62,7 @@ commands:
           name: Install hiptest-publisher
           command: |
             bundle install
-            bundle exec rake install
+            sudo bundle exec rake install
 
   regenerate_and_run_tests:
     description: "Regenerate tests with hiptest-publisher and run them"
