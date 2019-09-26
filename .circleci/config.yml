@@ -64,14 +64,6 @@ commands:
             bundle install
             sudo bundle exec rake install
 
-  install_prerequisites:
-    description: "Install sample pre-requisites"
-    steps:
-      - run:
-          name: Install pre-requisites
-          command: |
-            sudo make install_prerequisites
-
   regenerate_and_run_tests:
     description: "Regenerate tests with hiptest-publisher and run them"
     parameters:
@@ -97,7 +89,6 @@ commands:
         default: ""
     steps:
       - checkout
-      - install_prerequisites
       - install_ruby
       - install_hiptest_publisher
       - run:
@@ -107,6 +98,7 @@ commands:
             pushd hps
             git clone https://github.com/hiptest/<< parameters.project_path >>
             pushd << parameters.project_path >>
+            sudo make install_prerequisites
             make generate_tests
             make test
 
