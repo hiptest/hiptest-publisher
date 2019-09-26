@@ -68,8 +68,9 @@ commands:
     description: "Install sample pre-requisites"
     steps:
       - run:
-        name: Install pre-requisites
-        command: sudo make install_prerequisites
+          name: Install pre-requisites
+          command: |
+            sudo make install_prerequisites
 
   regenerate_and_run_tests:
     description: "Regenerate tests with hiptest-publisher and run them"
