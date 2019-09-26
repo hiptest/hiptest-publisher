@@ -53,7 +53,7 @@ commands:
           command: |
             sudo apt-get update
             sudo apt-get install ruby ruby-dev
-            gem install bundler
+            sudo gem install bundler
 
   install_hiptest_publisher:
     description: "Install Hiptest publisher"
