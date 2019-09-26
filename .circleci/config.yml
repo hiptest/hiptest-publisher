@@ -45,6 +45,16 @@ commands:
             - v1-gem-cache-{{ arch }}-{{ .Branch }}-
             - v1-gem-cache-{{ arch }}-
 
+  install_ruby:
+    description: "Install Ruby"
+    steps:
+      - run:
+          name: Install hiptest-publisher
+          command: |
+            sudo apt-get update
+            sudo apt-get install ruby ruby-dev
+            sudo gem install hiptest-publisher
+
   install_hiptest_publisher:
     description: "Install Hiptest publisher"
     steps:
@@ -68,6 +78,26 @@ commands:
           name: Generate tests
           command: |
             cd /hiptest-publisher-samples/hps/<< parameters.project_path >>
+            make generate_tests
+            make test
+
+  run_sample:
+    description: "Run hps repo with local hisptest-publisher"
+    parameters:
+      project_path:
+        type: string
+        default: ""
+    steps:
+      - checkout
+      - install_ruby
+      - install_hiptest_publisher
+      - run:
+          name: Checkout and run sample
+          command: |
+            mkdir -p hps
+            pushd hps
+            git clone https://github.com/hiptest/<< parameters.project_path >>
+            pushd << parameters.project_path >>
             make generate_tests
             make test
 
@@ -132,11 +162,11 @@ jobs:
 
   hps-behat:
     docker:
-      - image: hiptest/hiptest-publisher-samples
+      - image: circleci/python:2.7
     working_directory: ~/repo
 
     steps:
-      - regenerate_and_run_tests:
+      - run_sample:
           project_path: "hps-behat"
 
   hps-behave:
