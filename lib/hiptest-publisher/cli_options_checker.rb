@@ -240,7 +240,7 @@ module Hiptest
     end
 
     def meta_compatible?(value)
-      value =~ /\A[a-zA-Z0-9_-]*: ?[a-zA-Z0-9_-]*\z/
+      value =~ /\A[a-zA-Z0-9_-]*: ?.*\z/
     end
 
     def formatted_categories(categories)

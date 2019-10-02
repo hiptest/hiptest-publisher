@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+ - Allow any characters for the meta value ([#155](https://github.com/hiptest/hiptest-publisher/issues/155))
 
 
 [1.29.0]
