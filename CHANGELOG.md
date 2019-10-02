@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[1.29.1]
+--------
 
  - Allow any characters for the meta value ([#155](https://github.com/hiptest/hiptest-publisher/issues/155))
 
@@ -181,7 +181,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.29.0...master
+[1.29.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.0...v1.29.1
 [1.29.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.28.0...v1.29.0
 [1.28.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.27.1...v1.28.0
 [1.27.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.27.0...v1.27.1
