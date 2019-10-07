@@ -7,6 +7,9 @@ describe 'Render as Ruby' do
     # Literals
     @null_rendered = 'nil'
     @what_is_your_quest_rendered = "'What is your quest ?'"
+    # In Hiptest: '{ "key\" : "val" }'
+    @string_literal_with_quotes_rendered = "'{ \"key\" : \"val\" }'"
+
     @pi_rendered = '3.14'
     @false_rendered = 'false'
     @foo_template_rendered = '"#{foo}fighters"'

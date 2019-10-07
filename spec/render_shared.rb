@@ -40,6 +40,8 @@ shared_context "shared render" do
                                           Hiptest::Nodes::Property.new('Alt', 'J')
                                          ])
 
+    @string_literal_with_quotes = Hiptest::Nodes::StringLiteral.new('{ "key" : "val" }')
+
     @simple_template = Hiptest::Nodes::Template.new([
                                                       Hiptest::Nodes::StringLiteral.new('A simple template')
                                                     ])
@@ -382,6 +384,7 @@ shared_examples "a renderer" do
 
     it 'StringLiteral' do
       expect(rendering(@what_is_your_quest)).to eq(@what_is_your_quest_rendered)
+      expect(rendering(@string_literal_with_quotes)).to eq(@string_literal_with_quotes_rendered)
     end
 
     it 'NumericLiteral' do

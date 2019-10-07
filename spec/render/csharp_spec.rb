@@ -11,6 +11,9 @@ describe 'Render as C#' do
     # In HipTest: 'What is your quest ?'
     @what_is_your_quest_rendered = '"What is your quest ?"'
 
+    # In Hiptest: '{ "key\" : "val" }'
+    @string_literal_with_quotes_rendered = '"{ \"key\" : \"val\" }"'
+
     # In HipTest: 3.14
     @pi_rendered = '3.14'
 
