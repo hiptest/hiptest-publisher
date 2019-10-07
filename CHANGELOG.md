@@ -4,6 +4,11 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+ - Nothing changed yet
+
+[1.29.2]
+--------
+
  - Fix escaping in string literals for Java and C# ([#157](https://github.com/hiptest/hiptest-publisher/issues/157) - [hiptest#195](https://github.com/hiptest/hiptest-issue-tracker/issues/195))
 
 [1.29.1]
@@ -186,7 +191,8 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.29.1...master
+[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.29.2...master
+[1.29.2]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.1...v1.29.2
 [1.29.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.0...v1.29.1
 [1.29.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.28.0...v1.29.0
 [1.28.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.27.1...v1.28.0
