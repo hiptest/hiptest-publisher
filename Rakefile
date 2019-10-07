@@ -60,6 +60,57 @@ end
 
 task default: :test
 
+task :prerelease_changelog_update do
+  version = File.open('VERSION').read
+  header_line = -2
+  new_changelog = ""
+
+  File.readlines('CHANGELOG.md').each_with_index do |line, index|
+    if line == "[Unreleased]\n"
+      new_changelog << "[#{version}]\n"
+      header_line = index
+    elsif line.start_with?('[Unreleased]')
+      new_changelog << line
+        .gsub('Unreleased', version)
+        .gsub('master', "v#{version}")
+        .gsub(' ', '     ')
+    elsif index == header_line + 1
+      new_changelog << ("-" * (version.length + 2)) + "\n"
+    else
+      new_changelog << line
+    end
+  end
+
+  File.write('CHANGELOG.md', new_changelog)
+end
+
+task :postrelease_changelog_update do
+  version = File.open('VERSION').read
+  new_changelog = ""
+  changes_header = -2
+
+  File.readlines('CHANGELOG.md').each_with_index do |line, index|
+    if line == "[#{version}]\n"
+      new_changelog << [
+        '[Unreleased]',
+        '------------',
+        '',
+        ' - Nothing changed yet',
+        '',
+        ''
+      ].join("\n")
+    elsif line =="<!-- List of releases -->\n"
+      changes_header = index
+    elsif index == changes_header + 1
+      new_changelog << "[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v#{version}...master\n"
+    end
+
+    new_changelog << line
+  end
+
+  File.write('CHANGELOG.md', new_changelog)
+end
+
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
