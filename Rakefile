@@ -2,6 +2,8 @@
 
 require 'rubygems'
 require 'bundler'
+require 'colorize'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -63,6 +65,12 @@ task default: :test
 Rake::Task["release"].clear
 task :release do
   version = File.open('VERSION').read
+
+  if File.readlines("CHANGELOG.md").grep(/Nothing changed yet/).size > 0
+    header = "Changelog has not been updated since last release.".red
+    commits =  `git log $(git describe --tags --abbrev=0)..HEAD --oneline`
+    abort("#{header}\nHere are the commit messages to help you fill that:\n\n#{commits}")
+  end
 
   Rake::Task["prerelease_changelog_update"].invoke
   `git commit CHANGELOG.md -m "Update changelog before release #{version}"`
