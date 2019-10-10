@@ -30,8 +30,3 @@ $(SPEC_TESTS) : test/% : spec/%_spec.rb docker-image
 .PHONY : test-verbose
 test-verbose : $(SPEC_TESTS)
 
-release:
-	bundle exec rake postrelease_changelog_update &&
-	bundle exec rake release &&
-	bundle exec rake postrelease_changelog_update
-.PHONY: release

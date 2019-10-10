@@ -60,6 +60,19 @@ end
 
 task default: :test
 
+Rake::Task["release"].clear
+task :release do
+  version = File.open('VERSION').read
+
+  Rake::Task["prerelease_changelog_update"].invoke
+  `git commit CHANGELOG.md -m "Update changelog before release #{version}"`
+
+  Rake::Task["rubygems:release"].invoke
+
+  Rake::Task["postrelease_changelog_update"].invoke
+  `git commit CHANGELOG.md -m "Update changelog after release #{version}"`
+end
+
 task :prerelease_changelog_update do
   version = File.open('VERSION').read
   header_line = -2
