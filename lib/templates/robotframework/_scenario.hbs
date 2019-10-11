@@ -1,7 +1,7 @@
 {{#if has_datasets?}}
 Test Template{{tab}}{{{ normalize_with_spaces rendered_children.name }}}
 
-*** Test Cases ***{{#each node.children.parameters}}{{{ tab }}}{{{ this.children.name}}}{{/each}}
+*** Test Cases ***{{#each node.children.parameters as |parameter|}}{{{ tab }}}{{{ parameter.children.name}}}{{/each}}
 {{{ rendered_children.datatable }}}
 
 *** Keywords ***

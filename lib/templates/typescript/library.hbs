@@ -12,7 +12,7 @@ static getInstance() {{#curly}}
 {{#indent}}return {{capitalize rendered_children.name}}Library.instance;{{/indent}}
 {{/curly}}
 
-{{#each rendered_children.library_actionwords}}{{{this}}}
+{{#each rendered_children.library_actionwords as |actionword|}}{{{actionword}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

@@ -5,5 +5,5 @@ Before(() => {{#curly}}{{#indent}}
 actionwords = Object.create(require('{{{ relative_path './actionwords.js' }}}')).Actionwords;{{/indent}}
 {{/curly}});
 
-{{#each rendered_children.actionwords}}{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}
 {{/each}}

@@ -7,7 +7,7 @@ using NUnit.Framework;
 public class {{{ clear_extension context.filename }}} {{#curly}}
 {{#indent}}
 public Actionwords {{{ context.call_prefix }}} = new Actionwords();
-{{#each rendered_children.tests}}{{{this}}}
+{{#each rendered_children.tests as |test|}}{{{test}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

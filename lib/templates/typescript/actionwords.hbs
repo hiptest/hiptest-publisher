@@ -2,6 +2,6 @@ import { TableDefinition } from "cucumber";
 {{#if uses_library?}}import { ActionwordLibrary } from "./actionword_library";{{/if}}
 
 export class ActionWords{{#if uses_library?}} extends ActionwordLibrary{{/if}} {{#curly}}{{#indent}}
-{{#each rendered_children.actionwords}}{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}
 {{/each}}{{/indent}}
 {{/curly}}

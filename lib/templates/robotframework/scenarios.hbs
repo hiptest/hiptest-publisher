@@ -2,24 +2,24 @@
 Resource{{tab}}keywords.txt
 
 *** Test Cases ***{{#if datatables_present?}}
-{{#each rendered_children.splitted_scenarios}}
-{{#if this.datatable}}{{this.name}}{{#indent}}
-[Template]{{tab}}{{this.name}} keyword
-{{this.datatable}}{{/indent}}
-{{else}}{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}{{#if this.tags}}
-[Tags]{{tab}}{{{ join this.tags '\t'}}}
-{{/if}}{{join this.body '\n'}}{{/indent}}
+{{#each rendered_children.splitted_scenarios as |scenario|}}
+{{#if scenario.datatable}}{{scenario.name}}{{#indent}}
+[Template]{{tab}}{{scenario.name}} keyword
+{{scenario.datatable}}{{/indent}}
+{{else}}{{normalize_with_spaces scenario.name}}{{#if scenario.uid}} (uid:{{normalize scenario.uid}}){{/if}}{{#indent}}{{#if scenario.tags}}
+[Tags]{{tab}}{{{ join scenario.tags '\t'}}}
+{{/if}}{{join scenario.body '\n'}}{{/indent}}
 {{/if}}{{/each}}
 *** Keywords ***
 
-{{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
-[Arguments]{{tab}}${__test_name}{{tab}}{{join this.parameters '\t'}}
-{{#if this.tags}}[Tags]{{tab}}{{{ join this.tags '\t'}}}
-{{/if}}{{join this.body '\n'}}{{/indent}}
+{{#each rendered_children.splitted_scenarios as |scenario|}}{{#if scenario.datatable}}{{normalize_with_spaces scenario.name}} keyword{{#indent}}
+[Arguments]{{tab}}${__test_name}{{tab}}{{join scenario.parameters '\t'}}
+{{#if scenario.tags}}[Tags]{{tab}}{{{ join scenario.tags '\t'}}}
+{{/if}}{{join scenario.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}
-{{#each rendered_children.splitted_scenarios}}
-{{normalize_with_spaces this.name}}{{#if this.uid}} (uid:{{normalize this.uid}}){{/if}}{{#indent}}{{#if this.tags}}
-[Tags]{{tab}}{{{ join this.tags '\t'}}}{{/if}}
-{{join this.body '\n'}}{{/indent}}
+{{#each rendered_children.splitted_scenarios as |scenario|}}
+{{normalize_with_spaces scenario.name}}{{#if scenario.uid}} (uid:{{normalize scenario.uid}}){{/if}}{{#indent}}{{#if scenario.tags}}
+[Tags]{{tab}}{{{ join scenario.tags '\t'}}}{{/if}}
+{{join scenario.body '\n'}}{{/indent}}
 {{/each}}{{/if}}

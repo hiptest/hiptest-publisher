@@ -6,7 +6,7 @@ require_relative 'actionwords'
 class Test{{{ camelize self_name }}} < MiniTest::Unit::TestCase
   include Actionwords
 {{#indent}}
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 
 {{/each}}
 {{/indent}}

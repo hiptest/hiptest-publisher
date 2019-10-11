@@ -10,7 +10,7 @@ class FeatureContext implements SnippetAcceptingContext {{#curly}}{{#indent}}
 public function __construct() {{#curly}}{{#indent}}
 $this->actionwords = new Actionwords();{{/indent}}
 {{/curly}}
-{{#each rendered_children.actionwords}}
-{{{this}}}{{/each}}{{/indent}}
+{{#each rendered_children.actionwords as |actionword|}}
+{{{actionword}}}{{/each}}{{/indent}}
 {{/curly}}
 ?>

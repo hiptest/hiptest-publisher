@@ -12,7 +12,7 @@ public Actionwords {{{ context.call_prefix }}};
 protected void SetUp() {{#curly}}
     {{{ context.call_prefix}}} = new Actionwords();
 {{/curly}}
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

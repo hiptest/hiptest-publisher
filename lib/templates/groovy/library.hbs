@@ -1,8 +1,8 @@
 package {{{ context.package }}}
 
 @Singleton
-class {{camelize rendered_children.name}}Library {{#curly}}{{#indent}}{{#each rendered_children.library_actionwords}}
-{{{this}}}
+class {{camelize rendered_children.name}}Library {{#curly}}{{#indent}}{{#each rendered_children.library_actionwords as |actionword|}}
+{{{actionword}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

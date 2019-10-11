@@ -1,1 +1,1 @@
-"{{#each treated_chunks}}{{#if this.is_variable?}}%s{{else}}{{{ escape_double_quotes this.raw.children.value }}}{{/if}}{{/each}}"{{#if variable_names}} % ({{{ join variable_names ', '}}}){{/if}}
+"{{#each treated_chunks as |chunk|}}{{#if chunk.is_variable?}}%s{{else}}{{{ escape_double_quotes chunk.raw.children.value }}}{{/if}}{{/each}}"{{#if variable_names}} % ({{{ join variable_names ', '}}}){{/if}}

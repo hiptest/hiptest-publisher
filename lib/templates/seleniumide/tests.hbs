@@ -7,7 +7,7 @@
 <table>{{#indent}}
 <tbody>{{#indent}}
 <tr><td><b>Suite Of Tests</b></td></tr>
-{{#each rendered_children.tests}}{{{this}}}
+{{#each rendered_children.tests as |test|}}{{{test}}}
 {{/each}}
 {{/indent}}
 </tbody>

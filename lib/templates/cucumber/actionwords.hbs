@@ -2,4 +2,4 @@
 
 require_relative 'actionwords'
 World(Actionwords)
-{{#each rendered_children.actionwords}}{{{this}}}{{/each}}
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}{{/each}}

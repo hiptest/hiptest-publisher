@@ -4,7 +4,7 @@ this.actionwords = Object.create(require('{{{ relative_path './actionwords.js' }
 {{#unless is_empty?}}{{> body}}
 {{/unless}}{{/curly}});
 
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 
 {{/each}}
 {{/indent}}

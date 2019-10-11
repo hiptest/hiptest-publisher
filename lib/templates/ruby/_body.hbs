@@ -3,7 +3,7 @@
 {{#comment '#'}}{{#if has_description?}}{{{ rendered_children.description }}}
 {{/if}}{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}
 {{/if}}{{/comment}}
-{{#each rendered_children.body}}{{{this}}}
+{{#each rendered_children.body as |step|}}{{{step}}}
 {{/each}}
 {{#if has_step?}}raise NotImplementedError{{/if}}
 {{/indent}}

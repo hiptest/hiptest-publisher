@@ -7,6 +7,6 @@ def setUp(self):{{#indent}}
 self.actionwords = Actionwords(self){{/indent}}
 {{#unless is_empty?}}{{> body}}
 {{/unless}}
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}

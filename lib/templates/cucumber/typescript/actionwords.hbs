@@ -6,5 +6,5 @@ let actionWords : ActionWords;
 
 {{> after_hook}}
 
-{{#each rendered_children.actionwords}}{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}
 {{/each}}

@@ -1,1 +1,1 @@
-{{#each treated_chunks}}{{#if this.is_variable?}}<{{{this.raw.children.name}}}>{{else}}{{{ this.raw.children.value }}}{{/if}}{{/each}}
+{{#each treated_chunks as |chunk|}}{{#if chunk.is_variable?}}<{{{chunk.raw.children.name}}}>{{else}}{{{ chunk.raw.children.value }}}{{/if}}{{/each}}

@@ -11,7 +11,7 @@ include Actionwords
 {{/indent}}
 end
 
-{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}
+{{/unless}}{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 
 {{/each}}
 {{/indent}}

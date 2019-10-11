@@ -1,9 +1,9 @@
 <?php
-{{#each library_names}}require_once('{{camelize this}}Library.php');
+{{#each library_names as |library_name|}}require_once('{{camelize library_name}}Library.php');
 {{/each}}
-class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names}}
-public function get{{camelize this}}Library() {{#curly}}{{#indent}}
-return {{camelize this}}Library::getInstance();
+class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names as |library_name|}}
+public function get{{camelize library_name}}Library() {{#curly}}{{#indent}}
+return {{camelize library_name}}Library::getInstance();
 {{/indent}}
 {{/curly}}
 {{/each}}{{/indent}}

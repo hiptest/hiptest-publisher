@@ -7,12 +7,12 @@ def {{{ context.call_prefix }}} = Actionwords.newInstance()
 
 {{#unless is_empty?}}
 def setup() {{#curly}}{{#indent}}
-{{#each rendered_children.body}}{{{this}}}
+{{#each rendered_children.body as |step|}}{{{step}}}
 {{/each}}
 {{/indent}}{{/curly}}
 {{/unless}}
 
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

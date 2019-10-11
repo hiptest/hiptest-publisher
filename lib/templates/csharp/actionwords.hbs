@@ -1,8 +1,8 @@
 namespace {{{ context.namespace }}} {{#curly}}{{#indent}}
 
 public class Actionwords {{#curly}}{{#indent}}
-{{#each rendered_children.actionwords}}
-{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}
+{{{actionword}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

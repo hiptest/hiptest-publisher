@@ -1,7 +1,7 @@
 describe('{{{ escape_single_quotes self_name }}}', function () {{#curly}}{{#indent}}
 {{> before_each}}
 
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 
 {{/each}}
 {{/indent}}

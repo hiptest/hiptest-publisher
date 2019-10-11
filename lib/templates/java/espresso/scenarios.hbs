@@ -17,7 +17,7 @@ public Actionwords {{{ context.call_prefix }}} = new Actionwords();
 @Rule
 public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

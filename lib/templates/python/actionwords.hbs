@@ -7,6 +7,6 @@ class Actionwords{{#if uses_library?}}(ActionwordLibrary){{/if}}:{{#indent}}
 def __init__(self):{{#indent}}
 pass{{/indent}}
 
-{{#each rendered_children.actionwords}}{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}
 {{/each}}
 {{/indent}}

@@ -6,6 +6,6 @@ class Test{{{ camelize self_name }}}(unittest.TestCase):
     def setUp(self):
         self.actionwords = Actionwords(self)
 {{#indent}}
-{{#each rendered_children.tests}}{{{this}}}
+{{#each rendered_children.tests as |test|}}{{{test}}}
 {{/each}}
 {{/indent}}

@@ -1,8 +1,8 @@
 package {{{ context.package }}};
 
-public class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names}}
-public {{camelize this}}Library get{{camelize this}}Library() {{#curly}}{{#indent}}
-return new {{camelize this}}Library();
+public class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names as |library_name|}}
+public {{camelize library_name}}Library get{{camelize library_name}}Library() {{#curly}}{{#indent}}
+return new {{camelize library_name}}Library();
 {{/indent}}
 {{/curly}}
 {{/each}}{{/indent}}

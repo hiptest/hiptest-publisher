@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class {{{ clear_extension context.filename }}} extends TestCase {{#curly}}
 {{#indent}}
 public Actionwords {{{ context.call_prefix }}} = new Actionwords();
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}
 {{/curly}}
