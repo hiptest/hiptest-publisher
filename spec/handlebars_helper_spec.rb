@@ -21,10 +21,15 @@ class MockHandlebars
 
   def initialize
     @helpers = []
+    @as_helpers = []
   end
 
   def register_helper(name)
     @helpers << name
+  end
+
+  def register_as_helper(name)
+    @as_helpers << name
   end
 end
 
@@ -169,6 +174,13 @@ describe Hiptest::HandlebarsHelper do
       expect(evaluate('{{join items "-"}}', {items: [1, 2, 3]})).to eq('1-2-3')
       expect(evaluate('{{#join items "-"}}[{{this}}]{{else}}no items{{/join}}', {items: [1, 2, 3]})).to eq('[1]-[2]-[3]')
       expect(evaluate('{{#join items "-"}}[{{this}}]{{else}}No items{{/join}}', {items: []})).to eq('No items')
+    end
+  end
+
+  context 'as_hh_join' do
+    it 'works as #join with named parameters' do
+      expect(evaluate('{{#join items "/" as |item|}}[{{item}}]{{else}}no items{{/join}}', {items: [1, 2, 3]})).to eq('[1]/[2]/[3]')
+      expect(evaluate('{{#join items "/" as |item|}}[{{item}}]{{else}}No items{{/join}}', {items: []})).to eq('No items')
     end
   end
 
