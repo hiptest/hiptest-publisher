@@ -10,7 +10,7 @@ gem 'ruby_version', '~> 1'
 if ENV['RUBY_HANDLEBARS_GEM_PATH']
   gem 'ruby-handlebars', path: ENV['RUBY_HANDLEBARS_GEM_PATH']
 else
-  gem 'ruby-handlebars', '~> 0.3.0'
+  gem 'ruby-handlebars', '~> 0.4.0'
 end
 
 group :development do
