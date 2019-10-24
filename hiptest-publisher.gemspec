@@ -463,12 +463,10 @@ Gem::Specification.new do |s|
     "lib/templates/typescript/_item_as_function.hbs",
     "lib/templates/typescript/actionword.hbs",
     "lib/templates/typescript/actionwords.hbs",
-<<<<<<< HEAD
     "lib/templates/typescript/libraries.hbs",
     "lib/templates/typescript/library.hbs",
     "lib/templates/typescript/libraryactionword.hbs",
     "lib/templates/typescript/parameter.hbs"
-=======
     "lib/templates/typescript/parameter.hbs",
     "lib/templates/swift/_body.hbs",
     "lib/templates/swift/_item_as_def.hbs",
@@ -502,7 +500,6 @@ Gem::Specification.new do |s|
     "lib/templates/swift/test.hbs",
     "lib/templates/swift/tests.hbs",
     "lib/templates/swift/while.hbs"
->>>>>>> 442e50608142355ce230aa6752e9224a7fe86aba
   ]
   s.homepage = "https://hiptest.com".freeze
   s.licenses = ["GPL-2.0".freeze]
