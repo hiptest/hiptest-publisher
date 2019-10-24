@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[1.30.0]
+--------
 
  - Upgrade `ruby-handlebars` to 0.4. `each` and `join` helpers now support the `as` notation.
 
@@ -196,7 +196,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.29.2...master
+[1.30.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.2...v1.30.0
 [1.29.2]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.1...v1.29.2
 [1.29.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.0...v1.29.1
 [1.29.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.28.0...v1.29.0
