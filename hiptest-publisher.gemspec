@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
     "lib/config/robotframework.conf",
     "lib/config/ruby-minitest.conf",
     "lib/config/ruby-rspec.conf",
+    "lib/config/swift-xctest.conf",
     "lib/config/seleniumide.conf",
     "lib/config/specflow.conf",
     "lib/hiptest-publisher.rb",
@@ -466,6 +467,39 @@ Gem::Specification.new do |s|
     "lib/templates/typescript/library.hbs",
     "lib/templates/typescript/libraryactionword.hbs",
     "lib/templates/typescript/parameter.hbs"
+    "lib/templates/typescript/parameter.hbs",
+    "lib/templates/swift/_body.hbs",
+    "lib/templates/swift/_item_as_def.hbs",
+    "lib/templates/swift/_scenario.hbs",
+    "lib/templates/swift/actionword.hbs",
+    "lib/templates/swift/actionwords.hbs",
+    "lib/templates/swift/argument.hbs",
+    "lib/templates/swift/assign.hbs",
+    "lib/templates/swift/binaryexpression.hbs",
+    "lib/templates/swift/call.hbs",
+    "lib/templates/swift/dataset.hbs",
+    "lib/templates/swift/dict.hbs",
+    "lib/templates/swift/field.hbs",
+    "lib/templates/swift/folder.hbs",
+    "lib/templates/swift/ifthen.hbs",
+    "lib/templates/swift/index.hbs",
+    "lib/templates/swift/list.hbs",
+    "lib/templates/swift/parameter.hbs",
+    "lib/templates/swift/parenthesis.hbs",
+    "lib/templates/swift/project.hbs",
+    "lib/templates/swift/property.hbs",
+    "lib/templates/swift/scenario.hbs",
+    "lib/templates/swift/scenarios.hbs",
+    "lib/templates/swift/single_scenario.hbs",
+    "lib/templates/swift/single_test.hbs",
+    "lib/templates/swift/step.hbs",
+    "lib/templates/swift/stringliteral.hbs",
+    "lib/templates/swift/symbol.hbs",
+    "lib/templates/swift/tag.hbs",
+    "lib/templates/swift/template.hbs",
+    "lib/templates/swift/test.hbs",
+    "lib/templates/swift/tests.hbs",
+    "lib/templates/swift/while.hbs"
   ]
   s.homepage = "https://hiptest.com".freeze
   s.licenses = ["GPL-2.0".freeze]
@@ -523,4 +557,3 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
   end
 end
-

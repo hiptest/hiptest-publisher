@@ -1,0 +1,7 @@
+if ({{{ rendered_children.condition }}}) {{#curly}}
+{{#indent}}{{#each rendered_children.then}}{{{this}}}{{/each}}
+{{/indent}}
+{{/curly}}{{#if has_else?}} else {{#curly}}
+{{#indent}}{{#each rendered_children.else}}{{{this}}}{{/each}}
+{{/indent}}
+{{/curly}}{{/if}}

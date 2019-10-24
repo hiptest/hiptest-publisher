@@ -4,6 +4,8 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+ - Add support for Swift/XCTest ([#134](https://github.com/hiptest/hiptest-publisher/pull/134) [bangroot])
+
  - Add cache for the XML downloaded from HipTest.
    By default, files will be valid for 60 seconds but can be changed by using `--cache-duration=120` for example.
 
@@ -232,6 +234,7 @@ HipTest Publisher Changelog
 
 <!-- List of contributors -->
 [atulhm]: https://github.com/atulhm
+[bangroot]: https://github.com/bangroot
 [ClaudiaJ]: https://github.com/ClaudiaJ
 [daniel-kun]: https://github.com/daniel-kun
 [DavertMik]: https://github.com/DavertMik
