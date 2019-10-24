@@ -1,6 +1,6 @@
 import XCTest
 
 extension XCUIApplication {{#curly}}{{#indent}}
-{{#each rendered_children.actionwords}}
-{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}
+{{{actionword}}}
 {{/each}}{{/indent}}{{/curly}}
