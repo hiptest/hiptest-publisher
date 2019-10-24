@@ -75,10 +75,14 @@ task :release do
   Rake::Task["prerelease_changelog_update"].invoke
   `git commit CHANGELOG.md -m "Update changelog before release #{version}"`
 
-  Rake::Task["rubygems:release"].invoke
+  Rake::Task["juwelier_release"].invoke
 
   Rake::Task["postrelease_changelog_update"].invoke
   `git commit CHANGELOG.md -m "Update changelog after release #{version}"`
+end
+
+task :juwelier_release do
+  Rake.application.juwelier.release_gem_to_rubygems
 end
 
 task :prerelease_changelog_update do
