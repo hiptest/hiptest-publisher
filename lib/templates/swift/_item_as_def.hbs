@@ -1,0 +1,5 @@
+func {{ underscore rendered_children.name }}({{#if has_parameters?}}{{{ join rendered_children.parameters ', '}}}{{/if}}) {{#curly}}{{#indent}}
+{{> body}}
+
+{{/indent}}
+{{/curly}}

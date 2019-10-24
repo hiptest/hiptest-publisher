@@ -1,0 +1,23 @@
+import XCTest
+
+class {{{ clear_extension context.filename }}}: XCTestCase {{#curly}}
+{{#indent}}
+var app: XCUIApplication!
+
+override func setUp() {{#curly}}{{#indent}}
+super.setUp()
+
+// Since UI tests are more expensive to run, it's usually a good idea to exit if a failure was encountered
+continueAfterFailure = false
+
+app = XCUIApplication()
+
+// We send a command line argument to our app, to enable it to reset its state
+app.launchArguments.append("--uitesting")
+
+app.launch()
+{{/indent}}
+{{/curly}}
+{{> scenario}}
+{{/indent}}
+{{/curly}}
