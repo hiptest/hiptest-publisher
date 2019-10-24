@@ -4,6 +4,8 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+ - Upgrade `ruby-handlebars` to 0.4. `each` and `join` helpers now support the `as` notation.
+
  - Add support for Swift/XCTest ([#134](https://github.com/hiptest/hiptest-publisher/pull/134) [bangroot])
 
  - Add cache for the XML downloaded from HipTest.
