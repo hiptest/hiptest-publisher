@@ -80,6 +80,7 @@ task :release do
 
   Rake::Task["postrelease_changelog_update"].invoke
   `git commit CHANGELOG.md -m "Update changelog after release #{version}"`
+  `git push`
 end
 
 task :juwelier_release => [:gemspec, :build] do
