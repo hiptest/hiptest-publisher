@@ -42,9 +42,14 @@ module Hiptest
 
     def register_custom_helpers
       self.class.instance_methods.each do |method_name|
-        next unless method_name.to_s.start_with? 'hh_'
-        @handlebars.register_helper(method_name.to_s.gsub(/hh_/, '')) do |*args|
-          send(method_name, *args)
+        if method_name.to_s.start_with? 'hh_'
+          @handlebars.register_helper(method_name.to_s.gsub(/hh_/, '')) do |*args|
+            send(method_name, *args)
+          end
+        elsif method_name.to_s.start_with? 'as_hh_'
+          @handlebars.register_as_helper(method_name.to_s.gsub(/as_hh_/, '')) do |*args|
+            send(method_name, *args)
+          end
         end
       end
     end
@@ -59,6 +64,10 @@ module Hiptest
     end
 
     def hh_join(context, items, joiner, block, else_block = nil)
+      as_hh_join(context, items, joiner, :this, block, else_block)
+    end
+
+    def as_hh_join(context, items, joiner, name, block, else_block = nil)
       joiner = joiner.to_s
       joiner.gsub!(/\\t/, "\t")
       joiner.gsub!(/\\n/, "\n")
@@ -71,7 +80,7 @@ module Hiptest
         end
 
         items.map do |item|
-          context.with_temporary_context(this: item) do
+          context.with_temporary_context(name => item) do
             block.fn(context)
           end
         end.join(joiner)

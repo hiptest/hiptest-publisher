@@ -11,6 +11,6 @@ Narrative:
 Lifecycle:
 Before:
 Scope: SCENARIO
-{{#each rendered_children.body}}{{{ this }}}
-{{/each}}{{/unless}}{{#each rendered_children.scenarios}}
-{{{this}}}{{/each}}
+{{#each rendered_children.body as |step|}}{{{ step }}}
+{{/each}}{{/unless}}{{#each rendered_children.scenarios as |scenario|}}
+{{{scenario}}}{{/each}}

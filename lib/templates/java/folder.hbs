@@ -12,7 +12,7 @@ super.setUp();{{/indent}}
 {{> body}}
 {{/curly}}
 
-{{/unless}}{{#each rendered_children.scenarios}}{{{this}}}
+{{/unless}}{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

@@ -5,7 +5,7 @@ require_relative 'actionwords'
 describe '{{{ escape_single_quotes self_name }}}' do
   include Actionwords
 {{#indent}}
-{{#each rendered_children.tests}}{{{this}}}
+{{#each rendered_children.tests as |test|}}{{{test}}}
 
 {{/each}}
 {{/indent}}

@@ -8,5 +8,5 @@ Before(async () => {
 
 {{> after_hook}}
 
-{{#each rendered_children.library_actionwords}}{{{this}}}
+{{#each rendered_children.library_actionwords as |actionword|}}{{{actionword}}}
 {{/each}}

@@ -14,7 +14,7 @@ protected void SetUp() {{#curly}}{{#indent}}
 {{{ context.call_prefix}}} = new Actionwords();{{/indent}}{{#unless is_empty?}}
 {{> body}}{{/unless}}
 {{/curly}}
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 {{/each}}
 {{/indent}}
 {{/curly}}

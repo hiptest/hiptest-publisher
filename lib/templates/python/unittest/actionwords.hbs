@@ -4,6 +4,6 @@ class Actionwords:{{#indent}}
 def __init__(self, test):{{#indent}}
 self.test = test{{/indent}}
 
-{{#each rendered_children.actionwords}}{{{this}}}
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}
 {{/each}}
 {{/indent}}

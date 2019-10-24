@@ -16,7 +16,7 @@ app = XCUIApplication()
 app.launchArguments.append("--uitesting")
 {{/indent}}
 {{/curly}}
-{{#each rendered_children.scenarios}}{{{this}}}
+{{#each rendered_children.scenarios as |scenario|}}{{{scenario}}}
 
 {{/each}}
 {{/indent}}

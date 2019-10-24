@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-module Actionwords{{#indent}}{{#each rendered_children.actionwords}}
-{{{this}}}
+module Actionwords{{#indent}}{{#each rendered_children.actionwords as |actionword|}}
+{{{actionword}}}
 {{/each}}{{/indent}}
 end

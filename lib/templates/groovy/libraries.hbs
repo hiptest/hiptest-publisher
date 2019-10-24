@@ -1,8 +1,8 @@
 package {{{ context.package }}}
 
-class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names}}
-{{camelize this}}Library get{{camelize this}}Library() {{#curly}}{{#indent}}
-return {{camelize this}}Library.instance
+class ActionwordLibrary {{#curly}}{{#indent}}{{#each library_names as |library_name|}}
+{{camelize library_name}}Library get{{camelize library_name}}Library() {{#curly}}{{#indent}}
+return {{camelize library_name}}Library.instance
 {{/indent}}
 {{/curly}}
 {{/each}}{{/indent}}

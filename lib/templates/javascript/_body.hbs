@@ -2,8 +2,8 @@
 {{#indent}}
 {{#comment '//'}}{{#if has_description?}}{{{ rendered_children.description }}}
 {{/if}}{{#if has_tags?}}Tags: {{{ join rendered_children.tags ' '}}}{{/if}}{{/comment}}
-{{#if declared_variables}}var {{#join declared_variables ', '}}{{{camelize_lower this}}}{{/join}};
-{{/if}}{{#each rendered_children.body}}{{{this}}}
+{{#if declared_variables}}var {{#join declared_variables ', ' as |var|}}{{{camelize_lower var}}}{{/join}};
+{{/if}}{{#each rendered_children.body as |step|}}{{{step}}}
 {{/each}}
 {{#if has_step?}}throw 'Not implemented';{{/if}}
 {{/indent}}

@@ -12,7 +12,7 @@ We chose handlebars as the templating system as it is language agnostic and pret
  - ``{{{ my_value }}}``: will output the value of the variable 'my_value'
  - ``{{#if my_value}}Hello{{/if}}``: will output "Hello" if the variable 'my_value' is true (or not empty)
  - ``{{#if my_value}}Hello{{else}}Goodbye{{/if}}``: same as before but will also display "Goodbye" if 'my_value' if false or empty
- - ``{{#each my_list}}{{{this}}}{{/each}}``: will output every element of 'my_list'
+ - ``{{#each my_list as |item|}}{{{item}}}{{/each}}``: will output every element of 'my_list'
  - ``{{> my_partial}}``: will render the templates names '_my_partial.hbs' with the same context (so you don't have to repeat yourself)
 
 Helpers can be used with the notation ``{{{ helperName value }}}`. You will mainly use our [custom helpers](https://github.com/hiptest/hiptest-publisher/blob/master/docs/handlebars.md#hiptest-custom-helpers), we provide an example for each one.
@@ -35,7 +35,7 @@ Even statements (calling a function, assigning a variable etc) do not generate n
 
 Example:
 ```handlebars
-{{#each statements}}{{{this}}}
+{{#each statements as |statement|}}{{{statement}}}
 {{/each}}
 ```
 
@@ -298,10 +298,10 @@ Escapes single quotes from a string.
 
 Transforms a list of object into a string, separating each value with the joiner.
 
-If can also accept a block for rendering. In this case, the current item is referred as ``this`` (like in an ``each`` block):
+If can also accept a block for rendering. In this case, an name must be specified for the current item, using the `as |name|` notation:
 
 ```handlebars
-{{#join [1, 2, 3] ' || ' }}<b>{{this}}</b>{{/join}}
+{{#join [1, 2, 3] ' || ' as |item|}}<b>{{item}}</b>{{/join}}
 ```
 
 ```

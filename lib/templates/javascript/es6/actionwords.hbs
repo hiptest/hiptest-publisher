@@ -1,4 +1,4 @@
-exports.Actionwords = {{#curly}}{{#indent}}{{#join rendered_children.actionwords ","}}
-{{{this}}}{{/join}}
+exports.Actionwords = {{#curly}}{{#indent}}{{#join rendered_children.actionwords "," as |actionword|}}
+{{{actionword}}}{{/join}}
 {{/indent}}
 {{/curly}};

@@ -1,6 +1,6 @@
 {{#if rendered_children.gherkin_annotation }}[Given("{{#escape_double_quotes}}{{> gherkin_pattern}}{{/escape_double_quotes}}"), When("{{#escape_double_quotes}}{{> gherkin_pattern}}{{/escape_double_quotes}}"), Then("{{#escape_double_quotes}}{{> gherkin_pattern}}{{/escape_double_quotes}}")]
 public void {{{ camelize_upper rendered_children.name }}}({{#if has_parameters?}}{{{join rendered_children.parameters_ordered_by_pattern ', '}}}{{/if}}) {{#curly}}{{#indent}}
-{{{ context.call_prefix }}}.{{ camelize_upper rendered_children.name }}({{#if has_parameters?}}{{#join raw_parameter_names ', '}}{{{camelize_lower this}}}{{/join}}{{/if}});
+{{{ context.call_prefix }}}.{{ camelize_upper rendered_children.name }}({{#if has_parameters?}}{{#join raw_parameter_names ', ' as |param|}}{{{camelize_lower param}}}{{/join}}{{/if}});
 {{/indent}}
 {{/curly}}
 {{/if}}

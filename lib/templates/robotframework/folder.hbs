@@ -10,26 +10,26 @@ Resource{{tab}}keywords.txt
 Test Setup{{tab}}Run Keywords{{tab}}{{join rendered_children.body "\n...         AND      \t"}}
 {{/unless}}
 *** Test Cases ***{{#if datatables_present?}}
-{{#each rendered_children.splitted_scenarios}}{{#with this.tags "tags"}}
-{{#if this.datatable}}{{#each this.datasets}}{{normalize_with_spaces this.scenario_name}} {{normalize_with_spaces this.name}}{{#if this.test_snapshot_uid}} (uid:{{normalize this.test_snapshot_uid}}){{/if}}{{#indent}}
-{{#if tags}}[Tags]{{tab}}{{{join tags "\t"}}}
-{{/if}}[Template]{{tab}}{{normalize_with_spaces this.scenario_name}} keyword
-{{join this.arguments '\t'}}{{/indent}}
+{{#each rendered_children.splitted_scenarios as |scenario|}}
+{{#if scenario.datatable}}{{#each scenario.datasets as |dataset|}}{{normalize_with_spaces dataset.scenario_name}} {{normalize_with_spaces dataset.name}}{{#if dataset.test_snapshot_uid}} (uid:{{normalize dataset.test_snapshot_uid}}){{/if}}{{#indent}}
+{{#if scenario.tags}}[Tags]{{tab}}{{{join scenario.tags "\t"}}}
+{{/if}}[Template]{{tab}}{{normalize_with_spaces dataset.scenario_name}} keyword
+{{join dataset.arguments '\t'}}{{/indent}}
 
 {{/each}}
-{{else}}{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}
-{{#if this.tags}}[Tags]{{tab}}{{{join this.tags "\t"}}}
-{{/if}}{{join this.body '\n'}}{{/indent}}
-{{/if}}{{/with}}{{/each}}
+{{else}}{{normalize_with_spaces scenario.name}}{{#if scenario.uid}}(uid:{{normalize scenario.uid}}){{/if}}{{#indent}}
+{{#if scenario.tags}}[Tags]{{tab}}{{{join scenario.tags "\t"}}}
+{{/if}}{{join scenario.body '\n'}}{{/indent}}
+{{/if}}{{/each}}
 *** Keywords ***
 
-{{#each rendered_children.splitted_scenarios}}{{#if this.datatable}}{{normalize_with_spaces this.name}} keyword{{#indent}}
-[Arguments]{{tab}}{{join this.parameters '\t'}}
-{{join this.body '\n'}}{{/indent}}
+{{#each rendered_children.splitted_scenarios as |scenario|}}{{#if scenario.datatable}}{{normalize_with_spaces scenario.name}} keyword{{#indent}}
+[Arguments]{{tab}}{{join scenario.parameters '\t'}}
+{{join scenario.body '\n'}}{{/indent}}
 
 {{/if}}{{/each}}{{else}}
-{{#each rendered_children.splitted_scenarios}}
-{{normalize_with_spaces this.name}}{{#if this.uid}}(uid:{{normalize this.uid}}){{/if}}{{#indent}}{{#if this.tags}}
-[Tags]{{tab}}{{{ join this.tags '\t'}}}{{/if}}
-{{join this.body '\n'}}{{/indent}}
+{{#each rendered_children.splitted_scenarios as |scenario|}}
+{{normalize_with_spaces scenario.name}}{{#if scenario.uid}}(uid:{{normalize scenario.uid}}){{/if}}{{#indent}}{{#if scenario.tags}}
+[Tags]{{tab}}{{{ join scenario.tags '\t'}}}{{/if}}
+{{join scenario.body '\n'}}{{/indent}}
 {{/each}}{{/if}}

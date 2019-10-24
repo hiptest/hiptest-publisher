@@ -5,7 +5,7 @@ class {{{ clear_extension context.filename }}} extends PHPUnit_Framework_TestCas
 public $actionwords;
 {{> setup}}
 
-{{#each rendered_children.tests}}{{{this}}}
+{{#each rendered_children.tests as |test|}}{{{test}}}
 
 {{/each}}
 {{/indent}}

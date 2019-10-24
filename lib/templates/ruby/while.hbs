@@ -1,5 +1,5 @@
 while ({{{ rendered_children.condition }}}){{#indent}}
-{{#each rendered_children.body }}{{{this}}}
+{{#each rendered_children.body as |step|}}{{{step}}}
 {{/each}}
 {{/indent}}
 end

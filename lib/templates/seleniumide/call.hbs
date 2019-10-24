@@ -1,6 +1,6 @@
 <tr>{{#indent}}
 <td>{{{ rendered_children.actionword}}}</td>
-{{#each rendered_children.all_arguments}}{{{ this }}}
+{{#each rendered_children.all_arguments as |argument|}}{{{ argument }}}
 {{/each}}
 {{/indent}}
 </tr>
