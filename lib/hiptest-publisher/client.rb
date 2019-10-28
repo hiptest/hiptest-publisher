@@ -12,6 +12,15 @@ module Hiptest
   class ClientError < StandardError
   end
 
+  class RedirectionError < StandardError
+    attr_reader :redirect
+
+    def initialize(msg, redirect)
+      @redirect = redirect
+      super(msg)
+    end
+  end
+
   class Client
     attr_reader :cli_options
 
@@ -109,16 +118,15 @@ module Hiptest
     def push_results
       # Code from: https://github.com/nicksieger/multipart-post
       uploaded = {}
-      Dir.glob(cli_options.push.gsub('\\', '/')).each_with_index do |filename, index|
-        uploaded["file-#{filename.normalize}"] = UploadIO.new(File.new(filename), "text", filename)
+      Dir.glob(cli_options.push.gsub('\\', '/')).each do |filename|
+        uploaded["file-#{filename.normalize}"] = filename
       end
 
       if cli_options.global_failure_on_missing_reports && uploaded.empty?
         return send_post_request(global_failure_url)
       end
 
-      uri = URI.parse(url)
-      send_request(Net::HTTP::Post::Multipart.new(uri, uploaded))
+      send_multipart_request(url, uploaded)
     end
 
     private
@@ -180,14 +188,29 @@ module Hiptest
 
     def send_get_request(url)
       uri = URI.parse(url)
-      response = send_request(Net::HTTP::Get.new(uri))
-      response
+      send_request(Net::HTTP::Get.new(uri))
+    rescue RedirectionError => err
+      send_get_request(err.redirect)
     end
 
     def send_post_request(url)
       uri = URI.parse(url)
-      response = send_request(Net::HTTP::Post.new(uri))
-      response
+      send_request(Net::HTTP::Post.new(uri))
+    rescue RedirectionError => err
+      send_post_request(err.redirect)
+    end
+
+    def send_multipart_request(url, uploaded)
+      uri = URI.parse(url)
+
+      files = {}
+      uploaded.each do |fieldname, filename|
+        files[fieldname] = UploadIO.new(File.new(filename), "text", filename)
+      end
+
+      send_request(Net::HTTP::Post::Multipart.new(uri, files))
+    rescue RedirectionError => err
+      send_multipart_request(err.redirect, uploaded)
     end
 
     def send_request(request)
@@ -209,15 +232,8 @@ module Hiptest
         @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
         response = http.request(request)
 
-        if response.is_a?(Net::HTTPRedirection)
-          if request.is_a?(Net::HTTP::Post)
-            send_post_request(response['location'])
-          else
-            send_get_request(response['location'])
-          end
-        else
-          response
-        end
+        raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
+        response
       end
     end
 

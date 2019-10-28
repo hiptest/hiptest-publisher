@@ -346,6 +346,96 @@ describe Hiptest::Client do
     end
   end
 
+  describe '#push_results' do
+    let(:results_dir) { Dir.mktmpdir }
+    let(:pushed_file) { "#{results_dir}/result.json" }
+    let(:args) { ["--token", "123456789", "--test-run-id", "123", "--push", pushed_file, "--push-format", "json", "--global-failure-on-missing-reports"] }
+
+    let(:report_content) { "Some JSON here" }
+    let(:second_report_content) { "Some more JSON" }
+
+
+    before do
+      File.write("#{results_dir}/result.json", report_content)
+      File.write("#{results_dir}/result1.json", second_report_content)
+    end
+
+    after do
+      FileUtils.rm_rf(results_dir)
+    end
+
+    it 'sends a post request with the file specified in the --push option embedded' do
+      stub_request(:post, "https://app.hiptest.com/import_test_results/123456789/json")
+      client.push_results
+
+      expect(a_request(:post, "https://app.hiptest.com/import_test_results/123456789/json").
+        with { |req|
+          expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
+          expect(req.headers['Content-Type']).to include('multipart/form-data;')
+        }
+      ).to have_been_made.once
+    end
+
+    context 'when using globs for pushed file' do
+      let(:pushed_file) { "#{results_dir}/*.json" }
+
+      it 'sends multiple files' do
+        stub_request(:post, "https://app.hiptest.com/import_test_results/123456789/json")
+        client.push_results
+
+        expect(a_request(:post, "https://app.hiptest.com/import_test_results/123456789/json").
+          with { |req|
+            expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
+            expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result1.json"(.|\n)*#{second_report_content}*/)
+            expect(req.headers['Content-Type']).to include('multipart/form-data;')
+          }
+        ).to have_been_made.once
+      end
+    end
+
+    it 'follows redirections' do
+      new_location = "https://hop.hiptest.org/import_test_results/123456789/json"
+      stub_request(:post, "https://app.hiptest.com/import_test_results/123456789/json").
+        to_return(:status => 301, :headers => { 'Location' => new_location })
+
+      stub_request(:post, new_location).
+        to_return(body: "Ola")
+
+      client.push_results
+      expect(a_request(:post, new_location).
+        with { |req|
+          expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
+          expect(req.headers['Content-Type']).to include('multipart/form-data;')
+        }
+      ).to have_been_made.once
+    end
+
+    context "when there is no file to push" do
+      let(:failure_url) { "https://app.hiptest.com/report_global_failure/123456789/123/" }
+      let(:pushed_file) { "#{results_dir}/nothing_there.json" }
+
+      it "sends a request to notify hiptest" do
+        stub_request(:post, failure_url).
+          to_return(body: "Ok")
+
+        client.push_results
+        expect(a_request(:post, failure_url)).to have_been_made
+      end
+
+      it "follows redirections there too" do
+        new_location = "https://hop.hiptest.org/report_global_failure/123456789/123/"
+        stub_request(:post, failure_url).
+          to_return(:status => 301, :headers => { 'Location' => new_location })
+
+        stub_request(:post, new_location).
+          to_return(body: "Ola")
+
+        client.push_results
+        expect(a_request(:post, new_location)).to have_been_made
+      end
+    end
+  end
+
   describe "#columnize_test_runs" do
 
     it "formats given test runs in aligned columns" do
