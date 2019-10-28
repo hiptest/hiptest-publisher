@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+ - Follow redirections when doing HTTP requests.
 
 [1.30.0]
 --------
