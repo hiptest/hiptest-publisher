@@ -176,18 +176,36 @@ describe Hiptest::Client do
       expect(got_xml).to eq(sent_xml)
     end
 
-    it 'follows redirections' do
-      sent_xml = "<xml_everywhere/>"
-      new_location = "https://hop.hiptest.org/publication/123456789/project"
+    context "when a redirection response is given" do
+      let(:original_location) { "https://app.hiptest.com/publication/123456789/project" }
+      let(:new_location) { "https://hop.hiptest.org/publication/123456789/project" }
 
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
-        to_return(:status => 301, :headers => { 'Location' => new_location })
+      before do
+        stub_request(:get, original_location).
+          to_return(:status => 301, :headers => { 'Location' => new_location })
+      end
 
-      stub_request(:get, new_location).
-        to_return(body: sent_xml)
+      it 'is followed' do
+        sent_xml = "<xml_everywhere/>"
 
-      got_xml = client.fetch_project_export
-      expect(got_xml).to eq(sent_xml)
+        stub_request(:get, new_location).
+          to_return(body: sent_xml)
+
+        got_xml = client.fetch_project_export
+        expect(got_xml).to eq(sent_xml)
+      end
+
+      it 'fails when maximum redirection is reached' do
+        stub_request(:get, new_location).
+          to_return(:status => 301, :headers => { 'Location' => original_location })
+
+        expect {
+          client.fetch_project_export
+        }.to raise_exception(Hiptest::MaximumRedirectionReachedError)
+
+        expect(a_request(:get, original_location)).to have_been_made.at_most_times(6)
+        expect(a_request(:get, new_location)).to have_been_made.at_most_times(6)
+      end
     end
 
     context 'when xml cache is enabled' do
@@ -393,21 +411,39 @@ describe Hiptest::Client do
       end
     end
 
-    it 'follows redirections' do
-      new_location = "https://hop.hiptest.org/import_test_results/123456789/json"
-      stub_request(:post, "https://app.hiptest.com/import_test_results/123456789/json").
-        to_return(:status => 301, :headers => { 'Location' => new_location })
+    context "when a redirect response is given" do
+      let(:original_location) { "https://app.hiptest.com/import_test_results/123456789/json"}
+      let(:new_location) { "https://hop.hiptest.org/import_test_results/123456789/json" }
 
-      stub_request(:post, new_location).
-        to_return(body: "Ola")
+      before do
+        stub_request(:post, original_location).
+          to_return(:status => 301, :headers => { 'Location' => new_location })
+      end
 
-      client.push_results
-      expect(a_request(:post, new_location).
-        with { |req|
-          expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
-          expect(req.headers['Content-Type']).to include('multipart/form-data;')
-        }
-      ).to have_been_made.once
+      it 'is followed' do
+        stub_request(:post, new_location).
+          to_return(body: "Ola")
+
+        client.push_results
+        expect(a_request(:post, new_location).
+          with { |req|
+            expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
+            expect(req.headers['Content-Type']).to include('multipart/form-data;')
+          }
+        ).to have_been_made.once
+      end
+
+      it 'fails when maximum redirection is reached' do
+        stub_request(:post, new_location).
+          to_return(:status => 301, :headers => { 'Location' => original_location })
+
+        expect {
+          client.push_results
+        }.to raise_exception(Hiptest::MaximumRedirectionReachedError)
+
+        expect(a_request(:post, original_location)).to have_been_made.at_most_times(6)
+        expect(a_request(:post, new_location)).to have_been_made.at_most_times(6)
+      end
     end
 
     context "when there is no file to push" do
@@ -422,16 +458,34 @@ describe Hiptest::Client do
         expect(a_request(:post, failure_url)).to have_been_made
       end
 
-      it "follows redirections there too" do
-        new_location = "https://hop.hiptest.org/report_global_failure/123456789/123/"
-        stub_request(:post, failure_url).
-          to_return(:status => 301, :headers => { 'Location' => new_location })
+      context "when a redirect response is given " do
+        let(:original_location) { failure_url }
+        let(:new_location)  {"https://hop.hiptest.org/report_global_failure/123456789/123/" }
 
-        stub_request(:post, new_location).
-          to_return(body: "Ola")
+        before do
+          stub_request(:post, failure_url).
+            to_return(:status => 301, :headers => { 'Location' => new_location })
+        end
 
-        client.push_results
-        expect(a_request(:post, new_location)).to have_been_made
+        it "is followed" do
+          stub_request(:post, new_location).
+            to_return(body: "Ola")
+
+          client.push_results
+          expect(a_request(:post, new_location)).to have_been_made
+        end
+
+        it 'fails when maximum redirection is reached' do
+          stub_request(:post, new_location).
+            to_return(:status => 301, :headers => { 'Location' => original_location })
+
+          expect {
+            client.push_results
+          }.to raise_exception(Hiptest::MaximumRedirectionReachedError)
+
+          expect(a_request(:post, original_location)).to have_been_made.at_most_times(6)
+          expect(a_request(:post, new_location)).to have_been_made.at_most_times(6)
+        end
       end
     end
   end

@@ -21,6 +21,11 @@ module Hiptest
     end
   end
 
+  class MaximumRedirectionReachedError < StandardError
+  end
+
+  MAX_REDIRECTION = 10
+
   class Client
     attr_reader :cli_options
 
@@ -186,23 +191,28 @@ module Hiptest
       "#{cli_options.site}/publication/#{cli_options.token}"
     end
 
-    def send_get_request(url)
+    def send_get_request(url, attempt = MAX_REDIRECTION)
+      raise MaximumRedirectionReachedError if attempt < 0
+
       uri = URI.parse(url)
       send_request(Net::HTTP::Get.new(uri))
     rescue RedirectionError => err
-      send_get_request(err.redirect)
+      send_get_request(err.redirect, attempt - 1)
     end
 
-    def send_post_request(url)
+    def send_post_request(url, attempt = MAX_REDIRECTION)
+      raise MaximumRedirectionReachedError if attempt < 0
+
       uri = URI.parse(url)
       send_request(Net::HTTP::Post.new(uri))
     rescue RedirectionError => err
-      send_post_request(err.redirect)
+      send_post_request(err.redirect, attempt - 1)
     end
 
-    def send_multipart_request(url, uploaded)
-      uri = URI.parse(url)
+    def send_multipart_request(url, uploaded, attempt = MAX_REDIRECTION)
+      raise MaximumRedirectionReachedError if attempt < 0
 
+      uri = URI.parse(url)
       files = {}
       uploaded.each do |fieldname, filename|
         files[fieldname] = UploadIO.new(File.new(filename), "text", filename)
@@ -210,7 +220,7 @@ module Hiptest
 
       send_request(Net::HTTP::Post::Multipart.new(uri, files))
     rescue RedirectionError => err
-      send_multipart_request(err.redirect, uploaded)
+      send_multipart_request(err.redirect, uploaded, attempt - 1)
     end
 
     def send_request(request)
