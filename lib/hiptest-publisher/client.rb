@@ -193,19 +193,31 @@ module Hiptest
     def send_request(request)
       request["User-Agent"] = "Ruby/hiptest-publisher"
       use_ssl = request.uri.scheme == "https"
+
       proxy_uri = find_proxy_uri(request.uri.hostname, request.uri.port)
       if proxy_uri
         proxy_address = proxy_uri.hostname
         proxy_port = proxy_uri.port
         proxy_user, proxy_pass = proxy_uri.userinfo.split(':', 2) if proxy_uri.userinfo
       end
+
       Net::HTTP.start(
           request.uri.hostname, request.uri.port,
           proxy_address, proxy_port, proxy_user, proxy_pass,
           use_ssl: use_ssl,
           verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
         @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
-        http.request(request)
+        response = http.request(request)
+
+        if response.is_a?(Net::HTTPRedirection)
+          if request.is_a?(Net::HTTP::Post)
+            send_post_request(response['location'])
+          else
+            send_get_request(response['location'])
+          end
+        else
+          response
+        end
       end
     end
 

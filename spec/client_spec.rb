@@ -176,6 +176,20 @@ describe Hiptest::Client do
       expect(got_xml).to eq(sent_xml)
     end
 
+    it 'follows redirections' do
+      sent_xml = "<xml_everywhere/>"
+      new_location = "https://hop.hiptest.org/publication/123456789/project"
+
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+        to_return(:status => 301, :headers => { 'Location' => new_location })
+
+      stub_request(:get, new_location).
+        to_return(body: sent_xml)
+
+      got_xml = client.fetch_project_export
+      expect(got_xml).to eq(sent_xml)
+    end
+
     context 'when xml cache is enabled' do
       let(:args) { ["--token", "123456789", "--cache-dir", cache_dir] }
       let(:cache_dir) { Dir.mktmpdir }
