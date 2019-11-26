@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[1.31.0]
+--------
 
  - Follow redirections when doing HTTP requests.
 
@@ -201,7 +201,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v1.30.0...master
+[1.31.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.30.0...v1.31.0
 [1.30.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.2...v1.30.0
 [1.29.2]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.1...v1.29.2
 [1.29.1]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.0...v1.29.1
