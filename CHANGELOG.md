@@ -4,7 +4,11 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+ - Deprecate support for Ruby 2.3 ([Ruby 2.3 EOL](https://www.ruby-lang.org/en/news/2019/03/31/support-of-ruby-2-3-has-ended/))
+
+ - Drop Ruby 2.2 support.
+
+ - Update Nokogiri to 1.10
 
 [1.31.0]
 --------
