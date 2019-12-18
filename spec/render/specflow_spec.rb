@@ -128,6 +128,11 @@ describe 'Specflow rendering' do
         '        public void ILoginOn(string site, string username) {',
         '            Actionwords.ILoginOn(site, username);',
         '        }',
+        '',
+        '        [Given("^I have some \"(.*)\"$"), When("^I have some \"(.*)\"$"), Then("^I have some \"(.*)\"$")]',
+        '        public void IHaveSomeNumber(int number) {',
+        '            Actionwords.IHaveSomeNumber(number);',
+        '        }',
         '    }',
         '}'
       ].join("\n")

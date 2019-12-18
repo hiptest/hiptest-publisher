@@ -793,6 +793,12 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
           make_parameter("site"),
           make_parameter("username")
         ]
+      ),
+      make_actionword(
+        "I have some \"number\"",
+        parameters: [
+          make_parameter("number", default: literal(42))
+        ]
       )
     ]
   }
@@ -920,6 +926,17 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
                       make_argument("p1", literal("some other value")),
                       make_argument("parameters", literal("and again another one")),
                       make_argument("order", literal("and finally another one"))
+                    ]
+                  ])
+  }
+
+  let(:scenario_calling_aw_with_a_number_parameter) {
+    make_scenario("Calling an action word with a number parameter",
+                  folder: regression_folder,
+                  body: [
+                    make_call("I have some \"number\"", annotation: "given"),
+                    arguments: [
+                      make_argument("number", literal(42))
                     ]
                   ])
   }
@@ -1103,6 +1120,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
                    scenario_with_incomplete_datatable,
                    scenario_calling_untrimed_actionword,
                    scenario_calling_aw_with_incorrect_order,
+                   scenario_calling_aw_with_a_number_parameter,
                    scenario_calling_actionwords_with_extra_params,
                    scenario_with_double_quotes_in_datatable,
                    scenario_inheriting_tags,

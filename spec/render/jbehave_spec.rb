@@ -66,6 +66,11 @@ describe 'JBehave rendering' do
         %|    public void iLoginOn(String site, String username) {|,
         %|        actionwords.iLoginOn(site, username);|,
         %|    }|,
+        %||,
+        %|    @Given("I have some \\"$number\\"")|,
+        %|    public void iHaveSomeNumber(int number) {|,
+        %|        actionwords.iHaveSomeNumber(number);|,
+        %|    }|,
         %|}|
       ].join("\n")
     }
