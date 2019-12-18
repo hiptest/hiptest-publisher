@@ -268,7 +268,13 @@ class OptionsParser
   end
 
   def self.default_cache_directory
-    File.join(Dir.home, '.hiptest-publisher', 'cache')
+    home_dir =  begin
+                  Dir.home
+                rescue
+                  '.'
+                end
+
+    File.join(home_dir, '.hiptest-publisher', 'cache')
   end
 
   def self.parse(args, reporter)

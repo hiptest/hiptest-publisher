@@ -55,13 +55,24 @@ hiptest-publisher --token=<YOUR TOKEN>
 
 This will create a Ruby tests suite. For the moment, we support the following languages and frameworks:
 
- - Ruby (rspec / minitest)
- - Cucumber Ruby
- - Python (unittest)
- - Java (JUnit / TestNg)
+ - Behat
+ - Behave
+ - CSharp (NUnit)
+ - Cucumber (Groovy / Java / Javascript / Ruby / TypeScript)
+ - Cucumber Expressions (TypeScript)*
+ - Groovy (Spock)
+ - Java (Espresso / JUnit / TestNg)
+ - JavaScript (CodeceptJS / Jasmine / Mocha / Protractor / QUnit)
+ - JBehave
+ - PHP (PHPUnit / UnitTest)
+ - Python (UnitTest)
  - Robot Framework
+ - Ruby (MiniTest / RSpec)
  - Selenium IDE
- - Javascript (qUnit / Jasmine)
+ - SpecFlow
+ - Swift (XCTest)
+
+*Cucumber Expressions is standard Cucumber syntax that makes use of [Cucumber Expressions](https://cucumber.io/docs/cucumber/cucumber-expressions/)
 
 You can specify the output language and framework in the command line, for example:
 
