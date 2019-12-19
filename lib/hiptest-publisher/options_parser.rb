@@ -206,7 +206,7 @@ class OptionsParser
       'Behave' => [''],
       'Behat' => [''],
       'Groovy' => ['Spock'],
-      'JBehave' => ['']
+      'JBehave' => [''],
       'Swift' => ['XCTest']
     }
   end
