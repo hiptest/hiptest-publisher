@@ -86,12 +86,12 @@ module Hiptest
       @client.fetch_project_export
     rescue ClientError => err
       # This should not be an error that needs reporting to an exception monitoring app
-      puts err.message.yellow
+      reporter.show_error(err.message)
       if @exit_on_bad_arguments == false # means we are embedded in hiptest-publisher
         raise
       end
     rescue => err
-      puts I18n.t("errors.default").red
+      reporter.show_failure(I18n.t("errors.default"))
       reporter.dump_error(err)
     end
 

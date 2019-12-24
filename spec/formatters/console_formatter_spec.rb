@@ -134,4 +134,42 @@ describe ConsoleFormatter do
       end
     end
   end
+
+  describe 'show_failure' do
+    before do
+      allow(STDOUT).to receive(:print)
+    end
+
+    it 'outputs the message in red on STDOUT' do
+      console_formatter.show_failure('Some failure')
+      expect(STDOUT).to have_received(:print).with("Some failure".red)
+    end
+
+    context 'when colors are disabled' do
+      let(:color) { false }
+      it 'outputs the message on STDOUT' do
+        console_formatter.show_failure('Some failure')
+        expect(STDOUT).to have_received(:print).with('Some failure')
+      end
+    end
+  end
+
+  describe 'show_error' do
+    before do
+      allow(STDOUT).to receive(:print)
+    end
+
+    it 'outputs the message in yellow on STDOUT' do
+      console_formatter.show_error('Some error')
+      expect(STDOUT).to have_received(:print).with("Some error".yellow)
+    end
+
+    context 'when colors are disabled' do
+      let(:color) { false }
+      it 'outputs the message on STDOUT' do
+        console_formatter.show_error('Some error')
+        expect(STDOUT).to have_received(:print).with('Some error')
+      end
+    end
+  end
 end

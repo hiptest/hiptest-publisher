@@ -22,6 +22,14 @@ class ConsoleFormatter
     puts colorize(line, :yellow)
   end
 
+  def show_error(message)
+    STDOUT.print colorize(message, :yellow)
+  end
+
+  def show_failure(message)
+    STDOUT.print(colorize(message, :red))
+  end
+
   def show_options(options, message = nil)
     return unless verbose
     message ||= I18n.t(:verbose_header, version: hiptest_publisher_version)
