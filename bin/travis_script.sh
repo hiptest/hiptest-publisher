@@ -1,5 +1,3 @@
-gem install bundler:1.17.2
-
 echo "Running local gem"
 bundle exec ruby -I lib bin/hiptest-publisher --help
 
