@@ -263,6 +263,7 @@ class OptionsParser
       Option.new(nil, 'meta=META', '', String, I18n.t('options.meta'), :meta),
       Option.new(nil, 'check-version', false, nil, I18n.t('options.check_version'), :check_version),
       Option.new(nil, 'force', false, nil, I18n.t('options.force_overwrite'), :force_overwrite),
+      Option.new(nil, '[no-]color', true, nil, I18n.t('options.color'), :color),
       Option.new('v', 'verbose', false, nil, I18n.t('options.verbose'), :verbose)
     ]
   end
@@ -294,7 +295,7 @@ class OptionsParser
 
     args << "--help" if args.empty?
     opt_parser.parse!(args)
-    reporter.add_listener(ConsoleFormatter.new(options.verbose))
+    reporter.add_listener(ConsoleFormatter.new(options.verbose, color: options.color))
     FileConfigParser.update_options(options, reporter)
 
     reporter.show_options(options.marshal_dump)
