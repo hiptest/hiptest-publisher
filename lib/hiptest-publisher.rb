@@ -114,9 +114,7 @@ module Hiptest
       return true if @cli_options.force_overwrite
 
       if $stdout.isatty
-        STDOUT.print "\n"
-        STDOUT.print "[#{"?".yellow}] #{I18n.t('overwrite.ask_confirmation', path: path)}"
-        answer = $stdin.gets.chomp.downcase.strip
+        answer = reporter.ask(I18n.t('overwrite.ask_confirmation', path: path))
         return ['y', 'yes'].include?(answer)
       else
         reporter.warning_message(I18n.t('overwrite.warning_message', path: path))
