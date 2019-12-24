@@ -4,7 +4,8 @@ require_relative '../../lib/hiptest-publisher/formatters/console_formatter'
 describe ConsoleFormatter do
 
   let(:verbose) { false }
-  subject(:console_formatter) { ConsoleFormatter.new(verbose) }
+  let(:color) { true }
+  subject(:console_formatter) { ConsoleFormatter.new(verbose, color: color) }
 
   describe 'show_status_message' do
     before do
@@ -63,6 +64,20 @@ describe ConsoleFormatter do
       it 'outputs normally if status' do
         console_formatter.show_status_message('My message', :success)
         expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
+      end
+    end
+
+    context 'without colors' do
+      let(:color) { false }
+
+      it 'if status is :success, it adds "v" checkbox and goes to the next line' do
+        console_formatter.show_status_message('My message', :success)
+        expect(STDOUT).to have_received(:print).with("[v] My message\n").once
+      end
+
+      it 'if status is :failure, it adds an "x" checkbox and sends to STDERR with a new line character' do
+        console_formatter.show_status_message('My message', :failure)
+        expect(STDERR).to have_received(:print).with("[x] My message\n").once
       end
     end
   end

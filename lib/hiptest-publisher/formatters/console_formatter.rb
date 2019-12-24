@@ -5,26 +5,27 @@ require 'hiptest-publisher/utils'
 class ConsoleFormatter
   attr_reader :verbose
 
-  def initialize(verbose)
+  def initialize(verbose, color: true)
     @verbose = verbose
+    @color = color
     @immediate_verbose = true
     @verbose_messages = []
   end
 
   def dump_error(error, message = nil)
     return unless verbose
-    puts message.blue if message
+    puts colorize(message, :blue) if message
     line = "-" * 80
-    puts line.yellow
-    puts "#{error.class.name}: #{error.message}".red
-    puts "#{error.backtrace.map {|l| "  #{l}\n"}.join}".yellow
-    puts line.yellow
+    puts colorize(line, :yellow)
+    puts colorize("#{error.class.name}: #{error.message}", :red)
+    puts colorize("#{error.backtrace.map {|l| "  #{l}\n"}.join}", :yellow)
+    puts colorize(line, :yellow)
   end
 
   def show_options(options, message = nil)
     return unless verbose
     message ||= I18n.t(:verbose_header, version: hiptest_publisher_version)
-    puts message.yellow
+    puts colorize(message, :yellow)
     options.each { |k, v| puts " - #{k}: #{v.inspect}" }
   end
 
@@ -42,11 +43,11 @@ class ConsoleFormatter
     output = STDOUT
 
     if status == :success
-      status_icon = "v".green
+      status_icon = colorize("v", :green)
     elsif status == :warning
-      status_icon = "?".yellow
+      status_icon = colorize("?", :yellow)
     elsif status == :failure
-      status_icon = "x".red
+      status_icon = colorize("x", :red)
       output = STDERR
     end
     if status
@@ -67,5 +68,11 @@ class ConsoleFormatter
       @verbose_messages.each { |message| show_verbose_message(message) }
       @verbose_messages.clear
     end
+  end
+
+  private
+
+  def colorize(txt, color)
+    @color ? txt.send(color) : txt
   end
 end
