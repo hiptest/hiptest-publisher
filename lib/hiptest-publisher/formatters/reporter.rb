@@ -56,6 +56,12 @@ class Reporter
     end
     nil
   end
+
+  def ask(question)
+    implementing = @listeners.select { |l| l.respond_to?(:ask) }
+    return nil if implementing.empty?
+    return implementing.first.ask(question)
+  end
 end
 
 class NullReporter
