@@ -172,4 +172,46 @@ describe ConsoleFormatter do
       end
     end
   end
+
+  describe 'ask' do
+    before do
+      allow(STDOUT).to receive(:print)
+    end
+
+    context "is a tty" do
+      before do
+        allow($stdout).to receive(:tty?).and_return(true)
+        allow($stdin).to receive(:gets).and_return('')
+      end
+
+      it 'display the question with a yellow question mark' do
+        console_formatter.ask('What is your quest ?')
+        expect(STDOUT).to have_received(:print).with("[#{'?'.yellow}] What is your quest ?").once
+      end
+
+      it 'returns the user input (downcased and cleaned of spaces or line returns)' do
+        allow($stdin).to receive(:gets).and_return("  To seek for the Holy grail !\r\n")
+        expect(console_formatter.ask('What is your quest ?')).to eq("to seek for the holy grail !")
+      end
+
+      context 'with color disabled' do
+        let(:color) { false }
+
+        it 'display the question with a question mark' do
+          console_formatter.ask('What is your quest ?')
+          expect(STDOUT).to have_received(:print).with("[?] What is your quest ?").once
+        end
+      end
+    end
+
+    context "not a tty" do
+      before do
+        allow($stdout).to receive(:tty?).and_return(false)
+      end
+
+      it 'returns nil' do
+        expect(console_formatter.ask("Is this nil?")).to be_nil
+      end
+    end
+  end
 end

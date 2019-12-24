@@ -78,6 +78,12 @@ class ConsoleFormatter
     end
   end
 
+  def ask(question)
+    return unless $stdout.tty?
+    STDOUT.print "[#{colorize('?', :yellow)}] #{question}"
+    return $stdin.gets.chomp.downcase.strip
+  end
+
   private
 
   def colorize(txt, color)
