@@ -5,7 +5,12 @@ describe ConsoleFormatter do
 
   let(:verbose) { false }
   let(:color) { nil }
+  let(:is_a_tty) { true }
   subject(:console_formatter) { ConsoleFormatter.new(verbose, color: color) }
+
+  before do
+    allow($stdout).to receive(:tty?).and_return(is_a_tty)
+  end
 
   describe 'show_status_message' do
     before do
@@ -14,8 +19,9 @@ describe ConsoleFormatter do
     end
 
     context "when is a tty" do
+      let(:is_a_tty) { true }
+
       before do
-        allow($stdout).to receive(:tty?).and_return(true)
         allow(IO.console).to receive(:winsize).and_return([80, 25])
       end
 
@@ -40,9 +46,7 @@ describe ConsoleFormatter do
     end
 
     context "when not a tty" do
-      before do
-        allow($stdout).to receive(:tty?).and_return(false)
-      end
+      let(:is_a_tty) { false }
 
       it 'is not colored by default' do
         expect(console_formatter.colored?).to be false
@@ -90,6 +94,7 @@ describe ConsoleFormatter do
     end
 
     context 'with colors forced while not a tty' do
+      let(:is_a_tty) { false }
       let(:color) { true }
 
       before do
@@ -155,7 +160,7 @@ describe ConsoleFormatter do
     end
   end
 
-  describe 'show_failure' do
+  describe '#show_failure' do
     before do
       allow(STDOUT).to receive(:print)
     end
@@ -174,7 +179,7 @@ describe ConsoleFormatter do
     end
   end
 
-  describe 'show_error' do
+  describe '#show_error' do
     before do
       allow(STDOUT).to receive(:print)
     end
@@ -193,7 +198,7 @@ describe ConsoleFormatter do
     end
   end
 
-  describe 'ask' do
+  describe '#ask' do
     before do
       allow(STDOUT).to receive(:print)
     end
@@ -225,9 +230,7 @@ describe ConsoleFormatter do
     end
 
     context "not a tty" do
-      before do
-        allow($stdout).to receive(:tty?).and_return(false)
-      end
+      let(:is_a_tty) { false }
 
       it 'returns nil' do
         expect(console_formatter.ask("Is this nil?")).to be_nil
