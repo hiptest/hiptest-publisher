@@ -187,11 +187,12 @@ describe Hiptest::Publisher do
         "--token", "123456789",
         "--cache-duration", "0"
       ]
-      publisher = Hiptest::Publisher.new(args)
-      expect{
-        publisher.run
-      }.to output(a_string_including("An error has occured, sorry for the inconvenience.\n" +
-        "Try running the command again with --verbose for detailed output")).to_stdout
+
+      Hiptest::Publisher.new(args).run
+      expect(STDOUT).to have_printed(
+        "An error has occured, sorry for the inconvenience.\n" +
+        "Try running the command again with --verbose for detailed output"
+      )
     end
 
     it "can handle 404 Not Found errors" do
@@ -202,10 +203,8 @@ describe Hiptest::Publisher do
         "--token", "123456789",
         "--cache-duration", "0"
       ]
-      publisher = Hiptest::Publisher.new(args)
-      expect{
-        publisher.run
-      }.to output(a_string_including("No project found with this secret token.")).to_stdout
+      Hiptest::Publisher.new(args).run
+      expect(STDOUT).to have_printed("No project found with this secret token.")
     end
 
     it "displays exporting scenarios, actionwords and actionword signature" do
@@ -477,7 +476,7 @@ describe Hiptest::Publisher do
     describe "Overwriting existing files" do
       context 'when no tty is available' do
         before(:each) do
-          allow($stdout).to receive(:isatty).and_return(false)
+          allow($stdout).to receive(:tty?).and_return(false)
         end
 
         it 'skips actionwords file generation and displays a warning' do
@@ -517,7 +516,7 @@ describe Hiptest::Publisher do
 
       context 'when a tty is available' do
         before(:each) do
-          allow($stdout).to receive(:isatty).and_return(true)
+          allow($stdout).to receive(:tty?).and_return(true)
         end
 
         context 'asks user about overwriting action words file' do

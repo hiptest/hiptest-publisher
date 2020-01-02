@@ -11,6 +11,14 @@ class Reporter
     notify(:dump_error, error, message)
   end
 
+  def show_error(message)
+    notify(:show_error, message)
+  end
+
+  def show_failure(message)
+    notify(:show_failure, message)
+  end
+
   def show_options(options, message = nil)
     notify(:show_options, options, message)
   end
@@ -47,6 +55,12 @@ class Reporter
       listener.send(message, *args)
     end
     nil
+  end
+
+  def ask(question)
+    askable_listener = @listeners.find { |l| l.respond_to?(:ask) }
+    return nil if askable_listener.nil?
+    return askable_listener.ask(question)
   end
 end
 

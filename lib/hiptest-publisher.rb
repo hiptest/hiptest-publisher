@@ -86,12 +86,12 @@ module Hiptest
       @client.fetch_project_export
     rescue ClientError => err
       # This should not be an error that needs reporting to an exception monitoring app
-      puts err.message.yellow
+      reporter.show_error(err.message)
       if @exit_on_bad_arguments == false # means we are embedded in hiptest-publisher
         raise
       end
     rescue => err
-      puts I18n.t("errors.default").red
+      reporter.show_failure(I18n.t("errors.default"))
       reporter.dump_error(err)
     end
 
@@ -113,10 +113,8 @@ module Hiptest
       return true unless File.file?(path)
       return true if @cli_options.force_overwrite
 
-      if $stdout.isatty
-        STDOUT.print "\n"
-        STDOUT.print "[#{"?".yellow}] #{I18n.t('overwrite.ask_confirmation', path: path)}"
-        answer = $stdin.gets.chomp.downcase.strip
+      if $stdout.tty?
+        answer = reporter.ask(I18n.t('overwrite.ask_confirmation', path: path))
         return ['y', 'yes'].include?(answer)
       else
         reporter.warning_message(I18n.t('overwrite.warning_message', path: path))
