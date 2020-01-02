@@ -148,6 +148,7 @@ Specific options:
         --not-recursive              Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children (default: false)
         --check-version              Check if a new release of hiptest-publisher is available (default: false)
         --force                      Force overwrite of existing files (do not apply to test files) (default: false)
+        --[no-]color                 Force [un]use of ANSI color in text output
     -v, --verbose                    Run verbosely (default: false)
     -H, --languages-help             Show languages and framework options
     -h, --help                       Show this message
