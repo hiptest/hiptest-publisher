@@ -113,7 +113,7 @@ module Hiptest
       return true unless File.file?(path)
       return true if @cli_options.force_overwrite
 
-      if $stdout.isatty
+      if $stdout.tty?
         answer = reporter.ask(I18n.t('overwrite.ask_confirmation', path: path))
         return ['y', 'yes'].include?(answer)
       else

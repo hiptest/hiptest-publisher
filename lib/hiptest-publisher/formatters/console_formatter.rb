@@ -62,7 +62,7 @@ class ConsoleFormatter
       @immediate_verbose = true
       cursor_offset = ""
     else
-      return unless $stdout.isatty
+      return unless $stdout.tty?
       rows, columns = IO.console.winsize
       return if columns == 0
       @immediate_verbose = false
@@ -79,7 +79,7 @@ class ConsoleFormatter
   end
 
   def ask(question)
-    return unless $stdout.isatty
+    return unless $stdout.tty?
     STDOUT.print "[#{colorize('?', :yellow)}] #{question}"
     return $stdin.gets.chomp.downcase.strip
   end

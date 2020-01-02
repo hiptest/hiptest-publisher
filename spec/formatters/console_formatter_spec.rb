@@ -15,7 +15,7 @@ describe ConsoleFormatter do
 
     context "is a tty" do
       before do
-        allow($stdout).to receive(:isatty).and_return(true)
+        allow($stdout).to receive(:tty?).and_return(true)
         allow(IO.console).to receive(:winsize).and_return([80, 25])
       end
 
@@ -37,7 +37,7 @@ describe ConsoleFormatter do
 
     context "not a tty" do
       before do
-        allow($stdout).to receive(:isatty).and_return(false)
+        allow($stdout).to receive(:tty?).and_return(false)
       end
 
       it 'does not output anything if no status' do
@@ -98,7 +98,7 @@ describe ConsoleFormatter do
 
       context 'when inside a #show_status_message' do
         before do
-          allow($stdout).to receive(:isatty).and_return(true)
+          allow($stdout).to receive(:tty?).and_return(true)
           allow(IO.console).to receive(:winsize).and_return([80, 25])
         end
 
@@ -180,7 +180,7 @@ describe ConsoleFormatter do
 
     context "is a tty" do
       before do
-        allow($stdout).to receive(:isatty).and_return(true)
+        allow($stdout).to receive(:tty?).and_return(true)
         allow($stdin).to receive(:gets).and_return('')
       end
 
@@ -206,7 +206,7 @@ describe ConsoleFormatter do
 
     context "not a tty" do
       before do
-        allow($stdout).to receive(:isatty).and_return(false)
+        allow($stdout).to receive(:tty?).and_return(false)
       end
 
       it 'returns nil' do

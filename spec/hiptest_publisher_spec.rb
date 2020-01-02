@@ -476,7 +476,7 @@ describe Hiptest::Publisher do
     describe "Overwriting existing files" do
       context 'when no tty is available' do
         before(:each) do
-          allow($stdout).to receive(:isatty).and_return(false)
+          allow($stdout).to receive(:tty?).and_return(false)
         end
 
         it 'skips actionwords file generation and displays a warning' do
@@ -516,7 +516,7 @@ describe Hiptest::Publisher do
 
       context 'when a tty is available' do
         before(:each) do
-          allow($stdout).to receive(:isatty).and_return(true)
+          allow($stdout).to receive(:tty?).and_return(true)
         end
 
         context 'asks user about overwriting action words file' do

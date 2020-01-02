@@ -58,9 +58,9 @@ class Reporter
   end
 
   def ask(question)
-    implementing = @listeners.select { |l| l.respond_to?(:ask) }
-    return nil if implementing.empty?
-    return implementing.first.ask(question)
+    askable_listener = @listeners.find { |l| l.respond_to?(:ask) }
+    return nil if askable_listener.nil?
+    return askable_listener.ask(question)
   end
 end
 
