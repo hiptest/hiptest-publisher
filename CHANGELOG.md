@@ -4,7 +4,9 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+ - Do not try to colorize output when not in a `tty`
+
+ - Add `--[no-]color` option to allow disabling colored output
 
 [2.0.0]
 -------
