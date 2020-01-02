@@ -5,9 +5,9 @@ require 'hiptest-publisher/utils'
 class ConsoleFormatter
   attr_reader :verbose
 
-  def initialize(verbose, color: true)
+  def initialize(verbose, color: nil)
     @verbose = verbose
-    @color = color
+    @color = color.nil? ? tty? : color
     @immediate_verbose = true
     @verbose_messages = []
   end
@@ -62,7 +62,7 @@ class ConsoleFormatter
       @immediate_verbose = true
       cursor_offset = ""
     else
-      return unless $stdout.tty?
+      return unless tty?
       rows, columns = IO.console.winsize
       return if columns == 0
       @immediate_verbose = false
@@ -79,14 +79,22 @@ class ConsoleFormatter
   end
 
   def ask(question)
-    return unless $stdout.tty?
+    return unless tty?
     STDOUT.print "[#{colorize('?', :yellow)}] #{question}"
     return $stdin.gets.chomp.downcase.strip
   end
 
+  def colored?
+    @color
+  end
+
   private
 
+  def tty?
+    $stdout.tty?
+  end
+
   def colorize(txt, color)
-    @color ? txt.send(color) : txt
+    colored? ? txt.send(color) : txt
   end
 end

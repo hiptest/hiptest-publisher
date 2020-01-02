@@ -4,7 +4,7 @@ require_relative '../../lib/hiptest-publisher/formatters/console_formatter'
 describe ConsoleFormatter do
 
   let(:verbose) { false }
-  let(:color) { true }
+  let(:color) { nil }
   subject(:console_formatter) { ConsoleFormatter.new(verbose, color: color) }
 
   describe 'show_status_message' do
@@ -13,10 +13,14 @@ describe ConsoleFormatter do
       allow(STDERR).to receive(:print)
     end
 
-    context "is a tty" do
+    context "when is a tty" do
       before do
         allow($stdout).to receive(:tty?).and_return(true)
         allow(IO.console).to receive(:winsize).and_return([80, 25])
+      end
+
+      it 'is colored by default' do
+        expect(console_formatter.colored?).to be true
       end
 
       it 'sends a message on STDOUT with brackets before' do
@@ -35,9 +39,13 @@ describe ConsoleFormatter do
       end
     end
 
-    context "not a tty" do
+    context "when not a tty" do
       before do
         allow($stdout).to receive(:tty?).and_return(false)
+      end
+
+      it 'is not colored by default' do
+        expect(console_formatter.colored?).to be false
       end
 
       it 'does not output anything if no status' do
@@ -47,7 +55,7 @@ describe ConsoleFormatter do
 
       it 'outputs normally if status' do
         console_formatter.show_status_message('My message', :success)
-        expect(STDOUT).to have_received(:print).with("[#{"v".green}] My message\n").once
+        expect(STDOUT).to have_received(:print).with("[v] My message\n").once
       end
     end
 
@@ -78,6 +86,18 @@ describe ConsoleFormatter do
       it 'if status is :failure, it adds an "x" checkbox and sends to STDERR with a new line character' do
         console_formatter.show_status_message('My message', :failure)
         expect(STDERR).to have_received(:print).with("[x] My message\n").once
+      end
+    end
+
+    context 'with colors forced while not a tty' do
+      let(:color) { true }
+
+      before do
+        allow($stdout).to receive(:tty?).and_return(false)
+      end
+
+      it 'is colored' do
+        expect(console_formatter.colored?).to be true
       end
     end
   end

@@ -168,7 +168,7 @@ en:
     aw_renamed: Output signatures of renamed action words
     aw_signature_changed: Output signatures of action words for which signature changed
     check_version: Check if a new release of hiptest-publisher is available
-    color: Use colors in console output
+    color: Force [un]use of ANSI color in text output
     config: Configuration file
     empty_folders: Export empty folders
     execution_environment: Name of the execution environment
