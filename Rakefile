@@ -62,8 +62,8 @@ end
 
 task default: :test
 
-Rake::Task["release"].clear
-task :release do
+Rake::Task["do_release"].clear
+task :do_release do
   version = File.open('VERSION').read
 
   if File.readlines("CHANGELOG.md").grep(/Nothing changed yet/).size > 0
@@ -75,16 +75,11 @@ task :release do
   Rake::Task["prerelease_changelog_update"].invoke
   `git commit CHANGELOG.md -m "Update changelog before release #{version}"`
 
-  Rake::Task["juwelier_release"].invoke
-  Rake::Task["git:release"].invoke
+  Rake::Task["release"].invoke
 
   Rake::Task["postrelease_changelog_update"].invoke
   `git commit CHANGELOG.md -m "Update changelog after release #{version}"`
   `git push`
-end
-
-task :juwelier_release => [:gemspec, :build] do
-  Rake.application.juwelier.release_gem_to_rubygems
 end
 
 task :prerelease_changelog_update do

@@ -7,7 +7,7 @@ To make a new release:
 
 ```shell
 rake version:bump:minor # Replace minor by major or patch, dependending on the type of release
-rake release
+rake do_release
 ```
 
 This will handle tagging, building the gem and pushing it to RubyGems.
