@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[2.1.0]
+-------
 
  - Do not try to colorize output when not in a `tty`
 
@@ -217,7 +217,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v2.0.0...master
+[2.1.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.0.0...v2.1.0
 [2.0.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.31.0...v2.0.0
 [1.31.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.30.0...v1.31.0
 [1.30.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.29.2...v1.30.0
