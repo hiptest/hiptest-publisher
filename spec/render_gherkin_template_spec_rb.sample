@@ -16,6 +16,7 @@ describe '<your language> rendering' do
     #  - an untrimed action word
     #  - the "(.*)" of "(.*)" is weird "(.*)" "(.*)"
     #  - I login on "(.*)" "(.*)"
+    #  - I have some "(.*)"
 
     let(:rendered_actionwords) { [].join("\n") }
 

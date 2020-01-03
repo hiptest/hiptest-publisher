@@ -85,6 +85,13 @@ describe 'Behat rendering' do
         '  public function iLoginOn($site, $username){',
         '    $this->actionwords->iLoginOn($site, $username);',
         '  }',
+        '',
+        '  /**',
+        '   * @Given /^I have some "(.*)"$/',
+        '   */',
+        '  public function iHaveSomeNumber($number){',
+        '    $this->actionwords->iHaveSomeNumber($number);',
+        '  }',
         '}',
         '?>'
       ].join("\n")

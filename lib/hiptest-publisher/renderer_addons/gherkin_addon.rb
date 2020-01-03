@@ -14,6 +14,14 @@ module Hiptest
       super(call)
     end
 
+    def walk_actionword(aw)
+      parameters = aw.children[:parameters]
+      aw.chunks = replace_parameter_value_with_type(aw.chunks, parameters)
+      aw.extra_inlined_parameters = replace_parameter_value_with_type(aw.extra_inlined_parameters, parameters)
+
+      super(aw)
+    end
+
     def walk_folder(folder)
       @rendered_children[:ancestor_tags] = ancestor_tags(folder)
 
@@ -33,6 +41,19 @@ module Hiptest
     def ancestor_tags(folder)
       ancestor_tags = folder.ancestors.map { |f| f.children[:tags] }.flatten.uniq
       ancestor_tags.map { |t| Hiptest::Renderer.render(t, @context) }
+    end
+
+    def replace_parameter_value_with_type(collection, parameters)
+      collection.map do |obj|
+        if obj[:is_parameter]
+          parameter = parameters.find { |parameter| parameter.children[:name] == obj[:name] }
+          obj[:typed_value] = parameter ? "{#{parameter.type.downcase}}" : "{}"
+        else
+          obj[:typed_value] = obj[:value]
+        end
+
+        obj
+      end
     end
   end
 end

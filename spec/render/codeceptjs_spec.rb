@@ -63,6 +63,10 @@ describe 'Cucumber/Javascript rendering' do
         '    return actionwords.iLoginOn(site, username);',
         '});',
         '',
+        'Given(/^I have some "(.*)"$/, function (number) {',
+        '    return actionwords.iHaveSomeNumber(number);',
+        '});',
+        '',
         ''        
       ].join("\n")
     }

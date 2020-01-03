@@ -46,6 +46,10 @@ describe 'Cucumber/Ruby rendering' do
         "Given /^I login on \"(.*)\" \"(.*)\"$/ do |site, username|",
         "  i_login_on(site, username)",
         "end",
+        "",
+        "Given /^I have some \"(.*)\"$/ do |number|",
+        "  i_have_some_number(number)",
+        "end",
         ""
       ].join("\n")
     }
@@ -142,6 +146,11 @@ describe 'Cucumber/Java rendering' do
         '    @Given("^I login on \"(.*)\" \"(.*)\"$")',
         '    public void iLoginOn(String site, String username) {',
         '        actionwords.iLoginOn(site, username);',
+        '    }',
+        '',
+        '    @Given("^I have some \"(.*)\"$")',
+        '    public void iHaveSomeNumber(int number) {',
+        '        actionwords.iHaveSomeNumber(number);',
         '    }',
         '}'
       ].join("\n")
@@ -295,6 +304,11 @@ describe 'Cucumber/Javascript rendering' do
         '        this.actionwords.iLoginOn(site, username);',
         '        callback();',
         '    });',
+        '',
+        '    this.Given(/^I have some "(.*)"$/, function (number, callback) {',
+        '        this.actionwords.iHaveSomeNumber(number);',
+        '        callback();',
+        '    });',
         '}',
         ''
       ].join("\n")
@@ -379,6 +393,10 @@ describe 'Cucumber/TypeScript rendering' do
         '',
         'Given(/^I login on "(.*)" "(.*)"$/, async (site, username) => {',
         '    actionWords.iLoginOn(site, username);',
+        '});',
+        '',
+        'Given(/^I have some "(.*)"$/, async (number) => {',
+        '    actionWords.iHaveSomeNumber(number);',
         '});',
         ''
       ].join("\n")
@@ -571,6 +589,10 @@ describe 'Cucumber/Groovy rendering' do
         '',
         'Given(~"^I login on \"(.*)\" \"(.*)\"\$") { String site, String username ->',
         '    actionwords.iLoginOn(site, username)',
+        '}',
+        '',
+        'Given(~"^I have some \"(.*)\"\$") { int number ->',
+        '    actionwords.iHaveSomeNumber(number)',
         '}',
         '',
         ''
