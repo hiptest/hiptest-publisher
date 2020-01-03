@@ -62,7 +62,6 @@ end
 
 task default: :test
 
-Rake::Task["do_release"].clear
 task :do_release do
   version = File.open('VERSION').read
 
