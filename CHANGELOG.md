@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Add support for Cucumber expressions w/ Typescript ([#173](https://github.com/hiptest/hiptest-publisher/pull/173) [tenpaiyomi])
+ - Add support for Cucumber expressions w/ Typescript ([#173](https://github.com/hiptest/hiptest-publisher/pull/173) [#184](https://github.com/hiptest/hiptest-publisher/pull/184) [tenpaiyomi])
 
 [2.1.0]
 -------
