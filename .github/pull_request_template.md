@@ -5,7 +5,7 @@ A link to the issue (for bugfixes) or a description of the new feature.
 ## Type of change
 
 - [ ] Breaking change (loosing support of old ruby versions, incompatibility with previous templates or config files)
-- [ ] New functionnality
+- [ ] New functionality
 - [ ] Bug fix
 
 ## Checklist:
