@@ -341,7 +341,7 @@ describe 'Render as Groovy' do
 
     @scenario_with_datatable_rendered = [
       '',
-      '@Unroll("check login #hiptestUid")',
+      '@Unroll("check login")',
       'def "check login"() {',
       '  // Ensure the login process',
       '',
@@ -353,10 +353,10 @@ describe 'Render as Groovy' do
       '  actionwords.assertErrorIsDisplayed(expected)',
       '',
       '  where:',
-      '  login | password | expected | hiptestUid',
-      '  "invalid" | "invalid" | "Invalid username or password" | "uid:"',
-      '  "valid" | "invalid" | "Invalid username or password" | "uid:"',
-      '  "valid" | "valid" | null | "uid:"',
+      '  login | password | expected',
+      '  "invalid" | "invalid" | "Invalid username or password"',
+      '  "valid" | "invalid" | "Invalid username or password"',
+      '  "valid" | "valid" | null',
       '}'
     ].join("\n")
 
@@ -392,7 +392,7 @@ describe 'Render as Groovy' do
       '  def actionwords = Actionwords.newInstance()',
       '',
       '',
-      '  @Unroll("check login #hiptestUid")',
+      '  @Unroll("check login")',
       '  def "check login"() {',
       '    // Ensure the login process',
       '',
@@ -404,10 +404,10 @@ describe 'Render as Groovy' do
       '    actionwords.assertErrorIsDisplayed(expected)',
       '',
       '    where:',
-      '    login | password | expected | hiptestUid',
-      '    "invalid" | "invalid" | "Invalid username or password" | "uid:"',
-      '    "valid" | "invalid" | "Invalid username or password" | "uid:"',
-      '    "valid" | "valid" | null | "uid:"',
+      '    login | password | expected',
+      '    "invalid" | "invalid" | "Invalid username or password"',
+      '    "valid" | "invalid" | "Invalid username or password"',
+      '    "valid" | "valid" | null',
       '  }',
       '}'
     ].join("\n")
@@ -654,6 +654,7 @@ describe 'Render as Groovy' do
         # only to select the right config group: we render [actionwords], [tests] and others differently
         language: 'groovy',
         framework: 'spock',
+        uids: true,
         with_folders: true)
 
       expect(container.render(render_context)).to eq([
@@ -857,6 +858,7 @@ describe 'Render as Groovy' do
           # only to select the right config group: we render [actionwords], [tests] and others differently
           language: 'groovy',
           framework: 'spock',
+          uids: true,
           with_folders: true)
 
       expect(container.render(render_context)).to eq([
@@ -898,6 +900,57 @@ describe 'Render as Groovy' do
         '    x | y | hiptestUid',
         '    "1" | "2" | "uid:"',
         '    "3" | "4" | "uid:"',
+        '  }',
+        '}',
+      ].join("\n"))
+
+      render_context_without_uids = context_for(
+          node: container,
+          # only to select the right config group: we render [actionwords], [tests] and others differently
+          language: 'groovy',
+          framework: 'spock',
+          uids: false,
+          with_folders: true)
+
+      expect(container.render(render_context_without_uids)).to eq([
+        'package com.example',
+        '',
+        'import spock.lang.*',
+        '',
+        'class SpockUnrollVariantsSpec extends Specification {',
+        '  def actionwords = Actionwords.newInstance()',
+        '',
+        '',
+        '',
+        '',
+        '  @Unroll("When-Then Scenario")',
+        '  def "When-Then Scenario"() {',
+        '',
+        '    given:',
+        '    actionwords.goToPage()',
+        '    when:',
+        '    actionwords.someTrigger()',
+        '    then:',
+        '    actionwords.thePageContainsSomething()',
+        '',
+        '    where:',
+        '    x | y',
+        '    "1" | "2"',
+        '    "3" | "4"',
+        '  }',
+        '',
+        '  @Unroll("Expect Scenario")',
+        '  def "Expect Scenario"() {',
+        '',
+        '    given:',
+        '    actionwords.goToPage()',
+        '    expect:',
+        '    actionwords.thePageContainsSomething()',
+        '',
+        '    where:',
+        '    x | y',
+        '    "1" | "2"',
+        '    "3" | "4"',
         '  }',
         '}',
       ].join("\n"))
