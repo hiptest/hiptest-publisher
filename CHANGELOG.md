@@ -4,7 +4,7 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - No test uids in datatables by default for feature files, add them when test run is used
+ - No test uids in datatables by default for feature files, add them when test run is used (#201)
 
 [2.2.0]
 -------
