@@ -1,8 +1,8 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[2.3.0]
+-------
 
  - No test uids in datatables by default for feature files, add them when test run is used (#201)
 
@@ -227,7 +227,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v2.2.0...master
+[2.3.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.2.0...v2.3.0
 [2.2.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.1.0...v2.2.0
 [2.1.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.0.0...v2.1.0
 [2.0.0]:     https://github.com/hiptest/hiptest-publisher/compare/v1.31.0...v2.0.0
