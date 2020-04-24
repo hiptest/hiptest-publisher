@@ -206,7 +206,7 @@ en:
     test_run_name: Export data from a test run identified by its name
     tests_only: "(deprecated) alias for --only=tests"
     token: Secret token (available in your project settings)
-    uids: 'Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back)'
+    uids: 'Export UIDs for Gherkin-based exports (note: disabled by default, enabled when specifying test run, disabling it may cause issue when pushing results back into test run)'
     verbose: Run verbosely
     with_dataset_names: 'Export dataset name when creating feature files (note: available only for Gherkin-based exports)'
     with_folders: Use folders hierarchy to export files in respective directories

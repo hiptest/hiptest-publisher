@@ -114,6 +114,10 @@ class CliOptions < OpenStruct
     option_present?(test_run_name)
   end
 
+  def test_run?
+    test_run_id? || test_run_name?
+  end
+
   def language_framework
     if framework.empty?
       language
@@ -132,10 +136,15 @@ class CliOptions < OpenStruct
       "--#{key.to_s.gsub('_', '-')}=#{self[key]}"
     end.compact
 
-    return "hiptest-publisher #{args.join(' ')}".strip
+    "hiptest-publisher #{args.join(' ')}".strip
+  end
+
+  def uids_not_set_yet?
+    !__cli_args.include?(:uids) && !__config_args.include?(:uids)
   end
 
   def normalize!(reporter = nil)
+    self.uids = true if test_run? && uids_not_set_yet?
     self.no_uids = !uids # silent normalization
     modified_options = self.clone
     if actionwords_only
@@ -249,7 +258,7 @@ class OptionsParser
       Option.new(nil, 'push-format=tap', 'tap', String, I18n.t('options.push_format'), :push_format),
       Option.new(nil, 'execution-environment=NAME', '', String, I18n.t('options.execution_environment'), :execution_environment),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, I18n.t('options.sort'), :sort),
-      Option.new(nil, '[no-]uids', true, nil, I18n.t('options.uids'), :uids),
+      Option.new(nil, '[no-]uids', false, nil, I18n.t('options.uids'), :uids),
       Option.new(nil, '[no-]parent-folder-tags', true, nil, I18n.t('options.parent_folder_tags'), :parent_folder_tags),
       Option.new(nil, 'parameter-delimiter=DELIMITER', '"', EmptiableString, I18n.t('options.parameter_delimiter'), :parameter_delimiter),
       Option.new(nil, 'with-dataset-names', false, nil, I18n.t('options.with_dataset_names'), :with_dataset_names),

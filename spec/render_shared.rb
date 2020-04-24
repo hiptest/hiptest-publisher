@@ -362,6 +362,7 @@ shared_context "shared render" do
       framework: framework,
       split_scenarios: split_scenarios,
       with_folders: with_folders,
+      uids: uids,
       namespace: namespace,
       package: package)
     node.render(@context)
@@ -372,6 +373,7 @@ shared_examples "a renderer" do
 
   let(:split_scenarios) {nil}
   let(:with_folders) {nil}
+  let(:uids) {nil}
   let(:package) {nil} # only used for Java
   let(:namespace) {nil} # only used for C#
 
@@ -528,18 +530,22 @@ shared_examples "a renderer" do
         end
       end
 
-      it 'the UID is displayed in the name if set' do
-        @full_scenario.set_uid('abcd-1234')
-        expect(rendering(@full_scenario)).to eq(@full_scenario_with_uid_rendered)
-      end
+      context 'when uids option is set' do
+        let(:uids) { true }
 
-      it 'when the test snapshot uid is set at the dataset level, it is rendered in the dataset export name' do
-        uids = ['a-123', 'b-456', 'c-789']
-        @scenario_with_datatable.children[:datatable].children[:datasets].each_with_index do |dataset, index|
-          dataset.set_test_snapshot_uid(uids[index])
+        it 'the UID is displayed in the name if set' do
+          @full_scenario.set_uid('abcd-1234')
+          expect(rendering(@full_scenario)).to eq(@full_scenario_with_uid_rendered)
         end
 
-        expect(rendering(@scenario_with_datatable)).to eq(@scenario_with_datatable_rendered_with_uids)
+        it 'when the test snapshot uid is set at the dataset level, it is rendered in the dataset export name' do
+          uids = ['a-123', 'b-456', 'c-789']
+          @scenario_with_datatable.children[:datatable].children[:datasets].each_with_index do |dataset, index|
+            dataset.set_test_snapshot_uid(uids[index])
+          end
+
+          expect(rendering(@scenario_with_datatable)).to eq(@scenario_with_datatable_rendered_with_uids)
+        end
       end
 
       it 'shows BDD annotations when present' do
@@ -673,6 +679,7 @@ shared_examples "a renderer handling libraries" do
 
   let(:split_scenarios) {false}
   let(:with_folders) {false}
+  let(:uids) {nil}
   let(:namespace) {nil}
   let(:package) {nil}
 
@@ -713,7 +720,6 @@ shared_examples "a renderer handling libraries" do
 end
 
 shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
-
   include HelperFactories
 
   # Note: we do not want to test everything as we'll only render
@@ -722,7 +728,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   let(:language) {""}
   let(:framework) {""}
 
-  let(:outline_title_ending) {uid_should_be_in_outline ? ' (<hiptest-uid>)' : ''}
+  let(:outline_title_ending) { uids && uid_should_be_in_outline ? ' (<hiptest-uid>)' : '' }
 
   let(:root_folder) {make_folder("Colors")}
   let(:warm_colors_folder) {make_folder("Warm colors", parent: root_folder)}
@@ -1134,12 +1140,14 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   }
 
   let(:features_option_name) {"features"}
+  let(:uids) { nil }
 
   let(:options) {
     context_for(
       only: features_option_name,
       language: language,
-      framework: framework
+      framework: framework,
+      uids: uids
     )
   }
 
@@ -1271,7 +1279,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   let(:scenario_with_datatable_rendered) {
     [
       "",
-      "Scenario Outline: Create secondary colors#{outline_title_ending}",
+      "Scenario Outline: Create secondary colors",
       "  This scenario has a datatable and a description",
       "  Given the color \"<first_color>\"",
       "  And the color \"<second_color>\"",
@@ -1279,10 +1287,10 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       "  Then you obtain \"<got_color>\"",
       "",
       "  Examples:",
-      "    | first_color | second_color | got_color | priority | hiptest-uid |",
-      "    | blue | yellow | green | -1 |  |",
-      "    | yellow | red | orange | 1 |  |",
-      "    | red | blue | purple | true |  |",
+      "    | first_color | second_color | got_color | priority |",
+      "    | blue | yellow | green | -1 |",
+      "    | yellow | red | orange | 1 |",
+      "    | red | blue | purple | true |",
       "",
     ].join("\n")
   }
@@ -1298,10 +1306,10 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       "  Then you obtain \"<got_color>\"",
       "",
       "  Examples:",
-      "    | dataset name | first_color | second_color | got_color | priority | hiptest-uid |",
-      "    | Mix to green | blue | yellow | green | -1 |  |",
-      "    | Mix to orange | yellow | red | orange | 1 |  |",
-      "    | Mix to purple | red | blue | purple | true |  |",
+      "    | dataset name | first_color | second_color | got_color | priority |",
+      "    | Mix to green | blue | yellow | green | -1 |",
+      "    | Mix to orange | yellow | red | orange | 1 |",
+      "    | Mix to purple | red | blue | purple | true |",
       "",
     ].join("\n")
   }
@@ -1375,7 +1383,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   let(:scenario_using_variables_in_step_datatables_rendered) {
     [
       '',
-      "Scenario Outline: Check users#{outline_title_ending}",
+      "Scenario Outline: Check users",
       '  When I login as',
       '    | <username> |',
       '  Then I am logged in as',
@@ -1384,8 +1392,8 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       '    """',
       '',
       '  Examples:',
-      '    | username | hiptest-uid |',
-      '    | user@example.com |  |',
+      '    | username |',
+      '    | user@example.com |',
       ''
     ].join("\n")
   }
@@ -1393,13 +1401,13 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   let(:scenario_with_double_quotes_in_datatable_rendered) {
     [
       '',
-      "Scenario Outline: Double quote in datatable#{outline_title_ending}",
+      "Scenario Outline: Double quote in datatable",
       '  Given the color "<color_definition>"',
       '',
       '  Examples:',
-      '    | color_definition | hiptest-uid |',
-      '    | {"html": ["#008000", "#50D050"]} |  |',
-      '    | {"html": ["#D14FD1"]} |  |',
+      '    | color_definition |',
+      '    | {"html": ["#008000", "#50D050"]} |',
+      '    | {"html": ["#D14FD1"]} |',
       ''
     ].join("\n")
   }
@@ -1407,12 +1415,12 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   let(:scenario_with_capital_parameters_rendered) {
     [
       '',
-      "Scenario Outline: Validate Nav#{outline_title_ending}",
+      "Scenario Outline: Validate Nav",
       '  Given I am on the "<SITE_NAME>" home page',
       '',
       '  Examples:',
-      '    | SITE_NAME | hiptest-uid |',
-      '    | http://google.com |  |',
+      '    | SITE_NAME |',
+      '    | http://google.com |',
       ''
     ].join("\n")
   }
@@ -1420,17 +1428,17 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
   let(:scenario_with_incomplete_datatable_rendered) {
     [
       '',
-      "Scenario Outline: Incomplete datatable#{outline_title_ending}",
+      "Scenario Outline: Incomplete datatable",
       '  Given the color "<first_color>"',
       '  And the color "<second_color>"',
       '  When you mix colors',
       '  Then you obtain "<got_color>"',
       '',
       '  Examples:',
-      '    | first_color | second_color | got_color | hiptest-uid |',
-      '    | blue | yellow | green |  |',
-      '    | yellow | red |  |  |',
-      '    | red |  |  |  |',
+      '    | first_color | second_color | got_color |',
+      '    | blue | yellow | green |',
+      '    | yellow | red |  |',
+      '    | red |  |  |',
       ''
     ].join("\n")
   }
@@ -1453,7 +1461,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     ].join("\n")
   }
 
-  let(:feature_rendered_with_option_no_uid) {
+  let(:feature_rendered_with_option_no_uids) {
     [
       "",
       "Scenario Outline: Create secondary colors",
@@ -1472,7 +1480,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
     ].join("\n")
   }
 
-  let(:scenario_rendered_with_option_no_uid) {
+  let(:scenario_rendered_with_option_no_uids) {
     [
       "",
       "Scenario: Create secondary colors",
@@ -1538,7 +1546,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       '    Given I have colors to mix',
       '    And I know the expected color',
       '',
-      "  Scenario Outline: Create secondary colors#{outline_title_ending}",
+      "  Scenario Outline: Create secondary colors",
       '    This scenario has a datatable and a description',
       '    Given the color "<first_color>"',
       '    And the color "<second_color>"',
@@ -1546,10 +1554,10 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       '    Then you obtain "<got_color>"',
       '',
       '    Examples:',
-      '      | first_color | second_color | got_color | priority | hiptest-uid |',
-      '      | blue | yellow | green | -1 |  |',
-      '      | yellow | red | orange | 1 |  |',
-      '      | red | blue | purple | true |  |',
+      '      | first_color | second_color | got_color | priority |',
+      '      | blue | yellow | green | -1 |',
+      '      | yellow | red | orange | 1 |',
+      '      | red | blue | purple | true |',
       ''
     ].join("\n")
   }
@@ -1604,10 +1612,24 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       expect(rendered).to eq(scenario_rendered)
     end
 
-    it 'appends the UID if known' do
-      scenario.children[:uid] = '1234-4567'
+    context 'when uids is set' do
+      let(:uids) { true }
 
-      expect(rendered).to eq(scenario_with_uid_rendered)
+      it 'appends the UID if known' do
+        scenario.children[:uid] = '1234-4567'
+
+        expect(rendered).to eq(scenario_with_uid_rendered)
+      end
+    end
+
+    context 'when uids is not set' do
+      let(:uids) { false }
+
+      it 'does not append the UID even if known' do
+        scenario.children[:uid] = '1234-4567'
+
+        expect(rendered).to eq(scenario_rendered)
+      end
     end
 
     context 'without annotated calls' do
@@ -1640,21 +1662,25 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         end
       end
 
-      context 'when UID is set on scenario and datasets' do
-        before do
-          scenario.children[:uid] = 'abcd-efgh'
-          datasets = scenario.children[:datatable].children[:datasets]
-          datasets.first.children[:test_snapshot_uid] = '1234'
-          datasets.last.children[:test_snapshot_uid] = '5678'
-        end
+      context 'when uids option is set' do
+        let(:uids) { true }
 
-        if uid_should_be_in_outline
-          it 'adds dataset UID in example table and a placeholder in outline title so they appear in output' do
-            expect(rendered).to eq(scenario_with_datatable_rendered_with_uids_in_outline)
+        context 'when UID is set on scenario and datasets' do
+          before do
+            scenario.children[:uid] = 'abcd-efgh'
+            datasets = scenario.children[:datatable].children[:datasets]
+            datasets.first.children[:test_snapshot_uid] = '1234'
+            datasets.last.children[:test_snapshot_uid] = '5678'
           end
-        else
-          it 'adds dataset UID in example table and the scenario UID in outline title' do
-            expect(rendered).to eq(scenario_with_datatable_rendered_with_uids)
+
+          if uid_should_be_in_outline
+            it 'adds dataset UID in example table and a placeholder in outline title so they appear in output' do
+              expect(rendered).to eq(scenario_with_datatable_rendered_with_uids_in_outline)
+            end
+          else
+            it 'adds dataset UID in example table and the scenario UID in outline title' do
+              expect(rendered).to eq(scenario_with_datatable_rendered_with_uids)
+            end
           end
         end
       end
@@ -1751,18 +1777,9 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       end
     end
 
-    context 'option no-uid' do
-      let(:options) {
-        context_for(
-          only: features_option_name,
-          language: language,
-          framework: framework,
-          uids: false,
-        )
-      }
-
+    context 'option no-uids' do
+      let(:uids) { false }
       let(:scenario) {create_secondary_colors_scenario}
-
 
       it 'does not export the hiptest-uid column, nor the scenario uid' do
         scenario.children[:uid] = 'abcd-efgh'
@@ -1770,14 +1787,14 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
         datasets.first.children[:uid] = '1234'
         datasets.last.children[:uid] = '5678'
 
-        expect(rendered).to eq(feature_rendered_with_option_no_uid)
+        expect(rendered).to eq(feature_rendered_with_option_no_uids)
       end
 
       it 'also works when scenario has no datatable' do
         scenario.children[:uid] = 'abcd-efgh'
         scenario.children[:datatable].children[:datasets] = []
 
-        expect(rendered).to eq(scenario_rendered_with_option_no_uid)
+        expect(rendered).to eq(scenario_rendered_with_option_no_uids)
       end
     end
 

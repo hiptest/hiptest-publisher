@@ -227,7 +227,7 @@ describe 'JBehave rendering' do
 
     let(:scenario_with_datatable_rendered) {
       [
-        "Scenario: Create secondary colors#{outline_title_ending}",
+        "Scenario: Create secondary colors",
         "This scenario has a datatable and a description",
         "Given the color \"<first_color>\"",
         "And the color \"<second_color>\"",
@@ -235,17 +235,17 @@ describe 'JBehave rendering' do
         "Then you obtain \"<got_color>\"",
         "",
         "Examples:",
-        "| first_color | second_color | got_color | priority | hiptest-uid |",
-        "| blue | yellow | green | -1 |  |",
-        "| yellow | red | orange | 1 |  |",
-        "| red | blue | purple | true |  |",
+        "| first_color | second_color | got_color | priority |",
+        "| blue | yellow | green | -1 |",
+        "| yellow | red | orange | 1 |",
+        "| red | blue | purple | true |",
         "",
       ].join("\n")
     }
 
     let(:scenario_with_datatable_and_dataset_names_rendered) {
       [
-        "Scenario: Create secondary colors#{outline_title_ending}",
+        "Scenario: Create secondary colors",
         "This scenario has a datatable and a description",
         "Given the color \"<first_color>\"",
         "And the color \"<second_color>\"",
@@ -253,10 +253,10 @@ describe 'JBehave rendering' do
         "Then you obtain \"<got_color>\"",
         "",
         "Examples:",
-        "| dataset name | first_color | second_color | got_color | priority | hiptest-uid |",
-        "| Mix to green | blue | yellow | green | -1 |  |",
-        "| Mix to orange | yellow | red | orange | 1 |  |",
-        "| Mix to purple | red | blue | purple | true |  |",
+        "| dataset name | first_color | second_color | got_color | priority |",
+        "| Mix to green | blue | yellow | green | -1 |",
+        "| Mix to orange | yellow | red | orange | 1 |",
+        "| Mix to purple | red | blue | purple | true |",
         "",
       ].join("\n")
     }
@@ -325,7 +325,7 @@ describe 'JBehave rendering' do
 
     let(:scenario_using_variables_in_step_datatables_rendered) {
       [
-        "Scenario: Check users#{outline_title_ending}",
+        "Scenario: Check users",
         'When I login as',
         '| <username> |',
         'Then I am logged in as',
@@ -334,50 +334,50 @@ describe 'JBehave rendering' do
         '"""',
         '',
         'Examples:',
-        '| username | hiptest-uid |',
-        '| user@example.com |  |',
+        '| username |',
+        '| user@example.com |',
         ''
       ].join("\n")
     }
 
     let(:scenario_with_double_quotes_in_datatable_rendered) {
       [
-        "Scenario: Double quote in datatable#{outline_title_ending}",
+        "Scenario: Double quote in datatable",
         'Given the color "<color_definition>"',
         '',
         'Examples:',
-        '| color_definition | hiptest-uid |',
-        '| {"html": ["#008000", "#50D050"]} |  |',
-        '| {"html": ["#D14FD1"]} |  |',
+        '| color_definition |',
+        '| {"html": ["#008000", "#50D050"]} |',
+        '| {"html": ["#D14FD1"]} |',
         ''
         ].join("\n")
     }
 
     let(:scenario_with_capital_parameters_rendered) {
       [
-        "Scenario: Validate Nav#{outline_title_ending}",
+        "Scenario: Validate Nav",
         'Given I am on the "<SITE_NAME>" home page',
         '',
         'Examples:',
-        '| SITE_NAME | hiptest-uid |',
-        '| http://google.com |  |',
+        '| SITE_NAME |',
+        '| http://google.com |',
         ''
         ].join("\n")
     }
 
     let(:scenario_with_incomplete_datatable_rendered) {
       [
-        "Scenario: Incomplete datatable#{outline_title_ending}",
+        "Scenario: Incomplete datatable",
         'Given the color "<first_color>"',
         'And the color "<second_color>"',
         'When you mix colors',
         'Then you obtain "<got_color>"',
         '',
         'Examples:',
-        '| first_color | second_color | got_color | hiptest-uid |',
-        '| blue | yellow | green |  |',
-        '| yellow | red |  |  |',
-        '| red |  |  |  |',
+        '| first_color | second_color | got_color |',
+        '| blue | yellow | green |',
+        '| yellow | red |  |',
+        '| red |  |  |',
         ''
         ].join("\n")
     }
@@ -439,7 +439,7 @@ describe 'JBehave rendering' do
       ].join("\n")
     }
 
-    let(:feature_rendered_with_option_no_uid) {
+    let(:feature_rendered_with_option_no_uids) {
       [
         "Scenario: Create secondary colors",
         "This scenario has a datatable and a description",
@@ -457,7 +457,7 @@ describe 'JBehave rendering' do
         ].join("\n")
     }
 
-    let(:scenario_rendered_with_option_no_uid) {
+    let(:scenario_rendered_with_option_no_uids) {
       [
         "Scenario: Create secondary colors",
         "This scenario has a datatable and a description",
@@ -480,7 +480,7 @@ describe 'JBehave rendering' do
         'Given I have colors to mix',
         'And I know the expected color',
         '',
-        "Scenario: Create secondary colors#{outline_title_ending}",
+        "Scenario: Create secondary colors",
         'This scenario has a datatable and a description',
         'Given the color "<first_color>"',
         'And the color "<second_color>"',
@@ -488,10 +488,10 @@ describe 'JBehave rendering' do
         'Then you obtain "<got_color>"',
         '',
         'Examples:',
-        '| first_color | second_color | got_color | priority | hiptest-uid |',
-        '| blue | yellow | green | -1 |  |',
-        '| yellow | red | orange | 1 |  |',
-        '| red | blue | purple | true |  |',
+        '| first_color | second_color | got_color | priority |',
+        '| blue | yellow | green | -1 |',
+        '| yellow | red | orange | 1 |',
+        '| red | blue | purple | true |',
         '',
         ''
         ].join("\n")

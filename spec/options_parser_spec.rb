@@ -104,6 +104,39 @@ describe OptionParser do
     options = OptionsParser.parse(["--no-uids"], NullReporter.new)
     expect(options.uids).to be(false)
   end
+
+  it "implies --uids if --test-run-name or test-run-id is set" do
+    options = OptionsParser.parse(["--test-run-name", "hello"], NullReporter.new)
+    expect(options.uids).to be(true)
+    expect(options.no_uids).to be(false)
+
+    options = OptionsParser.parse(["--test-run-id", "1234"], NullReporter.new)
+    expect(options.uids).to be(true)
+    expect(options.no_uids).to be(false)
+
+    options = OptionsParser.parse(["--with-folders"], NullReporter.new)
+    expect(options.uids).to be(false)
+    expect(options.no_uids).to be(true)
+  end
+
+  it "does not modify uids/no_uids if set explicitly via command line" do
+    options = OptionsParser.parse(["--no-uids", "--test-run-name", "hello"], NullReporter.new)
+    expect(options.uids).to be(false)
+
+    options = OptionsParser.parse(["--uids"], NullReporter.new)
+    expect(options.uids).to be(true)
+  end
+
+  it "does not modify uids/no_uids if set explicitly via config file" do
+    f = Tempfile.new('config')
+    File.write(f, "no_uids = true")
+    options = OptionsParser.parse(["--config-file", f.path, "--test-run-name", "hello"], Reporter.new([ErrorListener.new]))
+    expect(options.uids).to be_falsy
+
+    File.write(f, "uids = true")
+    options = OptionsParser.parse(["--config-file", f.path], NullReporter.new)
+    expect(options.uids).to be_truthy
+  end
 end
 
 describe CliOptions do
