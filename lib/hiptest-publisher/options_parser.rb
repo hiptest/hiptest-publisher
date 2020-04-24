@@ -139,12 +139,12 @@ class CliOptions < OpenStruct
     "hiptest-publisher #{args.join(' ')}".strip
   end
 
-  def uids?
-    __cli_args.include?(:uids) || __config_args.include?(:uids)
+  def uids_not_set_yet?
+    !__cli_args.include?(:uids) && !__config_args.include?(:uids)
   end
 
   def normalize!(reporter = nil)
-    self.uids = true if test_run? && !uids?
+    self.uids = true if test_run? && uids_not_set_yet?
     self.no_uids = !uids # silent normalization
     modified_options = self.clone
     if actionwords_only
