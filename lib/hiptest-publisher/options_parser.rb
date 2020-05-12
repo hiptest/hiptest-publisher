@@ -229,6 +229,7 @@ class OptionsParser
       Option.new(nil, 'filename-pattern=PATTERN', nil, String, I18n.t('options.filename_pattern'), :filename_pattern),
       Option.new('c', 'config-file=PATH', nil, String, I18n.t('options.config'), :config),
       Option.new(nil, 'overriden-templates=PATH', '', String, I18n.t('options.overriden_templates'), :overriden_templates),
+      Option.new(nil, 'overriden-language-configs=PATH', '', String, I18n.t('options.overriden_language_configs'), :overriden_language_configs),
       Option.new(nil, 'test-run-id=ID', '', String, I18n.t('options.test_run_id'), :test_run_id),
       Option.new(nil, 'test-run-name=NAME', '', String, I18n.t('options.test_run_name'), :test_run_name),
       Option.new(nil, 'only=CATEGORIES', nil, String, I18n.t('options.only'), :only),
@@ -382,6 +383,7 @@ class NodeRenderingContext
 
   def renderer_addons
     addons = @properties.renderer_addons || ""
+    
     addons.split.map do |addon_name|
       Hiptest.const_get(addon_name)
     end
@@ -389,11 +391,12 @@ class NodeRenderingContext
 end
 
 class TemplateFinder
-  attr_reader :template_dirs, :overriden_templates, :forced_templates, :fallback_template
+  attr_reader :template_dirs, :overriden_templates, :overriden_language_configs, :forced_templates, :fallback_template
 
   def initialize(
     template_dirs: nil,
     overriden_templates: nil,
+    overriden_language_configs: nil,
     indentation: '  ',
     forced_templates: nil,
     fallback_template: nil,
@@ -694,7 +697,21 @@ class LanguageConfigParser
                   else
                     "#{cli_options.language}-#{cli_options.framework}.conf"
                   end
-    config_path = File.expand_path("#{hiptest_publisher_path}/lib/config/#{config_name.downcase}")
+    config_path = "/lib/config/#{config_name.downcase}"
+    config_prefix = if !cli_options.overriden_language_configs.to_s.empty?
+                      # If the user has specified a overiden language config path, check it first. If the config
+                      # exists there, return that, otherwise fall back to the default setup and look for a config there.
+                      expanded = File.expand_path("#{cli_options.overriden_language_configs}/#{config_name.downcase}")
+
+                      # If the file exists in the path the user specified, set the config path to blank so we will be
+                      # looking in the exact path that the user requested. 
+                      if File.file?(expanded)
+                        config_path = ''
+                        expanded
+                      end
+                    end
+
+    config_path = File.expand_path("#{config_prefix || hiptest_publisher_path}#{config_path}")
 
     if !File.file?(config_path)
       if cli_options.framework.to_s.empty?
