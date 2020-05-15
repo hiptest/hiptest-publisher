@@ -59,12 +59,13 @@ This will create a Ruby tests suite. For the moment, we support the following la
  - Behave
  - CSharp (NUnit)
  - Cucumber (Groovy / Java / Javascript / Ruby / TypeScript)
+ - Cucumber 5 (Groovy / Java)
  - Cucumber Expressions (TypeScript)*
  - Groovy (Spock)
  - Java (Espresso / JUnit / TestNg)
  - JavaScript (CodeceptJS / Jasmine / Mocha / Protractor / QUnit)
  - JBehave
- - PHP (PHPUnit / UnitTest)
+ - PHP (PHPUnit)
  - Python (UnitTest)
  - Robot Framework
  - Ruby (MiniTest / RSpec)

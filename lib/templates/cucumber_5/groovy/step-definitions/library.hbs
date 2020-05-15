@@ -1,0 +1,11 @@
+package {{{ context.package }}}
+
+import io.cucumber.datatable.DataTable
+import io.cucumber.groovy.EN
+
+this.metaClass.mixin(EN)
+
+Actionwords {{{ context.call_prefix }}} = new Actionwords()
+
+{{#each rendered_children.library_actionwords as |actionword|}}{{{actionword}}}
+{{/each}}

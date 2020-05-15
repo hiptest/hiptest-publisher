@@ -1,0 +1,12 @@
+package {{{ context.package }}};
+
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.*;
+
+public class StepDefinitions {{#curly}}{{#indent}}
+public Actionwords {{{ context.call_prefix }}} = new Actionwords();
+
+{{#each rendered_children.actionwords as |actionword|}}{{{actionword}}}
+{{/each}}
+{{/indent}}
+{{/curly}}

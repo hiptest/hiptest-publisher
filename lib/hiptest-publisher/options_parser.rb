@@ -203,6 +203,7 @@ class OptionsParser
     {
       'Ruby' => ['Rspec', 'MiniTest'],
       'Cucumber' => ['Ruby', 'Java', 'Javascript', 'Groovy', 'TypeScript'],
+      'Cucumber_5' => ['Java', 'Groovy'],
       'Cucumber_Expressions' => ['TypeScript'],
       'Java' => ['JUnit', 'Test NG', 'Espresso'],
       'Python' => ['Unittest'],
@@ -210,7 +211,7 @@ class OptionsParser
       'Selenium IDE' => [''],
       'Javascript' => ['qUnit', 'Jasmine', 'Mocha', 'Protractor', 'CodeceptJS'],
       'CSharp' => ['NUnit'],
-      'PHP' => ['PHPUnit', 'UnitTest'],
+      'PHP' => ['PHPUnit'],
       'SpecFlow' => [''],
       'Behave' => [''],
       'Behat' => [''],
