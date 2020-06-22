@@ -275,7 +275,8 @@ class OptionsParser
       Option.new(nil, 'check-version', false, nil, I18n.t('options.check_version'), :check_version),
       Option.new(nil, 'force', false, nil, I18n.t('options.force_overwrite'), :force_overwrite),
       Option.new(nil, '[no-]color', nil, nil, I18n.t('options.color'), :color),
-      Option.new('v', 'verbose', false, nil, I18n.t('options.verbose'), :verbose)
+      Option.new('v', 'verbose', false, nil, I18n.t('options.verbose'), :verbose),
+      Option.new(nil, 'indentation=INDENTATION', nil, EmptiableString, I18n.t('options.indentation'), :indent)
     ]
   end
 
@@ -573,6 +574,7 @@ class LanguageGroupConfig
   end
 
   def indentation
+    return @user_params[:indent] unless @user_params[:indent].nil?
     @language_group_params[:indentation] || '  '
   end
 

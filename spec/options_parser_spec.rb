@@ -137,6 +137,12 @@ describe OptionParser do
     options = OptionsParser.parse(["--config-file", f.path], NullReporter.new)
     expect(options.uids).to be_truthy
   end
+
+  it 'recognizes the --indentation option with its value' do
+    options = OptionsParser.parse(["--indentation", "        "], Reporter.new([ErrorListener.new]))
+    expect(options.indent).to eq("        ")
+  end
+
 end
 
 describe CliOptions do

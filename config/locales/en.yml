@@ -214,6 +214,7 @@ en:
     xml_file: XML file to use instead of fetching it from HipTest
     cache_dir: "Path to the directory to store cache of Hiptest data"
     cache_duration: "Validity of the Hiptest data cache in seconds"
+    indentation: Customize indentation
   overwrite:
     ask_confirmation: 'File %{path} exists, do you want to overwrite it? [y/N] '
     warning_message: File %{path} already exists, skipping. Use --force to overwrite it.
