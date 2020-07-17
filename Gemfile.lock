@@ -62,7 +62,7 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
-    json (2.2.0)
+    json (2.3.1)
     juwelier (2.4.9)
       builder
       bundler
