@@ -9,7 +9,7 @@ HipTest Publisher Changelog
 [2.3.1]
 -------
 
- - `--indentation` option is now available to customize the indentation of the output
+ - `--indentation` option is now available to customize the indentation of the output ([#207](https://github.com/hiptest/hiptest-publisher/pull/207))
 
 [2.3.0]
 -------
