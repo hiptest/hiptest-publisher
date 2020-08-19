@@ -4,13 +4,8 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
-
-[2.3.1]
--------
-
  - `--indentation` option is now available to customize the indentation of the output
-
+ 
 [2.3.0]
 -------
 
