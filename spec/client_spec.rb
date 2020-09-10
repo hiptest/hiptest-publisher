@@ -364,6 +364,29 @@ describe Hiptest::Client do
     end
   end
 
+  describe '#fetch_async_project_export' do
+    context 'when the server does not support async project export' do
+      it 'raises an error' do
+        stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+            to_return(status: 404)
+        expect {
+          client.fetch_async_project_export
+        }.to raise_error(Hiptest::ClientError, "The async project export endpoint does not exist")
+      end
+    end
+
+    context 'when the server supports async project export' do
+      it 'fetches the project xml from HipTest server' do
+        sent_xml = "<xml_everywhere/>"
+        stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 202, :body => { "publication_export_id": 1 }.to_json)
+        stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
+            to_return(body: sent_xml)
+        got_xml = client.fetch_async_project_export
+        expect(got_xml).to eq(sent_xml)
+      end
+    end
+  end
+
   describe '#push_results' do
     let(:results_dir) { Dir.mktmpdir }
     let(:pushed_file) { "#{results_dir}/result.json" }

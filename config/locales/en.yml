@@ -129,6 +129,7 @@ en:
     project_not_found: No project found with this secret token.
     template_not_found: no template with name %{template_name} in dirs %{dirs}
     test_run_list_unavailable: Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name
+    async_project_endpoint_not_exists: The async project export endpoint does not exist
   exporting_file: Exporting %{name}
   fetching_data: Fetching data from HipTest
   using_cached_data: Using cached data from previous export

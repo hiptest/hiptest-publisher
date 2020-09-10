@@ -86,6 +86,46 @@ module Hiptest
       return "?filter_status=#{value}"
     end
 
+    def fetch_project
+      if cli_options.push? || test_run_id
+        fetch_project_export
+      else
+        begin
+          fetch_async_project_export
+        rescue ClientError
+          fetch_project_export
+        end
+      end
+    end
+
+    def available_test_runs
+      @available_test_runs ||= begin
+                                 response = send_get_request("#{base_publication_path}/test_runs")
+                                 if response.code_type == Net::HTTPNotFound
+                                   :api_not_available
+                                 else
+                                   json_response = JSON.parse(response.body)
+                                   json_response["test_runs"]
+                                 end
+                               end
+    end
+
+    def push_results
+      # Code from: https://github.com/nicksieger/multipart-post
+      uploaded = {}
+      Dir.glob(cli_options.push.gsub('\\', '/')).each do |filename|
+        uploaded["file-#{filename.normalize}"] = filename
+      end
+
+      if cli_options.global_failure_on_missing_reports && uploaded.empty?
+        return send_post_request(global_failure_url)
+      end
+
+      send_multipart_request(url, uploaded)
+    end
+
+    private
+
     def fetch_project_export
       cached = export_cache.cache_for(url)
 
@@ -108,33 +148,23 @@ module Hiptest
       end
     end
 
-    def available_test_runs
-      @available_test_runs ||= begin
-        response = send_get_request("#{base_publication_path}/test_runs")
+    def fetch_async_project_export
+      @reporter.with_status_message I18n.t(:fetching_data) do
+        post_async_url = "#{base_publication_path}/async_project#{project_export_filters}"
+        response = send_post_request(post_async_url)
+
         if response.code_type == Net::HTTPNotFound
-          :api_not_available
-        else
-          json_response = JSON.parse(response.body)
-          json_response["test_runs"]
+          raise ClientError, I18n.t('errors.async_project_endpoint_not_exists')
         end
+
+        publication_export_id = JSON.parse(response.body)['publication_export_id']
+
+        get_async_url = "#{base_publication_path}/async_project/#{publication_export_id}"
+        response = send_get_request_with_timeout(get_async_url, 900)
+
+        response.body
       end
     end
-
-    def push_results
-      # Code from: https://github.com/nicksieger/multipart-post
-      uploaded = {}
-      Dir.glob(cli_options.push.gsub('\\', '/')).each do |filename|
-        uploaded["file-#{filename.normalize}"] = filename
-      end
-
-      if cli_options.global_failure_on_missing_reports && uploaded.empty?
-        return send_post_request(global_failure_url)
-      end
-
-      send_multipart_request(url, uploaded)
-    end
-
-    private
 
     def export_cache
       @export_cache ||= ExportCache.new(
@@ -200,6 +230,16 @@ module Hiptest
       send_get_request(err.redirect, attempt - 1)
     end
 
+    def send_get_request_with_timeout(url, timeout, attempt = MAX_REDIRECTION)
+      raise MaximumRedirectionReachedError if attempt < 0
+
+      uri = URI.parse(url)
+      send_request(Net::HTTP::Get.new(uri), timeout)
+    rescue RedirectionError => err
+      binding.pry
+      return send_request(err.redirect)
+    end
+
     def send_post_request(url, attempt = MAX_REDIRECTION)
       raise MaximumRedirectionReachedError if attempt < 0
 
@@ -223,7 +263,7 @@ module Hiptest
       send_multipart_request(err.redirect, uploaded, attempt - 1)
     end
 
-    def send_request(request)
+    def send_request(request, timeout = nil)
       request["User-Agent"] = "Ruby/hiptest-publisher"
       use_ssl = request.uri.scheme == "https"
 
@@ -234,24 +274,26 @@ module Hiptest
         proxy_user, proxy_pass = proxy_uri.userinfo.split(':', 2) if proxy_uri.userinfo
       end
 
-      Net::HTTP.start(
-          request.uri.hostname, request.uri.port,
-          proxy_address, proxy_port, proxy_user, proxy_pass,
-          use_ssl: use_ssl,
-          verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
-        @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
-        response = http.request(request)
+      http = Net::HTTP.new(request.uri.hostname, request.uri.port,
+                           proxy_address, proxy_port, proxy_user, proxy_pass,
+                           use_ssl: use_ssl,
+                           verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+        http.read_timeout = timeout unless timeout.nil?
+      end.start
 
-        raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
-        response
-      end
+      @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
+
+      response = http.request(request)
+
+      raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
+      response
     end
 
     def find_proxy_uri(address, port)
       return URI.parse(@cli_options.http_proxy) if @cli_options.http_proxy
 
       URI::HTTP.new(
-        "http", nil, address, port, nil, nil, nil, nil, nil
+          "http", nil, address, port, nil, nil, nil, nil, nil
       ).find_proxy
     end
 
