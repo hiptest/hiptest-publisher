@@ -21,6 +21,18 @@ module Hiptest
     end
   end
 
+  class ProcessingError < StandardError
+    attr_reader :response
+
+    def initialize(msg, response)
+      @response = response
+      super(msg)
+    end
+  end
+
+  class AsyncExportEndPointNotExists < StandardError
+  end
+
   class MaximumRedirectionReachedError < StandardError
   end
 
@@ -87,12 +99,12 @@ module Hiptest
     end
 
     def fetch_project
-      if cli_options.push? || test_run_id
+      if cli_options.push? || cli_options.leafless_export || test_run_id
         fetch_project_export
       else
         begin
           fetch_async_project_export
-        rescue ClientError
+        rescue AsyncExportEndPointNotExists
           fetch_project_export
         end
       end
@@ -151,16 +163,21 @@ module Hiptest
     def fetch_async_project_export
       @reporter.with_status_message I18n.t(:fetching_data) do
         post_async_url = "#{base_publication_path}/async_project#{project_export_filters}"
-        response = send_post_request(post_async_url)
+
+        begin
+          response = send_post_request(post_async_url)
+        rescue ProcessingError => err
+          response = err.response
+        end
 
         if response.code_type == Net::HTTPNotFound
-          raise ClientError, I18n.t('errors.async_project_endpoint_not_exists')
+          raise AsyncExportEndPointNotExists
         end
 
         publication_export_id = JSON.parse(response.body)['publication_export_id']
 
         get_async_url = "#{base_publication_path}/async_project/#{publication_export_id}"
-        response = send_get_request_with_timeout(get_async_url, 900)
+        response = send_get_request_processing(get_async_url, 5)
 
         response.body
       end
@@ -168,9 +185,9 @@ module Hiptest
 
     def export_cache
       @export_cache ||= ExportCache.new(
-        @cli_options.cache_dir,
-        @cli_options.cache_duration,
-        reporter: @reporter)
+          @cli_options.cache_dir,
+          @cli_options.cache_duration,
+          reporter: @reporter)
     end
 
     def test_run_id
@@ -230,14 +247,17 @@ module Hiptest
       send_get_request(err.redirect, attempt - 1)
     end
 
-    def send_get_request_with_timeout(url, timeout, attempt = MAX_REDIRECTION)
+    def send_get_request_processing(url, sleep_time, attempt = MAX_REDIRECTION)
       raise MaximumRedirectionReachedError if attempt < 0
 
-      uri = URI.parse(url)
-      send_request(Net::HTTP::Get.new(uri), timeout)
+      uri_get = Net::HTTP::Get.new(URI.parse(url))
+
+      send_request(uri_get)
     rescue RedirectionError => err
-      binding.pry
-      return send_request(err.redirect)
+      return send_request(Net::HTTP::Get.new(URI.parse(err.redirect)))
+    rescue ProcessingError
+      sleep(sleep_time)
+      return send_get_request_processing(url, sleep_time)
     end
 
     def send_post_request(url, attempt = MAX_REDIRECTION)
@@ -263,7 +283,7 @@ module Hiptest
       send_multipart_request(err.redirect, uploaded, attempt - 1)
     end
 
-    def send_request(request, timeout = nil)
+    def send_request(request)
       request["User-Agent"] = "Ruby/hiptest-publisher"
       use_ssl = request.uri.scheme == "https"
 
@@ -274,19 +294,19 @@ module Hiptest
         proxy_user, proxy_pass = proxy_uri.userinfo.split(':', 2) if proxy_uri.userinfo
       end
 
-      http = Net::HTTP.new(request.uri.hostname, request.uri.port,
-                           proxy_address, proxy_port, proxy_user, proxy_pass,
-                           use_ssl: use_ssl,
-                           verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
-        http.read_timeout = timeout unless timeout.nil?
-      end.start
+      Net::HTTP.start(
+          request.uri.hostname, request.uri.port,
+          proxy_address, proxy_port, proxy_user, proxy_pass,
+          use_ssl: use_ssl,
+          verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
+        @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
+        response = http.request(request)
 
-      @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
+        raise ProcessingError.new("", response) if response.code_type == Net::HTTPAccepted
+        raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
 
-      response = http.request(request)
-
-      raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
-      response
+        response
+      end
     end
 
     def find_proxy_uri(address, port)

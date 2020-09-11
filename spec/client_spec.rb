@@ -165,224 +165,262 @@ describe Hiptest::Client do
     end
   end
 
-  describe '#fetch_project_export' do
-    let(:args) { ["--token", "123456789"] }
-
-    it 'fetches the project xml from HipTest server' do
-      sent_xml = "<xml_everywhere/>"
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
-        to_return(body: sent_xml)
-      got_xml = client.fetch_project_export
-      expect(got_xml).to eq(sent_xml)
-    end
-
-    context "when a redirection response is given" do
-      let(:original_location) { "https://app.hiptest.com/publication/123456789/project" }
-      let(:new_location) { "https://hop.hiptest.org/publication/123456789/project" }
+  describe '#fetch_project' do
+    context 'sync' do
+      let(:args) { ["--token", "123456789"] }
 
       before do
-        stub_request(:get, original_location).
-          to_return(:status => 301, :headers => { 'Location' => new_location })
+        stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+            to_return(status: 404)
       end
 
-      it 'is followed' do
+      it 'fetches the project xml from HipTest server' do
         sent_xml = "<xml_everywhere/>"
-
-        stub_request(:get, new_location).
+        stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
           to_return(body: sent_xml)
-
-        got_xml = client.fetch_project_export
+        got_xml = client.fetch_project
         expect(got_xml).to eq(sent_xml)
       end
 
-      it 'fails when maximum redirection is reached' do
-        stub_request(:get, new_location).
-          to_return(:status => 301, :headers => { 'Location' => original_location })
+      context "when a redirection response is given" do
+        let(:original_location) { "https://app.hiptest.com/publication/123456789/project" }
+        let(:new_location) { "https://hop.hiptest.org/publication/123456789/project" }
 
-        expect {
-          client.fetch_project_export
-        }.to raise_exception(Hiptest::MaximumRedirectionReachedError)
+        before do
+          stub_request(:get, original_location).
+            to_return(:status => 301, :headers => { 'Location' => new_location })
+        end
 
-        expect(a_request(:get, original_location)).to have_been_made.at_most_times(6)
-        expect(a_request(:get, new_location)).to have_been_made.at_most_times(6)
-      end
-    end
+        it 'is followed' do
+          sent_xml = "<xml_everywhere/>"
 
-    context 'when xml cache is enabled' do
-      let(:args) { ["--token", "123456789", "--cache-dir", cache_dir] }
-      let(:cache_dir) { Dir.mktmpdir }
-      let(:cache_duration) { "60" }
+          stub_request(:get, new_location).
+            to_return(body: sent_xml)
 
-      after do
-        FileUtils.rm_rf(cache_dir)
-      end
+          got_xml = client.fetch_project
+          expect(got_xml).to eq(sent_xml)
+        end
 
-      it 'only fetches the XML file from Hiptest the first time' do
-        stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
-          to_return(body: "<xml_everywhere/>")
+        it 'fails when maximum redirection is reached' do
+          stub_request(:get, new_location).
+            to_return(:status => 301, :headers => { 'Location' => original_location })
 
-        client.fetch_project_export
-        client.fetch_project_export
-        client.fetch_project_export
+          expect {
+            client.fetch_project
+          }.to raise_exception(Hiptest::MaximumRedirectionReachedError)
 
-        expect(a_request(:get, "https://app.hiptest.com/publication/123456789/project"))
-          .to have_been_made.at_most_once
-      end
-    end
-
-    context "with unexisting secret token" do
-      let(:args) { ["--token", "987654321"] }
-
-      it "raises a ClientError exception with a message" do
-        stub_request(:get, "https://app.hiptest.com/publication/987654321/project").
-          to_return(status: 404)
-        expect {
-          client.fetch_project_export
-        }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
+          expect(a_request(:get, original_location)).to have_been_made.at_most_times(6)
+          expect(a_request(:get, new_location)).to have_been_made.at_most_times(6)
+        end
       end
 
-      context "with --test-run-id" do
-        let(:args) { ["--token", "987654321", "--test-run-id", "98"] }
+      context 'when xml cache is enabled' do
+        let(:args) { ["--token", "123456789", "--cache-dir", cache_dir] }
+        let(:cache_dir) { Dir.mktmpdir }
+        let(:cache_duration) { "60" }
+
+        after do
+          FileUtils.rm_rf(cache_dir)
+        end
+
+        it 'only fetches the XML file from Hiptest the first time' do
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+            to_return(body: "<xml_everywhere/>")
+
+          client.fetch_project
+          client.fetch_project
+          client.fetch_project
+
+          expect(a_request(:get, "https://app.hiptest.com/publication/123456789/project"))
+            .to have_been_made.at_most_once
+        end
+      end
+
+      context "with unexisting secret token" do
+        let(:args) { ["--token", "987654321"] }
+
+        before do
+          stub_request(:post, "https://app.hiptest.com/publication/987654321/async_project").
+              to_return(status: 404)
+        end
 
         it "raises a ClientError exception with a message" do
-          stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "987654321")
-          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_run/98").
+          stub_request(:get, "https://app.hiptest.com/publication/987654321/project").
             to_return(status: 404)
           expect {
-            client.fetch_project_export
+            client.fetch_project
           }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
         end
 
-        it "raises a ClientError exception with a message (return 404 at another level)" do
-          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_runs").
-            to_return(status: 404)
-          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_run/98").
-            to_return(status: 404)
-          expect {
-            client.fetch_project_export
-          }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
+        context "with --test-run-id" do
+          let(:args) { ["--token", "987654321", "--test-run-id", "98"] }
+
+          it "raises a ClientError exception with a message" do
+            stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "987654321")
+            stub_request(:get, "https://app.hiptest.com/publication/987654321/test_run/98").
+              to_return(status: 404)
+            expect {
+              client.fetch_project
+            }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
+          end
+
+          it "raises a ClientError exception with a message (return 404 at another level)" do
+            stub_request(:get, "https://app.hiptest.com/publication/987654321/test_runs").
+              to_return(status: 404)
+            stub_request(:get, "https://app.hiptest.com/publication/987654321/test_run/98").
+              to_return(status: 404)
+            expect {
+              client.fetch_project
+            }.to raise_error(Hiptest::ClientError, "No project found with this secret token.")
+          end
+        end
+
+        context "with --test-run-name" do
+          let(:args) { ["--token", "987654321", "--test-run-name", "plop"] }
+
+          it "raises a ClientError exception with a message" do
+            stub_request(:get, "https://app.hiptest.com/publication/987654321/test_runs").
+              to_return(status: 404)
+            expect {
+              client.fetch_project
+            }.to raise_error(Hiptest::ClientError, "Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name")
+          end
+        end
+      end
+
+      context "with --test-run-id" do
+        let(:args) { ["--token", "123456789", "--test-run-id", "98"] }
+
+        it "fetches the test run xml from HipTest server" do
+          stub_available_test_runs(test_runs: [tr_98__Sprint_13])
+          sent_xml = "<xml_everywhere/>"
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
+            to_return(body: sent_xml)
+          got_xml = client.fetch_project
+          expect(got_xml).to eq(sent_xml)
+        end
+
+        context "with unexisting test run id" do
+          before do
+            stub_available_test_runs(test_runs: [tr_18__Continuous_integration, tr_54__Unit_tests])
+          end
+
+          it "raises a ClientError exception with a message stating available test runs in project" do
+            expected_message = [
+              "No matching test run found. Available test runs for this project are:",
+              "  ID   Name",
+              "  --   ----",
+              "  18   Continuous integration",
+              "  541  Unit tests",
+              ""
+            ].join("\n")
+            expect{client.fetch_project}.to raise_error(Hiptest::ClientError, expected_message)
+          end
+
+          it "has a different message when there are no test runs" do
+            stub_available_test_runs(test_runs: [])
+            expected_message = "No matching test run found: this project does not have any test runs."
+            expect{client.fetch_project}.to raise_error(Hiptest::ClientError, expected_message)
+          end
+        end
+
+        context "on old HipTest version (no /publication/<token>/test_runs API)" do
+          it "uses the given test run id and ignores that the API does not exist" do
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/test_runs").
+              to_return(status: 404)
+            sent_xml = "<xml_everywhere/>"
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
+              to_return(body: sent_xml)
+            got_xml = client.fetch_project
+            expect(got_xml).to eq(sent_xml)
+          end
         end
       end
 
       context "with --test-run-name" do
-        let(:args) { ["--token", "987654321", "--test-run-name", "plop"] }
+        let(:args) { ["--token", "123456789", "--test-run-name", "Sprint 12"] }
 
-        it "raises a ClientError exception with a message" do
-          stub_request(:get, "https://app.hiptest.com/publication/987654321/test_runs").
-            to_return(status: 404)
-          expect {
-            client.fetch_project_export
-          }.to raise_error(Hiptest::ClientError, "Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name")
+        it "first fetches the test runs list to get the id, then the test run xml" do
+          stub_available_test_runs(test_runs: [tr_89__Sprint_12])
+          sent_xml = "<xml_everywhere/>"
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/89").
+            to_return(body: sent_xml)
+          got_xml = client.fetch_project
+          expect(got_xml).to eq(sent_xml)
+        end
+
+        context "with unexisting test run name" do
+          let(:args) { ["--token", "123456789", "--test-run-name", "The spoon"] }
+
+          it "raises a ClientError exception with a message stating available test runs in project" do
+            stub_available_test_runs(test_runs: [tr_89__Sprint_12, tr_18__Continuous_integration, tr_54__Unit_tests])
+            expected_message = [
+              "No matching test run found. Available test runs for this project are:",
+              "  ID   Name",
+              "  --   ----",
+              "  89   Sprint 12",
+              "  18   Continuous integration",
+              "  541  Unit tests",
+              ""
+            ].join("\n")
+            expect{client.fetch_project}.to raise_error(Hiptest::ClientError, expected_message)
+          end
+
+          it "has a different message when there are no test runs" do
+            stub_available_test_runs(test_runs: [])
+            expected_message = "No matching test run found: this project does not have any test runs."
+            expect{client.fetch_project}.to raise_error(Hiptest::ClientError, expected_message)
+          end
         end
       end
     end
 
-    context "with --test-run-id" do
-      let(:args) { ["--token", "123456789", "--test-run-id", "98"] }
-
-      it "fetches the test run xml from HipTest server" do
-        stub_available_test_runs(test_runs: [tr_98__Sprint_13])
-        sent_xml = "<xml_everywhere/>"
-        stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
-          to_return(body: sent_xml)
-        got_xml = client.fetch_project_export
-        expect(got_xml).to eq(sent_xml)
-      end
-
-      context "with unexisting test run id" do
-        before do
-          stub_available_test_runs(test_runs: [tr_18__Continuous_integration, tr_54__Unit_tests])
-        end
-
-        it "raises a ClientError exception with a message stating available test runs in project" do
-          expected_message = [
-            "No matching test run found. Available test runs for this project are:",
-            "  ID   Name",
-            "  --   ----",
-            "  18   Continuous integration",
-            "  541  Unit tests",
-            ""
-          ].join("\n")
-          expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
-        end
-
-        it "has a different message when there are no test runs" do
-          stub_available_test_runs(test_runs: [])
-          expected_message = "No matching test run found: this project does not have any test runs."
-          expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
-        end
-      end
-
-      context "on old HipTest version (no /publication/<token>/test_runs API)" do
-        it "uses the given test run id and ignores that the API does not exist" do
-          stub_request(:get, "https://app.hiptest.com/publication/123456789/test_runs").
-            to_return(status: 404)
+    context 'async' do
+      context 'when the server does not support async project export' do
+        it 'calls the former export url' do
           sent_xml = "<xml_everywhere/>"
-          stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/98").
-            to_return(body: sent_xml)
-          got_xml = client.fetch_project_export
+          stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+              to_return(status: 404)
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+              to_return(body: sent_xml)
+          got_xml = client.fetch_project
           expect(got_xml).to eq(sent_xml)
         end
       end
-    end
 
-    context "with --test-run-name" do
-      let(:args) { ["--token", "123456789", "--test-run-name", "Sprint 12"] }
-
-      it "first fetches the test runs list to get the id, then the test run xml" do
-        stub_available_test_runs(test_runs: [tr_89__Sprint_12])
-        sent_xml = "<xml_everywhere/>"
-        stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/89").
-          to_return(body: sent_xml)
-        got_xml = client.fetch_project_export
-        expect(got_xml).to eq(sent_xml)
-      end
-
-      context "with unexisting test run name" do
-        let(:args) { ["--token", "123456789", "--test-run-name", "The spoon"] }
-
-        it "raises a ClientError exception with a message stating available test runs in project" do
-          stub_available_test_runs(test_runs: [tr_89__Sprint_12, tr_18__Continuous_integration, tr_54__Unit_tests])
-          expected_message = [
-            "No matching test run found. Available test runs for this project are:",
-            "  ID   Name",
-            "  --   ----",
-            "  89   Sprint 12",
-            "  18   Continuous integration",
-            "  541  Unit tests",
-            ""
-          ].join("\n")
-          expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
+      context 'when the server supports async project export' do
+        context 'when the process is short' do
+          it 'fetches the project xml from HipTest server' do
+            sent_xml = "<xml_everywhere/>"
+            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 201, :body => { "publication_export_id": 1 }.to_json)
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
+                to_return(body: sent_xml)
+            got_xml = client.fetch_project
+            expect(got_xml).to eq(sent_xml)
+          end
         end
 
-        it "has a different message when there are no test runs" do
-          stub_available_test_runs(test_runs: [])
-          expected_message = "No matching test run found: this project does not have any test runs."
-          expect{client.fetch_project_export}.to raise_error(Hiptest::ClientError, expected_message)
+        context 'when the process is long' do
+          it 'fetches the project xml from HipTest server' do
+            sent_xml = "<xml_everywhere/>"
+            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 201, :body => { "publication_export_id": 1 }.to_json)
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").to_return(:status => 202).to_return(:status => 202).to_return(body: sent_xml)
+
+            got_xml = client.fetch_project
+            expect(got_xml).to eq(sent_xml)
+          end
         end
-      end
-    end
-  end
 
-  describe '#fetch_async_project_export' do
-    context 'when the server does not support async project export' do
-      it 'raises an error' do
-        stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
-            to_return(status: 404)
-        expect {
-          client.fetch_async_project_export
-        }.to raise_error(Hiptest::ClientError, "The async project export endpoint does not exist")
-      end
-    end
+        context 'when an export is already in progress' do
+          it 'waits the end of the export and download it' do
+            sent_xml = "<xml_everywhere/>"
+            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 202, :body => { "publication_export_id": 1 }.to_json)
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").to_return(:status => 202).to_return(:status => 202).to_return(body: sent_xml)
 
-    context 'when the server supports async project export' do
-      it 'fetches the project xml from HipTest server' do
-        sent_xml = "<xml_everywhere/>"
-        stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 202, :body => { "publication_export_id": 1 }.to_json)
-        stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
-            to_return(body: sent_xml)
-        got_xml = client.fetch_async_project_export
-        expect(got_xml).to eq(sent_xml)
+            got_xml = client.fetch_project
+            expect(got_xml).to eq(sent_xml)
+          end
+        end
       end
     end
   end
