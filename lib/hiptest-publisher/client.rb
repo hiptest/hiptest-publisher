@@ -101,14 +101,14 @@ module Hiptest
 
     def available_test_runs
       @available_test_runs ||= begin
-                                 response = send_get_request("#{base_publication_path}/test_runs")
-                                 if response.code_type == Net::HTTPNotFound
-                                   :api_not_available
-                                 else
-                                   json_response = JSON.parse(response.body)
-                                   json_response["test_runs"]
-                                 end
-                               end
+        response = send_get_request("#{base_publication_path}/test_runs")
+        if response.code_type == Net::HTTPNotFound
+          :api_not_available
+        else
+          json_response = JSON.parse(response.body)
+          json_response["test_runs"]
+        end
+      end
     end
 
     def push_results
@@ -188,9 +188,9 @@ module Hiptest
 
     def export_cache
       @export_cache ||= ExportCache.new(
-          @cli_options.cache_dir,
-          @cli_options.cache_duration,
-          reporter: @reporter)
+        @cli_options.cache_dir,
+        @cli_options.cache_duration,
+        reporter: @reporter)
     end
 
     def test_run_id
@@ -302,7 +302,7 @@ module Hiptest
       return URI.parse(@cli_options.http_proxy) if @cli_options.http_proxy
 
       URI::HTTP.new(
-          "http", nil, address, port, nil, nil, nil, nil, nil
+        "http", nil, address, port, nil, nil, nil, nil, nil
       ).find_proxy
     end
 
