@@ -21,15 +21,6 @@ module Hiptest
     end
   end
 
-  class ProcessingError < StandardError
-    attr_reader :response
-
-    def initialize(msg, response)
-      @response = response
-      super(msg)
-    end
-  end
-
   class AsyncExportUnavailable < StandardError
   end
 
@@ -40,10 +31,12 @@ module Hiptest
 
   class Client
     attr_reader :cli_options
+    attr_writer :async_options
 
     def initialize(cli_options, reporter = nil)
       @cli_options = cli_options
       @reporter = reporter || NullReporter.new
+      @async_options = { max_attempts: 200, sleep_time_between_attemps: 5 }
     end
 
     def url
@@ -99,15 +92,11 @@ module Hiptest
     end
 
     def fetch_project
-      if cli_options.push? || cli_options.leafless_export || test_run_id
-        fetch_project_export
-      else
-        begin
-          fetch_async_project_export
-        rescue AsyncExportUnavailable
-          fetch_project_export
-        end
-      end
+      return fetch_project_export if use_synchronous_fetch?
+
+      fetch_project_export_asynchronously
+    rescue AsyncExportUnavailable
+      fetch_project_export
     end
 
     def available_test_runs
@@ -138,6 +127,10 @@ module Hiptest
 
     private
 
+    def use_synchronous_fetch?
+      cli_options.push? || cli_options.leafless_export || test_run_id
+    end
+
     def fetch_project_export
       cached = export_cache.cache_for(url)
 
@@ -160,27 +153,37 @@ module Hiptest
       end
     end
 
-    def fetch_async_project_export
+    def fetch_project_export_asynchronously
       @reporter.with_status_message I18n.t(:fetching_data) do
-        post_async_url = "#{base_publication_path}/async_project#{project_export_filters}"
+        publication_export_id = fetch_asynchronous_publication_export_id
+        url = "#{base_publication_path}/async_project/#{publication_export_id}"
+        response = nil
 
-        begin
-          response = send_post_request(post_async_url)
-        rescue ProcessingError => err
-          response = err.response
+        # the server should respond with a timeout after 15 minutes
+        # it is about 180 attempts with a sleep time of 5 seconds between each requests
+        sleep_time_between_attemps = @async_options[:sleep_time_between_attemps]
+        max_attempts = @async_options[:max_attempts]
+
+        loop do
+          response = send_get_request(url)
+
+          break unless response.code_type == Net::HTTPAccepted
+          break if 0 >= (max_attempts -= 1)
+
+          sleep(sleep_time_between_attemps)
         end
-
-        if response.code_type == Net::HTTPNotFound
-          raise AsyncExportUnavailable
-        end
-
-        publication_export_id = JSON.parse(response.body)['publication_export_id']
-
-        get_async_url = "#{base_publication_path}/async_project/#{publication_export_id}"
-        response = send_get_request_processing(get_async_url, 5)
 
         response.body
       end
+    end
+
+    def fetch_asynchronous_publication_export_id
+      url = "#{base_publication_path}/async_project#{project_export_filters}"
+      response = send_post_request(url)
+
+      raise AsyncExportUnavailable if response.code_type == Net::HTTPNotFound
+
+      JSON.parse(response.body)['publication_export_id']
     end
 
     def export_cache
@@ -247,19 +250,6 @@ module Hiptest
       send_get_request(err.redirect, attempt - 1)
     end
 
-    def send_get_request_processing(url, sleep_time, attempt = MAX_REDIRECTION)
-      raise MaximumRedirectionReachedError if attempt < 0
-
-      uri_get = Net::HTTP::Get.new(URI.parse(url))
-
-      send_request(uri_get)
-    rescue RedirectionError => err
-      return send_request(Net::HTTP::Get.new(URI.parse(err.redirect)))
-    rescue ProcessingError
-      sleep(sleep_time)
-      return send_get_request_processing(url, sleep_time)
-    end
-
     def send_post_request(url, attempt = MAX_REDIRECTION)
       raise MaximumRedirectionReachedError if attempt < 0
 
@@ -302,7 +292,6 @@ module Hiptest
         @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
         response = http.request(request)
 
-        raise ProcessingError.new("", response) if response.code_type == Net::HTTPAccepted
         raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
 
         response

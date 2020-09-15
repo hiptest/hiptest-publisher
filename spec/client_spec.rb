@@ -376,6 +376,13 @@ describe Hiptest::Client do
     end
 
     context 'async' do
+      before do
+        client.async_options = {
+          max_attempts: 3,
+          sleep_time_between_attemps: 0.1
+        }
+      end
+
       context 'when the server does not support async project export' do
         it 'calls the former export url' do
           sent_xml = "<xml_everywhere/>"
@@ -389,33 +396,55 @@ describe Hiptest::Client do
       end
 
       context 'when the server supports async project export' do
-        context 'when the process is short' do
-          it 'fetches the project xml from HipTest server' do
-            sent_xml = "<xml_everywhere/>"
-            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 201, :body => { "publication_export_id": 1 }.to_json)
-            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
-                to_return(body: sent_xml)
-            got_xml = client.fetch_project
-            expect(got_xml).to eq(sent_xml)
-          end
+        before do
+          stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project")
+            .to_return(:status => 201, :body => { "publication_export_id": 1 }.to_json)
         end
 
-        context 'when the process is long' do
-          it 'fetches the project xml from HipTest server' do
-            sent_xml = "<xml_everywhere/>"
-            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 201, :body => { "publication_export_id": 1 }.to_json)
-            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").to_return(:status => 202).to_return(:status => 202).to_return(body: sent_xml)
+        it 'fetches the project xml from HipTest server' do
+          sent_xml = "<xml_everywhere/>"
 
-            got_xml = client.fetch_project
-            expect(got_xml).to eq(sent_xml)
-          end
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
+              to_return(body: sent_xml)
+
+          got_xml = client.fetch_project
+          expect(got_xml).to eq(sent_xml)
         end
 
-        context 'when an export is already in progress' do
+        it 'fetches the project xml from HipTest server after many attempts' do
+          sent_xml = "<xml_everywhere/>"
+
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1")
+            .to_return(:status => 202)
+            .to_return(:status => 202)
+            .to_return(body: sent_xml)
+
+          got_xml = client.fetch_project
+          expect(got_xml).to eq(sent_xml)
+        end
+
+        it 'does not try more than max_attempts times' do
+          stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1")
+            .to_return(:status => 202)
+            .to_return(:status => 202)
+            .to_return(:status => 202)
+            .to_return(body: '<xml_everywhere/>')
+
+          expect(client.fetch_project).to be_empty
+        end
+
+        context 'when an export was already in progress' do
+          before do
+            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project")
+              .to_return(:status => 202, :body => { "publication_export_id": 1 }.to_json)
+          end
+
           it 'waits the end of the export and download it' do
             sent_xml = "<xml_everywhere/>"
-            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").to_return(:status => 202, :body => { "publication_export_id": 1 }.to_json)
-            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").to_return(:status => 202).to_return(:status => 202).to_return(body: sent_xml)
+
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1")
+              .to_return(:status => 202)
+              .to_return(body: sent_xml)
 
             got_xml = client.fetch_project
             expect(got_xml).to eq(sent_xml)
