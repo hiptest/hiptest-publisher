@@ -30,7 +30,7 @@ module Hiptest
     end
   end
 
-  class AsyncExportEndPointNotExists < StandardError
+  class AsyncExportUnavailable < StandardError
   end
 
   class MaximumRedirectionReachedError < StandardError
@@ -104,7 +104,7 @@ module Hiptest
       else
         begin
           fetch_async_project_export
-        rescue AsyncExportEndPointNotExists
+        rescue AsyncExportUnavailable
           fetch_project_export
         end
       end
@@ -171,7 +171,7 @@ module Hiptest
         end
 
         if response.code_type == Net::HTTPNotFound
-          raise AsyncExportEndPointNotExists
+          raise AsyncExportUnavailable
         end
 
         publication_export_id = JSON.parse(response.body)['publication_export_id']
