@@ -21,6 +21,9 @@ module Hiptest
     end
   end
 
+  class AsyncExportUnavailable < StandardError
+  end
+
   class MaximumRedirectionReachedError < StandardError
   end
 
@@ -28,10 +31,12 @@ module Hiptest
 
   class Client
     attr_reader :cli_options
+    attr_writer :async_options
 
     def initialize(cli_options, reporter = nil)
       @cli_options = cli_options
       @reporter = reporter || NullReporter.new
+      @async_options = { max_attempts: 200, sleep_time_between_attemps: 5 }
     end
 
     def url
@@ -86,26 +91,12 @@ module Hiptest
       return "?filter_status=#{value}"
     end
 
-    def fetch_project_export
-      cached = export_cache.cache_for(url)
+    def fetch_project
+      return fetch_project_export if use_synchronous_fetch?
 
-      unless cached.nil?
-        @reporter.with_status_message I18n.t(:using_cached_data) do
-          return cached
-        end
-      end
-
-      @reporter.with_status_message I18n.t(:fetching_data) do
-        response = send_get_request(url)
-        if response.code_type == Net::HTTPNotFound
-          raise ClientError, I18n.t('errors.project_not_found')
-        end
-
-        content = response.body
-        export_cache.cache(url, content)
-
-        return content
-      end
+      fetch_project_export_asynchronously
+    rescue AsyncExportUnavailable
+      fetch_project_export
     end
 
     def available_test_runs
@@ -135,6 +126,65 @@ module Hiptest
     end
 
     private
+
+    def use_synchronous_fetch?
+      cli_options.push? || cli_options.leafless_export || test_run_id
+    end
+
+    def fetch_project_export
+      cached = export_cache.cache_for(url)
+
+      unless cached.nil?
+        @reporter.with_status_message I18n.t(:using_cached_data) do
+          return cached
+        end
+      end
+
+      @reporter.with_status_message I18n.t(:fetching_data) do
+        response = send_get_request(url)
+        if response.code_type == Net::HTTPNotFound
+          raise ClientError, I18n.t('errors.project_not_found')
+        end
+
+        content = response.body
+        export_cache.cache(url, content)
+
+        return content
+      end
+    end
+
+    def fetch_project_export_asynchronously
+      @reporter.with_status_message I18n.t(:fetching_data) do
+        publication_export_id = fetch_asynchronous_publication_export_id
+        url = "#{base_publication_path}/async_project/#{publication_export_id}"
+        response = nil
+
+        # the server should respond with a timeout after 15 minutes
+        # it is about 180 attempts with a sleep time of 5 seconds between each requests
+        sleep_time_between_attemps = @async_options[:sleep_time_between_attemps]
+        max_attempts = @async_options[:max_attempts]
+
+        loop do
+          response = send_get_request(url)
+
+          break unless response.code_type == Net::HTTPAccepted
+          break if 0 >= (max_attempts -= 1)
+
+          sleep(sleep_time_between_attemps)
+        end
+
+        response.body
+      end
+    end
+
+    def fetch_asynchronous_publication_export_id
+      url = "#{base_publication_path}/async_project#{project_export_filters}"
+      response = send_post_request(url)
+
+      raise AsyncExportUnavailable if response.code_type == Net::HTTPNotFound
+
+      JSON.parse(response.body)['publication_export_id']
+    end
 
     def export_cache
       @export_cache ||= ExportCache.new(
@@ -243,6 +293,7 @@ module Hiptest
         response = http.request(request)
 
         raise RedirectionError.new("Got redirected", response['location']) if response.is_a?(Net::HTTPRedirection)
+
         response
       end
     end
