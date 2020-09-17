@@ -92,11 +92,26 @@ module Hiptest
     end
 
     def fetch_project
-      return fetch_project_export if use_synchronous_fetch?
+      cached = export_cache.cache_for(url)
 
-      fetch_project_export_asynchronously
-    rescue AsyncExportUnavailable
-      fetch_project_export
+      unless cached.nil?
+        @reporter.with_status_message I18n.t(:using_cached_data) do
+          return cached
+        end
+      end
+
+      content = @reporter.with_status_message I18n.t(:fetching_data) do
+        break fetch_project_export if use_synchronous_fetch?
+
+        begin
+          fetch_project_export_asynchronously
+        rescue AsyncExportUnavailable
+          fetch_project_export
+        end
+      end
+
+      export_cache.cache(url, content)
+      content
     end
 
     def available_test_runs
@@ -132,49 +147,34 @@ module Hiptest
     end
 
     def fetch_project_export
-      cached = export_cache.cache_for(url)
-
-      unless cached.nil?
-        @reporter.with_status_message I18n.t(:using_cached_data) do
-          return cached
-        end
+      response = send_get_request(url)
+      if response.code_type == Net::HTTPNotFound
+        raise ClientError, I18n.t('errors.project_not_found')
       end
 
-      @reporter.with_status_message I18n.t(:fetching_data) do
-        response = send_get_request(url)
-        if response.code_type == Net::HTTPNotFound
-          raise ClientError, I18n.t('errors.project_not_found')
-        end
-
-        content = response.body
-        export_cache.cache(url, content)
-
-        return content
-      end
+      response.body
     end
 
     def fetch_project_export_asynchronously
-      @reporter.with_status_message I18n.t(:fetching_data) do
-        publication_export_id = fetch_asynchronous_publication_export_id
-        url = "#{base_publication_path}/async_project/#{publication_export_id}"
-        response = nil
+      publication_export_id = fetch_asynchronous_publication_export_id
+      url = "#{base_publication_path}/async_project/#{publication_export_id}"
+      response = nil
 
-        # the server should respond with a timeout after 15 minutes
-        # it is about 180 attempts with a sleep time of 5 seconds between each requests
-        sleep_time_between_attemps = @async_options[:sleep_time_between_attemps]
-        max_attempts = @async_options[:max_attempts]
+      # the server should respond with a timeout after 15 minutes
+      # it is about 180 attempts with a sleep time of 5 seconds between each requests
+      sleep_time_between_attemps = @async_options[:sleep_time_between_attemps]
+      max_attempts = @async_options[:max_attempts]
 
-        loop do
-          response = send_get_request(url)
+      loop do
+        response = send_get_request(url)
 
-          break unless response.code_type == Net::HTTPAccepted
-          break if 0 >= (max_attempts -= 1)
+        break unless response.code_type == Net::HTTPAccepted
+        break if 0 >= (max_attempts -= 1)
 
-          sleep(sleep_time_between_attemps)
-        end
-
-        response.body
+        sleep(sleep_time_between_attemps)
       end
+
+      response.body
     end
 
     def fetch_asynchronous_publication_export_id
