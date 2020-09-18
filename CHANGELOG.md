@@ -1,16 +1,16 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[2.4.0]
+-------
 
- - Nothing changed yet
+ - Add support for asynchronous export of projects from Cucumber Studio
 
 [2.3.1]
 -------
 
  - `--indentation` option is now available to customize the indentation of the output
- 
+
 [2.3.0]
 -------
 
@@ -237,7 +237,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v2.3.1...master
+[2.4.0]: https://github.com/hiptest/hiptest-publisher/compare/v2.3.1...v2.4.0
 [2.3.1]:     https://github.com/hiptest/hiptest-publisher/compare/v2.3.0...v2.3.1
 [2.3.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.2.0...v2.3.0
 [2.2.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.1.0...v2.2.0
