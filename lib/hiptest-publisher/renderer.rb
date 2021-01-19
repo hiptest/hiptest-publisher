@@ -27,7 +27,11 @@ module Hiptest
       if node.is_a? Hiptest::Nodes::Node
         @rendered_children = {}
 
-        node.children.each {|name, child| @rendered_children[name] = @rendered[child]}
+        node.children.each do |name, child| 
+          @rendered_children[name] = @rendered[child]
+
+          @rendered_children[name].uniq! if name == :actionwords && @rendered_children[name].is_a?(Array)
+        end
         @rendered[node] = render_node(node, super(node))
       elsif node.is_a? Array
         @rendered[node] = node.map {|item| @rendered[item]}
