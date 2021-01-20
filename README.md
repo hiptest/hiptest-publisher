@@ -114,6 +114,8 @@ Specific options:
         --filename-pattern=PATTERN   Filename pattern (containing %s)
     -c, --config-file=PATH           Configuration file
         --overriden-templates=PATH   Folder for overriden templates
+        --overriden-language-configs=PATH
+                                     Folder for overriden language configs
         --test-run-id=ID             Export data from a test run identified by its id
         --test-run-name=NAME         Export data from a test run identified by its name
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
@@ -190,6 +192,8 @@ package = 'com.youcompany'
 ```
 
 Note that options from command line arguments override options from config file.
+
+If you want to override one of the existing configurations, you can use the --overriden-language-configs option to specify a path that is checked for configuration files prior to looking at the default configuration files.  If one is found, it will use that file instead of the default, otherwise it will use the default configuration for the specified language.
 
 ### Using hiptest-publisher behind a http proxy
 
