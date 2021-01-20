@@ -565,7 +565,7 @@ describe LanguageGroupConfig do
                                                     ]
       },
 
-      "cucumber_5-groovy" => {
+      "cucumber_legacy-groovy" => {
         []                                       => [ "[features]",
                                                       "/BuyGoods.feature",
                                                       "/SellGoods.feature",
@@ -630,7 +630,7 @@ describe LanguageGroupConfig do
                                                     ]
       },
 
-      "cucumber_5-java" => {
+      "cucumber_legacy-java" => {
         []                                       => [ "[features]",
                                                       "/Buy_goods.feature",
                                                       "/Sell_goods.feature",
