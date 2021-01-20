@@ -45,7 +45,7 @@ end
 require 'hiptest-publisher'
 begin
   require 'pry' # only available in development
-rescue LoadError
+rescue StandardError, LoadError
 end
 
 Hiptest::Publisher.new(ARGV).run

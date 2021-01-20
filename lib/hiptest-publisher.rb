@@ -83,7 +83,7 @@ module Hiptest
     end
 
     def fetch_xml_file
-      @client.fetch_project_export
+      @client.fetch_project
     rescue ClientError => err
       # This should not be an error that needs reporting to an exception monitoring app
       reporter.show_error(err.message)
