@@ -207,6 +207,15 @@ shared_context "shared render" do
                                                      ])
                                                    ])
 
+    @duplicate_actionwords = Hiptest::Nodes::Actionwords.new([
+                                                    Hiptest::Nodes::Actionword.new('first action word'),
+                                                    Hiptest::Nodes::Actionword.new(
+                                                      'second action word', [], [], [
+                                                      Hiptest::Nodes::Call.new('first action word')
+                                                    ]),
+                                                    Hiptest::Nodes::Actionword.new('first \'action\' word'),
+                                                  ])
+
     @scenarios = Hiptest::Nodes::Scenarios.new([
                                                  Hiptest::Nodes::Scenario.new('first scenario'),
                                                  Hiptest::Nodes::Scenario.new(
@@ -224,6 +233,21 @@ shared_context "shared render" do
                                                                      Hiptest::Nodes::Actionword.new('aw with string param', [], [Hiptest::Nodes::Parameter.new('x')], []),
                                                                      Hiptest::Nodes::Actionword.new('aw with template param', [], [Hiptest::Nodes::Parameter.new('x')], [])
                                                                    ])
+
+    @duplicate_actionwords_with_parameters = Hiptest::Nodes::Actionwords.new([
+                                                                    Hiptest::Nodes::Actionword.new('aw with int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw with float param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw with boolean param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw with null param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw with string param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw with template param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw \'with\' int param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw \'with\' float param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw \'with\' boolean param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw \'with\' null param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw \'with\' string param', [], [Hiptest::Nodes::Parameter.new('x')], []),
+                                                                    Hiptest::Nodes::Actionword.new('aw \'with\' template param', [], [Hiptest::Nodes::Parameter.new('x')], [])
+                                                                  ])
 
     @scenarios_with_many_calls = Hiptest::Nodes::Scenarios.new([
                                                                  Hiptest::Nodes::Scenario.new('many calls scenarios', '', [], [], [
@@ -248,6 +272,7 @@ shared_context "shared render" do
                                                                  ])])
 
     @project = Hiptest::Nodes::Project.new("Mike's project", "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
+    @project_with_duplicate_parameters = Hiptest::Nodes::Project.new("Mike's project", "", nil, @scenarios_with_many_calls, @actionwords_with_parameters)
 
     @first_test = Hiptest::Nodes::Test.new(
       'Login',
@@ -614,9 +639,18 @@ shared_examples "a renderer" do
       expect(rendering(@actionwords)).to eq(@actionwords_rendered)
     end
 
+    it 'Actionwords with duplicates' do
+      expect(rendering(@duplicate_actionwords)).to eq(@actionwords_rendered)
+    end
+
     it 'Actionwords with parameters of different types' do
       Hiptest::NodeModifiers::ParameterTypeAdder.add(@project)
       expect(rendering(@project.children[:actionwords])).to eq(@actionwords_with_params_rendered)
+    end
+
+    it 'Actionwords with duplicate parameters of different types' do
+      Hiptest::NodeModifiers::ParameterTypeAdder.add(@project_with_duplicate_parameters)
+      expect(rendering(@project_with_duplicate_parameters.children[:actionwords])).to eq(@actionwords_with_params_rendered)
     end
   end
 end
