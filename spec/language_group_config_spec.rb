@@ -688,7 +688,7 @@ describe LanguageGroupConfig do
                                                     ]
       },
 
-      "cucumber_expressions-typescript" => {
+      "cucumber_legacy-typescript" => {
         []                                       => [ "[features]",
                                                       "/Buy_goods.feature",
                                                       "/Sell_goods.feature",

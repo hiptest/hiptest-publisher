@@ -59,8 +59,7 @@ This will create a Ruby tests suite. For the moment, we support the following la
  - Behave
  - CSharp (NUnit)
  - Cucumber (Groovy / Java / Javascript / Ruby / TypeScript)
- - Cucumber Legacy (Groovy / Java)
- - Cucumber Expressions (TypeScript)*
+ - Cucumber Legacy (Groovy / Java / TypeScript)
  - Groovy (Spock)
  - Java (Espresso / JUnit / TestNg)
  - JavaScript (CodeceptJS / Jasmine / Mocha / Protractor / QUnit)
@@ -72,8 +71,6 @@ This will create a Ruby tests suite. For the moment, we support the following la
  - Selenium IDE
  - SpecFlow
  - Swift (XCTest)
-
-*Cucumber Expressions is standard Cucumber syntax that makes use of [Cucumber Expressions](https://cucumber.io/docs/cucumber/cucumber-expressions/)
 
 You can specify the output language and framework in the command line, for example:
 
