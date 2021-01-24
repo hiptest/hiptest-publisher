@@ -4,7 +4,9 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+  - Add `--overriden-language-configs` command line option (#205 by tenpaiyomi)
+  - Add support for Cucumber Expression in Java and Groovy.
+  - Breaking change: Export with cucumber expressions are now the default when specifying `--language=cucumber` for TypeScript, Java, and GroovySet. Use `--language=cucumber_legacy` to keep previous export behavior (#205 by tenpaiyomi)
 
 [2.4.0]
 -------
