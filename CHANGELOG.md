@@ -8,6 +8,7 @@ HipTest Publisher Changelog
   - Add support for Cucumber Expression in Java and Groovy  (#205 by tenpaiyomi)
   - Fix possible duplication of actionwords in export (#232 by tenpaiyomi)
   - Breaking change: Export with cucumber expressions are now the default when specifying `--language=cucumber` for TypeScript, Java, and GroovySet. Use `--language=cucumber_legacy` to keep previous export behavior (#205 by tenpaiyomi) (#205 by tenpaiyomi)
+  - Breaking change: Drop support for ruby 2.3 and ruby 2.4 as they have reached end of life
 
 [2.4.0]
 -------
