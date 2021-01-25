@@ -67,6 +67,10 @@ describe Hiptest::Publisher do
               to_return(body: test_runs_json, headers: {'Content-Type' => 'application/json'})
             stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
               to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
+            stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+              to_return(body: { publication_export_id: 1 }.to_json)
+            stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
+              to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
             stub_request(:get, "https://app.hiptest.com/publication/123456789/test_run/987").
               to_return(body: File.read('samples/xml_input/Hiptest test run.xml'))
             stub_request(:get, "https://app.hiptest.com/publication/123456789/leafless_tests").
@@ -96,7 +100,9 @@ describe Hiptest::Publisher do
 
     before(:each) {
       File.write("#{templates_dir}/scenarios.hbs", "This is a custom template referencing meta:custom {{ context.meta.custom }}")
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+      stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+        to_return(body: { publication_export_id: 1 }.to_json)
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
     }
 

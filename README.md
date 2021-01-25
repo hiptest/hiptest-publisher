@@ -59,20 +59,18 @@ This will create a Ruby tests suite. For the moment, we support the following la
  - Behave
  - CSharp (NUnit)
  - Cucumber (Groovy / Java / Javascript / Ruby / TypeScript)
- - Cucumber Expressions (TypeScript)*
+ - Cucumber Legacy (Groovy / Java / TypeScript)
  - Groovy (Spock)
  - Java (Espresso / JUnit / TestNg)
  - JavaScript (CodeceptJS / Jasmine / Mocha / Protractor / QUnit)
  - JBehave
- - PHP (PHPUnit / UnitTest)
+ - PHP (PHPUnit)
  - Python (UnitTest)
  - Robot Framework
  - Ruby (MiniTest / RSpec)
  - Selenium IDE
  - SpecFlow
  - Swift (XCTest)
-
-*Cucumber Expressions is standard Cucumber syntax that makes use of [Cucumber Expressions](https://cucumber.io/docs/cucumber/cucumber-expressions/)
 
 You can specify the output language and framework in the command line, for example:
 
@@ -113,6 +111,8 @@ Specific options:
         --filename-pattern=PATTERN   Filename pattern (containing %s)
     -c, --config-file=PATH           Configuration file
         --overriden-templates=PATH   Folder for overriden templates
+        --overriden-language-configs=PATH
+                                     Folder for overriden language configs
         --test-run-id=ID             Export data from a test run identified by its id
         --test-run-name=NAME         Export data from a test run identified by its name
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
@@ -189,6 +189,8 @@ package = 'com.youcompany'
 ```
 
 Note that options from command line arguments override options from config file.
+
+If you want to override one of the existing configurations, you can use the --overriden-language-configs option to specify a path that is checked for configuration files prior to looking at the default configuration files.  If one is found, it will use that file instead of the default, otherwise it will use the default configuration for the specified language.
 
 ### Using hiptest-publisher behind a http proxy
 

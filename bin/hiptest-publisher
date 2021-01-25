@@ -16,14 +16,18 @@ require 'ruby_version'
 require 'hiptest-publisher/i18n'
 require 'hiptest-publisher/utils'
 
-# Ensure ruby version >= 2.3
-if RubyVersion < '2.3.0'
-  STDERR.puts(I18n.t('ruby_version.required_version', version: '2.3.0'))
+# Ensure ruby version >= 2.5
+if RubyVersion < '2.5.0'
+  STDERR.puts(I18n.t('ruby_version.required_version', version: '2.5.0'))
   STDERR.puts(I18n.t('ruby_version.current_version', engine: RUBY_ENGINE, version: RUBY_VERSION))
   STDERR.puts(I18n.t('ruby_version.use_more_recent'))
 
+  if RubyVersion.is? 2.4
+    STDERR.puts(I18n.('ruby_version.support_ended', version: '2.4.0', year: '2020', month: '03', day: '31'))
+  if RubyVersion.is? 2.3
+    STDERR.puts(I18n.('ruby_version.support_ended', version: '2.3.0', year: '2019', month: '03', day: '31'))
   if RubyVersion.is? 2.2
-    STDERR.puts(I18n.('ruby_version.support_ended', version: '2.2.0', year: '2018', month: '06', day: '20'))
+    STDERR.puts(I18n.('ruby_version.support_ended', version: '2.2.0', year: '2018', month: '03', day: '31'))
   elsif RubyVersion.is? 2.1
     STDERR.puts(I18n.('ruby_version.support_ended', version: '2.1.0', year: '2017', month: '04', day: '01'))
   elsif RubyVersion.is? 2.0
@@ -36,7 +40,7 @@ if RubyVersion < '2.3.0'
   exit 1
 end
 
-if RubyVersion < '2.4'
+if RubyVersion < '2.4' # TODO: deprecate ruby 2.5 (eol 2021-03-31)
   STDERR.puts(I18n.t('ruby_version.current_version', engine: RUBY_ENGINE, version: RUBY_VERSION))
   STDERR.puts(I18n.t('ruby_version.deprecation_warning', version: '2.3'))
   STDERR.puts(I18n.t('ruby_version.support_ended', version: '2.3', year: '2019', month: '03', day: '31'))
@@ -45,7 +49,7 @@ end
 require 'hiptest-publisher'
 begin
   require 'pry' # only available in development
-rescue LoadError
+rescue StandardError, LoadError
 end
 
 Hiptest::Publisher.new(ARGV).run

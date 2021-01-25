@@ -21,6 +21,7 @@ group :development do
   gem 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.6'
   gem 'i18n-tasks', '~> 0.9.29'
   gem 'i18n-coverage', '~> 0.1.1'
+  gem 'actionview', '~> 5.2'
 end
 
 group :packaging do

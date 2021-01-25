@@ -151,7 +151,9 @@ describe Hiptest::Publisher do
 
   describe "--language=ruby" do
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+      stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+        to_return(body: { publication_export_id: 1 }.to_json)
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       stub_request(:get, "https://app.hiptest.com/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
@@ -166,7 +168,9 @@ describe Hiptest::Publisher do
     end
 
     it "exports correctly in the golden case" do
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+      stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+        to_return(body: { publication_export_id: 1 }.to_json)
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       args = [
         "--language", "ruby",
@@ -180,7 +184,7 @@ describe Hiptest::Publisher do
     end
 
     it "can handle bad URL" do
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+      stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
         to_raise(StandardError)
       args = [
         "--language", "ruby",
@@ -196,6 +200,8 @@ describe Hiptest::Publisher do
     end
 
     it "can handle 404 Not Found errors" do
+      stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+        to_return(status: 404)
       stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
         to_return(status: 404)
       args = [
@@ -212,6 +218,24 @@ describe Hiptest::Publisher do
       expect(STDOUT).to have_printed('Exporting scenarios')
       expect(STDOUT).to have_printed('Exporting actionwords')
       expect(STDOUT).to have_printed('Exporting actionword signature')
+    end
+
+    context "with a server that does not support async exports" do
+      it "exports correctly in the golden case" do
+        stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+          to_return(status: 404)
+        stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+          to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
+        args = [
+          "--language", "ruby",
+          "--output-directory", output_dir,
+          "--token", "123456789",
+          "--cache-duration", "0"
+        ]
+        publisher = Hiptest::Publisher.new(args, listeners: [ErrorListener.new])
+        publisher.run
+        expect_same_files("samples/expected_output/Hiptest publisher-rspec", output_dir)
+      end
     end
 
     describe "--split-scenarios" do
@@ -1111,7 +1135,9 @@ describe Hiptest::Publisher do
 
     context "--output-directory" do
       before(:each) {
-        stub_request(:get, "https://app.hiptest.com/publication/123/project").
+        stub_request(:post, "https://app.hiptest.com/publication/123/async_project").
+          to_return(body: { publication_export_id: 1 }.to_json)
+        stub_request(:get, "https://app.hiptest.com/publication/123/async_project/1").
           to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       }
 
@@ -1272,7 +1298,9 @@ describe Hiptest::Publisher do
   describe "--filename-pattern" do
     # Only works --with-folders
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://app.hiptest.com/publication/123456789/project").
+      stub_request(:post, "https://app.hiptest.com/publication/123456789/async_project").
+        to_return(body: { publication_export_id: 1 }.to_json)
+      stub_request(:get, "https://app.hiptest.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/cash_withdrawal.xml'))
       args = [
         "--language", "javascript",

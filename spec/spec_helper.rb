@@ -139,7 +139,7 @@ module HelperFactories
   end
 end
 
-def language_group_config_for(properties)
+def cli_opts_for(properties)
   if properties.is_a?(Array)
     args = properties
     cli_options = OptionsParser.parse(args, error_reporter)
@@ -149,6 +149,12 @@ def language_group_config_for(properties)
     properties.each { |key, value| cli_options[key] = value }
   end
   cli_options.normalize!
+
+  cli_options
+end
+
+def language_group_config_for(properties)
+  cli_options = cli_opts_for(properties)
   language_config = LanguageConfigParser.new(cli_options)
   language_config.language_group_configs.first or fail("no language group defined for --only=#{cli_options.only}")
 end
@@ -158,3 +164,5 @@ def context_for(properties)
   language_group_config = language_group_config_for(properties)
   language_group_config.build_node_rendering_context(node)
 end
+
+

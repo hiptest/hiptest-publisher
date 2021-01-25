@@ -195,6 +195,7 @@ en:
     only: Restrict export to given file categories (--only=list to list them)
     output_directory: Output directory
     overriden_templates: Folder for overriden templates
+    overriden_language_configs: Folder for overriden language configs
     parameter_delimiter: Parameter delimiter (for Gherkin based export only)
     parent_folder_tags: 'Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports)'
     push: Push a results file to the server

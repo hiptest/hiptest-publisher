@@ -1,9 +1,8 @@
 package {{{ context.package }}}
 
-import io.cucumber.datatable.DataTable
-import io.cucumber.groovy.EN
+import cucumber.api.DataTable
 
-this.metaClass.mixin(EN)
+this.metaClass.mixin(cucumber.api.groovy.EN)
 
 Actionwords {{{ context.call_prefix }}} = new Actionwords()
 

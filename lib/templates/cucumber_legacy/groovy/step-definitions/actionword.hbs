@@ -1,0 +1,5 @@
+{{#if rendered_children.gherkin_annotation }}{{{ rendered_children.gherkin_annotation }}}(~"^{{#escape_backslashes_and_double_quotes}}{{> gherkin_pattern}}{{/escape_backslashes_and_double_quotes}}\$") { {{{ join rendered_children.parameters_ordered_by_pattern ', '}}} ->{{#indent}}
+{{{ context.call_prefix }}}.{{{camelize_lower uniq_name}}}({{#if has_parameters?}}{{#join raw_parameter_names ', ' as |param|}}{{{camelize_lower param}}}{{/join}}{{/if}})
+{{/indent}}
+}
+{{/if}}

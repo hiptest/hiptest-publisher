@@ -4,7 +4,16 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
- - Nothing changed yet
+  - Add `--overriden-language-configs` command line option (#205 by tenpaiyomi)
+  - Add support for Cucumber Expression in Java and Groovy  (#205 by tenpaiyomi)
+  - Fix possible duplication of actionwords in export (#232 by tenpaiyomi)
+  - Breaking change: Export with cucumber expressions are now the default when specifying `--language=cucumber` for TypeScript, Java, and GroovySet. Use `--language=cucumber_legacy` to keep previous export behavior (#205 by tenpaiyomi) (#205 by tenpaiyomi)
+  - Breaking change: Drop support for ruby 2.3 and ruby 2.4 as they have reached end of life
+
+[2.4.0]
+-------
+
+ - Add support for asynchronous export of projects from Cucumber Studio
 
 [2.3.1]
 -------
@@ -237,7 +246,9 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v2.3.0...master
+[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v2.4.0...master
+[2.4.0]: https://github.com/hiptest/hiptest-publisher/compare/v2.3.1...v2.4.0
+[2.3.1]:     https://github.com/hiptest/hiptest-publisher/compare/v2.3.0...v2.3.1
 [2.3.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.2.0...v2.3.0
 [2.2.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.1.0...v2.2.0
 [2.1.0]:     https://github.com/hiptest/hiptest-publisher/compare/v2.0.0...v2.1.0
