@@ -6,7 +6,7 @@ require 'webmock'
 
 begin
   require 'pry'
-rescue LoadError => exception
+rescue => exception
   puts "Unable to use pry"
   puts exception
 end
