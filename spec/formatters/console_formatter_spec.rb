@@ -9,6 +9,8 @@ describe ConsoleFormatter do
   subject(:console_formatter) { ConsoleFormatter.new(verbose, color: color) }
 
   before do
+    console = instance_double("IO.console")
+    allow(IO).to receive(:console).and_return(console)
     allow($stdout).to receive(:tty?).and_return(is_a_tty)
   end
 
@@ -22,8 +24,6 @@ describe ConsoleFormatter do
       let(:is_a_tty) { true }
 
       before do
-        console = instance_double("IO.console")
-        allow(IO).to receive(:console).and_return(console)
         allow(IO.console).to receive(:winsize).and_return([80, 25])
       end
 
@@ -51,18 +51,8 @@ describe ConsoleFormatter do
           allow(IO).to receive(:console).and_return(nil)
         end
 
-        it 'is not colored by default' do
-          expect(console_formatter.colored?).to be false
-        end
-
-        it 'does not output anything if no status' do
-          console_formatter.show_status_message('My message')
-          expect(STDOUT).not_to have_received(:print)
-        end
-
-        it 'outputs normally if status' do
-          console_formatter.show_status_message('My message', :success)
-          expect(STDOUT).to have_received(:print).with("[v] My message\n").once
+        it 'is still colored by default' do
+          expect(console_formatter.colored?).to be true
         end
       end
     end
