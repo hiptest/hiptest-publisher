@@ -22,6 +22,8 @@ describe ConsoleFormatter do
       let(:is_a_tty) { true }
 
       before do
+        console = instance_double("IO.console")
+        allow(IO).to receive(:console).and_return(console)
         allow(IO.console).to receive(:winsize).and_return([80, 25])
       end
 
@@ -42,6 +44,26 @@ describe ConsoleFormatter do
       it 'if status is :failure, it adds a red checkbox and sends to STDERR with a new line character' do
         console_formatter.show_status_message('My message', :failure)
         expect(STDERR).to have_received(:print).with("[#{"x".red}] My message\n").once
+      end
+
+      context 'but IO.console is nil' do
+        before do
+          allow(IO).to receive(:console).and_return(nil)
+        end
+
+        it 'is not colored by default' do
+          expect(console_formatter.colored?).to be false
+        end
+
+        it 'does not output anything if no status' do
+          console_formatter.show_status_message('My message')
+          expect(STDOUT).not_to have_received(:print)
+        end
+
+        it 'outputs normally if status' do
+          console_formatter.show_status_message('My message', :success)
+          expect(STDOUT).to have_received(:print).with("[v] My message\n").once
+        end
       end
     end
 

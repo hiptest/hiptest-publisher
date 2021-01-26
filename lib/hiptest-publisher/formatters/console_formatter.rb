@@ -91,7 +91,7 @@ class ConsoleFormatter
   private
 
   def tty?
-    $stdout.tty?
+    $stdout.tty? && !IO.console.nil?
   end
 
   def colorize(txt, color)
