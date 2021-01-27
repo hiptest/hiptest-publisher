@@ -1,7 +1,7 @@
 HipTest Publisher
 ==============
 
-[![CircleCI](https://circleci.com/gh/hiptest/hiptest-publisher.svg?style=svg)](https://circleci.com/gh/hiptest/hiptest-publisher)
+[![GitHub Actions status](https://github.com/hiptest/hiptest-publisher/workflows/Tests/badge.svg)](https://github.com/hiptest/hiptest-publisher/actions?query=workflow%3ATests)
 [![Build Status Windows](https://ci.appveyor.com/api/projects/status/ciahcci0ayr1oihr/branch/master?svg=true)](https://ci.appveyor.com/project/hiptest/hiptest-publisher)
 [![Gem Version](https://badge.fury.io/rb/hiptest-publisher.svg)](http://badge.fury.io/rb/hiptest-publisher)
 [![Code Climate](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/gpa.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
