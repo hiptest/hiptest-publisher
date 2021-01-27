@@ -20,4 +20,13 @@ jobs:
         ruby-version: 2.6
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-    - run: bundle exec rspec
+    - name: Try running gem locally
+      run: bundle exec ruby -I lib bin/hiptest-publisher --help
+
+    - name: Run RSpec
+      run: bundle exec rspec
+
+    - name: Create and install gem and trying running hiptest-publisher
+      run: |
+        rake install
+        hiptest-publisher --help
