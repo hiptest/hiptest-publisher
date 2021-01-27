@@ -34,4 +34,6 @@ jobs:
     - name: Install gem and run hiptest-publisher --help
       run: |
         bundle exec rake install
+        env
+        find / -name hiptest-publisher
         hiptest-publisher --help
