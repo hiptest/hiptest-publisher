@@ -9,24 +9,29 @@ on:
     - master
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [2.5, 2.6]
 
     steps:
     - uses: actions/checkout@v2
 
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6
+        ruby-version: ${{ matrix.ruby }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-    - name: Try running gem locally
+    - name: Run hiptest-publisher --help locally
       run: bundle exec ruby -I lib bin/hiptest-publisher --help
 
-    - name: Run RSpec
+    - name: RSpec
       run: bundle exec rspec
 
-    - name: Create and install gem and trying running hiptest-publisher
+    - name: Install gem and run hiptest-publisher --help
       run: |
         rake install
         hiptest-publisher --help
