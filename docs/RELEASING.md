@@ -26,4 +26,4 @@ cd hiptest-publisher-samples
 bin/clone-all
 bin/update-hps-version <NEW VERSION NUMBER>
 ```
-Next check Travis CI is ok.
+Next check all CI are ok on GitHub.
