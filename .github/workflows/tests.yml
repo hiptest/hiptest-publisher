@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        ruby: [2.5, 2.6]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+    - name: Run hiptest-publisher --help locally
+      run: bundle exec ruby -I lib bin/hiptest-publisher --help
+
+    - name: RSpec
+      run: bundle exec rspec
+
+    # TODO: make this work, to test that the gem can be built, installed, and runs successfully
+    # - name: Install gem and run hiptest-publisher --help
+    #   run: |
+    #     rake install
+    #     hiptest-publisher --help

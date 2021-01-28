@@ -24,9 +24,9 @@ if RubyVersion < '2.5.0'
 
   if RubyVersion.is? 2.4
     STDERR.puts(I18n.('ruby_version.support_ended', version: '2.4.0', year: '2020', month: '03', day: '31'))
-  if RubyVersion.is? 2.3
+  elsif RubyVersion.is? 2.3
     STDERR.puts(I18n.('ruby_version.support_ended', version: '2.3.0', year: '2019', month: '03', day: '31'))
-  if RubyVersion.is? 2.2
+  elsif RubyVersion.is? 2.2
     STDERR.puts(I18n.('ruby_version.support_ended', version: '2.2.0', year: '2018', month: '03', day: '31'))
   elsif RubyVersion.is? 2.1
     STDERR.puts(I18n.('ruby_version.support_ended', version: '2.1.0', year: '2017', month: '04', day: '01'))

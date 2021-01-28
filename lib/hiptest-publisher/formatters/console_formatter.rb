@@ -63,6 +63,7 @@ class ConsoleFormatter
       cursor_offset = ""
     else
       return unless tty?
+      return if IO.console.nil?
       rows, columns = IO.console.winsize
       return if columns == 0
       @immediate_verbose = false

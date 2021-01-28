@@ -1,9 +1,0 @@
-language: ruby
-rvm:
-  - 2.6.2
-  - 2.5.5
-sudo: false
-before_install:
-  - gem update --system # https://github.com/travis-ci/travis-ci/issues/8978#issuecomment-354036443
-  - gem install bundler:1.17.2 # https://github.com/travis-ci/travis-ci/issues/9333#issuecomment-373042916
-script: "./bin/travis_script.sh"
