@@ -32,8 +32,11 @@ jobs:
     - name: RSpec
       run: bundle exec rspec
 
-    # TODO: make this work, to test that the gem can be built, installed, and runs successfully
-    # - name: Install gem and run hiptest-publisher --help
-    #   run: |
-    #     rake install
-    #     hiptest-publisher --help
+    - name: Build and install hiptest-publisher gem
+      run: |
+        bundle exec rake gemspec
+        gem build hiptest-publisher.gemspec
+        gem install hiptest-publisher-*.gem
+
+    - name: Run hiptest-publisher --help from gem
+      run: hiptest-publisher --help
