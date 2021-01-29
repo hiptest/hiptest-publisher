@@ -11,11 +11,12 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["HipTest R&D".freeze]
-  s.date = "2020-09-18"
+  s.date = "2021-01-29"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests.".freeze
   s.email = "contact@hiptest.com".freeze
   s.executables = ["hiptest-publisher".freeze]
   s.extra_rdoc_files = [
+    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ]
@@ -30,7 +31,9 @@ Gem::Specification.new do |s|
     "lib/config/cucumber-javascript.conf",
     "lib/config/cucumber-ruby.conf",
     "lib/config/cucumber-typescript.conf",
-    "lib/config/cucumber_expressions-typescript.conf",
+    "lib/config/cucumber_legacy-groovy.conf",
+    "lib/config/cucumber_legacy-java.conf",
+    "lib/config/cucumber_legacy-typescript.conf",
     "lib/config/groovy-spock.conf",
     "lib/config/java-espresso.conf",
     "lib/config/java-junit.conf",
@@ -164,8 +167,14 @@ Gem::Specification.new do |s|
     "lib/templates/cucumber/typescript/actionwords.hbs",
     "lib/templates/cucumber/typescript/library.hbs",
     "lib/templates/cucumber/typescript/libraryactionword.hbs",
-    "lib/templates/cucumber_expressions/typescript/actionword.hbs",
-    "lib/templates/cucumber_expressions/typescript/libraryactionword.hbs",
+    "lib/templates/cucumber_legacy/groovy/step-definitions/actionword.hbs",
+    "lib/templates/cucumber_legacy/groovy/step-definitions/actionwords.hbs",
+    "lib/templates/cucumber_legacy/groovy/step-definitions/library.hbs",
+    "lib/templates/cucumber_legacy/groovy/step-definitions/libraryactionword.hbs",
+    "lib/templates/cucumber_legacy/java/actionword.hbs",
+    "lib/templates/cucumber_legacy/java/actionwords.hbs",
+    "lib/templates/cucumber_legacy/typescript/actionword.hbs",
+    "lib/templates/cucumber_legacy/typescript/libraryactionword.hbs",
     "lib/templates/gherkin/_call.hbs",
     "lib/templates/gherkin/_gherkin_text.hbs",
     "lib/templates/gherkin/_scenario.hbs",
@@ -528,6 +537,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
       s.add_development_dependency(%q<i18n-tasks>.freeze, ["~> 0.9.29"])
       s.add_development_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
+      s.add_development_dependency(%q<actionview>.freeze, ["~> 5.2"])
     else
       s.add_dependency(%q<colorize>.freeze, [">= 0.7.5", "~> 0.7"])
       s.add_dependency(%q<parseconfig>.freeze, [">= 1.0.4", "~> 1.0"])
@@ -543,6 +553,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
       s.add_dependency(%q<i18n-tasks>.freeze, ["~> 0.9.29"])
       s.add_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
+      s.add_dependency(%q<actionview>.freeze, ["~> 5.2"])
     end
   else
     s.add_dependency(%q<colorize>.freeze, [">= 0.7.5", "~> 0.7"])
@@ -559,6 +570,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<codeclimate-test-reporter>.freeze, [">= 0.4.6", "~> 0.4"])
     s.add_dependency(%q<i18n-tasks>.freeze, ["~> 0.9.29"])
     s.add_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
+    s.add_dependency(%q<actionview>.freeze, ["~> 5.2"])
   end
 end
 
