@@ -252,7 +252,7 @@ class OptionsParser
       Option.new(nil, 'empty-folders', false, nil, I18n.t('options.empty_folders'), :empty_folders),
       Option.new(nil, 'split-scenarios', false, nil, I18n.t('options.split_scenarios'), :split_scenarios),
       Option.new(nil, 'leafless-export', false, nil, I18n.t('options.leafless_export'), :leafless_export),
-      Option.new('s', 'site=SITE', 'https://app.hiptest.com', String, I18n.t('options.site'), :site),
+      Option.new('s', 'site=SITE', 'https://studio.cucumber.io', String, I18n.t('options.site'), :site),
       Option.new(nil, 'http-proxy=PROXY_URL', nil, String, I18n.t('options.http_proxy'), :http_proxy),
       Option.new('p', 'push=FILE.TAP', '', String, I18n.t('options.push'), :push),
       Option.new(nil, 'global-failure-on-missing-reports', false, nil, I18n.t('options.global_failure_on_missing_reports'), :global_failure_on_missing_reports),
@@ -384,7 +384,7 @@ class NodeRenderingContext
 
   def renderer_addons
     addons = @properties.renderer_addons || ""
-    
+
     addons.split.map do |addon_name|
       Hiptest.const_get(addon_name)
     end
@@ -706,7 +706,7 @@ class LanguageConfigParser
                       expanded = File.expand_path("#{cli_options.overriden_language_configs}/#{config_name.downcase}")
 
                       # If the file exists in the path the user specified, set the config path to blank so we will be
-                      # looking in the exact path that the user requested. 
+                      # looking in the exact path that the user requested.
                       if File.file?(expanded)
                         config_path = ''
                         expanded

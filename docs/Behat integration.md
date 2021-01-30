@@ -1,9 +1,9 @@
-Integrate hiptest actions words into behat with AbstractClass
-=====================
+Integrate CucumberStudio actions words into behat with AbstractClass
+====================================================================
 
 Integration with [Behat](https://github.com/Behat/Behat) can be quite simple.
 
-With the given file structure you can integrate HipTest with no impact to your current framework's test code architecture.
+With the given file structure you can integrate CucumberStudio with no impact to your current framework's test code architecture.
 
 ```php
 ./behat/bootstrap/Feature/Context/FeatureContext.php

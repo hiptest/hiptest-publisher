@@ -113,7 +113,7 @@ Those data can be directly used inside handlebars condition. For example in ``sc
 
 ``has_tags?`` is true when tags have been set on the scenario or action word.
 
-``has_step?`` is true if there is at least one step (action/result in HipTest) in the definition.
+``has_step?`` is true if there is at least one step (action/result in CucumberStudio) in the definition.
 
 ``is_empty?`` is true when the definition is empty.
 
@@ -146,13 +146,13 @@ The same values are available than  for actionword, plus:
 
 ### tag
 
-``has_value?`` is true when the tag has a value (for example: "priority:1" in HipTest, 1 is the value).
+``has_value?`` is true when the tag has a value (for example: "priority:1" in CucumberStudio, 1 is the value).
 
 ### template
 
 A bit more explanation is needed here.
 
-In HipTest, templates are double quoted string. It is possible to include some variables inside (for example: "Ensure value is: ${x}"). When exporting the data, the string is splitted into chunks. With the previous example, there will be two chunks: 'Ensure value is: ' which will be a ``Hiptest::Nodes::StringLiteral`` instance and x which will be a ``Hiptest::Nodes::Variable`` instance.
+In CucumberStudio, templates are double quoted string. It is possible to include some variables inside (for example: "Ensure value is: ${x}"). When exporting the data, the string is splitted into chunks. With the previous example, there will be two chunks: 'Ensure value is: ' which will be a ``Hiptest::Nodes::StringLiteral`` instance and x which will be a ``Hiptest::Nodes::Variable`` instance.
 
 ``treated_chunks`` gives the list of chunks with an extra information (``is_variable?``) that tells if the chunks is a variable of not. It also provide the raw node.
 
@@ -160,8 +160,8 @@ In HipTest, templates are double quoted string. It is possible to include some v
 
 The main use for that is to be able to generate code that will do the replacement in string. The easiest way to understand this is to have a look at the ``template.hbs`` file in the Java or Python directory.
 
-HipTest custom helpers
--------------------
+Custom helpers
+--------------
 
 We provide a few custom helpers that can be used in templates. For each one, we show an example on how to use it and below the output it will provide.
 

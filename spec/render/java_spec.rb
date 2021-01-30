@@ -195,7 +195,7 @@ describe 'Render as Java' do
       "    throw new UnsupportedOperationException();",
       "}"].join("\n")
 
-    # In HipTest, correspond to two action words:
+    # In CucumberStudio, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -215,7 +215,7 @@ describe 'Render as Java' do
       "    }",
       "}"].join("\n")
 
-    # In HipTest, correspond to these action words with parameters:
+    # In CucumberStudio, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -444,7 +444,7 @@ describe 'Render as Java' do
         "}"
       ].join("\n")
 
-      # In HipTest, correspond to two scenarios in a project called 'My project'
+      # In CucumberStudio, correspond to two scenarios in a project called 'My project'
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do
@@ -1311,7 +1311,7 @@ describe 'Render as Java' do
         '}'
       ].join("\n")
 
-      # In HipTest, correspond to two scenarios in a project called 'My project'
+      # In CucumberStudio, correspond to two scenarios in a project called 'My project'
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do

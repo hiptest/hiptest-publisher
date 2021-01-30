@@ -137,7 +137,7 @@ describe 'Render as Ruby' do
       "  end",
       "end"].join("\n")
 
-    # In HipTest, correspond to these action words with parameters:
+    # In CucumberStudio, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end

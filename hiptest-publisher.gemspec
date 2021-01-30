@@ -10,10 +10,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
-  s.authors = ["HipTest R&D".freeze]
-  s.date = "2021-01-29"
+  s.authors = ["CucumberStudio R&D".freeze]
+  s.date = "2021-01-30"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests.".freeze
-  s.email = "contact@hiptest.com".freeze
+  s.email = "studio@cucumber.io".freeze
   s.executables = ["hiptest-publisher".freeze]
   s.extra_rdoc_files = [
     "CHANGELOG.md",
@@ -514,10 +514,10 @@ Gem::Specification.new do |s|
     "lib/templates/typescript/libraryactionword.hbs",
     "lib/templates/typescript/parameter.hbs"
   ]
-  s.homepage = "https://hiptest.com".freeze
-  s.licenses = ["GPL-2.0".freeze]
+  s.homepage = "https://cucumber.io".freeze
+  s.licenses = ["MIT".freeze]
   s.rubygems_version = "2.7.6.2".freeze
-  s.summary = "Export your tests from HipTest into executable tests.".freeze
+  s.summary = "Export your tests from CucumberStudio into executable tests.".freeze
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

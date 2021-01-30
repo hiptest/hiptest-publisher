@@ -183,7 +183,7 @@ describe 'Render as Javascript' do
       "  throw 'Not implemented';",
       "}"].join("\n")
 
-    # In HipTest, correspond to two action words:
+    # In CucumberStudio, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -199,7 +199,7 @@ describe 'Render as Javascript' do
       "  }",
       "};"].join("\n")
 
-    # In HipTest, correspond to these action words with parameters:
+    # In CucumberStudio, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -418,7 +418,7 @@ describe 'Render as Javascript' do
       ""
     ].join("\n")
 
-    # In HipTest, correspond to two scenarios in a project called "Miles' project"
+    # In CucumberStudio, correspond to two scenarios in a project called "Miles' project"
     # scenario 'first scenario' do
     # end
     # scenario 'second scenario' do
@@ -766,7 +766,7 @@ describe 'Render as Javascript' do
         ""
       ].join("\n")
 
-      # In HipTest, correspond to two scenarios in a project called "Miles' project"
+      # In CucumberStudio, correspond to two scenarios in a project called "Miles' project"
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do
@@ -915,7 +915,7 @@ describe 'Render as Javascript' do
 
   context 'Mocha' do
     before(:each) do
-    # In HipTest, correspond to two action words:
+    # In CucumberStudio, correspond to two action words:
     # actionword 'first action word' do
     # end
     # actionword 'second action word' do
@@ -931,7 +931,7 @@ describe 'Render as Javascript' do
       "  }",
       "};"].join("\n")
 
-    # In HipTest, correspond to these action words with parameters:
+    # In CucumberStudio, correspond to these action words with parameters:
     # actionword 'aw with int param'(x) do end
     # actionword 'aw with float param'(x) do end
     # actionword 'aw with boolean param'(x) do end
@@ -1151,7 +1151,7 @@ describe 'Render as Javascript' do
         ""
       ].join("\n")
 
-      # In HipTest, correspond to two scenarios in a project called "Miles' project"
+      # In CucumberStudio, correspond to two scenarios in a project called "Miles' project"
       # scenario 'first scenario' do
       # end
       # scenario 'second scenario' do

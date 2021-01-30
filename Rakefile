@@ -17,12 +17,12 @@ require 'juwelier'
 Juwelier::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "hiptest-publisher"
-  gem.homepage = "https://hiptest.com"
-  gem.license = "GPL-2.0"
-  gem.summary = "Export your tests from HipTest into executable tests."
+  gem.homepage = "https://cucumber.io"
+  gem.license = "MIT"
+  gem.summary = "Export your tests from CucumberStudio into executable tests."
   gem.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
-  gem.email = "contact@hiptest.com"
-  gem.authors = ["HipTest R&D"]
+  gem.email = "studio@cucumber.io"
+  gem.authors = ["CucumberStudio R&D"]
 
   gem.executables = ['hiptest-publisher']
   gem.files = `git ls-files -- lib/* config/*`.split("\n")

@@ -1785,7 +1785,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
 
       context 'when some datatable rows are incomplete' do
         # That one is a bit weird, but we found some examples where the XML
-        # made by HipTest misses some data ...
+        # made by CucumberStudio misses some data ...
 
         let(:scenario) {scenario_with_incomplete_datatable}
 
@@ -2007,7 +2007,7 @@ shared_examples "a BDD renderer" do |uid_should_be_in_outline: false|
       expect(rendered).to eq([
                                "# To export your project to Gherkin correctly, you can add the option",
                                "# --with-folders when calling hiptest-publisher. It will keep the",
-                               "#  HipTest folders hierarchy of your project."
+                               "# folders hierarchy of your CucumberStudio Test Management project."
                              ].join("\n"))
     end
   end

@@ -8,6 +8,8 @@ HipTest Publisher
 [![Test Coverage](https://codeclimate.com/github/hiptest/hiptest-publisher/badges/coverage.svg)](https://codeclimate.com/github/hiptest/hiptest-publisher)
 
 
+hiptest-publisher is a tool to read Test Management projects from CucumberStudio (formerly know as HipTest) and publish them as executable test scripts stubs to start automating.
+
 Installing
 ----------
 
@@ -44,8 +46,8 @@ Note: for Windows users, take a look at [this Windows installation guide](docs/I
 Exporting a project
 -------------------
 
-Go to one of your [HipTest projects](https://app.hiptest.com/projects) and select the Settings tab.
-This tab is available only for projects you own.
+Go to [CucumberStudio projects list](https://studio.cucumber.io/projects), pick one project, and select the Settings tab.
+This tab is available only for projects you're admin of.
 From there, copy the secret token and run this command line:
 
 ```shell
@@ -58,7 +60,7 @@ This will create a Ruby tests suite. For the moment, we support the following la
  - Behave
  - CSharp (NUnit)
  - Cucumber (Groovy / Java / Javascript / Ruby / TypeScript)
- - Cucumber Legacy (Groovy / Java / TypeScript)
+ - Cucumber Legacy (Groovy / Java / TypeScript) (previous Cucumber versions)
  - Groovy (Spock)
  - Java (Espresso / JUnit / TestNg)
  - JavaScript (CodeceptJS / Jasmine / Mocha / Protractor / QUnit)
@@ -82,7 +84,7 @@ When publishing, you'll notice a file called ``actionwords_signature.yaml``. Sto
 Exporting a test run
 --------------------
 
-You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `https://app.hiptest.com/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
+You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `https://studio.cucumber.io/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
 
 ```shell
 hiptest-publisher --token=<YOUR TOKEN> --test-run-id=6941
@@ -100,7 +102,7 @@ hiptest-publisher --help
 You could obtain for example:
 
 ```shell
-Exports tests from HipTest for automation.
+Exports tests from CucumberStudio for automation.
 
 Specific options:
     -t, --token=TOKEN                Secret token (available in your project settings)
@@ -116,7 +118,7 @@ Specific options:
         --test-run-name=NAME         Export data from a test run identified by its name
         --only=CATEGORIES            Restrict export to given file categories (--only=list to list them)
         --without=CATEGORIES         Exclude file categories from import (--only=list to list them)
-    -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from HipTest
+    -x, --xml-file=PROJECT_XML       XML file to use instead of fetching it from CucumberStudio
         --tests-only                 (deprecated) alias for --only=tests (default: false)
         --actionwords-only           (deprecated) alias for --only=actionwords (default: false)
         --actionwords-signature      Export actionwords signature (default: false)
@@ -135,7 +137,7 @@ Specific options:
         --empty-folders              Export empty folders (default: false)
         --split-scenarios            Export each scenario in a single file (except for Gherkin based languages) (default: false)
         --leafless-export            Use only last level action word (default: false)
-    -s, --site=SITE                  Site to fetch from (default: https://app.hiptest.com)
+    -s, --site=SITE                  Site to fetch from (default: https://studio.cucumber.io)
     -p, --push=FILE.TAP              Push a results file to the server
         --global-failure-on-missing-reports
                                      When there is no results file to push, report a global failure (default: false)
@@ -146,8 +148,8 @@ Specific options:
         --[no-]parent-folder-tags    Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
         --parameter-delimiter        Parameter delimiter (for Gherkin based export only) (default: ")
         --with-dataset-names         Export dataset name when creating feature files (note: available only for Gherkin-based exports) (default: false)
-        --keep-filenames             Keep the same name as in HipTest for the test files (note: may cause encoding issues) (default: false)
-        --keep-foldernames           Keep the same name as in HipTest for the folders (note: may cause encoding issues) (default: false)
+        --keep-filenames             Keep the same name as in CucumberStudio for the test files (note: may cause encoding issues) (default: false)
+        --keep-foldernames           Keep the same name as in CucumberStudio for the folders (note: may cause encoding issues) (default: false)
         --filter-on-scenario-ids=IDS Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)
         --filter-on-folder-ids=IDS   Filter on folder ids (use commas to separate ids when fetching multiple folders)
         --filter-on-scenario-name=NAME
@@ -202,17 +204,19 @@ If username and password are required:
 http_proxy=http://<username>:<password>@<proxy_host>:<proxy_port>
 ```
 
-Posting results to HipTest
---------------------------
+Posting results to CucumberStudio
+---------------------------------
 
-You can use the options --push to push the results back to HipTest. For this, you first need to generate the test code from a Test run by specifying option ``--test-run-id=<xxx>`` during code generation (or add it to the configuration file).
-The tests must then generate a test report that is supported by HipTest. Currently four types of test results are handled:
+You can use the option `--push` to push the results back to CucumberStudio. For this, you first need to generate the test code from a Test Run by specifying option `--test-run-id=<xxx>` during code generation (or add it to the configuration file).
+
+The tests must then generate a test report that is supported by CucumberStudio. Currently four types of test results are handled:
+ - Cucumber JSON format
  - jUnit XML format
  - [NUnit XML v2 format](https://github.com/nunit/docs/wiki/XML-Formats#v2-test-results)
- - [TAP (Test Anything Protocol)](https://testanything.org/)
  - Robot framework XML output
+ - [TAP (Test Anything Protocol)](https://testanything.org/)
 
-You can specify the type of export when pushing by using the option "--push-format=[cucumber-json|junit|nunit|robot|tap]" or specifying it in the config file.
+You can specify the type of export when pushing by using the option `--push-format=[cucumber-json|junit|nunit|robot|tap]` or specifying it in the config file.
 
 You can push multiple files at once (using wildcard) but in that case, do not forget to add quotes. For examples:
 
@@ -226,7 +230,7 @@ Development
 While developing, you can install the gem locally by issuing
 
 ```
-rake install
+bundle exec rake install
 ```
 
 You can also run the command directly with `bundle exec ruby -I lib bin/hiptest-publisher`. It is handy to define an alias so you can test your code easily:

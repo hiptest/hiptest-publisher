@@ -58,7 +58,7 @@ HipTest Publisher Changelog
 
  - Add support for Swift/XCTest ([#134](https://github.com/hiptest/hiptest-publisher/pull/134) [bangroot])
 
- - Add cache for the XML downloaded from HipTest.
+ - Add cache for the XML downloaded from CucumberStudio.
    By default, files will be valid for 60 seconds but can be changed by using `--cache-duration=120` for example.
 
 [1.29.2]

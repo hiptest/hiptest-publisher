@@ -66,7 +66,7 @@ en:
     up_to_date: Your current install of hiptest-publisher (%{current}) is up-to-date.
   default: default
   errors:
-    api_error: HipTest API returned error %{code}
+    api_error: CucumberStudio API returned error %{code}
     cli_options:
       actionwords_signature_directory: 'Bad Action Words signature file: the file "%{path}" is a directory'
       filter_status_without_test_run: |
@@ -86,7 +86,7 @@ en:
 
         Found: %{incorrect_value}
       invalid_tag_value_list: |
-        %{option} should be a list of comma separated tags in HipTest
+        %{option} should be a list of comma separated tags from CucumberStudio
 
         Found: %{incorrect_value}
       invalid_test_run_id: 'Invalid format --test-run-id="%{test_run_id}": the test run id must be numeric'
@@ -100,7 +100,7 @@ en:
       missing_token: |
         Missing argument --token: you must specify project secret token with --token=<project-token>
 
-        The project secret token can be found on HipTest in the settings section, under
+        The project secret token can be found on CucumberStudio in the settings section, under
         'Test code generation'. It is a sequence of numbers uniquely identifying your
         project.
 
@@ -128,9 +128,9 @@ en:
     no_test_runs: 'No matching test run found: this project does not have any test runs.'
     project_not_found: No project found with this secret token.
     template_not_found: no template with name %{template_name} in dirs %{dirs}
-    test_run_list_unavailable: Cannot get the list of available test runs from HipTest. Try using --test-run-id instead of --test-run-name
+    test_run_list_unavailable: Cannot get the list of available test runs from CucumberStudio. Try using --test-run-id instead of --test-run-name
   exporting_file: Exporting %{name}
-  fetching_data: Fetching data from HipTest
+  fetching_data: Fetching data from CucumberStudio
   using_cached_data: Using cached data from previous export
   caching_data: Caching data
   using_cache: "Using cache: %{full_path}"
@@ -148,7 +148,7 @@ en:
             hiptest-publisher --language=%{language} --only=%{first},%{second}
     description: |2
 
-      Exports tests from HipTest for automation.
+      Exports tests from CucumberStudio for automation.
 
       Specific options:
     header: 'Usage: hiptest-publisher [options]'
@@ -183,9 +183,9 @@ en:
     framework: Test framework to use
     global_failure_on_missing_reports: When there is no results file to push, report a global failure
     help: Show this message
-    http_proxy: 'Specify your http proxy to access Hiptest'
-    keep_filenames: 'Keep the same name as in HipTest for the test files (note: may cause encoding issues)'
-    keep_foldernames: 'Keep the same name as in HipTest for the folders (note: may cause encoding issues)'
+    http_proxy: 'Specify your http proxy to access CucumberStudio'
+    keep_filenames: 'Keep the same name as in CucumberStudio for the test files (note: may cause encoding issues)'
+    keep_foldernames: 'Keep the same name as in CucumberStudio for the folders (note: may cause encoding issues)'
     language: Target language
     languages_help: Show languages and framework options
     leafless_export: Use only last level action word
@@ -201,7 +201,7 @@ en:
     push: Push a results file to the server
     push_format: Format of the test results (cucumber-json, junit, nunit, robot, tap)
     site: Site to fetch from
-    sort: 'Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name'
+    sort: 'Sorting of tests in output: id will sort them by age, order will keep the same order as in CucumberStudio (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name'
     split_scenarios: Export each scenario in a single file (except for Gherkin based languages)
     test_run_id: Export data from a test run identified by its id
     test_run_name: Export data from a test run identified by its name
@@ -212,9 +212,9 @@ en:
     with_dataset_names: 'Export dataset name when creating feature files (note: available only for Gherkin-based exports)'
     with_folders: Use folders hierarchy to export files in respective directories
     without: Exclude file categories from import (--only=list to list them)
-    xml_file: XML file to use instead of fetching it from HipTest
-    cache_dir: "Path to the directory to store cache of Hiptest data"
-    cache_duration: "Validity of the Hiptest data cache in seconds"
+    xml_file: XML file to use instead of fetching it from CucumberStudio
+    cache_dir: "Path to the directory to store cache of CucumberStudio data"
+    cache_duration: "Validity of the CucumberStudio data cache in seconds"
     indentation: Customize indentation
   overwrite:
     ask_confirmation: 'File %{path} exists, do you want to overwrite it? [y/N] '
