@@ -32,7 +32,7 @@ jobs:
         RUBYOPT: "-Ilib" # include lib/ directory to ruby LOAD_PATH
       run: bundle exec bin\hiptest-publisher --help
 
-      - name: Run hiptest-publisher --help locally (linux/macos only)
+    - name: Run hiptest-publisher --help locally (linux/macos only)
       if: !contains(matrix.os, 'windows')
       env:
         RUBYOPT: "-Ilib" # include lib/ directory to ruby LOAD_PATH
