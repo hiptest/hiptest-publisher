@@ -27,7 +27,9 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
     - name: Run hiptest-publisher --help locally
-      run: RUBYOPT="-Ilib" bundle exec bin/hiptest-publisher --help
+      env:
+        RUBYOPT: "-Ilib" # include lib/ directory to ruby LOAD_PATH
+      run: bundle exec bin/hiptest-publisher --help
 
     - name: RSpec
       run: bundle exec rspec
