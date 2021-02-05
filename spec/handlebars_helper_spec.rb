@@ -185,8 +185,12 @@ describe Hiptest::HandlebarsHelper do
   end
 
   context 'hh_join_gherkin_dataset' do
-    it 'datatable use case' do
-      expect(evaluate('{{join_gherkin_dataset items}}', {items: ['John Connor', 'Sarah Connor', 'T-|000']})).to eq('John Connor | Sarah Connor | T-\|000')
+    it 'escapes "|" character in datatable' do
+      expect(evaluate('{{join_gherkin_dataset items}}', {items: ['John Connor', 'Sarah Connor', 'T-|000|']})).to eq('John Connor | Sarah Connor | T-\|000\|')
+    end
+
+    it 'escapes "\n" character (new lines) in datatable' do
+      expect(evaluate('{{join_gherkin_dataset items}}', {items: ['John Connor', "some\nnew\nlines"]})).to eq('John Connor | some\nnew\nlines')
     end
   end
 

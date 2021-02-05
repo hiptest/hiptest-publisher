@@ -10,6 +10,7 @@ HipTest Publisher Changelog
   - Breaking change: Export with cucumber expressions are now the default when specifying `--language=cucumber` for TypeScript, Java, and GroovySet. Use `--language=cucumber_legacy` to keep previous export behavior (#205 by tenpaiyomi) (#205 by tenpaiyomi)
   - Breaking change: Drop support for ruby 2.3 and ruby 2.4 as they have reached end of life
   - Rename HipTest as CucumberStudio in user messages
+  - Properly escape new lines in datatables (#109)
 
 [2.4.0]
 -------

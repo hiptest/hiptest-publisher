@@ -88,7 +88,7 @@ module Hiptest
     end
 
     def hh_join_gherkin_dataset(context, items, block, else_block = nil)
-      items.map! {|item| item.gsub(/\|/, "\\|")}
+      items.map! { |item| item.gsub(/\|/, "\\|").gsub("\n", "\\n") }
 
       hh_join(context, items, ' | ', block, else_block)
     end
