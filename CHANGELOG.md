@@ -4,6 +4,9 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+[3.0.0]
+-------
+
   - Add `--overriden-language-configs` command line option (#205 by tenpaiyomi)
   - Add support for Cucumber Expression in Java and Groovy  (#205 by tenpaiyomi)
   - Fix possible duplication of actionwords in export (#232 by tenpaiyomi)
