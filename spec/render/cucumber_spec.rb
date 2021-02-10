@@ -339,10 +339,10 @@ describe 'Cucumber/TypeScript rendering' do
       '',
       '}'].join("\n")}
 
-     let(:rendered_datatabled_actionword) {[
-       'theFollowingUsersAreAvailable(__datatable: TableDefinition) {',
-       '',
-       '}'].join("\n")}
+    let(:rendered_datatabled_actionword) {[
+      'theFollowingUsersAreAvailable(__datatable: TableDefinition) {',
+      '',
+      '}'].join("\n")}
 
     let(:rendered_actionwords) {
       [
@@ -752,4 +752,3 @@ describe 'Cucumber/Groovy rendering' do
     end
   end
 end
-
