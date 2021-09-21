@@ -41,7 +41,7 @@ module Hiptest
 
     def url
       if cli_options.push?
-        "#{cli_options.site}/import_test_results/#{cli_options.token}/#{cli_options.push_format}#{execution_environment_query_parameter}"
+        "#{cli_options.site}/import_test_results/#{cli_options.token}/#{cli_options.push_format}#{push_query_parameters}"
       elsif test_run_id
         "#{base_publication_path}/test_run/#{test_run_id}#{test_run_export_filter}"
       else
@@ -306,10 +306,17 @@ module Hiptest
       ).find_proxy
     end
 
-    def execution_environment_query_parameter
-      return "?execution_environment=#{cli_options.execution_environment}" unless cli_options.execution_environment.strip.empty?
+    def push_query_parameters
+      parameters = {}
+      unless cli_options.execution_environment.strip.empty?
+        parameters['execution_environment'] = cli_options.execution_environment
+      end
 
-      ""
+      unless cli_options.build_name.strip.empty?
+        parameters['build_name'] = cli_options.build_name
+      end
+
+      parameters.empty? ? "" : "?#{parameters.map {|key, value| "#{key}=#{URI.escape(value)}"}.join("&")}"
     end
   end
 end

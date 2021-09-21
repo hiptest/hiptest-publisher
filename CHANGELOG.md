@@ -4,6 +4,8 @@ HipTest Publisher Changelog
 [Unreleased]
 ------------
 
+ - Add `--build-name` option to specify the build name in CucumberStudio.
+
 [3.0.0]
 -------
 

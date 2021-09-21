@@ -83,6 +83,15 @@ describe Hiptest::Client do
             expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap?execution_environment=Default")
           end
         end
+
+        context "and with --build-name" do
+          let(:args) { ["--token", "1234", "--push", "myfile.tap", "--build-name", "My named build"] }
+
+          it 'creates url to import results for a specific execution environment' do
+            expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap?build_name=My%20named%20build")
+          end
+        end
+
       end
 
       context "and with --filter-on-scenario-ids" do
