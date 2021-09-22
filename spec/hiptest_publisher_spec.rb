@@ -1089,6 +1089,17 @@ describe Hiptest::Publisher do
         end
       end
 
+      context "with both --build-id and --build-name options specified" do
+        it "output an error message and stops" do
+          file = output_dir + "/some_file"
+          FileUtils.touch(file)
+
+          expect {
+            run_publisher_expecting_exit("--token", "123", "--push", file, '--build-id', '123', '--build-name', 'Some build name')
+          }.to output(a_string_including("Error with --push: you can not specify both --build-id and --build-name options")).to_stdout
+        end
+      end
+
       context "with result file being a directory" do
         it "output an error message and stops" do
           file = output_dir + "/result_file.tap"

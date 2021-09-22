@@ -109,6 +109,7 @@ en:
         You specified multiple filters for the export.
 
         Only one filter can be applied.
+      multiple_build_options: 'Error with --push: you can not specify both --build-id and --build-name options'
       output_directory_not_directory: 'Error with --output-directory: the file "%{output_dir}" is not a directory'
       output_directory_not_writable: 'Error with --output-directory: the directory "%{output_dir}" is not writable'
       output_directory_parent_not_writable: 'Error with --output-directory: the directory "%{output_dir}" can not be created because "%{realpath}" is not writable'

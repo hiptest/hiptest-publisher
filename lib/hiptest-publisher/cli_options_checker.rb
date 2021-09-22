@@ -29,6 +29,7 @@ module Hiptest
       if cli_options.push?
         check_execution_environment
         check_push_file
+        check_build_options
       else
         check_output_directory
         check_actionwords_signature_file
@@ -210,6 +211,12 @@ module Hiptest
             )
           end
         end
+      end
+    end
+
+    def check_build_options
+      if present?(cli_options.build_id) && present?(cli_options.build_name)
+        raise CliOptionError, I18n.t('errors.cli_options.multiple_build_options')
       end
     end
 
