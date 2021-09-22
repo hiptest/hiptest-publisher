@@ -92,6 +92,13 @@ describe Hiptest::Client do
           end
         end
 
+        context "and with --build-id" do
+          let(:args) { ["--token", "1234", "--push", "myfile.tap", "--build-id", "456"] }
+
+          it 'creates url to import results for a specific execution environment' do
+            expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap?build_id=456")
+          end
+        end
       end
 
       context "and with --filter-on-scenario-ids" do

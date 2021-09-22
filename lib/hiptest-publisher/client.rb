@@ -312,6 +312,10 @@ module Hiptest
         parameters['execution_environment'] = cli_options.execution_environment
       end
 
+      unless cli_options.build_id.strip.empty?
+        parameters['build_id'] = cli_options.build_id
+      end
+
       unless cli_options.build_name.strip.empty?
         parameters['build_name'] = cli_options.build_name
       end

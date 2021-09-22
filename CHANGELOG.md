@@ -5,6 +5,7 @@ HipTest Publisher Changelog
 ------------
 
  - Add `--build-name` option to specify the build name in CucumberStudio.
+ - Add `--build-id` option to specify the build id to push to in CucumberStudio.
 
 [3.0.0]
 -------

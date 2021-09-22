@@ -258,6 +258,7 @@ class OptionsParser
       Option.new(nil, 'global-failure-on-missing-reports', false, nil, I18n.t('options.global_failure_on_missing_reports'), :global_failure_on_missing_reports),
       Option.new(nil, 'push-format=tap', 'tap', String, I18n.t('options.push_format'), :push_format),
       Option.new(nil, 'execution-environment=NAME', '', String, I18n.t('options.execution_environment'), :execution_environment),
+      Option.new(nil, 'build-id=ID', '', String, I18n.t('options.build_id'), :build_id),
       Option.new(nil, 'build-name=NAME', '', String, I18n.t('options.build_name'), :build_name),
       Option.new(nil, 'sort=[id,order,alpha]', 'order', String, I18n.t('options.sort'), :sort),
       Option.new(nil, '[no-]uids', false, nil, I18n.t('options.uids'), :uids),
