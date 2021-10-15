@@ -143,6 +143,8 @@ Specific options:
                                      When there is no results file to push, report a global failure (default: false)
         --push-format=tap            Format of the test results (cucumber-json, junit, nunit, robot, tap) (default: tap)
         --execution-environment=NAME Name of the execution environment
+        --build_id: ID of an existing build the results will be added to
+        --build_name: Name for the build that will be created in CucumberStudio (build names are not unique)
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
         --[no-]parent-folder-tags    Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
