@@ -168,8 +168,8 @@ en:
     aw_deleted: Output signature of deleted action words
     aw_renamed: Output signatures of renamed action words
     aw_signature_changed: Output signatures of action words for which signature changed
-    build_id: ID of the build the results will be added to
-    build_name: Name for the build to create in CucumberStudio
+    build_id: ID of an existing build the results will be added to
+    build_name: Name for the build that will be created in CucumberStudio (build names are not unique)
     check_version: Check if a new release of hiptest-publisher is available
     color: Force [un]use of ANSI color in text output
     config: Configuration file
