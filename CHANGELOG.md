@@ -1,11 +1,11 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
-------------
+[3.1.0]
+-------
 
  - Add options related to builds (or execution cycles) in CucumberStudio:
-  - `--build-id`: allows to specify in which the results will be pushed
+  - `--build-id`: allows to specify the build in which the results will be pushed
   - `--build-name`: allows to name the build which will be created to store the results
 
 [3.0.0]
