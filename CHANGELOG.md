@@ -255,7 +255,7 @@ HipTest Publisher Changelog
 
 
 <!-- List of releases -->
-[Unreleased]: https://github.com/hiptest/hiptest-publisher/compare/v3.0.0...master
+[3.1.0]:     https://github.com/hiptest/hiptest-publisher/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/hiptest/hiptest-publisher/compare/v2.4.0...v3.0.0
 [2.4.0]: https://github.com/hiptest/hiptest-publisher/compare/v2.3.1...v2.4.0
 [2.3.1]:     https://github.com/hiptest/hiptest-publisher/compare/v2.3.0...v2.3.1
