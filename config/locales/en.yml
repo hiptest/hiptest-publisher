@@ -57,6 +57,7 @@ en:
       Unable to build:
       %{node}
     title: Extracting data
+  caching_data: Caching data
   check_version:
     error: Unable to connect to Rubygem
     outdated: |
@@ -105,11 +106,11 @@ en:
         project.
 
         Note that settings section is available only to administrators of the project.
+      multiple_build_options: 'Error with --push: you can not specify both --build-id and --build-name options'
       multiple_filters: |
         You specified multiple filters for the export.
 
         Only one filter can be applied.
-      multiple_build_options: 'Error with --push: you can not specify both --build-id and --build-name options'
       output_directory_not_directory: 'Error with --output-directory: the file "%{output_dir}" is not a directory'
       output_directory_not_writable: 'Error with --output-directory: the directory "%{output_dir}" is not writable'
       output_directory_parent_not_writable: 'Error with --output-directory: the directory "%{output_dir}" can not be created because "%{realpath}" is not writable'
@@ -132,9 +133,6 @@ en:
     test_run_list_unavailable: Cannot get the list of available test runs from CucumberStudio. Try using --test-run-id instead of --test-run-name
   exporting_file: Exporting %{name}
   fetching_data: Fetching data from CucumberStudio
-  using_cached_data: Using cached data from previous export
-  caching_data: Caching data
-  using_cache: "Using cache: %{full_path}"
   help:
     categories:
       title: For language %{language}, available file groups are
@@ -170,6 +168,8 @@ en:
     aw_signature_changed: Output signatures of action words for which signature changed
     build_id: ID of an existing build the results will be added to
     build_name: Name for the build that will be created in CucumberStudio (build names are not unique)
+    cache_dir: Path to the directory to store cache of CucumberStudio data
+    cache_duration: Validity of the CucumberStudio data cache in seconds
     check_version: Check if a new release of hiptest-publisher is available
     color: Force [un]use of ANSI color in text output
     config: Configuration file
@@ -186,7 +186,8 @@ en:
     framework: Test framework to use
     global_failure_on_missing_reports: When there is no results file to push, report a global failure
     help: Show this message
-    http_proxy: 'Specify your http proxy to access CucumberStudio'
+    http_proxy: Specify your http proxy to access CucumberStudio
+    indentation: Customize indentation
     keep_filenames: 'Keep the same name as in CucumberStudio for the test files (note: may cause encoding issues)'
     keep_foldernames: 'Keep the same name as in CucumberStudio for the folders (note: may cause encoding issues)'
     language: Target language
@@ -197,8 +198,8 @@ en:
     not_recursive: 'Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children'
     only: Restrict export to given file categories (--only=list to list them)
     output_directory: Output directory
-    overriden_templates: Folder for overriden templates
     overriden_language_configs: Folder for overriden language configs
+    overriden_templates: Folder for overriden templates
     parameter_delimiter: Parameter delimiter (for Gherkin based export only)
     parent_folder_tags: 'Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports)'
     push: Push a results file to the server
@@ -216,9 +217,6 @@ en:
     with_folders: Use folders hierarchy to export files in respective directories
     without: Exclude file categories from import (--only=list to list them)
     xml_file: XML file to use instead of fetching it from CucumberStudio
-    cache_dir: "Path to the directory to store cache of CucumberStudio data"
-    cache_duration: "Validity of the CucumberStudio data cache in seconds"
-    indentation: Customize indentation
   overwrite:
     ask_confirmation: 'File %{path} exists, do you want to overwrite it? [y/N] '
     warning_message: File %{path} already exists, skipping. Use --force to overwrite it.
@@ -247,4 +245,6 @@ en:
     required_version: hiptest-publisher requires Ruby version >= %{version}.
     support_ended: Official support for Ruby %{version} ended on %{year}-%{month}-%{day}
     use_more_recent: Please use a more recent ruby release to run hiptest-publisher.
+  using_cache: 'Using cache: %{full_path}'
+  using_cached_data: Using cached data from previous export
   verbose_header: 'Running hiptest-publisher %{version} with:'
