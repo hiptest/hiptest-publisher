@@ -243,6 +243,18 @@ alias hiptest-publisher='bundle exec ruby -I lib bin/hiptest-publisher'
 ```
 
 
+Internationalization
+--------------------
+
+To help with internationalization, you can temporarly add the `i18n-tasks` in the Gemfile and run `i18n-tasks health` to check that everything is ok and there are no missing translations. We removed it because of the many dependencies it pulls.
+
+Other useful commands:
+  * `i18n-tasks missing`
+  * `i18n-tasks unused`
+  * `i18n-tasks normalize`
+  * `i18n-tasks check-consistent-interpolations`
+
+
 Adding support for other languages and framework
 ------------------------------------------------
 
