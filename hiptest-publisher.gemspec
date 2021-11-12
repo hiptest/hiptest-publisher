@@ -11,11 +11,12 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["CucumberStudio R&D".freeze]
-  s.date = "2021-10-18"
+  s.date = "2021-11-12"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests.".freeze
   s.email = "studio@cucumber.io".freeze
   s.executables = ["hiptest-publisher".freeze]
   s.extra_rdoc_files = [
+    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ]
@@ -534,7 +535,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>.freeze, ["~> 3.3"])
       s.add_development_dependency(%q<rspec-mocks>.freeze, ["~> 3.3"])
       s.add_development_dependency(%q<codeclimate-test-reporter>.freeze, ["~> 0.4", ">= 0.4.6"])
-      s.add_development_dependency(%q<i18n-tasks>.freeze, ["~> 0.9.29"])
       s.add_development_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
       s.add_development_dependency(%q<actionview>.freeze, ["~> 5.2"])
     else
@@ -550,7 +550,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>.freeze, ["~> 3.3"])
       s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.3"])
       s.add_dependency(%q<codeclimate-test-reporter>.freeze, ["~> 0.4", ">= 0.4.6"])
-      s.add_dependency(%q<i18n-tasks>.freeze, ["~> 0.9.29"])
       s.add_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
       s.add_dependency(%q<actionview>.freeze, ["~> 5.2"])
     end
@@ -567,7 +566,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>.freeze, ["~> 3.3"])
     s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.3"])
     s.add_dependency(%q<codeclimate-test-reporter>.freeze, ["~> 0.4", ">= 0.4.6"])
-    s.add_dependency(%q<i18n-tasks>.freeze, ["~> 0.9.29"])
     s.add_dependency(%q<i18n-coverage>.freeze, ["~> 0.1.1"])
     s.add_dependency(%q<actionview>.freeze, ["~> 5.2"])
   end
