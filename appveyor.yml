@@ -1,19 +1,22 @@
-version: 1.0.{build}
+version: 1.0.{build}-{branch}
 
 skip_tags: true
 
 environment:
   matrix:
-    - RUBY_VERSION: "27-x64"
-    - RUBY_VERSION: "27"
+    - RUBY_VERSION: 27-x64
+    - RUBY_VERSION: 27
 
 install:
-  - SET PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
-  - ruby --version
-  - gem --version
+  - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
   - gem install bundler
   - bundler env
   - bundle install
+
+before_test:
+  - ruby -v
+  - gem -v
+  - bundle -v
 
 test_script:
   - bundle exec rspec
