@@ -9,8 +9,8 @@ environment:
 
 install:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
-  - gem install bundler
   - bundler env
+  - gem install bundler
   - bundle install
 
 before_test:
