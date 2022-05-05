@@ -320,7 +320,7 @@ module Hiptest
         parameters['build_name'] = cli_options.build_name
       end
 
-      parameters.empty? ? "" : "?#{parameters.map {|key, value| "#{key}=#{URI.escape(value)}"}.join("&")}"
+      parameters.empty? ? "" : "?#{parameters.map {|key, value| "#{key}=#{ERB::Util.url_encode(value)}"}.join("&")}"
     end
   end
 end

@@ -5,6 +5,7 @@ HipTest Publisher Changelog
 ------------
 
  - Dropping support for ruby < 2.7
+ - Adding support for ruby 3.0
 
 [3.1.0]
 -------

@@ -32,12 +32,11 @@ if RubyVersion < '2.7.0'
   exit 1
 end
 
-# TODO: Bring this back when ruby 3 support has been fixed
-# if RubyVersion < '3.0'
-#   STDERR.puts(I18n.t('ruby_version.current_version', engine: RUBY_ENGINE, version: RUBY_VERSION))
-#   STDERR.puts(I18n.t('ruby_version.deprecation_warning', version: '2.7'))
-#   STDERR.puts(I18n.t('ruby_version.support_ended', version: '2.7', year: '2023', month: '03', day: '31'))
-# end
+if RubyVersion < '3.0'
+  STDERR.puts(I18n.t('ruby_version.current_version', engine: RUBY_ENGINE, version: RUBY_VERSION))
+  STDERR.puts(I18n.t('ruby_version.deprecation_warning', version: '2.7'))
+  STDERR.puts(I18n.t('ruby_version.support_ended', version: '2.7', year: '2023', month: '03', day: '31'))
+end
 
 require 'hiptest-publisher'
 begin
