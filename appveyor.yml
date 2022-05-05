@@ -4,8 +4,8 @@ skip_tags: true
 
 environment:
   matrix:
-    - RUBY_VERSION: "25-x64"
-    - RUBY_VERSION: "25"
+    - RUBY_VERSION: "27-x64"
+    - RUBY_VERSION: "27"
 
 install:
   - SET PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
