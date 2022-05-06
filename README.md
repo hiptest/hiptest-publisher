@@ -147,7 +147,7 @@ Specific options:
         --sort=[id,order,alpha]      Sorting of tests in output: id will sort them by age, order will keep the same order than in hiptest (only with --with-folders option, will fallback to id otherwise), alpha will sort them by name (default: order)
         --[no-]uids                  Export UIDs (note: can be disabled only for Gherkin-based exports, may cause issue when pushing results back) (default: true)
         --[no-]parent-folder-tags    Export tags from parent folders (note: if set to false, those tags are never rendered. Only available for Gherkin base exports) (default: true)
-        --parameter-delimiter        Parameter delimiter (for Gherkin based export only) (default: ")
+        --parameter-delimiter        Parameter delimiter (for Gherkin based export only) (default: "")
         --with-dataset-names         Export dataset name when creating feature files (note: available only for Gherkin-based exports) (default: false)
         --keep-filenames             Keep the same name as in CucumberStudio for the test files (note: may cause encoding issues) (default: false)
         --keep-foldernames           Keep the same name as in CucumberStudio for the folders (note: may cause encoding issues) (default: false)
