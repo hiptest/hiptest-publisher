@@ -1,0 +1,257 @@
+#!/usr/bin/env ruby
+require 'gli'
+begin # XXX: Remove this begin/rescue before distributing your app
+require 'hp'
+rescue LoadError
+  STDERR.puts "In development, you need to use `bundle exec bin/hp` to run your app"
+  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+  STDERR.puts "Feel free to remove this message from bin/hp now"
+  exit 64
+end
+
+class App
+  extend GLI::App
+
+  program_desc 'Translate your Hiptest examples in executable code and integrate with any CI tool'
+  sort_help :manually
+
+  version Hp::VERSION
+  desc 'Check if a more recent version exists'
+  switch :'check-version', negatable: false
+
+  subcommand_option_handling :normal
+  arguments :strict
+
+  desc 'Config file'
+  arg_name 'PATH'
+  flag :c, :config
+
+  desc 'Secret token'
+  arg_name 'TOKEN'
+  flag :t, :token
+
+  desc 'Output directory'
+  arg_name 'PATH'
+  flag :o, :'output-directory', default_value: '.'
+
+  desc 'URL of the site'
+  arg_name 'TOKEN'
+  flag :s, :site, default_value: 'https://hiptest.com'
+
+  desc 'http-proxy to use'
+  arg_name 'PROXY_URL'
+  flag :'http-proxy'
+
+  desc 'XML file to use instead of fetching it from HipTest'
+  arg_name 'PROJECT.xml'
+  flag :x, :'xml-file'
+
+  desc 'Force overwrite of any file'
+  switch :force, default_value: false, negatable: false
+
+  desc 'Use verbose mode'
+  switch :v, :verbose, default_value: false, negatable: false
+
+
+  desc 'Generate executable code'
+  command :publish do |c|
+    c.desc 'Target language'
+    c.arg_name 'LANG'
+    c.flag :l, :language, default_value: 'ruby'
+
+    c.desc 'Target framework'
+    c.arg_name 'FRAMEWORK'
+    c.flag :f, :framework
+
+    c.desc 'Path to overriden templates'
+    c.arg_name 'PATH'
+    c.flag :'overriden-templates'
+
+    c.desc 'ID of the test run to generate code from'
+    c.arg_name 'ID'
+    c.flag :'test-run-id'
+
+    c.desc 'Name of the test run to generate code from'
+    c.arg_name 'CI'
+    c.flag :'test-run-name'
+
+    c.desc "Filename pattern (containing %s)"
+    c.arg_name 'PATTERN'
+    c.flag :'filename-pattern'
+
+    c.desc "Keep the same name as in HipTest for the test files (note: may cause encoding issues)"
+    c.switch :'keep-filenames', negatable: false
+
+    c.desc "Keep the same name as in HipTest for the folders (note: may cause encoding issues)"
+    c.switch :'keep-foldernames', negatable: false
+
+    c.desc "Select categories of data to export (tests, actionwords ...)"
+    c.arg_name 'CATEGORIES'
+    c.flag :only
+
+    c.desc "Select categories of data to exclude (tests, actionwords ...)"
+    c.arg_name 'CATEGORIES'
+    c.flag :without
+
+    c.desc "Select actionword library to export"
+    c.arg_name 'LIBRARY_NAME'
+    c.flag :'library-name'
+
+    c.desc "Export with the same hierarchy than in Hiptest"
+    c.switch :'with-folders', negatable: false
+
+    c.desc "Export folders without tests"
+    c.switch :'empty-folders', negatable: false
+
+    c.desc "Export each scenario in a separate file"
+    c.switch :'split-scenarios', negatable: false
+
+    c.desc "Select order in which actionwords are generated"
+    c.arg_name 'id,order,alpha'
+    c.flag :sort, must_match: ['id', 'order', 'alpha']
+
+    c.desc "Export scenario UIDs in test files"
+    c.switch :uids
+
+    c.desc "Add folder tags to scenarios"
+    c.switch :'parent-folder-tags'
+
+    c.desc "Parameter delimiter (for Gherkin based export only)"
+    c.arg_name "DELIMITED"
+    c.flag :'parameter-delimiter'
+
+    c.desc "Export dataset name when creating feature files (note: available only for Gherkin-based exports)"
+    c.switch :'with-dataset-names', negatable: false
+
+    c.desc "Meta-data to use in exports"
+    c.arg_name "META"
+    c.flag :meta
+
+    c.desc "Filter exported data"
+    c.command :filter do |filter|
+      filter.desc "Filter on folder ids (use commas to separate ids when fetching multiple folders)"
+      filter.arg_name "IDS"
+      filter.flag :'folder_ids'
+
+      filter.desc "Used in conjunction with filter-on-folder-ids or filter-on-folder-name: only exports those folders, not their children"
+      filter.switch :'not-recursive', negatable: false
+
+      filter.desc "Filter on folder name (only one name is accepted)"
+      filter.arg_name "NAME"
+      filter.flag :'folder_name'
+
+      filter.desc "Filter on scenario ids (use commas to separate ids when fetching multiple scenarios)"
+      filter.arg_name "IDS"
+      filter.flag :'scenario_ids'
+
+      filter.desc "Filter on scenario name (only one name is accepted)"
+      filter.arg_name "NAME"
+      filter.flag :'scenario_name'
+
+      filter.desc "Filter on test status in last build (use in conjunction with a test run)"
+      filter.arg_name "STATUS"
+      filter.flag :'status'
+
+      filter.desc "Filter on scenarios and folder tags (use commas to separate tags when using multiple tags)"
+      filter.arg_name "TAGS"
+      filter.flag :'tags'
+
+      filter.action do |global_options, options, args|
+        puts "Options: #{options}"
+        puts "Generate filter ran"
+      end
+    end
+
+    c.action do |global_options,options,args|
+
+      # Your command logic here
+
+      # If you have any errors, just raise them
+      # raise "that command made no sense"
+
+      puts "generate command ran"
+    end
+  end
+
+  desc 'Scale your action words library'
+  command :scale do |c|
+    c.desc 'Output changes in JSON format'
+    c.switch :'json', negatable: false
+
+    c.desc 'Show action words created'
+    c.switch :created, negatable: false
+
+    c.desc 'Show action words deleted'
+    c.switch :deleted, negatable: false
+
+    c.desc 'Show action words renamed'
+    c.switch :renamed, negatable: false
+
+    c.desc 'Show action words which signature changed'
+    c.switch :'signature-changed', negatable: false
+
+    c.desc 'Show action words which definition changed'
+    c.switch :'definition-changed', negatable: false
+
+    c.desc 'Update signature file'
+    c.switch :signature, negatable: false
+
+    c.action do |global_options, options, args|
+      puts "scale command ran"
+    end
+  end
+
+  desc 'Share your test execution results on Hiptest'
+  # Option.new(nil, 'global-failure-on-missing-reports', false, nil, I18n.t('options.global_failure_on_missing_reports'), :global_failure_on_missing_reports),
+  command :share do |c|
+    c.desc 'Test report file(s) to push'
+    c.arg_name 'FILE.tap'
+    c.flag :f, :file, :files, required: true
+
+    c.desc 'Format of the report file(s)'
+    c.arg_name 'tap'
+    c.flag :format, default_value: 'tap', must_match: ['cucumber-json', 'junit', 'nunit', 'robot', 'tap']
+
+    c.desc 'ID of the test run where results will be shown'
+    c.arg_name '1234'
+    c.flag :id, :'test-run-id'
+
+    c.desc 'Name of the test run where results will be shown'
+    c.arg_name 'CI'
+    c.flag :name, :'test-run-name'
+
+    c.desc 'Execution environment where tests were executed'
+    c.arg_name 'ENV'
+    c.flag :e, :'execution-environment'
+
+    c.desc 'Mark tests as failed if no reports are present'
+    c.switch :'global-failure-on-missing-reports', negatable: false
+
+    c.action do |global_options, options, args|
+      puts "share command ran"
+    end
+  end
+
+  pre do |global,command,options,args|
+    # Pre logic here
+    # Return true to proceed; false to abort and not call the
+    # chosen command
+    # Use skips_pre before a command to skip this block
+    # on that command only
+    true
+  end
+
+  post do |global,command,options,args|
+    # Post logic here
+    # Use skips_post before a command to skip this
+    # block on that command only
+  end
+
+  on_error do |exception|
+    # Error logic here
+    # return false to skip default error handling
+    true
+  end
+end
+
+exit App.run(ARGV)
