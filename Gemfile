@@ -14,20 +14,17 @@ else
 end
 
 group :development do
-  gem 'pry', '~> 0'
-  gem 'pry-byebug', '~> 3'
-  gem 'rspec', '~> 3.3'
-  gem 'rspec-mocks', '~> 3.3'
+  gem 'actionview', '~> 6'
   gem 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.6'
   gem 'i18n-coverage', '~> 0.1.1'
-  gem 'actionview', '~> 6'
-end
-
-group :packaging do
   gem 'juwelier'
+  gem 'pry-byebug', '~> 3'
+  gem 'pry', '~> 0'
+  gem 'rspec-mocks', '~> 3.3'
+  gem 'rspec', '~> 3.3'
 end
 
 group :test do
-  gem 'webmock'
   gem 'rspec_junit_formatter'
+  gem 'webmock'
 end

@@ -1,7 +1,7 @@
 HipTest Publisher Changelog
 ===========================
 
-[Unreleased]
+[3.2.0]
 ------------
 
  - Dropping support for ruby < 2.7
