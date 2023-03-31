@@ -36,7 +36,7 @@ module Hiptest
     def initialize(cli_options, reporter = nil)
       @cli_options = cli_options
       @reporter = reporter || NullReporter.new
-      @async_options = { max_attempts: 200, sleep_time_between_attemps: 5 }
+      @async_options = { max_attempts: 360, sleep_time_between_attemps: 5 }
     end
 
     def url
@@ -99,13 +99,15 @@ module Hiptest
           return cached
         end
       end
-
+      puts ">>>>>>>>>>>>> clinet.rb fetch_project >>>>>>>>>>>>>>>>>>>>>>"
       content = @reporter.with_status_message I18n.t(:fetching_data) do
         break fetch_project_export if use_synchronous_fetch?
 
         begin
+          puts ">>> fetch_project_export_asynchronously start >>>>>>>>"
           fetch_project_export_asynchronously
         rescue AsyncExportUnavailable
+          puts ">>> fetch_project_export start >>>>>>>>"
           fetch_project_export
         end
       end
@@ -167,7 +169,7 @@ module Hiptest
 
       loop do
         response = send_get_request(url)
-
+        puts ">>> response code_type #{response.code_type} <<"
         break unless response.code_type == Net::HTTPAccepted
         break if 0 >= (max_attempts -= 1)
 
@@ -287,7 +289,7 @@ module Hiptest
       Net::HTTP.start(
           request.uri.hostname, request.uri.port,
           proxy_address, proxy_port, proxy_user, proxy_pass,
-          use_ssl: use_ssl,
+          use_ssl: use_ssl, read_timeout: 1800, open_timeout: 1800,
           verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
         @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
         response = http.request(request)
