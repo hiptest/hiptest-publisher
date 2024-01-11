@@ -6,7 +6,7 @@ default : test
 
 # If the Gemfile is changed, the Gemfile.lock should be updated.
 Gemfile.lock : Gemfile
-	docker run --rm -v "$$(pwd)":/usr/src/app -w /usr/src/app ruby:3.0 bundle install
+	docker run --rm -v "$$(pwd)":/usr/src/app -w /usr/src/app ruby:3.2 bundle install
 
 DOCKER_IMAGE = hiptest/hiptest-publisher
 
