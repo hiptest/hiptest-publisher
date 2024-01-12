@@ -16,7 +16,7 @@ require 'rake'
 require 'juwelier'
 Juwelier::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = "hiptest-publisher"
+  gem.name = "hiptest-publisher-fork"
   gem.homepage = "https://cucumber.io"
   gem.license = "MIT"
   gem.summary = "Export your tests from CucumberStudio into executable tests."
