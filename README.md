@@ -45,7 +45,7 @@ Note: for Windows users, take a look at [this Windows installation guide](docs/I
 Exporting a project
 -------------------
 
-Go to [CucumberStudio projects list](https://studio.cucumber.io/projects), pick one project, and select the Settings tab.
+Go to [CucumberStudio projects list](https://studio.cucumberstudio.com/projects), pick one project, and select the Settings tab.
 This tab is available only for projects you're admin of.
 From there, copy the secret token and run this command line:
 
@@ -83,7 +83,7 @@ When publishing, you'll notice a file called ``actionwords_signature.yaml``. Sto
 Exporting a test run
 --------------------
 
-You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `https://studio.cucumber.io/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
+You can generate the test suite from a test run of your project by specifying option `--test-run-id=<xxx>` when calling `hiptest-publisher`. You can find the test run id in the address bar of your browser. If your browser address is `https://studio.cucumberstudio.com/projects/1234/testRuns/6941`, then your test run id is `6941`. You can generate your tests from your test with this command line:
 
 ```shell
 hiptest-publisher --token=<YOUR TOKEN> --test-run-id=6941
@@ -136,7 +136,7 @@ Specific options:
         --empty-folders              Export empty folders (default: false)
         --split-scenarios            Export each scenario in a single file (except for Gherkin based languages) (default: false)
         --leafless-export            Use only last level action word (default: false)
-    -s, --site=SITE                  Site to fetch from (default: https://studio.cucumber.io)
+    -s, --site=SITE                  Site to fetch from (default: https://studio.cucumberstudio.com)
     -p, --push=FILE.TAP              Push a results file to the server
         --global-failure-on-missing-reports
                                      When there is no results file to push, report a global failure (default: false)
