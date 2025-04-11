@@ -151,11 +151,11 @@ describe Hiptest::Publisher do
 
   describe "--language=ruby" do
     def run_publisher_command(*extra_args)
-      stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+      stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
         to_return(body: { publication_export_id: 1 }.to_json)
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/leafless_tests").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
       args = [
         "--language", "ruby",
@@ -168,9 +168,9 @@ describe Hiptest::Publisher do
     end
 
     it "exports correctly in the golden case" do
-      stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+      stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
         to_return(body: { publication_export_id: 1 }.to_json)
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       args = [
         "--language", "ruby",
@@ -184,7 +184,7 @@ describe Hiptest::Publisher do
     end
 
     it "can handle bad URL" do
-      stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+      stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
         to_raise(StandardError)
       args = [
         "--language", "ruby",
@@ -200,9 +200,9 @@ describe Hiptest::Publisher do
     end
 
     it "can handle 404 Not Found errors" do
-      stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+      stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
         to_return(status: 404)
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/project").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project").
         to_return(status: 404)
       args = [
         "--language", "ruby",
@@ -222,9 +222,9 @@ describe Hiptest::Publisher do
 
     context "with a server that does not support async exports" do
       it "exports correctly in the golden case" do
-        stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+        stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
           to_return(status: 404)
-        stub_request(:get, "https://studio.cucumber.io/publication/123456789/project").
+        stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project").
           to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
         args = [
           "--language", "ruby",
@@ -635,7 +635,7 @@ describe Hiptest::Publisher do
     end
 
     before do
-      stub_request(:post, "https://studio.cucumber.io/import_test_results/123/tap").
+      stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/123/tap").
           to_return(status: 200,
                     body: '{"test_import": [{"name": "my test", "status": "passed"}]}')
     end
@@ -646,13 +646,13 @@ describe Hiptest::Publisher do
       publisher = Hiptest::Publisher.new(["--token", "123", "--push", result_file], listeners: listeners)
       publisher.run
 
-      expect(a_request(:post, "https://studio.cucumber.io/import_test_results/123/tap").
+      expect(a_request(:post, "https://studio.cucumberstudio.com/import_test_results/123/tap").
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.tap"/)
           expect(req.headers['Content-Type']).to include('multipart/form-data;')
         }
       ).to have_been_made
-      expect(STDOUT).to have_printed("Posting #{result_file} to https://studio.cucumber.io")
+      expect(STDOUT).to have_printed("Posting #{result_file} to https://studio.cucumberstudio.com")
     end
 
     it "support globbing to push multiple files" do
@@ -663,7 +663,7 @@ describe Hiptest::Publisher do
 
       publisher.run
 
-      expect(a_request(:post, "https://studio.cucumber.io/import_test_results/123/tap").
+      expect(a_request(:post, "https://studio.cucumberstudio.com/import_test_results/123/tap").
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result1.tap"/).
                           and match(/Content-Disposition: form-data;.+ filename="result2.tap"/)
@@ -681,7 +681,7 @@ describe Hiptest::Publisher do
       expect(STDOUT).to have_printed("One test imported\n")
 
       # multiple passed
-      stub_request(:post, "https://studio.cucumber.io/import_test_results/456/tap").
+      stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": [{"name": "test1", "status": "passed"}, {"name": "test2", "status": "passed"}]}')
       publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
@@ -693,7 +693,7 @@ describe Hiptest::Publisher do
 
     it "should display an error if no tests have been imported" do
       result_file = create_file('result.tap')
-      stub_request(:post, "https://studio.cucumber.io/import_test_results/456/tap").
+      stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": []}')
       publisher = Hiptest::Publisher.new(["--token", "456", "--push", result_file], listeners: listeners)
@@ -705,7 +705,7 @@ describe Hiptest::Publisher do
 
     it "displays names of passed tests with --verbose" do
       result_file = create_file('result.tap')
-      stub_request(:post, "https://studio.cucumber.io/import_test_results/456/tap").
+      stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/456/tap").
           to_return(status: 200,
                     body: '{"test_import": [{"name": "test1", "status": "passed"}, {"name": "test2", "status": "passed"}]}')
 
@@ -718,7 +718,7 @@ describe Hiptest::Publisher do
 
     context 'when no results have been imported' do
       before do
-        stub_request(:post, "https://studio.cucumber.io/import_test_results/456/tap").
+        stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/456/tap").
             to_return(status: 200,
                       body: '{"test_import": []}')
       end
@@ -791,7 +791,7 @@ describe Hiptest::Publisher do
       let(:result_file) { create_file('result.tap') }
 
       before do
-        stub_request(:post, "https://studio.cucumber.io/import_test_results/456/tap").
+        stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/456/tap").
             to_return(status: 404,
                       body: "")
       end
@@ -809,7 +809,7 @@ describe Hiptest::Publisher do
       let(:result_file) { create_file('result.jsonb') }
 
       before do
-        stub_request(:post, "https://studio.cucumber.io/import_test_results/456/jsonb").
+        stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/456/jsonb").
             to_return(status: 422,
                       body: "Unknown format jsonb. Available formats are:" +
                             "\n - android-studio" +
@@ -1112,7 +1112,7 @@ describe Hiptest::Publisher do
 
       context "with option global_failure_on_missing_reports on" do
         before(:each) {
-          stub_request(:post, "https://studio.cucumber.io/report_global_failure/123/456/").
+          stub_request(:post, "https://studio.cucumberstudio.com/report_global_failure/123/456/").
             to_return(body: '{"test_import": [{"name": "Simple use", "status": "failed"}]}')
         }
 
@@ -1146,9 +1146,9 @@ describe Hiptest::Publisher do
 
     context "--output-directory" do
       before(:each) {
-        stub_request(:post, "https://studio.cucumber.io/publication/123/async_project").
+        stub_request(:post, "https://studio.cucumberstudio.com/publication/123/async_project").
           to_return(body: { publication_export_id: 1 }.to_json)
-        stub_request(:get, "https://studio.cucumber.io/publication/123/async_project/1").
+        stub_request(:get, "https://studio.cucumberstudio.com/publication/123/async_project/1").
           to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
       }
 
@@ -1286,9 +1286,9 @@ describe Hiptest::Publisher do
 
   describe "--language=seleniumide" do
     def run_publisher_command(*extra_args)
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/project").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project").
         to_return(body: File.read('samples/xml_input/Hiptest publisher.xml'))
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/leafless_tests").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/leafless_tests").
         to_return(body: File.read('samples/xml_input/Hiptest automation.xml'))
       args = [
         "--language", "seleniumide",
@@ -1309,9 +1309,9 @@ describe Hiptest::Publisher do
   describe "--filename-pattern" do
     # Only works --with-folders
     def run_publisher_command(*extra_args)
-      stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+      stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
         to_return(body: { publication_export_id: 1 }.to_json)
-      stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1").
+      stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1").
         to_return(body: File.read('samples/xml_input/cash_withdrawal.xml'))
       args = [
         "--language", "javascript",

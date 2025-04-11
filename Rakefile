@@ -21,7 +21,7 @@ Juwelier::Tasks.new do |gem|
   gem.license = "MIT"
   gem.summary = "Export your tests from CucumberStudio into executable tests."
   gem.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests."
-  gem.email = "studio@cucumber.io"
+  gem.email = "studio@cucumberstudio.com"
   gem.authors = ["CucumberStudio R&D"]
 
   gem.executables = ['hiptest-publisher']

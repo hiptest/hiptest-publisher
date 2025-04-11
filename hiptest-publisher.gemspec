@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.authors = ["CucumberStudio R&D".freeze]
   s.date = "2022-05-18"
   s.description = "Provides a command-line tool that generates Java, Python or Ruby code to run the tests.".freeze
-  s.email = "studio@cucumber.io".freeze
+  s.email = "studio@cucumberstudio.com".freeze
   s.executables = ["hiptest-publisher".freeze]
   s.extra_rdoc_files = [
     "CHANGELOG.md",

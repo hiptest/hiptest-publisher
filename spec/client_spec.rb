@@ -38,7 +38,7 @@ describe Hiptest::Client do
 
   def stub_available_test_runs(test_runs:, token: "123456789")
     test_runs_json = { test_runs: test_runs }.to_json
-    stub_request(:get, "https://studio.cucumber.io/publication/#{token}/test_runs").
+    stub_request(:get, "https://studio.cucumberstudio.com/publication/#{token}/test_runs").
       to_return(body: test_runs_json,
                 headers: {'Content-Type' => 'application/json'})
   end
@@ -48,7 +48,7 @@ describe Hiptest::Client do
       let(:args) { ["--token", "1234"] }
 
       it 'creates url for tests generation' do
-        expect(client.url).to eq("https://studio.cucumber.io/publication/1234/project")
+        expect(client.url).to eq("https://studio.cucumberstudio.com/publication/1234/project")
       end
 
       context "and with --test-run-id" do
@@ -56,7 +56,7 @@ describe Hiptest::Client do
 
         it 'creates url for tests generation from a test run id' do
           stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "1234")
-          expect(client.url).to eq("https://studio.cucumber.io/publication/1234/test_run/98")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/1234/test_run/98")
         end
 
         context 'and with --filter-on-status' do
@@ -64,7 +64,7 @@ describe Hiptest::Client do
 
           it 'creates a url to download only tests matching the status' do
             stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "1234")
-            expect(client.url).to eq("https://studio.cucumber.io/publication/1234/test_run/98?filter_status=passed")
+            expect(client.url).to eq("https://studio.cucumberstudio.com/publication/1234/test_run/98?filter_status=passed")
           end
         end
       end
@@ -73,14 +73,14 @@ describe Hiptest::Client do
         let(:args) { ["--token", "1234", "--push", "myfile.tap"] }
 
         it 'creates url to push results' do
-          expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/import_test_results/1234/tap")
         end
 
         context "and with --execution-environment" do
           let(:args) { ["--token", "1234", "--push", "myfile.tap", "--execution-environment", "Default"] }
 
           it 'creates url to import results for a specific execution environment' do
-            expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap?execution_environment=Default")
+            expect(client.url).to eq("https://studio.cucumberstudio.com/import_test_results/1234/tap?execution_environment=Default")
           end
         end
 
@@ -88,7 +88,7 @@ describe Hiptest::Client do
           let(:args) { ["--token", "1234", "--push", "myfile.tap", "--build-name", "My named build"] }
 
           it 'creates url to import results for a specific execution environment' do
-            expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap?build_name=My%20named%20build")
+            expect(client.url).to eq("https://studio.cucumberstudio.com/import_test_results/1234/tap?build_name=My%20named%20build")
           end
         end
 
@@ -96,7 +96,7 @@ describe Hiptest::Client do
           let(:args) { ["--token", "1234", "--push", "myfile.tap", "--build-id", "456"] }
 
           it 'creates url to import results for a specific execution environment' do
-            expect(client.url).to eq("https://studio.cucumber.io/import_test_results/1234/tap?build_id=456")
+            expect(client.url).to eq("https://studio.cucumberstudio.com/import_test_results/1234/tap?build_id=456")
           end
         end
       end
@@ -105,7 +105,7 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-scenario-ids', '1, 3, 4']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_scenario_ids=1,3,4")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_scenario_ids=1,3,4")
         end
       end
 
@@ -113,19 +113,19 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-scenario-name', 'My scenario']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_scenario_name=My%20scenario")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_scenario_name=My%20scenario")
         end
 
         it 'escapes the name for the URL' do
           # args = ['--token', '123', '--filter-on-scenario-name', 'My pouet scenario']
           args[-1] = %q{It's "escaped"_%42_😎_<>}
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_scenario_name=It%27s%20%22escaped%22_%2542_%F0%9F%98%8E_%3C%3E")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_scenario_name=It%27s%20%22escaped%22_%2542_%F0%9F%98%8E_%3C%3E")
         end
 
         it 'escapes accentuated letters for the URL' do
           # args = ['--token', '123', '--filter-on-scenario-name', 'My pouet scenario']
           args[-1] = "La qualité est clé"
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_scenario_name=La%20qualit%C3%A9%20est%20cl%C3%A9")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_scenario_name=La%20qualit%C3%A9%20est%20cl%C3%A9")
         end
       end
 
@@ -133,14 +133,14 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-folder-ids', '7, 8, 10']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_folder_ids=7,8,10")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_folder_ids=7,8,10")
         end
 
         context '--not-recursive' do
           let(:args) {['--token', '123', '--filter-on-folder-ids', '7, 8, 10', '--not-recursive']}
 
           it 'allows enabling the not_recursive option' do
-            expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_folder_ids=7,8,10&not_recursive=true")
+            expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_folder_ids=7,8,10&not_recursive=true")
           end
         end
       end
@@ -149,14 +149,14 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_folder_name=My%20super%20folder")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_folder_name=My%20super%20folder")
         end
 
         context '--not-recursive' do
           let(:args) {['--token', '123', '--filter-on-folder-name', 'My super folder', '--not-recursive']}
 
           it 'allows enabling the not_recursive option' do
-            expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_folder_name=My%20super%20folder&not_recursive=true")
+            expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_folder_name=My%20super%20folder&not_recursive=true")
           end
         end
       end
@@ -165,7 +165,7 @@ describe Hiptest::Client do
         let(:args) {['--token', '123', '--filter-on-tags', 'tag, another:tag']}
 
         it 'creates a url specifying the filter' do
-          expect(client.url).to eq("https://studio.cucumber.io/publication/123/project?filter_tags=tag,another%3Atag")
+          expect(client.url).to eq("https://studio.cucumberstudio.com/publication/123/project?filter_tags=tag,another%3Atag")
         end
       end
 
@@ -186,20 +186,20 @@ describe Hiptest::Client do
       let(:args) { ["--token", "123456789"] }
 
       before do
-        stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+        stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
             to_return(status: 404)
       end
 
       it 'fetches the project xml from CucumberStudio server' do
         sent_xml = "<xml_everywhere/>"
-        stub_request(:get, "https://studio.cucumber.io/publication/123456789/project").
+        stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project").
           to_return(body: sent_xml)
         got_xml = client.fetch_project
         expect(got_xml).to eq(sent_xml)
       end
 
       context "when a redirection response is given" do
-        let(:original_location) { "https://studio.cucumber.io/publication/123456789/project" }
+        let(:original_location) { "https://studio.cucumberstudio.com/publication/123456789/project" }
         let(:new_location) { "https://hop.hiptest.org/publication/123456789/project" }
 
         before do
@@ -240,14 +240,14 @@ describe Hiptest::Client do
         end
 
         it 'only fetches the XML file from CucumberStudio the first time' do
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/project").
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project").
             to_return(body: "<xml_everywhere/>")
 
           client.fetch_project
           client.fetch_project
           client.fetch_project
 
-          expect(a_request(:get, "https://studio.cucumber.io/publication/123456789/project"))
+          expect(a_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project"))
             .to have_been_made.at_most_once
         end
       end
@@ -256,12 +256,12 @@ describe Hiptest::Client do
         let(:args) { ["--token", "987654321"] }
 
         before do
-          stub_request(:post, "https://studio.cucumber.io/publication/987654321/async_project").
+          stub_request(:post, "https://studio.cucumberstudio.com/publication/987654321/async_project").
               to_return(status: 404)
         end
 
         it "raises a ClientError exception with a message" do
-          stub_request(:get, "https://studio.cucumber.io/publication/987654321/project").
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/987654321/project").
             to_return(status: 404)
           expect {
             client.fetch_project
@@ -273,7 +273,7 @@ describe Hiptest::Client do
 
           it "raises a ClientError exception with a message" do
             stub_available_test_runs(test_runs: [tr_98__Sprint_13], token: "987654321")
-            stub_request(:get, "https://studio.cucumber.io/publication/987654321/test_run/98").
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/987654321/test_run/98").
               to_return(status: 404)
             expect {
               client.fetch_project
@@ -281,9 +281,9 @@ describe Hiptest::Client do
           end
 
           it "raises a ClientError exception with a message (return 404 at another level)" do
-            stub_request(:get, "https://studio.cucumber.io/publication/987654321/test_runs").
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/987654321/test_runs").
               to_return(status: 404)
-            stub_request(:get, "https://studio.cucumber.io/publication/987654321/test_run/98").
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/987654321/test_run/98").
               to_return(status: 404)
             expect {
               client.fetch_project
@@ -295,7 +295,7 @@ describe Hiptest::Client do
           let(:args) { ["--token", "987654321", "--test-run-name", "plop"] }
 
           it "raises a ClientError exception with a message" do
-            stub_request(:get, "https://studio.cucumber.io/publication/987654321/test_runs").
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/987654321/test_runs").
               to_return(status: 404)
             expect {
               client.fetch_project
@@ -310,7 +310,7 @@ describe Hiptest::Client do
         it "fetches the test run xml from CucumberStudio server" do
           stub_available_test_runs(test_runs: [tr_98__Sprint_13])
           sent_xml = "<xml_everywhere/>"
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/test_run/98").
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/test_run/98").
             to_return(body: sent_xml)
           got_xml = client.fetch_project
           expect(got_xml).to eq(sent_xml)
@@ -342,10 +342,10 @@ describe Hiptest::Client do
 
         context "on old CucumberStudio version (no /publication/<token>/test_runs API)" do
           it "uses the given test run id and ignores that the API does not exist" do
-            stub_request(:get, "https://studio.cucumber.io/publication/123456789/test_runs").
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/test_runs").
               to_return(status: 404)
             sent_xml = "<xml_everywhere/>"
-            stub_request(:get, "https://studio.cucumber.io/publication/123456789/test_run/98").
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/test_run/98").
               to_return(body: sent_xml)
             got_xml = client.fetch_project
             expect(got_xml).to eq(sent_xml)
@@ -359,7 +359,7 @@ describe Hiptest::Client do
         it "first fetches the test runs list to get the id, then the test run xml" do
           stub_available_test_runs(test_runs: [tr_89__Sprint_12])
           sent_xml = "<xml_everywhere/>"
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/test_run/89").
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/test_run/89").
             to_return(body: sent_xml)
           got_xml = client.fetch_project
           expect(got_xml).to eq(sent_xml)
@@ -402,9 +402,9 @@ describe Hiptest::Client do
       context 'when the server does not support async project export' do
         it 'calls the former export url' do
           sent_xml = "<xml_everywhere/>"
-          stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project").
+          stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project").
               to_return(status: 404)
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/project").
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/project").
               to_return(body: sent_xml)
           got_xml = client.fetch_project
           expect(got_xml).to eq(sent_xml)
@@ -413,14 +413,14 @@ describe Hiptest::Client do
 
       context 'when the server supports async project export' do
         before do
-          stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project")
+          stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project")
             .to_return(:status => 201, :body => { "publication_export_id": 1 }.to_json)
         end
 
         it 'fetches the project xml from CucumberStudio server' do
           sent_xml = "<xml_everywhere/>"
 
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1").
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1").
               to_return(body: sent_xml)
 
           got_xml = client.fetch_project
@@ -430,7 +430,7 @@ describe Hiptest::Client do
         it 'fetches the project xml from CucumberStudio server after many attempts' do
           sent_xml = "<xml_everywhere/>"
 
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1")
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1")
             .to_return(:status => 202)
             .to_return(:status => 202)
             .to_return(body: sent_xml)
@@ -440,7 +440,7 @@ describe Hiptest::Client do
         end
 
         it 'does not try more than max_attempts times' do
-          stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1")
+          stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1")
             .to_return(:status => 202)
             .to_return(:status => 202)
             .to_return(:status => 202)
@@ -451,14 +451,14 @@ describe Hiptest::Client do
 
         context 'when an export was already in progress' do
           before do
-            stub_request(:post, "https://studio.cucumber.io/publication/123456789/async_project")
+            stub_request(:post, "https://studio.cucumberstudio.com/publication/123456789/async_project")
               .to_return(:status => 202, :body => { "publication_export_id": 1 }.to_json)
           end
 
           it 'waits the end of the export and download it' do
             sent_xml = "<xml_everywhere/>"
 
-            stub_request(:get, "https://studio.cucumber.io/publication/123456789/async_project/1")
+            stub_request(:get, "https://studio.cucumberstudio.com/publication/123456789/async_project/1")
               .to_return(:status => 202)
               .to_return(body: sent_xml)
 
@@ -489,10 +489,10 @@ describe Hiptest::Client do
     end
 
     it 'sends a post request with the file specified in the --push option embedded' do
-      stub_request(:post, "https://studio.cucumber.io/import_test_results/123456789/json")
+      stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/123456789/json")
       client.push_results
 
-      expect(a_request(:post, "https://studio.cucumber.io/import_test_results/123456789/json").
+      expect(a_request(:post, "https://studio.cucumberstudio.com/import_test_results/123456789/json").
         with { |req|
           expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
           expect(req.headers['Content-Type']).to include('multipart/form-data;')
@@ -504,10 +504,10 @@ describe Hiptest::Client do
       let(:pushed_file) { "#{results_dir}/*.json" }
 
       it 'sends multiple files' do
-        stub_request(:post, "https://studio.cucumber.io/import_test_results/123456789/json")
+        stub_request(:post, "https://studio.cucumberstudio.com/import_test_results/123456789/json")
         client.push_results
 
-        expect(a_request(:post, "https://studio.cucumber.io/import_test_results/123456789/json").
+        expect(a_request(:post, "https://studio.cucumberstudio.com/import_test_results/123456789/json").
           with { |req|
             expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result.json"(.|\n)*#{report_content}.*/)
             expect(req.body).to match(/Content-Disposition: form-data;.+ filename="result1.json"(.|\n)*#{second_report_content}*/)
@@ -518,7 +518,7 @@ describe Hiptest::Client do
     end
 
     context "when a redirect response is given" do
-      let(:original_location) { "https://studio.cucumber.io/import_test_results/123456789/json"}
+      let(:original_location) { "https://studio.cucumberstudio.com/import_test_results/123456789/json"}
       let(:new_location) { "https://hop.hiptest.org/import_test_results/123456789/json" }
 
       before do
@@ -553,7 +553,7 @@ describe Hiptest::Client do
     end
 
     context "when there is no file to push" do
-      let(:failure_url) { "https://studio.cucumber.io/report_global_failure/123456789/123/" }
+      let(:failure_url) { "https://studio.cucumberstudio.com/report_global_failure/123456789/123/" }
       let(:pushed_file) { "#{results_dir}/nothing_there.json" }
 
       it "sends a request to notify hiptest" do
