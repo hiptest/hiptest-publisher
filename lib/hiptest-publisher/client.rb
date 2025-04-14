@@ -287,7 +287,7 @@ module Hiptest
       Net::HTTP.start(
           request.uri.hostname, request.uri.port,
           proxy_address, proxy_port, proxy_user, proxy_pass,
-          use_ssl: use_ssl,
+          use_ssl: use_ssl, read_timeout: ENV['NET_HTTP_READ_TIMEOUT'].to_i || 1800,
           verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
         @reporter.show_verbose_message(I18n.t(:request_sent, uri: request.uri))
         response = http.request(request)
