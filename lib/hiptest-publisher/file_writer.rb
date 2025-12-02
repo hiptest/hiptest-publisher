@@ -22,7 +22,7 @@ module Hiptest
     private
 
     def mkdirs_for(path)
-      unless Dir.exists?(File.dirname(path))
+      unless Dir.exist?(File.dirname(path))
         FileUtils.mkpath(File.dirname(path))
       end
     end
