@@ -16,6 +16,7 @@ end
 group :development do
   gem 'actionview', '~> 6'
   gem 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.6'
+  gem 'git', '~> 1.11.0'
   gem 'i18n-coverage', '~> 0.1.1'
   gem 'juwelier'
   gem 'pry-byebug', '~> 3'
