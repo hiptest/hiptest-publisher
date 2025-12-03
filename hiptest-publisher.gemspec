@@ -516,7 +516,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://cucumber.io".freeze
   s.licenses = ["MIT".freeze]
-  s.required_ruby_version = Gem::Requirement.new(">= 2.7".freeze)
+  s.required_ruby_version = Gem::Requirement.new(">= 3.1.0".freeze)
   s.rubygems_version = "3.2.33".freeze
   s.summary = "Export your tests from CucumberStudio into executable tests.".freeze
 

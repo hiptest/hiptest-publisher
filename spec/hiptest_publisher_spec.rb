@@ -1158,7 +1158,7 @@ describe Hiptest::Publisher do
           expect {
             run_publisher_command("--token", "123", "--output-directory", unexisting_dir)
           }.to change {
-            Dir.exists?(unexisting_dir)
+            Dir.exist?(unexisting_dir)
           }.from(false).to(true)
         end
 
@@ -1167,7 +1167,7 @@ describe Hiptest::Publisher do
           expect {
             run_publisher_command("--token", "123", "--output-directory", unexisting_dir)
           }.to change {
-            Dir.exists?(unexisting_dir)
+            Dir.exist?(unexisting_dir)
           }.from(false).to(true)
         end
       end
